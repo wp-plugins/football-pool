@@ -4,15 +4,12 @@ Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
+Stable tag: trunk
 
 This plugin adds all the functionality for a football pool to your blog. 
 
 == Description ==
-This plugin adds all the functionality for a football pool to your blog. I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. 
-Btw. I'm not a programmer, so please don't use this code as an example for other plugins. It has 
-some terrible coding. But, hey, it works. :)
-
-Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and graphs of the other pool contenders. If you allready 
+Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders. If you allready 
 have users in your blog before you installed the plugin, make sure you fill in the extra user meta 
 that comes with this plugin.
 
@@ -21,7 +18,12 @@ that come with this plugin. I used Simply Works Core myself with my own custom s
 
 This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt" file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
+I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. 
+Btw. I'm not a programmer, so please don't use this code as an example for other plugins. It has 
+some terrible coding. But, hey, it works. :)
+
 **Features**
+
 * Users can predict match outcomes.
 * Configurable scoring options.
 * Use different leagues for your users (optional).
