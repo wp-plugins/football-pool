@@ -25,11 +25,12 @@ some terrible coding. But, hey, it works. :)
 **Features**
 
 * Users can predict match outcomes.
+* You can add bonus questions for extra fun.
 * Configurable scoring options.
 * Use different leagues for your users (optional).
-* Automatic calculation of the pool standing.
+* Automatic calculation of the pool ranking.
 * Automatic calculation of championship standing.
-* Users have charts where there scores are plotted. And they can compare themselves to other players.
+* Users have charts where their scores are plotted. And they can compare themselves to other players.
 * Widgets: ranking of your players, latest matches, countdown to next prediction.
 * Shortcodes: countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
 
@@ -50,14 +51,13 @@ For easier/front-end user registration you may consider using an extra plugin an
 == Screenshots ==
 1. Matches in the tournament
 2. Score charts of multiple players
-
 3. Admin Screen: change match outcomes
 4. Group rankings
 
 == Changelog ==
 
 = 1.0.1 =
-* Removed English texts because I couldn't get gettext to work for my Dutch version. All texts are in Dutch. If someone wants to translate the plugin, please contact me. I can give you a po-file with Dutch->English translations,
+* Removed English texts because I couldn't get gettext to work for my Dutch version. All texts are in Dutch now. If someone wants to translate the plugin, please contact me. I can give you a po-file with Dutch->English translations,
 
 = 1.0.0 =
 * First release
