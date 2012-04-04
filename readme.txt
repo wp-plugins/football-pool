@@ -18,7 +18,8 @@ that come with this plugin. I used Simply Works Core myself with my own custom s
 
 This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt" file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
-I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. 
+I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. This year I decided to transform it to 
+a WordPress plugin. I hope you like it.
 Btw. I'm not a programmer, so please don't use this code as an example for other plugins. It has 
 some terrible coding. But, hey, it works. :)
 
