@@ -48,7 +48,11 @@ After the pool has been set up, all you have to do is monitor the users that sub
 For easier/front-end user registration you may consider using an extra plugin and widget. E.g. <a href="http://wordpress.org/extend/plugins/custom-user-registration-lite/">Custom User Registration Lite</a>. Just don't forget the extra user meta that this plugin needs. But you can also use the Login/logout button Widget that is included with this plugin; the plugin adds the needed extra inputs to the WordPress register screen.
 
 == Screenshots ==
+1. Matches in the tournament
+2. Score charts of multiple players
 
+3. Admin Screen: change match outcomes
+4. Group rankings
 
 == Changelog ==
 
