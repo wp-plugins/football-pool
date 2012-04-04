@@ -94,8 +94,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$leagues = self::get_leagues();
 		
 		$cols = array(
-					array( 'text', __( 'league', FOOTBALLPOOL_TEXT_DOMAIN ), 'league', '' ),
-					array( 'text', __( 'image', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' )
+					array( 'text', __( 'pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'league', '' ),
+					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' )
 				);
 		
 		foreach( $leagues as $league ) {

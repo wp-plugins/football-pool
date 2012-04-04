@@ -39,7 +39,7 @@ class Football_Pool {
 		$sql = "INSERT INTO `{$prefix}matchtypes` (`id`, `name`) VALUES
 				(1, '" . __( 'Voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
 				(2, '" . __( 'Achtste finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(3, '" . __( 'Kwartfinals', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+				(3, '" . __( 'Kwartfinales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
 				(4, '" . __( 'Halve finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
 				(5, '" . __( 'Wedstrijd voor de 3e plek', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
 				(6, '" . __( 'Finale', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
