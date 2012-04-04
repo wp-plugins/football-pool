@@ -1,0 +1,28 @@
+/* menu and screen icons */
+#adminmenu .toplevel_page_footballpool-options .wp-menu-image
+{
+	background: url(images/admin-menu-16.png) 0 -33px no-repeat
+}
+
+#adminmenu .toplevel_page_footballpool-options:hover div.wp-menu-image,
+#adminmenu .toplevel_page_footballpool-options.wp-has-current-submenu div.wp-menu-image,
+#adminmenu .toplevel_page_footballpool-options.current div.wp-menu-image
+{
+	background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0;
+}
+
+#icon-footballpool-options.icon32
+{
+	background: url(images/admin-menu-32.png) 0 -33px no-repeat;
+}
+
+th.manage-column { vertical-align: top; }
+
+/* bonus questions */
+th.manage-column.column-question { width: 340px; }
+th.manage-column.column-answer { width: 180px; }
+th.manage-column.column-points { width: 50px; }
+
+/* matches */
+.matchinfo { width: 400px; }
+input.score { width: 2em; }

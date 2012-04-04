@@ -1,0 +1,120 @@
+CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `question` varchar(200) NOT NULL DEFAULT '',
+  `answer` varchar(200) NOT NULL DEFAULT '',
+  `points` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `answerBeforeDate` datetime NOT NULL,
+  `scoreDate` datetime DEFAULT NULL,
+  `matchNr` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
+  `questionId` tinyint(3) unsigned NOT NULL,
+  `userId` int(11) unsigned NOT NULL,
+  `answer` varchar(200) NOT NULL DEFAULT '',
+  `correct` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `points` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`questionId`,`userId`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}groups` (
+  `id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}leagues` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `userDefined` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `image` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}league_users` (
+  `userId` int(11) unsigned NOT NULL DEFAULT '0',
+  `leagueId` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`userId`),
+  KEY `user_league` (`userId`,`leagueId`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}matches` (
+  `nr` int(3) unsigned NOT NULL DEFAULT '0',
+  `stadiumId` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `homeTeamId` tinyint(3) NOT NULL DEFAULT '0',
+  `awayTeamId` tinyint(3) NOT NULL DEFAULT '0',
+  `homeScore` tinyint(3) unsigned DEFAULT NULL,
+  `awayScore` tinyint(3) unsigned DEFAULT NULL,
+  `playDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `matchtypeId` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`nr`),
+  KEY `ixAwayTeam` (`awayTeamId`),
+  KEY `ixHomeTeam` (`homeTeamId`),
+  KEY `ixStadium` (`stadiumId`),
+  KEY `ixMatchtype` (`matchtypeId`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}matchtypes` (
+  `id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}predictions` (
+  `userId` int(11) unsigned NOT NULL DEFAULT '0',
+  `matchNr` int(4) unsigned NOT NULL DEFAULT '0',
+  `homeScore` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `awayScore` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hasJoker` tinyint(4) NOT NULL DEFAULT '0',
+  UNIQUE KEY `ixUserMatch` (`userId`,`matchNr`),
+  KEY `ixUser` (`userId`),
+  KEY `ixMatch` (`matchNr`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `scoreDate` datetime NOT NULL,
+  `scoreOrder` int(10) unsigned NOT NULL,
+  `userId` int(10) unsigned NOT NULL,
+  `score` int(10) unsigned NOT NULL,
+  `full` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `toto` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `totalScore` int(10) unsigned NOT NULL DEFAULT '0',
+  `ranking` int(10) unsigned NOT NULL,
+  KEY `scoreDate` (`scoreDate`),
+  KEY `scoreDate_2` (`scoreDate`,`userId`),
+  KEY `totalScore` (`totalScore`),
+  KEY `type` (`type`,`scoreDate`,`scoreOrder`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}stadiums` (
+  `id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `photo` varchar(55) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
+  `id` tinyint(3) NOT NULL DEFAULT '0',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `photo` varchar(35) NOT NULL DEFAULT '',
+  `flag` varchar(35) NOT NULL DEFAULT '',
+  `link` varchar(200) NOT NULL DEFAULT '',
+  `groupId` tinyint(4) NOT NULL DEFAULT '0',
+  `groupOrder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `ixGroup` (`groupId`),
+  KEY `ixGroupOrder` (`groupOrder`)
+) DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}users` (
+  `id` int(11) unsigned NOT NULL,
+  `name` varchar(25) DEFAULT '',
+  `email` varchar(255) DEFAULT '',
+  `predictsGoals` int(4) NOT NULL DEFAULT '0',
+  `passwordhash` varchar(32) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT '',
+  `wantsLeague` int(10) unsigned NOT NULL DEFAULT '2',
+  `hasPayed` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=latin1;
