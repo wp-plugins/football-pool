@@ -22,7 +22,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 Btw. I'm not a software developer, so please don't use this code as an example for other plugins. It has 
 some terrible coding. But, hey, it works. :)
-That's why I don't have a donate link. If you want to donate, choose a charity fund and give them the money.
+Also, I don't have a donate link. If you want to donate, choose a charity fund and give them the money.
 
 **Features**
 
