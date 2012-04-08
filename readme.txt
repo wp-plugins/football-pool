@@ -1,10 +1,10 @@
 === Football Pool ===
 Contributors: AntoineH
-Donate link: 
+Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: 1.1.1
 
 This plugin adds all the functionality for a football pool to your blog. 
 
@@ -19,8 +19,10 @@ that come with this plugin. I used Simply Works Core myself with my own custom s
 This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt" file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. This year I decided to transform it into a WordPress plugin. I hope you like it.
-Btw. I'm not a programmer, so please don't use this code as an example for other plugins. It has 
+
+Btw. I'm not a software developer, so please don't use this code as an example for other plugins. It has 
 some terrible coding. But, hey, it works. :)
+Also, I don't have a donate link. If you want to donate, choose a charity fund and give them the money.
 
 **Features**
 
@@ -56,6 +58,9 @@ For easier/front-end user registration you may consider using an extra plugin an
 4. Group rankings
 
 == Changelog ==
+
+= 1.1.1 =
+* Added pot/po/mo files with the new texts from the shoutbox widget.
 
 = 1.1.0 =
 * Added a shoutbox for players in the pool. So they can leave shortmessages in a sidebar.
