@@ -4,7 +4,7 @@ Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.0.1
+Stable tag: trunk
 
 This plugin adds all the functionality for a football pool to your blog. 
 
@@ -18,8 +18,7 @@ that come with this plugin. I used Simply Works Core myself with my own custom s
 
 This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt" file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
-I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. This year I decided to transform it into 
-a WordPress plugin. I hope you like it.
+I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. This year I decided to transform it into a WordPress plugin. I hope you like it.
 Btw. I'm not a programmer, so please don't use this code as an example for other plugins. It has 
 some terrible coding. But, hey, it works. :)
 
@@ -32,8 +31,9 @@ some terrible coding. But, hey, it works. :)
 * Automatic calculation of the pool ranking.
 * Automatic calculation of championship standing.
 * Users have charts where their scores are plotted. And they can compare themselves to other players.
-* Widgets: ranking of your players, latest matches, countdown to next prediction.
+* Widgets: ranking of your players, last matches, shoutbox.
 * Shortcodes: countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
+* Extra info pages with all the venues and teams.
 
 == Installation ==
 1. Upload `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
@@ -57,8 +57,13 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Changelog ==
 
+= 1.1.0 =
+* Added a shoutbox for players in the pool. So they can leave shortmessages in a sidebar.
+* Prefixed all class names.
+* Fixed a bug with the bulk actions in the admin.
+
 = 1.0.1 =
 * Removed English texts because I couldn't get gettext to work for my Dutch version. All texts are in Dutch now. If someone wants to translate the plugin, please contact me. I can give you a po-file with Dutch->English translations,
 
 = 1.0.0 =
-* First release
+* First release of the plugin version of the pool

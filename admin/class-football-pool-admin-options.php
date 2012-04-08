@@ -13,7 +13,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						array( 'text', __( 'Tijd (in seconden) *', FOOTBALLPOOL_TEXT_DOMAIN ), 'maxperiod', __( 'Een speler kan zijn/haar voorspellingen aanpassen tot aan deze tijd vóór de start van een wedstrijd. De tijd is in seconden, bv. vul voor 15 minuten de waarde 900 in.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'text', __( 'Maximum lengte shoutboxbericht *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'De maximale lengte (aantal karakters) van een bericht in de shoutbox.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'checkbox', __( 'Gebruik Pools', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik bv. voor betalende spelers en niet betalende spelers, of voor verschillende afdelingen.') ),
-						array( 'checkbox', __( 'Admin Bar tonen voor subscribers', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_admin_bar', __( 'Subscribers krijgen na inloggen standaard de WordPress Admin Bar bovenin het scherm. Hier kan je instellen of de plugin deze moet weglaten.') )
+						array( 'checkbox', __( 'Admin Bar tonen voor subscribers', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_admin_bar', __( 'Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm krijgen (instelbaar per user). Hier kan je instellen of de plugin deze waarde moet negeren en de Admin Bar altijd moet weglaten.') )
 					);
 		
 		self::admin_header( __( 'Plugin Instelllingen', FOOTBALLPOOL_TEXT_DOMAIN ) );

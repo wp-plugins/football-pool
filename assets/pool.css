@@ -152,7 +152,8 @@ p.next-prediction-countdown { font-size: 60%; color: #330039; }
 .widget_footballpoolshoutboxwidget span.date { font-size: 70%; }
 .widget_footballpoolshoutboxwidget span.notice { font-size: 75%; }
 .widget_footballpoolshoutboxwidget p { font-size: 80%; margin: 0; }
-.widget_footballpoolshoutboxwidget hr { 
+.widget_footballpoolshoutboxwidget hr {
+	margin: 0 3px;
 	border: none 0; 
 	border-top: 1px dashed #990288; /*the border*/ 
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
