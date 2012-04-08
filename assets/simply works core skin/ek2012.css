@@ -1,0 +1,321 @@
+
+
+/************************************************
+*	General Settings  			
+************************************************/
+body { 
+    background: #fff;
+}
+
+a {color: #aa00d4;}
+a:visited {color: #aa00d4;}
+a:hover {color: #333;}
+a:focus {color: #aa00d4;}
+a:active {color: #aa00d4;}
+
+table { 
+border:none;
+}
+
+tr td{
+border-top:none;
+}
+
+#respond { background-color: #e1dfdf; }
+
+h2.contenttitle, h2, h3, h4, h5, h6 { color: #990288; }
+h4, h5 { font-weight: bold; }
+
+/************************************************
+*	ON CENTER				
+************************************************/
+#webpage {
+  width: 100%;
+}
+/************************************************
+*	Header  					
+************************************************/
+#header {
+background: none;
+color: #fff;
+}
+#header .wrapper{
+background-color: #330039;
+border: none;
+}
+
+#headerleft img{
+	margin: 15px 0 5px 7px;
+	}
+	
+#headerleft h1 {
+color:#fff;
+}	
+
+#headerleft a {color: #fff; text-decoration:none;}
+#headerleft a:visited {color: #fff;}
+#headerleft a:hover {color: #fff; font-style:italic;}
+#headerleft a:focus {color: #fff;}
+#headerleft a:active {color: #fff;}
+
+#headerleft span{
+color: #ccc;
+}
+
+/************************************************
+*	Navbar      		
+************************************************/
+#navbar {
+	background: none;
+	}
+	
+#navbar .wrapper{
+ background: #990288;
+ height: 30px;
+ }
+	
+#navbar li a, #navbar li a:link, #navbar li a:visited {
+    background: #990288;
+	text-transform: uppercase;
+    font-weight: 600;
+}
+
+#navbar li a:hover, #navbar li a:active {
+	background: #000;
+	color: #fff; 
+	}
+	
+#navbar li li a:hover, #navbar li li a:active {
+    background: #990288;
+	margin: 0;
+	padding: 5px 10px 0 10px;
+	height: auto;
+	}
+	
+/************************************************
+*	SubNavbar      	
+************************************************/	
+ #subnav {
+    background: none;
+    border: none;
+	}
+#subnav .wrapper{
+	background: #e1dfdf;
+}
+
+#subnav li a, #subnav li a:link, #subnav li a:visited {
+	color: #000;
+	background: #e1dfdf;
+	}
+	
+#subnav li a:hover, #subnav li a:active {
+	background: #000;
+	color: #fff;
+	}	
+/************************************************
+*	mainbody		    	
+************************************************/
+
+/************************************************
+*	Content 		
+************************************************/
+#contentarea { 
+	/*border-right:1px solid #ddd;*/
+	width: 788px;
+}
+
+.sticky {
+  background: #fde5fa; 
+ }
+ 
+.edit {
+background-color:#aa00d4;	
+ }
+
+.contenttitle {
+	color: #330039;
+}
+.contenttitle a:link, .contenttitle a:visited {text-decoration:none; color: #330039;}
+.contenttitle a:hover {font-style: italic; color: #aa00d4;}
+.contenttitle a:focus {font-style: italic; color: #aa00d4;}
+#contentarea .more-link {
+	background: #aa00d4;
+}
+
+#contentarea .more-link:hover {
+    background: #333;
+}
+
+a.comment-reply-link {
+	background: #990288;
+	color: #fff;
+}
+a.comment-reply-link:hover,
+a.comment-reply-link:focus,
+a.comment-reply-link:active {
+	background: #888;
+	color: #fff;
+}
+
+
+/************************************************
+* Author Block
+************************************************/
+#author-bio {
+    background: #fde5fa;
+}
+.commentlist > li.bypostauthor {
+    background-color: #fde5fa;
+}.commentlist > li.bypostauthor:before {
+	content: url(../images/comment-arrow-bypostauthor-purple.png);
+}
+
+
+/************************************************
+*	Sidebar 		    	        	        * 
+************************************************/
+#sidebar { width: 200px; }
+
+#sidebar h3, #sidebar h4 {
+	padding: 0 3px;
+	font-weight: bold;
+	font-size: .8em;
+	color: #fff;
+	text-transform: none;
+	background-color: #990288;
+	}
+#sidebar h3 ul li.widget a, 
+#sidebar h3 ul li.widget a:link, 
+#sidebar h3 ul li.widget a:visited, 
+#sidebar h3 ul li.widget a:hover, 
+#sidebar h3 ul li.widget a:active  {
+	color: #fff;
+}
+
+#sidebar ul {
+margin:0 0 30px;
+padding:0;
+	}
+
+	
+#sidebar ul li li {
+	padding: 0;
+	margin: 0;
+	}
+	
+#sidebar ul li ul li {
+	padding: 0;
+	margin: 0;
+	}
+
+#sidebar ul li.widget {
+	padding-bottom: 5px;
+}
+	
+#sidebar ul li.widget_rss a {
+display:inline;
+border: none
+}
+
+#sidebar ul li a {
+color:#5f5f5f;
+display:block;
+border-bottom: none;
+height:100%;
+margin:0 0;
+text-decoration:none;
+}
+#sidebar ul li a:visited {color: #333;}
+#sidebar ul li a:hover {color: #aa00d4;}
+#sidebar ul li a:focus {color: #333;}
+#sidebar ul li a:active {color: #333;}
+
+#sidebar tr td { padding-top: 1px; padding-bottom: 1px; }
+
+#sidebar li.widget {
+	padding: 0;
+	border: 1px solid #000;
+	margin-bottom: 15px;
+}
+
+#sidebar li.widget ul {
+	padding: 0 3px;
+}
+
+#sidebar li.widget ul li a {
+	border: none;
+}
+
+#sidebar ul.children {
+margin:0;
+}
+
+#sidebar ul.children li{
+text-indent:15px;
+}
+#sidebar ul.children li ul.children li{
+text-indent:30px;
+}
+
+#sidebar .rss-date { font-size: 70%; float: right; }
+
+#sidebar .widget_rss ul li { clear: both; }
+#sidebar .widget_rss ul li:nth-child(odd) { background: #e1dfdf; }
+
+#sidebar li.widget_rss ul { padding: 0; }
+#sidebar li.widget_rss ul li { padding: 3px; }
+
+/*#sidebar .widget_recent_comments ul li:nth-child(odd) { background: #e1dfdf; }*/
+
+/************************************************
+*	Left Sidebar              
+************************************************/
+#l_sidebar {
+    padding: 0 12px 0 0;
+    width: 155px;
+}
+
+/************************************************
+*	Footer      		
+************************************************/
+#footer {
+background: none;
+border: none;
+}
+
+#footer .wrapper{
+  background: #d8b3d4;
+  border: 1px solid #990288;
+  border-width: 1px 0 0;
+}
+
+.flinks h3 {
+margin: 10px 0 6px 0;
+font-size: 18px;
+line-height: 20px;
+}
+
+.flinks ul li{
+border-bottom: none;
+}
+
+/************************************************
+*	Copyright 
+************************************************/
+#copyright{
+	background: none;
+	color: #bbb;
+	}
+	
+#copyright .wrapper{
+	
+	border: none;
+	background: #330039;
+	color: #bbb;
+}	
+
+#copyright a {}
+#copyright a:visited {}
+#copyright a:hover {color: #fff;}
+#copyright a:focus {color: #fff;}
+#copyright a:active {color: #fff;}

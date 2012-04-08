@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS `{$prefix}bonusquestions`;
+DROP TABLE IF EXISTS `{$prefix}bonusquestions_useranswers`;
+DROP TABLE IF EXISTS `{$prefix}groups`;
+DROP TABLE IF EXISTS `{$prefix}leagues`;
+DROP TABLE IF EXISTS `{$prefix}league_users`;
+DROP TABLE IF EXISTS `{$prefix}matches`;
+DROP TABLE IF EXISTS `{$prefix}matchtypes`;
+DROP TABLE IF EXISTS `{$prefix}predictions`;
+DROP TABLE IF EXISTS `{$prefix}scorehistory`;
+DROP TABLE IF EXISTS `{$prefix}shoutbox`;
+DROP TABLE IF EXISTS `{$prefix}stadiums`;
+DROP TABLE IF EXISTS `{$prefix}teams`;
+DROP TABLE IF EXISTS `{$prefix}users`;
