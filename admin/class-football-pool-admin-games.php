@@ -5,7 +5,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	public function admin() {
 		self::admin_header( __( 'Wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		if ( Utils::post_string( 'form_action' ) == 'update' ) {
+		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
 			self::update();
 			self::notice( 'Values updated.' );
 		}
@@ -30,10 +30,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		// update scores for all matches
 		foreach( $rows as $row ) {
 			$match = $row['nr'];
-			$homescore = Utils::post_integer( '_home_score_'.$match, 'NULL' );
-			$awayscore = Utils::post_integer( '_away_score_'.$match, 'NULL' );
-			$hometeam = Utils::post_integer( '_home_team_'.$match, -1 );
-			$awayteam = Utils::post_integer( '_away_team_'.$match, -1 );
+			$homescore = Football_Pool_Utils::post_integer( '_home_score_'.$match, 'NULL' );
+			$awayscore = Football_Pool_Utils::post_integer( '_away_score_'.$match, 'NULL' );
+			$hometeam = Football_Pool_Utils::post_integer( '_home_team_'.$match, -1 );
+			$awayteam = Football_Pool_Utils::post_integer( '_away_team_'.$match, -1 );
 			
 			self::update_match( $match, $hometeam, $awayteam, $homescore, $awayscore );
 		}
@@ -81,13 +81,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		if ( $type > 1 ) {
 			return self::team_select( $team, $input_name );
 		} else {
-			$teams = new Teams;
+			$teams = new Football_Pool_Teams;
 			return $teams->team_names[$team] . '<input type="hidden" name="' . $input_name . '" id="' . $input_name . '" value="' . $team . '" />';
 		}
 	}
 	
 	private function team_select( $team, $input_name ) {
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		
 		$select = '<select name="' . $input_name . '" id="' . $input_name . '">';
 		foreach ( $teams->team_names as $id => $name ) {

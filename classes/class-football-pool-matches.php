@@ -79,7 +79,7 @@ class Matches {
 		global $wpdb;
 		$info = array();
 		
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		
 		if ( ! is_integer( $match ) ) return $info;
 		
@@ -190,7 +190,7 @@ class Matches {
 		$matchtype = '';
 		$date_title = '';
 		
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		$teamspage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		
@@ -240,7 +240,7 @@ class Matches {
 	}
 	
 	public function print_matches_for_input( $matches ) {
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		$date_title = '';
 		$matchtype = '';
 		$joker = '';
@@ -298,7 +298,7 @@ class Matches {
 	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {
 		if ( ! $this->match_is_editable( $ts ) ) {
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			return $pool->calc_score( $home, $away, $user_home, $user_away, $joker );
 		}
 	}
@@ -323,7 +323,7 @@ class Matches {
 	
 	public function match_is_editable( $ts ) {
 		$diff = $ts - time();
-		return ( $diff > Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' ) );
+		return ( $diff > Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' ) );
 	}
 	
 	private function block_joker() {

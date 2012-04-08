@@ -1,5 +1,5 @@
 <?php
-class Team extends Teams {
+class Football_Pool_Team extends Football_Pool_Teams {
 	public $id = 0;
 	public $name = '';
 	public $photo = '';
@@ -89,7 +89,7 @@ class Team extends Teams {
 		
 		$stadiums = array();
 		foreach ( $rows as $row ) {
-			$stadiums[] = new Stadium( $row );
+			$stadiums[] = new Football_Pool_Stadium( $row );
 		}
 		
 		return $stadiums;

@@ -5,11 +5,11 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	public function admin() {
 		self::admin_header( __( 'Team Positie', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		$teams = new Teams;
-		if ( Utils::post_string( 'form_action' ) == 'update' ) {
+		$teams = new Football_Pool_Teams;
+		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
 			$teams->update_teams();
 			// reset the teams
-			$teams = new Teams;
+			$teams = new Football_Pool_Teams;
 			self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
@@ -17,7 +17,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		self::intro( __( 'De startwaarde is de uitgangspositie bij de start van het toernooi. De sortering wordt alleen gebruikt op de poule-pagina', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$team_names = $teams->team_names;
-		$groups = new Groups;
+		$groups = new Football_Pool_Groups;
 		$group_names = $groups->get_group_names();
 
 		$ranking = $groups->get_ranking_array();

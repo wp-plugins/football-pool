@@ -1,5 +1,5 @@
 <?php
-class Pool {
+class Football_Pool_Pool {
 	public $leagues;
 	public $has_bonus_questions = false;
 	public $has_leagues;
@@ -30,9 +30,9 @@ class Pool {
 		if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
 			// check for exact match
 			if ( $home == $user_home && $away == $user_away ) {
-				$score = (integer) Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+				$score = (integer) Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 			} else {
-				$score = (integer) Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+				$score = (integer) Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			}
 		}
 		
@@ -45,11 +45,11 @@ class Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT u.id AS userId, u.display_name AS userName, u.user_email AS email, l.leagueId, 
+		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, l.leagueId, 
 					0 AS points, 0 AS full, 0 AS toto, 0 AS bonus 
 				FROM {$wpdb->users} u
 				INNER JOIN {$prefix}league_users l 
-					ON (u.id=l.userId" . ($league > 1 ? ' AND l.leagueId = ' . $league : '') . ")
+					ON (u.ID = l.userId" . ( $league > 1 ? ' AND l.leagueId = ' . $league : '' ) . ")
 				ORDER BY userName ASC";
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
@@ -134,7 +134,7 @@ class Pool {
 								$row['userId'],
 								$row['userName'],
 								$row['points'],
-								( $league == 0 ? $this->league_image( $row['leagueId'] ) : '' ),
+								( $league == FOOTBALLPOOL_LEAGUE_ALL ? $this->league_image( $row['leagueId'] ) : '' ),
 								$row['full'],
 								$row['toto']
 							);

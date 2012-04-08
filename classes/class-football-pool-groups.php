@@ -1,5 +1,5 @@
 <?php
-class Groups {
+class Football_Pool_Groups {
 	public function get_group_names() {
 		$group_names = array();
 		
@@ -25,7 +25,7 @@ class Groups {
 	
 	private function order_groups( $arr ) {
 		foreach ( $arr as $group => $teams ) {
-			uasort( $arr[$group], array( 'Groups', 'compare_teams' ) );
+			uasort( $arr[$group], array( 'Football_Pool_Groups', 'compare_teams' ) );
 		}
 		return $arr;
 	}
@@ -158,7 +158,7 @@ class Groups {
 					// now check the goals scored
 					if ( $a['for'] == $b['for'] ) {
 						// all failed, so we check a hardcoded ordering
-						$teams = new Teams;
+						$teams = new Football_Pool_Teams;
 						return ( $teams->get_group_order( (integer) $a['team'] ) > $teams->get_group_order( (integer) $b['team'] ) ? +1 : -1 );
 					}
 					// the one with more goals wins (descending order)

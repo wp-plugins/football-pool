@@ -1,13 +1,14 @@
 <?php
-class Ranking_Page {
+class Football_Pool_Ranking_Page {
 	public function page_content()
 	{
 		global $current_user;
 		get_currentuserinfo();
-
-		$userleague = isset( $current_user->league ) ? $current_user->league : 0;
-		$pool = new Pool;
-		$league =  Utils::post_string( 'league', $userleague );
+		
+		$userleague = get_the_author_meta( 'footballpool_league', $current_user->ID );
+		$userleague = ( isset( $userleague ) && is_integer( $userleague ) ) ? $userleague : FOOTBALLPOOL_LEAGUE_ALL;
+		$pool = new Football_Pool_Pool;
+		$league =  Football_Pool_Utils::post_string( 'league', $userleague );
 		
 		$output = '';
 		if ( $pool->has_leagues ) {

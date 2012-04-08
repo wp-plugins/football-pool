@@ -1,5 +1,5 @@
 <?php
-class Pool_Page {
+class Football_Pool_Pool_Page {
 	public function page_content() {
 		global $current_user;
 		get_currentuserinfo();
@@ -8,7 +8,7 @@ class Pool_Page {
 		$output = '';
 		
 		$msg = '';
-		if ( $current_user->ID != 0 && Utils::post_string( '_action' ) == 'update' ) {
+		if ( $current_user->ID != 0 && Football_Pool_Utils::post_string( '_action' ) == 'update' ) {
 			$success = $this->update_predictions( $current_user->ID );
 			
 			if ( $success ) {
@@ -22,7 +22,7 @@ class Pool_Page {
 		$output .= $msg;
 		
 		if ( $current_user->ID != 0 ) {
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			$questions = $pool->get_bonus_questions( $current_user->ID );
 			
 			$matches = new Matches;
@@ -77,7 +77,7 @@ class Pool_Page {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		
 		foreach ( $questions as $question ) {
 			if ( $pool->bonus_is_editable( $question['questionDate'] ) && $answers[ $question['id'] ] != '') {
@@ -127,8 +127,8 @@ class Pool_Page {
 		// update predictions for all matches
 		foreach ( $rows as $row ) {
 			$match = $row['nr'];
-			$home = Utils::post_integer( '_home_' . $match, 'NULL' );
-			$away = Utils::post_integer( '_away_' . $match, 'NULL' );
+			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
+			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
 			
 			if ( $matches->match_is_editable( $row['matchTimestamp'] ) && is_integer( $home ) && is_integer( $away ) ) {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
@@ -144,12 +144,12 @@ class Pool_Page {
 		}
 		
 		// update bonusquestions
-		$pool = new Pool;
+		$pool = new Football_Pool_Pool;
 		$questions = $pool->get_bonus_questions();
 		if ( $pool->has_bonus_questions ) {
 			$answers = array();
 			foreach ( $questions as $question ) {
-				$answers[ $question['id'] ] = Utils::post_string( '_bonus_' . $question['id'] );
+				$answers[ $question['id'] ] = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] );
 			}
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}
@@ -157,7 +157,7 @@ class Pool_Page {
 	}
 	
 	private function get_joker() {
-		return Utils::post_integer( '_joker' );
+		return Football_Pool_Utils::post_integer( '_joker' );
 	}
 }
 ?>

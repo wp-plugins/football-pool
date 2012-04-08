@@ -1,5 +1,5 @@
 <?php
-class Statistics {
+class Football_Pool_Statistics {
 	public $data_available = false;
 	public $stats_visible = false;
 	
@@ -8,7 +8,7 @@ class Statistics {
 	}
 	
 	public function page_content() {
-		$output = new Statistics_Page();
+		$output = new Football_Pool_Statistics_Page();
 		return $output->page_content();
 	}
 	
@@ -71,7 +71,7 @@ class Statistics {
 	
 	public function show_bonus_question_info( $question ) {
 		$output = '';
-		$pool = new Pool;
+		$pool = new Football_Pool_Pool;
 		$info = $pool->get_bonus_question_info( $question );
 		if ( $info ) {
 			$output .= sprintf( '<h1>Bonusvraag</h1><h2>%s</h2>', $info['question'] );
@@ -96,7 +96,7 @@ class Statistics {
 	}
 	
 	public function show_answers_for_bonus_question( $id ) {
-		$pool = new Pool;
+		$pool = new Football_Pool_Pool;
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
 		
 		$output = '<table class="statistics">
@@ -139,7 +139,7 @@ class Statistics {
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		$output = '';
 		if ( count( $rows ) > 0 ) {
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			
 			$output .= '<table class="matchinfo statistics">';
 			$output .= sprintf( '<tr><th class="username">%s</th>

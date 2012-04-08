@@ -14,7 +14,7 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
-	public function activate() {
+	public function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -22,34 +22,39 @@ class Football_Pool {
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
 		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
 		self::db_actions( $install_sql );
-		self::db_actions( $data_sql );
 		
-		// insert data in custom tables
-		$sql = "INSERT INTO `{$prefix}groups` (`id`, `name`) VALUES
-				(1, '" . __( 'poule A', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(2, '" . __( 'poule B', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(3, '" . __( 'poule C', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(4, '" . __( 'poule D', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(5, '" . __( 'poule E', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(6, '" . __( 'poule F', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(7, '" . __( 'poule G', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(8, '" . __( 'poule H', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
-		$wpdb->query( $sql );
-		
-		$sql = "INSERT INTO `{$prefix}matchtypes` (`id`, `name`) VALUES
-				(1, '" . __( 'Voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(2, '" . __( 'Achtste finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(3, '" . __( 'Kwartfinales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(4, '" . __( 'Halve finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(5, '" . __( 'Wedstrijd voor de 3e plek', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-				(6, '" . __( 'Finale', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
-		$wpdb->query( $sql );
+		if ( $action == 'install' ) {
+			self::db_actions( $data_sql );
+			
+			// insert data in custom tables
+			$sql = "INSERT INTO `{$prefix}groups` (`id`, `name`) VALUES
+					(1, '" . __( 'poule A', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(2, '" . __( 'poule B', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(3, '" . __( 'poule C', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(4, '" . __( 'poule D', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(5, '" . __( 'poule E', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(6, '" . __( 'poule F', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(7, '" . __( 'poule G', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(8, '" . __( 'poule H', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
+			$wpdb->query( $sql );
+			
+			$sql = "INSERT INTO `{$prefix}matchtypes` (`id`, `name`) VALUES
+					(1, '" . __( 'Voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(2, '" . __( 'Achtste finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(3, '" . __( 'Kwartfinales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(4, '" . __( 'Halve finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(5, '" . __( 'Wedstrijd voor de 3e plek', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(6, '" . __( 'Finale', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
+			$wpdb->query( $sql );
 
-		$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
-				('" . __( 'alle spelers', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
-				('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league_money.png'),
-				('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league_free.png');";
-		$wpdb->query( $sql );
+			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
+					('" . __( 'alle spelers', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
+					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league_money2.png'),
+					('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
+			$wpdb->query( $sql );
+		} elseif ( $action == 'update' ) {
+			// for future use
+		}
 		
 		// define default plugin options
 		global $current_user;
@@ -67,12 +72,22 @@ class Football_Pool {
 		add_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS );
 		add_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD );
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_shoutbox_max_chars', 150 );
+		add_option( 'footballpool_show_admin_bar', 0 ); // 1: yes, 0: no
 		
+		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
+
 		// create pages
 		$rules_text = self::read_from_file( 'data/rules-page-content.txt' );
 		self::$pages['rules']['text'] = $rules_text;
 		foreach ( self::$pages as $page ) {
 			self::create_page($page);
+		}
+	}
+	
+	public function update_db_check() {
+		if ( get_site_option( 'footballpool_db_version' ) != FOOTBALLPOOL_DB_VERSION ) {
+			self::activate( 'update' );
 		}
 	}
 	
@@ -93,6 +108,9 @@ class Football_Pool {
 		delete_option( 'footballpool_fullpoints' );
 		delete_option( 'footballpool_maxperiod' );
 		delete_option( 'footballpool_use_leagues' );
+		delete_option( 'footballpool_db_version' );
+		delete_option( 'footballpool_shoutbox_max_chars' );
+		delete_option( 'footballpool_show_admin_bar' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -106,7 +124,7 @@ class Football_Pool {
 
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
-		$no_show = current_user_can( 'subscriber' );
+		$no_show = current_user_can( 'subscriber' ) && Football_Pool_Utils::get_wp_option( 'footballpool_show_admin_bar', 0 ) == 0;
 		
 		return $no_show ? false : $content;
 	}
@@ -148,35 +166,35 @@ class Football_Pool {
 			$page_ID = get_the_ID();
 			switch ( $page_ID ) {
 				case get_option( 'footballpool_page_id_ranking' ):
-					$page = new Ranking_Page();
+					$page = new Football_Pool_Ranking_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_teams' ):
-					$page = new Teams_Page();
+					$page = new Football_Pool_Teams_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_stadiums' ):
-					$page = new Stadiums_Page();
+					$page = new Football_Pool_Stadiums_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_groups' ):
-					$page = new Groups_Page();
+					$page = new Football_Pool_Groups_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_statistics' ):
-					$page = new Statistics_Page();
+					$page = new Football_Pool_Statistics_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_tournament' ):
-					$page = new Tournament_Page();
+					$page = new Football_Pool_Tournament_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_user' ):
-					$page = new User_Page();
+					$page = new Football_Pool_User_Page();
 					$content .= $page->page_content();
 					break;
 				case get_option( 'footballpool_page_id_pool' ):
-					$page = new Pool_Page();
+					$page = new Football_Pool_Pool_Page();
 					$content .= $page->page_content();
 					break;
 				default:
@@ -197,10 +215,10 @@ class Football_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// add extra meta fields
-		$league = Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		update_user_meta( $user_id, 'footballpool_league', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
-		$payed = Utils::post_int( 'payed', 0 );
+		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
 		self::update_user_custom_tables( $user_id, FOOTBALLPOOL_LEAGUE_DEFAULT );
@@ -229,7 +247,7 @@ class Football_Pool {
 	}
 	
 	public function registration_form_extra_fields() {
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			echo '<p><label for="league">', __( 'Speel mee in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), '<br>', 
 				$pool->league_select( 0, 'league' ), '</label></p><p><br></p>';
@@ -241,10 +259,10 @@ class Football_Pool {
 	}
 	
 	public function registration_check_fields( $errors ) {
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			// check if the new player picked a league to play in
-			if (Utils::post_int( 'league', 0 ) == 0 ) {
+			if (Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
 				$errors->add( 'league_error', __( '<strong>ERROR:</strong> Je moet een pool kiezen waar je in gaat spelen!', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		}
@@ -255,14 +273,14 @@ class Football_Pool {
 		if ( !current_user_can( 'edit_user', $user_id ) ) {
 			return false;
 		}
-		$league = Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
 		
 		self::update_user_custom_tables( $user_id, $league );
 		
 		if ( current_user_can( 'administrator' ) ) {
 			update_user_meta( $user_id, 'footballpool_league', $league );
-			update_user_meta( $user_id, 'footballpool_payed', Utils::post_int( 'payed', 0 ) );
+			update_user_meta( $user_id, 'footballpool_payed', Football_Pool_Utils::post_int( 'payed', 0 ) );
 			
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -278,7 +296,7 @@ class Football_Pool {
 		// add extra profile fields to user edit page
 		echo '<h3>', FOOTBALLPOOL_TEXT_DOMAIN, '</h3>';
 		echo '<table class="form-table">';
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			global $current_user;
 			get_currentuserinfo();
@@ -373,7 +391,7 @@ class Football_Pool {
 				</script>";
 	}
 	
-//=========================================================================================================================//
+//=============================================================================================================//
 	
 	private function include_css( $file, $handle ) {
 		$url = FOOTBALLPOOL_PLUGIN_URL . $file;
@@ -400,10 +418,10 @@ class Football_Pool {
 	}
 	
 	private function create_page( $page, $menuOrder = null ) {
-		global $current_user;
-		
-		if ( !get_option( 'footballpool_page_id_' . $page['slug'] ) )
+		if ( ! get_option( 'footballpool_page_id_' . $page['slug'] ) )
 		{
+			global $current_user;
+			
 			$newpage = array();
 			$newpage['post_title'] = __( $page['title'], FOOTBALLPOOL_TEXT_DOMAIN );
 			$newpage['post_name'] = $page['slug'];

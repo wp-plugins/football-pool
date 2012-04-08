@@ -67,12 +67,12 @@ class Football_Pool_Shortcodes {
 
 	//[totopoints]
 	public function shortcode_totopoints( $atts ) {
-		return Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 	}
 
 	//[fullpoints]
 	public function shortcode_fullpoints( $atts ) {
-		return Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-class Stadium extends Stadiums {
+class Football_Pool_Stadium extends Football_Pool_Stadiums {
 	public $id = 0;
 	public $name = '';
 	public $photo = '';

@@ -1,5 +1,5 @@
 <?php 
-class Tournament_Page {
+class Football_Pool_Tournament_Page {
 	public function page_content() {
 		$output = '';
 		

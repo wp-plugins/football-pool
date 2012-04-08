@@ -1,6 +1,6 @@
 <?php
 // Based on Highcharts
-class Chart_Data {
+class Football_Pool_Chart_Data {
 	/************************************************
 	 All the functions to get the data for the charts
 	*************************************************/
@@ -52,7 +52,7 @@ class Chart_Data {
 	public function bonus_question_for_users_pie_chart_data( $users = array() ) {
 		$data = array();
 		if ( count( $users ) > 0 ) {
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			$questions = $pool->get_bonus_questions();
 			$numquestions = count( $questions );
 			
@@ -122,7 +122,7 @@ class Chart_Data {
 								WHERE type=0 AND userId=%d", $user);
 		$data = $wpdb->get_row( $sql, ARRAY_A );
 		
-		$full = Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 		$output['maxScore'] = $full * 2; // count first match with joker
 		$output['maxScore'] += ( (int) $data['numMatches'] - 1) * $full; // all other matches
 		// add the bonusquestions

@@ -1,5 +1,5 @@
 <?php
-class Stadiums {
+class Football_Pool_Stadiums {
 	public function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -8,7 +8,7 @@ class Stadiums {
 		
 		$stadiums = array();
 		foreach ( $rows as $row ) {
-			$stadiums[] = new Stadium($row);
+			$stadiums[] = new Football_Pool_Stadium($row);
 		}
 		return $stadiums;
 	}
@@ -29,7 +29,7 @@ class Stadiums {
 		$sql = $wpdb->prepare( "SELECT id, name, photo FROM {$prefix}stadiums WHERE id = %d", $id );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
-		return ( $row ) ? new Stadium( $row ) : null;
+		return ( $row ) ? new Football_Pool_Stadium( $row ) : null;
 	}
 }
 ?>

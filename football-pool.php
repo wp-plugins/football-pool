@@ -1,13 +1,13 @@
 <?php 
 /*
  Plugin Name: Football pool
- Plugin URI: none
- Description: This plugin adds all the functionality for a football pool to your blog. I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European championship en World cup since. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. View scores and graphs of the pool contenders. Use your own theme (or use the skin for Simply Works Core that is included in the assets folder) and add the widgets that come with this plugin. The plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the data.php file for this). <strong>Please note that deactivating this plugin also destroys all your pool data</strong> (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
- Version: 1.0.1
+ Plugin URI: http://wordpress.org/extend/plugins/football-pool/
+ Description: This plugin adds all the functionality for a football pool to your blog. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. View scores and charts of the pool contenders. Use your own theme (or use the skin for Simply Works Core that is included in the assets folder) and add the widgets that come with this plugin. The plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the data.php file for this). <strong>Please note that deactivating this plugin also destroys all your pool data</strong> (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+ Version: 1.1.0
  Author: Antoine Hurkmans
  Author URI: http://twitter.com/AntoineH
- Tags: football soccer UEFA2012 pool plugin
- Text Domain: Football_Pool
+ Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
+ Text Domain: football-pool
  */
 
 /*
@@ -22,6 +22,8 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
+define( 'FOOTBALLPOOL_DB_VERSION', '1.1.0' );
 
 require_once 'define.php';
 require_once 'shortcodes.php';
@@ -38,6 +40,7 @@ require_once 'classes/class-football-pool-pool.php';
 require_once 'classes/class-football-pool-chart.php';
 require_once 'classes/class-football-pool-chart-data.php';
 require_once 'classes/class-football-pool-statistics.php';
+require_once 'classes/class-football-pool-shoutbox.php';
 
 if ( ! is_admin() ) {
 	// pages, not needed in the admin
@@ -56,11 +59,15 @@ require_once 'widgets/widget-football-pool-ranking.php';
 require_once 'widgets/widget-football-pool-lastgames.php';
 require_once 'widgets/widget-football-pool-userselector.php';
 require_once 'widgets/widget-football-pool-logout.php';
+require_once 'widgets/widget-football-pool-shoutbox.php';
 //require_once 'widgets/widget-football-pool-next-prediction.php';
 
 // activate the plugin
 register_activation_hook( __FILE__, array( 'Football_Pool', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'Football_Pool', 'deactivate' ) );
+
+// upgrading the plugin?
+add_action( 'plugins_loaded', array( 'Football_Pool', 'update_db_check' ) );
 
 // admin bar and content handling
 add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
@@ -81,6 +88,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-bonusquestions.php';
 	require_once 'admin/class-football-pool-admin-groups.php';
 	require_once 'admin/class-football-pool-admin-leagues.php';
+	require_once 'admin/class-football-pool-admin-shoutbox.php';
 
 	add_action( 'delete_user', array( 'Football_Pool', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );

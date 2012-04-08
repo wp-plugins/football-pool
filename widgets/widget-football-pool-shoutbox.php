@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget: Ranking Widget
+ * Widget: Shoutbox Widget
  */
 
 
@@ -22,9 +22,9 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
  * Register any and all actions here. Nothing should actually be called 
  * directly, the entire system will be based on these actions and hooks.
  */
-add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Ranking_Widget" );' ) );
+add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Shoutbox_Widget" );' ) );
 
-class Football_Pool_Ranking_Widget extends WP_Widget {
+class Football_Pool_Shoutbox_Widget extends WP_Widget {
 	/**
 	 * Widget settings
 	 * 
@@ -74,11 +74,11 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 	
 	protected $widget = array(
 		// If not set, then name of class will be used (underscores replaced with spaces).
-		'name' => 'Ranking Widget',
+		'name' => 'Shoutbox Widget',
 		
 		// this description will display within the administrative widgets area
 		// when a user is deciding which widget to use.
-		'description' => 'Football pool plugin: this widget displays the top X players in the pool.',
+		'description' => 'Football pool plugin: a shoutbox for your players. Leave short messages.',
 		
 		// determines whether or not to use the sidebar _before and _after html
 		'do_wrapper' => true, 
@@ -90,21 +90,14 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
-				'std' => 'stand'
+				'std' => 'shoutbox'
 			),
 			array(
-				'name' => 'Number of users to show',
+				'name' => 'Number of messages to display',
 				'desc' => '',
-				'id' => 'num_users',
+				'id' => 'num_messages',
 				'type' => 'text',
-				'std' => '5'
-			),
-			array(
-				'name'    => 'Show players from this league',
-				'desc' => '',
-				'id'      => 'league',
-				'type'    => 'select',
-				'options' => array() // get data from the database later on
+				'std' => '20'
 			),
 		)
 	);
@@ -123,34 +116,48 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 	public function html( $title, $args, $instance ) {
 		extract( $args );
 		
-		$num_users = $instance['num_users'];
-		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
+		$num_messages = ( is_integer( $instance['num_messages'] ) ? $instance['num_messages'] : 20 );
+		$max_chars = get_option( 'footballpool_shoutbox_max_chars', 150 );
+		
+		global $current_user;
+		get_currentuserinfo();
+		$shoutbox = new Football_Pool_Shoutbox;
+		
+		if ( Football_Pool_Utils::post_string( 'shouttext' ) != '' && $current_user->ID > 0 ) {
+			// save the new shout
+			$shoutbox->save_shout( Football_Pool_Utils::post_string( 'shouttext' ), $current_user->ID, $max_chars );
+		}
 		
 		if ( $title != '' ) {
 			echo $before_title . $title . $after_title;
 		}
 		
-		global $current_user;
-		get_currentuserinfo();
-		$pool = new Football_Pool_Pool;
-		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		$rows = $pool->get_pool_ranking_for_box( $league, $num_users );
-		if ( count( $rows ) > 0 ) {
-			$i = 1;
-			echo '<table class="poolranking">';
-			foreach ( $rows as $row ) {
-				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
-				
-				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $userpage, '?user=', $row['userId'], '">', $row['userName'], '</a></td>',
-					'<td class="score">', $row['points'], '</td></tr>';
+		$messages = $shoutbox->get_messages( $num_messages );
+		if ( count( $messages ) > 0 ) {
+			echo '<div class="wrapper">';
+			foreach ( $messages as $message ) {
+				echo '<p><a class="name" href="', $userpage, '?user=', $message['userId'], '">', 
+					$message['userName'], '</a>&nbsp;
+					<span class="date">(', $message['shoutDate'], ')</span></p>
+					<p class="text">', htmlspecialchars($message['shoutText']), '</p><hr />';
 			}
-			echo '</table>';
+			echo '</div>';
 		} else {
-			echo '<p>'. __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+			echo '<p></p>';
+		}
+		
+		if ( $current_user->ID > 0 ) {
+			echo '<form action="" method="post">';
+			echo '<p><span id="shouttext_notice" class="notice">';
+			echo sprintf( __( '(nog <span>%s</span> karakters)', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars );
+			echo '</span><br />';
+			echo '<textarea id="shouttext" name="shouttext" 
+					onkeyup="update_chars( this.id, ', $max_chars, ' )" 
+					title="', sprintf( __( 'tekst langer dan %s karakters wordt afgekapt!', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars ), '"></textarea>';
+			echo '<input type="submit" name="submit" value="', __( 'opslaan', FOOTBALLPOOL_TEXT_DOMAIN ), '" />';
+			echo '</p></form>';
 		}
 	}
 	

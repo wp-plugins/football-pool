@@ -1,5 +1,5 @@
 <?php
-class Teams {
+class Football_Pool_Teams {
 	private $extra_teams;
 	public $team_names;
 	public $team_flags;
@@ -24,7 +24,7 @@ class Teams {
 							);
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
-		return ( $row ) ? new Team( $row ) : null;
+		return ( $row ) ? new Football_Pool_Team( $row ) : null;
 	}
 	
 	public function get_group_order( $team ) {
@@ -51,10 +51,10 @@ class Teams {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		foreach ( $this->team_names as $team => $name ) {
-			if (Utils::post_string( '_name_' . $team) != '' ) {
-				$name = Utils::post_string( '_name_' . $team, 'unknown' . $team );
+			if (Football_Pool_Utils::post_string( '_name_' . $team) != '' ) {
+				$name = Football_Pool_Utils::post_string( '_name_' . $team, 'unknown' . $team );
 				//if ( get_magic_quotes_gpc() === 1 ) $name = stripslashes( $name );
-				$order = Utils::post_integer( '_order_' . $team );
+				$order = Football_Pool_Utils::post_integer( '_order_' . $team );
 				
 				$sql = $wpdb->prepare( "
 										UPDATE {$prefix}teams 
@@ -102,7 +102,7 @@ class Teams {
 
 		$teams = array();
 		foreach ( $rows as $row ) {
-			$teams[] = new Team( $row );
+			$teams[] = new Football_Pool_Team( $row );
 		}
 		return $teams;
 	}

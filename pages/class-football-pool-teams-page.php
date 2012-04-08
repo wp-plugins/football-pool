@@ -1,10 +1,10 @@
 <?php 
-class Teams_Page {
+class Football_Pool_Teams_Page {
 	public function page_content() {
 		$output = '';
 		
-		$team_ID = Utils::get_integer( 'team' );
-		$team = new Team( $team_ID );
+		$team_ID = Football_Pool_Utils::get_integer( 'team' );
+		$team = new Football_Pool_Team( $team_ID );
 		
 		// show details for team or show links for all teams
 		if ( $team->id != 0 ) {
@@ -53,7 +53,7 @@ class Teams_Page {
 			$output .= sprintf( '<p><a href="%s">%s</a></p>', get_page_link(), __( 'bekijk alle teams', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		} else {
 			// show all teams
-			$teams = new Teams();
+			$teams = new Football_Pool_Teams();
 			$output .= '<p><ol class="teamlist">';
 			$all_teams = $teams->get_teams();
 			$output .= $teams->print_lines( $all_teams );

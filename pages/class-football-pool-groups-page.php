@@ -1,17 +1,17 @@
 <?php
-class Groups_Page {
+class Football_Pool_Groups_Page {
 	public function page_content()
 	{
 		$output = '';
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		$team_names = $teams->team_names;
 
-		$groups = new Groups;
+		$groups = new Football_Pool_Groups;
 		$group_names = $groups->get_group_names();
 
 		$ranking = $groups->get_ranking_array();
 
-		$group_id = Utils::get_string('group');
+		$group_id = Football_Pool_Utils::get_string('group');
 
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {

@@ -1,7 +1,7 @@
 <?php
-class User_Page {
+class Football_Pool_User_Page {
 	public function page_content() {
-		$user_ID = Utils::get_integer( 'user', 0 );
+		$user_ID = Football_Pool_Utils::get_integer( 'user', 0 );
 		$user = get_userdata( $user_ID );
 		
 		$output = '';
@@ -30,7 +30,7 @@ class User_Page {
 			
 			$output .= $matches->print_matches_for_input( $result );
 			
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			$questions = $pool->get_bonus_questions( $user_ID );
 			if ( $pool->has_bonus_questions ) {
 				$output .= sprintf( '<h2>%s</h2>', __( 'bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ) );

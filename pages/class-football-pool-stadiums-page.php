@@ -1,10 +1,10 @@
 <?php
-class Stadiums_Page {
+class Football_Pool_Stadiums_Page {
 	public function page_content() {
 		$output = '';
-		$stadiums = new Stadiums;
+		$stadiums = new Football_Pool_Stadiums;
 
-		$stadium_id = Utils::get_string( 'stadium' );
+		$stadium_id = Football_Pool_Utils::get_string( 'stadium' );
 
 		$stadium = $stadiums->get_stadium_by_ID( $stadium_id );
 		if ( is_object( $stadium ) ) {

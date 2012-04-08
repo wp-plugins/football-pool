@@ -47,6 +47,15 @@ class Football_Pool_Admin {
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )
 		);
+		
+		add_submenu_page(
+			$slug,
+			'Edit shoutbox', 
+			'Shoutbox', 
+			'administrator', 
+			'footballpool-shoutbox',
+			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
+		);
 	}
 	
 	public function get_value( $key, $default = '' ) {
@@ -82,6 +91,14 @@ class Football_Pool_Admin {
 		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" />';
 	}
 	
+	public function no_input( $label, $value, $description ) {
+		echo '<tr valign="top">
+			<th scope="row"><label>', $label, '</label></th>
+			<td>', $value, '</td>
+			<td><span class="description">', $description, '</span></td>
+			</tr>';
+	}
+	
 	public function show_option( $option ) {
 		switch ( $option[0] ) {
 			case 'checkbox':
@@ -96,9 +113,12 @@ class Football_Pool_Admin {
 				break;
 		}
 	}
-	
+		
 	public function show_value( $option ) {
 		switch ( $option[0] ) {
+			case 'no_input':
+				self::no_input( $option[1], $option[3], $option[4] );
+				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], $option[3], $option[4] );
 				break;
@@ -130,7 +150,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function admin_header( $title, $subtitle = '', $addnew = false ) {
-		$page = Utils::get_string( 'page' );
+		$page = Football_Pool_Utils::get_string( 'page' );
 		if ( $addnew ) {
 			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
 		}
@@ -148,26 +168,26 @@ class Football_Pool_Admin {
 		echo '</form></div>';
 	}
 	
-	public function bulk_actions( $actions ) {
+	public function bulk_actions( $actions, $name = 'action' ) {
 		if ( count($actions) > 0 ) {
-			echo '<div class="tablenav top"><div class="alignleft actions"><select name="action">';
+			echo '<div class="tablenav top"><div class="alignleft actions"><select name="', $name, '">';
 			echo '<option selected="selected" value="-1">Bulk Actions</option>';
 			foreach ( $actions as $action ) {
 				printf( '<option value="%s">%s</option>', $action[0], $action[1] );
 			}
-			echo '</select><input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">';
+			echo '</select><input type="submit" value="Apply" class="button-secondary action" id="do', $name, '" name="" />';
 			echo '</div><br class="clear"></div>';
 		}
 	}
 	
 	public function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
-		self::bulk_actions( $bulkactions );
+		self::bulk_actions( $bulkactions, 'action' );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
 		self::list_table_def( $cols, 'head' );
 		self::list_table_def( $cols, 'foot' );
 		self::list_table_body( $cols, $rows, $rowactions );
 		echo '</table>';
-		self::bulk_actions( $bulkactions );
+		self::bulk_actions( $bulkactions, 'action2' );
 	}
 	
 	private function list_table_def( $cols, $tag ) {
@@ -188,7 +208,7 @@ class Football_Pool_Admin {
 		
 		$r = count( $rows );
 		$c = count( $cols );
-		$page = Utils::get_string( 'page' );
+		$page = Football_Pool_Utils::get_string( 'page' );
 		
 		if ( $r == 0 ) {
 			echo "<tr><td colspan='", $c+1, "'>", __( 'no data', FOOTBALLPOOL_TEXT_DOMAIN ), "</td></tr>";
@@ -276,8 +296,8 @@ class Football_Pool_Admin {
 				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL";
 		$wpdb->query( $sql );
 		// 3. update score for matches
-		$full = Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-		$toto = Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$toto = Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		$sql = "UPDATE {$prefix}scorehistory 
 				SET score = score * (full * " . $full . " + toto * " . $toto . ") 
 				WHERE type = 0";
@@ -334,7 +354,7 @@ class Football_Pool_Admin {
 		}
 		//*/
 		// 6. update ranking
-		$pool = new Pool;
+		$pool = new Football_Pool_Pool;
 		$sql = "SELECT scoreDate, type FROM {$prefix}scorehistory GROUP BY scoreDate, type";
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		foreach ( $rows as $row ) {

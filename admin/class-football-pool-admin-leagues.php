@@ -6,16 +6,19 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		self::admin_header( __( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
 		self::intro( __( 'Pool toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.'));
 		
-		$league_id = Utils::request_int( 'item_id', 0 );
-		$bulk_ids = Utils::post_int_array( 'itemcheck', array() );
-		$action = Utils::request_string( 'action', 'list' );
+		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
+		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
+		$action = Football_Pool_Utils::request_string( 'action', 'list' );
+		
+		if ( count( $bulk_ids ) > 0 && $action == '-1' )
+			$action = Football_Pool_Utils::request_string( 'action2', 'list' );
 		
 		switch ( $action ) {
 			case 'save':
 				// new or updated league
 				$league_id = self::update( $league_id );
 				self::notice( __("Pool opgeslagen.", FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Utils::post_str('submit') == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str('submit') == 'Save & Close' ) {
 					self::view();
 					break;
 				}
@@ -62,7 +65,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	}
 	
 	private function get_league( $id ) {
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		$leagues = $pool->leagues;
 		if ( array_key_exists( $id, $leagues ) ) {
 			$output = array(
@@ -77,7 +80,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	}
 	
 	private function get_leagues() {
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		$leagues = $pool->get_leagues( true );
 		$output = array();
 		foreach ( $leagues as $league ) {
@@ -98,6 +101,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' )
 				);
 		
+		$rows = array();
 		foreach( $leagues as $league ) {
 			$rows[] = array(
 						$league['name'], 
@@ -113,8 +117,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	private function update( $league_id ) {
 		$league = array(
 						$league_id,
-						Utils::post_string( 'name' ),
-						Utils::post_string( 'image' )
+						Football_Pool_Utils::post_string( 'name' ),
+						Football_Pool_Utils::post_string( 'image' )
 					);
 		
 		$id = self::update_league( $league );

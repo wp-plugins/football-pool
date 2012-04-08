@@ -110,7 +110,7 @@ class Football_Pool_Logout_Widget extends WP_Widget {
 		extract( $args );
 		
 		//$return_url = apply_filters( 'the_permalink', get_permalink( @get_the_ID() ) );
-		$return_url = Utils::full_url();
+		$return_url = Football_Pool_Utils::full_url();
 		
 		global $current_user;
 		get_currentuserinfo();

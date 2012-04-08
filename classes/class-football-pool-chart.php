@@ -1,6 +1,6 @@
 <?php
 // Based on Highcharts
-class Chart {
+class Football_Pool_Chart {
 	public $ID;
 	public $type; // pie, line, etc.
 	public $data = array();

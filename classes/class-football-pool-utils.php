@@ -1,5 +1,5 @@
 <?php
-class Utils {
+class Football_Pool_Utils {
 	
 	public function full_url() {
 		// http://snipplr.com/view.php?codeview&id=2734

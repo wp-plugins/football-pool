@@ -8,16 +8,19 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::intro( __( 'Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		//self::help( 'points', __( 'Points', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'Set the award for each question.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		$question_id = Utils::request_int( 'item_id', 0 );
-		$bulk_ids = Utils::post_int_array( 'itemcheck', array() );
-		$action = Utils::request_string( 'action', 'list' );
+		$question_id = Football_Pool_Utils::request_int( 'item_id', 0 );
+		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
+		$action = Football_Pool_Utils::request_string( 'action', 'list' );
+		
+		if ( count( $bulk_ids ) > 0 && $action == '-1' )
+			$action = Football_Pool_Utils::request_string( 'action2', 'list' );
 		
 		switch ( $action ) {
 			case 'save':
 				// new or updated question
 				$question_id = self::update( $question_id );
 				self::notice( __( 'Vraag opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
 					break;
 				}
@@ -25,12 +28,12 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				self::edit( $question_id );
 				break;
 			case 'user-answers-save':
-				$id = Utils::post_integer( 'item_id' );
+				$id = Football_Pool_Utils::post_integer( 'item_id' );
 				self::set_bonus_question_for_users( $id );
 				self::update_bonus_question_points();
 				
 				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
-				if ( Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
 					break;
 				}
@@ -58,11 +61,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function edit_user_answers() {
-		$id = Utils::get_integer( 'item_id' );
+		$id = Football_Pool_Utils::get_integer( 'item_id' );
 
 		if ( $id > 0 ) {
 			echo '<form action="" method="post">';
-			$pool = new Pool;
+			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
@@ -130,7 +133,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						'answer'=>''
 						);
 		
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		$question = $pool->get_bonus_question( $id );
 		if ( $question ) {
 			$values = $question;
@@ -152,9 +155,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function view() {
-		$pool = new Pool();
+		$pool = new Football_Pool_Pool();
 		$questions = $pool->get_bonus_questions();
-		$exampledate = date( 'Y-m-d 18:00', time() + ( 14*24*60*60 ) );
+		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 
 		$cols = array(
 					array( 'text', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', '' ), 
@@ -163,8 +166,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array( 'date', __( 'scoredatum', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
 					array( 'text', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
 				);
-		$rows = array();
 		
+		$rows = array();
 		foreach( $questions as $question ) {
 			$rows[] = array(
 						$question['question'], 
@@ -184,11 +187,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	private function update( $question_id ) {
 		$question = array(
 						$question_id,
-						Utils::post_string( 'question' ),
-						Utils::post_string( 'answer' ),
-						Utils::post_int( 'points' ),
-						Utils::post_string( 'lastdate' ),
-						Utils::post_string( 'scoredate' )
+						Football_Pool_Utils::post_string( 'question' ),
+						Football_Pool_Utils::post_string( 'answer' ),
+						Football_Pool_Utils::post_int( 'points' ),
+						Football_Pool_Utils::post_string( 'lastdate' ),
+						Football_Pool_Utils::post_string( 'scoredate' )
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -287,8 +290,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		
 		$users = get_users();
 		foreach ( $users as $user ) {
-			$correct = Utils::post_integer( '_user_' . $user->ID, -1 );
-			$points = Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
+			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, -1 );
+			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
 				$sql = $wpdb->prepare( "
 										UPDATE {$prefix}bonusquestions_useranswers 

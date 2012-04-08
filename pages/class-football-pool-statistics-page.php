@@ -1,20 +1,20 @@
 <?php
-class Statistics_Page {
+class Football_Pool_Statistics_Page {
 	public function page_content() {
 		$output = '';
-		$view = Utils::get_string( 'view', 'stats' );
-		$match = Utils::get_integer( 'match' );
-		$question = Utils::get_integer( 'question' );
-		$user = Utils::get_integer( 'user' );
+		$view = Football_Pool_Utils::get_string( 'view', 'stats' );
+		$match = Football_Pool_Utils::get_integer( 'match' );
+		$question = Football_Pool_Utils::get_integer( 'question' );
+		$user = Football_Pool_Utils::get_integer( 'user' );
 		
 		global $current_user;
 		get_currentuserinfo();
 		
-		$users = Utils::get_integer_array( 'users' );
+		$users = Football_Pool_Utils::get_integer_array( 'users' );
 		if ( $user > 0 && ! in_array( $user, $users ) ) $users[] = $user;
 		if ( $current_user->ID != 0 && ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
 
-		$stats = new Statistics;
+		$stats = new Football_Pool_Statistics;
 
 		if ( ! $stats->data_available && $view != 'matchpredictions' ) {
 			$output.= sprintf( '<h2>%s</h2><p>%s</p>',
@@ -22,14 +22,14 @@ class Statistics_Page {
 								__( 'Na de eerste wedstrijd kan je hier de scores van jezelf en de andere spelers zien.', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 		} else {
-			$chart_data = new Chart_Data();
+			$chart_data = new Football_Pool_Chart_Data();
 			switch ( $view ) {
 				case 'bonusquestion': 
 					$questionInfo = $stats->show_bonus_question_info( $question );
 					if ( $stats->stats_visible ) {
 						// chart 1: pie, what did the players score on this bonus question?
 						$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
-						$chart = new Chart( 'chart1', 'pie', 300, 200 );
+						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
 						$chart->data = $chart_data->bonus_question_pie_series_one_question( $raw_data );
 						$chart->title = __( 'wat hebben de spelers gescoord?', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->custom_css = 'right';
@@ -46,7 +46,7 @@ class Statistics_Page {
 						if ($stats->data_available_for_match( $match ) ) {
 							// chart 1: pie, wat hebben de deelnemers gescoord bij deze wedstrijd?
 							$raw_data = $chart_data->predictions_pie_chart_data( $match );
-							$chart = new Chart( 'chart1', 'pie', 300, 200 );
+							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
 							$chart->data = $chart_data->predictions_pie_series( $raw_data );
 							$chart->title = __( 'scoreverdeling alle spelers', FOOTBALLPOOL_TEXT_DOMAIN );
 							//$chart->options[] = '';
@@ -64,11 +64,11 @@ class Statistics_Page {
 											$userInfo->ID, $userInfo->display_name );
 						$output .= "<div>";
 						
-						$pool = new Pool;
+						$pool = new Football_Pool_Pool;
 						$pool->get_bonus_questions( $user );
 						// chart 1: pie, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( array( $user ) );
-						$chart = new Chart( 'chart1', 'pie', 300, 300 );
+						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 300 );
 						$chart->data = array_shift( $chart_data->score_chart_series( $raw_data ) ); // only one user
 						$chart->title = __( 'scoreverdeling wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN );
 						if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
@@ -78,7 +78,7 @@ class Statistics_Page {
 							// chart 4: pie, verdeling juist/niet juist bij de bonusvragen
 							$raw_data = $chart_data->bonus_question_for_users_pie_chart_data(array($user));
 							if ( count( $raw_data ) > 0 ) {
-								$chart = new Chart( 'chart4', 'pie', 300, 300 );
+								$chart = new Football_Pool_Chart( 'chart4', 'pie', 300, 300 );
 								$chart->data = array_shift( $chart_data->bonus_question_pie_series( $raw_data ) ); // only one user
 								$chart->title = __( 'scoreverdeling bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->custom_css = 'stats-pie left';
@@ -88,7 +88,7 @@ class Statistics_Page {
 
 						// chart 5: pie, percentage van totaal aantal punten gescoord
 						$raw_data = $chart_data->points_total_pie_chart_data( $user );
-						$chart = new Chart( 'chart5', 'pie', 300, 300 );
+						$chart = new Football_Pool_Chart( 'chart5', 'pie', 300, 300 );
 						$chart->data = $chart_data->points_total_pie_series( $raw_data );
 						$chart->title = __( '% van maximaal te halen punten', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "subtitle: { text: '(" . __( 'met inzet van joker', FOOTBALLPOOL_TEXT_DOMAIN ) . ")' }";
@@ -113,7 +113,7 @@ class Statistics_Page {
 							// column charts
 							// chart6: scoreverdeling
 							$raw_data = $chart_data->score_chart_data( $users );
-							$chart = new Chart( 'chart6', 'column', 720, 300 );
+							$chart = new Football_Pool_Chart( 'chart6', 'column', 720, 300 );
 							$chart->data = $chart_data->score_chart_series( $raw_data );
 							$chart->title = __( 'scoreverdeling', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "xAxis: { 
@@ -130,7 +130,7 @@ class Statistics_Page {
 							// chart7: bonusvragen
 							$raw_data = $chart_data->bonus_question_for_users_pie_chart_data( $users );
 							if ( count( $raw_data ) > 0 ) {
-								$chart = new Chart( 'chart7', 'column', 720, 300 );
+								$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
 								$chart->data = $chart_data->bonus_question_pie_series( $raw_data );
 								$chart->title = __( 'bonusvraag', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->options[] = "xAxis: { 
@@ -154,7 +154,7 @@ class Statistics_Page {
 					if ( count( $users ) >= 1 ) {
 						$output .= '<br class="clear" />';
 						$raw_data = $chart_data->score_per_match_line_chart_data( $users );
-						$chart = new Chart( 'chart2', 'line', 720, 500 );
+						$chart = new Football_Pool_Chart( 'chart2', 'line', 720, 500 );
 						$chart->data = $chart_data->score_per_match_line_series( $raw_data );
 						$chart->title = __( 'puntenopbouw', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
@@ -173,7 +173,7 @@ class Statistics_Page {
 						//$output .= '<h2 id="c3">Stand van ' . $userInfo['name'] . ' in de pool (alle deelnemers)</h2>';
 						// chart 3: position of the players in the pool
 						$raw_data = $chart_data->ranking_per_match_line_chart_data( $users );
-						$chart = new Chart( 'chart3', 'line', 720, 500 );
+						$chart = new Football_Pool_Chart( 'chart3', 'line', 720, 500 );
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 						$chart->title = __( 'positie in de pool', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {

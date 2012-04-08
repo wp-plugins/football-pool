@@ -109,7 +109,7 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 	public function html( $title, $match, $args, $instance ) {
 		extract( $args );
 		
-		$teams = new Teams;
+		$teams = new Football_Pool_Teams;
 		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		

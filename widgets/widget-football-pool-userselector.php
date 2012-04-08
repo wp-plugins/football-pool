@@ -126,7 +126,7 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		
-		$users = Utils::get_integer_array( 'users' );
+		$users = Football_Pool_Utils::get_integer_array( 'users' );
 		
 		global $current_user;
 		get_currentuserinfo();
@@ -179,7 +179,7 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		$page_id = get_the_ID();
-		$view = Utils::get_string( 'view' );
+		$view = Football_Pool_Utils::get_string( 'view' );
 		$stats_id = get_option( 'footballpool_page_id_statistics' );
 		
 		// this widget is for the statistics page only, so return in all other cases
