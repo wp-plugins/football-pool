@@ -63,7 +63,7 @@ For easier/front-end user registration you may consider using an extra plugin an
 * Added pot/po/mo files with the new texts from the shoutbox widget.
 
 = 1.1.0 =
-* Added a shoutbox for players in the pool. So they can leave shortmessages in a sidebar.
+* Added a shoutbox widget for players in the pool. So they can leave short messages in a sidebar.
 * Prefixed all class names.
 * Fixed a bug with the bulk actions in the admin.
 
