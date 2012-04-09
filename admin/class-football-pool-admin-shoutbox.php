@@ -75,7 +75,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	
 	private function view() {
 		$shoutbox = new Football_Pool_Shoutbox;
-		$messages = $shoutbox::get_messages();
+		$messages = $shoutbox->get_messages();
 		
 		$cols = array(
 					array( 'text', __( 'naam', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
