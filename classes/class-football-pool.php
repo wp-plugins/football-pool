@@ -53,7 +53,7 @@ class Football_Pool {
 					('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
-			// for future use
+			delete_option( 'footballpool_show_admin_bar' );
 		}
 		
 		// define default plugin options
@@ -73,7 +73,7 @@ class Football_Pool {
 		add_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD );
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
-		add_option( 'footballpool_show_admin_bar', 0 ); // 1: yes, 0: no
+		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -110,7 +110,7 @@ class Football_Pool {
 		delete_option( 'footballpool_use_leagues' );
 		delete_option( 'footballpool_db_version' );
 		delete_option( 'footballpool_shoutbox_max_chars' );
-		delete_option( 'footballpool_show_admin_bar' );
+		delete_option( 'footballpool_hide_admin_bar' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -124,7 +124,7 @@ class Football_Pool {
 
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
-		$no_show = current_user_can( 'subscriber' ) && Football_Pool_Utils::get_wp_option( 'footballpool_show_admin_bar', 0 ) == 0;
+		$no_show = current_user_can( 'subscriber' ) && Football_Pool_Utils::get_wp_option( 'footballpool_hide_admin_bar', 1 ) == 1;
 		
 		return $no_show ? false : $content;
 	}

@@ -6,7 +6,7 @@ Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: 1.1.2
 
-This plugin adds all the functionality for a football pool to your blog. 
+This plugin adds a football pool for the 2012 European Championship to your blog. 
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders. If you allready 
@@ -58,6 +58,10 @@ For easier/front-end user registration you may consider using an extra plugin an
 4. Group rankings
 
 == Changelog ==
+
+= 1.2 =
+* It is now possible to deactivate the plugin without removing the data from the database (see plugin options).
+* New version of Highcharts JS. Small (cosmetic) change in the line charts.
 
 = 1.1.2 =
 * Fixed a bug in the shoutbox admin (unexpected T_PAAMAYIM_NEKUDOTAYIM).

@@ -58,6 +58,14 @@ class Football_Pool_Admin {
 		);
 	}
 	
+	public function add_plugin_settings_link( $links, $file ) {
+		if ( $file == plugin_basename( dirname( FOOTBALLPOOL_ERROR_LOG ) . '/football-pool.php' ) ) {
+			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
+		}
+
+		return $links;
+	}
+	
 	public function get_value( $key, $default = '' ) {
 		return get_option( 'footballpool_' . $key );
 	}

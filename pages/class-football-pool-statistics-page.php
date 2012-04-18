@@ -158,11 +158,15 @@ class Football_Pool_Statistics_Page {
 						$chart->data = $chart_data->score_per_match_line_series( $raw_data );
 						$chart->title = __( 'puntenopbouw', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
-												//shared: true, crosshairs: true 
+												shared: true, crosshairs: true, 
 												formatter: function() {
-													return '<b>' + this.series.name + '</b>: ' 
-														+ this.y + ' punten<br>'
-														+ '(' + categories[this.x] + ')';
+													s = '<b>' + categories[this.x] + '</b><br/>';
+													jQuery.each( this.points, function( i, point ) {
+														s += '<b style=\"color:' + point.series.color + '\">' 
+															+ point.series.name + '</b>: ' 
+															+ point.y + ' punten<br>';
+													} );
+													return s;
 												}
 											}";
 						$chart->JS_options[] = 'options.xAxis.labels.enabled = false';
@@ -177,11 +181,15 @@ class Football_Pool_Statistics_Page {
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 						$chart->title = __( 'positie in de pool', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
-												//shared: true, crosshairs: true
+												shared: true, crosshairs: true,
 												formatter: function() {
-													return '<b>' + this.series.name + '</b>: ' 
-														+ this.y + '" . __( 'e in de pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>'
-														+ '(' + categories[this.x] + ')';
+													s = '<b>' + categories[this.x] + '</b><br/>';
+													jQuery.each( this.points, function ( i, point ) {
+														s += '<b style=\"color:' + point.series.color + '\">' 
+															+ point.series.name + '</b>: ' 
+															+ point.y + '" . __( 'e in de pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
+													} );
+													return s;
 												}
 											}";
 						$chart->JS_options[] = 'options.yAxis.title.text = "' . __( 'positie in de pool', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
