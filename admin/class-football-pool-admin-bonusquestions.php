@@ -295,8 +295,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, -1 );
 			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
-				$sql = $wpdb->prepare( "
-										UPDATE {$prefix}bonusquestions_useranswers 
+				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
 											SET correct=%d, 
 												points=%d 
 											WHERE userId=%d AND questionId=%d", 

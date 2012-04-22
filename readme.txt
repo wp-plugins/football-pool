@@ -61,8 +61,10 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 = 1.1.4 =
 * New version of Highcharts javascript library. Did a small (cosmetic) change in the line charts.
-* Fixed a timezone problem in the display of match times. (Thanks Okoth1)
-* Fixed the admin screen for bonusquestions (user answers).
+* Ranking page en ranking widget now show all users. Even the ones that registered for the pool after the first match was played. In previous versions the new user had to wait for an admin saving a match or bonusquestion to recalculate the points table.
+* Bug fixed: a timezone problem in the display of match times. (Thanks Okoth1)
+* Bug fixed: the admin screen for bonusquestions not displaying user answers.
+* Bug fixed: user selector widget showed all blog users.
 
 = 1.1.3 =
 * Fix for the problem that - on a clean install - the default data for the pool was not loaded (matches, teams, etc.) in the database. (Thanks Okoth1)

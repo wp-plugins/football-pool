@@ -18,6 +18,8 @@ class Football_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$action = empty( $action ) ? 'install' : $action;
+		
 		// install custom tables in database
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
 		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );

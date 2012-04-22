@@ -41,7 +41,7 @@ class Football_Pool_Pool {
 		return $score;
 	}
 	
-	private function get_all_users( $league ) {
+	public function get_users( $league ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -55,11 +55,11 @@ class Football_Pool_Pool {
 	}
 	
 	// use league=0 to include all users
-	public function get_ranking_from_score_history( $league, $score_date = '', $type = '' ) {
+	public function get_ranking_from_score_history( $league, $score_date = '', $type = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = "SELECT u.id AS userId, u.display_name AS userName, u.user_email AS email, l.leagueId, 
-					MAX(s.totalScore) AS points, 
+					COALESCE(MAX(s.totalScore), 0) AS points, 
 					COUNT(IF(full=1,1,NULL)) AS full, 
 					COUNT(IF(toto=1,1,NULL)) AS toto,
 					COUNT(IF(type=1 AND score>0,1,NULL)) AS bonus 
@@ -67,16 +67,17 @@ class Football_Pool_Pool {
 				INNER JOIN {$prefix}league_users l 
 					ON (
 							u.id=l.userId
-							AND (" . ($league == 0 ? "1=1 OR " : "") . "l.leagueId = %d)
+							AND (" . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1=1 OR " : "") . "l.leagueId = %d)
 						)
-				INNER JOIN {$prefix}scorehistory s ON 
+				LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					(
 						s.userId=u.id
-						AND (" . ($score_date == 0 ? "1=1 OR " : "") . "s.scoreDate <= %s)
-						AND (" . ($type == '' ? "1=1 OR " : "") . "s.type = %d)
+						AND (" . ($score_date == '' ? "1=1 OR " : "") . "s.scoreDate <= %s)
+						AND (" . ($type == 0 ? "1=1 OR " : "") . "s.type = %d)
 					) 
-				GROUP BY s.userId
+				GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, l.leagueId ASC, LOWER(u.display_name) ASC";
+		
 		return $wpdb->prepare( $sql, $league, $score_date, $type );
 	}
 	
@@ -104,7 +105,7 @@ class Football_Pool_Pool {
 			}
 		} else {
 			// no results, show a list of users
-			$rows = $this->get_all_users( $league );
+			$rows = $this->get_users( $league );
 			if ( count( $rows ) > 0 ) {
 				$output .= '<p>' . __( 'Nog geen resultaten. Hieronder zie je een lijst met alle spelers.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 				foreach ( $rows as $row ) {

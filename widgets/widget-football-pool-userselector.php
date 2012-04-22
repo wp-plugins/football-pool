@@ -132,17 +132,18 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 		get_currentuserinfo();
 		if ( ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
 		
-		$rows = get_users();
+		$pool = new Football_Pool_Pool;
+		$rows = $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL );
 		if ( count($rows) > 0 ) {
 			echo '<form action="', $statisticspage, '" method="get">';
 			
 			echo '<ol class="userselector" style="height: ', $height, 'px;">';
 			foreach( $rows as $row ) {
-				$selected = ( in_array( $row->ID, $users ) ) ? true : false;
+				$selected = ( in_array( $row['userId'], $users ) ) ? true : false;
 				echo '<li', ( $selected ? ' class="selected"' : '' ), '>
-						<input type="checkbox" name="users[]" id="user', $row->ID, '"
-							value="', $row->ID, '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
-						<label for="user', $row->ID, '"> ', $row->display_name, '</label></li>';
+						<input type="checkbox" name="users[]" id="user', $row['userId'], '"
+							value="', $row['userId'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
+						<label for="user', $row['userId'], '"> ', $row['userName'], '</label></li>';
 			}
 			echo '</ol>';
 			echo '<p><input type="submit" value="', __( 'Grafieken aanpassen', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></p>';
