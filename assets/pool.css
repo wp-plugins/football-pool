@@ -82,6 +82,8 @@ table.poolranking tr.currentuser td a:visited { color: #330039; font-weight: bol
 
 table.poolranking td.score  { text-align:right; padding-right: 1em; }
 
+.entry table.poolranking { font-size: 100%; width: 300px; }
+
 table.gamesbox td { padding: 1px 2px; font-size: 75%; }
 table.gamesbox td.score { white-space: nowrap; }
 
@@ -153,7 +155,7 @@ p.next-prediction-countdown { font-size: 60%; color: #330039; }
 .widget_footballpoolshoutboxwidget span.notice { font-size: 75%; }
 .widget_footballpoolshoutboxwidget p { font-size: 80%; margin: 0; }
 .widget_footballpoolshoutboxwidget hr {
-	margin: 0 3px;
+	margin: 3px 3px 5px;
 	border: none 0; 
 	border-top: 1px dashed #990288; /*the border*/ 
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/

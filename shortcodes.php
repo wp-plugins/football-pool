@@ -8,8 +8,44 @@ add_shortcode( 'start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) )
 add_shortcode( 'totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totopoints' ) );
 add_shortcode( 'fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
+add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 
 class Football_Pool_Shortcodes {
+	//[fp-ranking]
+	public function shortcode_ranking( $atts ) {
+		extract( shortcode_atts( array(
+					'league' => FOOTBALLPOOL_LEAGUE_ALL,
+					'num' => 5
+				), $atts ) );
+		
+		global $current_user;
+		get_currentuserinfo();
+		$pool = new Football_Pool_Pool;
+		
+		$userpage = Football_Pool::get_page_link( 'user' );
+		
+		$output = '';
+		$rows = $pool->get_pool_ranking_for_box( $league, $num );
+		
+		if ( count( $rows ) > 0 ) {
+			$i = 1;
+			$output .= '<table class="poolranking">';
+			foreach ( $rows as $row ) {
+				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
+				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
+				
+				$output .= '<tr class="' . $class . '"><td>' . $i++ . '.</td>'
+						. '<td><a href="' . $userpage . '?user=' . $row['userId'] . '">' . $row['userName'] 
+						. '</a></td>' . '<td class="score">' . $row['points'] . '</td></tr>';
+			}
+			$output .= '</table>';
+		} else {
+			$output = '<p>' . __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+		}
+		
+		return $output;
+	}
+	
 	//[countdown]
 	public function shortcode_countdown( $atts ) {
 		$matches = new Matches();

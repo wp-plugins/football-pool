@@ -315,7 +315,7 @@ class Football_Pool {
 
 			if ( $user->ID == $current_user->ID ) {
 				$league = get_the_author_meta( 'footballpool_league', $user->ID );
-				if ( $league > 1 ) {
+				if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 					$league = $pool->leagues[$league]['leagueName'];
 				} else {
 					$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -329,7 +329,7 @@ class Football_Pool {
 		if ( current_user_can( 'administrator' ) ) {
 			$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			
-			if ( $league > 1 ) {
+			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 				$league = $pool->leagues[$league]['leagueName'];
 			} else {
 				$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
