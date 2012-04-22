@@ -204,7 +204,7 @@ class Matches {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
-				$date_title = $matchdate->( 'd M Y' );
+				$date_title = $matchdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
 									date( 'l', $row['matchTimestamp'] ), $date_title );
 			}
