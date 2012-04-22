@@ -10,7 +10,7 @@
  Text Domain: football-pool
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '1.2' );
+define( 'FOOTBALLPOOL_DB_VERSION', '1.1.4' );
 
 /*
  This program is free software; you can redistribute it and/or modify

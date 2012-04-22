@@ -253,7 +253,10 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SElECT id, question, answer, points, answerBeforeDate, scoreDate, matchNr, 
+		$sql = $wpdb->prepare( "SElECT id, question, answer, points, 
+									DATE_FORMAT(answerBeforeDate, '%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
+									DATE_FORMAT(scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
+									matchNr, 
 									UNIX_TIMESTAMP(answerBeforeDate) as questionDate 
 								FROM {$prefix}bonusquestions 
 								WHERE id=%d", 
@@ -274,7 +277,7 @@ class Football_Pool_Pool {
 		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
 			$pre = '';
 			// remind a player if there is only 1 day left to answer the question.
-			if ( ( $question['questionDate'] - time() ) <= ( 24*60*60 ) ) {
+			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
 				$pre .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Let op:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			$pre .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $question['answerBeforeDate'] . '</span>',
@@ -341,16 +344,15 @@ class Football_Pool_Pool {
 
 	public function get_bonus_question_answers_for_users( $question = 0 ) {
 		if ( $question == 0 ) return array();
-
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT u.id AS userId, u.name, a.answer, a.correct, a.points
+		$sql = $wpdb->prepare( "SELECT u.ID AS userId, u.display_name AS name, a.answer, a.correct, a.points
 								FROM {$prefix}bonusquestions_useranswers a 
-								JOIN {$prefix}users u
+								JOIN {$wpdb->users} u
 									ON (a.questionId = %d AND a.userId = u.id)
-								ORDER BY u.name ASC",
+								ORDER BY u.display_name ASC",
 							$question
 						);
 		$rows = $wpdb->get_results( $sql, ARRAY_A );

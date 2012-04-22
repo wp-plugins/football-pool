@@ -52,7 +52,7 @@ class Matches {
 	private function matches_query( $where_clause = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		return "SELECT UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
-							m.homeScore, m.awayScore, 
+							m.homeScore, m.awayScore, m.playDate,
 							s.name AS stadiumName, t.name AS matchtype, t.id AS typeId, m.nr 
 				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id {$where_clause}
@@ -113,7 +113,8 @@ class Matches {
 									p.awayScore, 
 									p.hasJoker, 
 									t.name AS matchtype, 
-									m.nr 
+									m.nr,
+									m.playDate
 								FROM {$prefix}matches m 
 								JOIN {$prefix}matchtypes t 
 									ON (m.matchtypeId = t.id)
@@ -212,7 +213,7 @@ class Matches {
 								<td class="home"><a href="%s?team=%d">%s</a></td>
 								<td class="flag">%s</td>',
 							$row['nr'],
-							date('H:i', $row['matchTimestamp']),
+							substr( $row['playDate'], 11, 5 ),
 							$teamspage,
 							$row['homeTeamId'],
 							$teams->team_names[ (integer) $row['homeTeamId'] ],
@@ -252,8 +253,9 @@ class Matches {
 				$output .= sprintf( '<tr><td class="matchtype" colspan="11">%s</td></tr>', $matchtype );
 			}
 			
-			if ( $date_title != date( 'd M Y', $row['matchTimestamp'] ) ) {
-				$date_title = date( 'd M Y', $row['matchTimestamp'] );
+			$matchdate = new DateTime( $row['playDate'] );
+			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
+				$date_title = $matchdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="11">%s</td></tr>', $date_title );
 			}
 			
@@ -277,7 +279,7 @@ class Matches {
 								<td>%s</td>
 								</tr>',
 							$row['nr'],
-							date( 'H:i', $row['matchTimestamp'] ),
+							$matchdate->format( 'H:i' ),
 							$teams->team_names[ (integer) $row['homeTeamId'] ],
 							$teams->flag_image( (integer) $row['homeTeamId'] ),
 							$this->show_pool_input( '_home_' . $row['nr'], $row['homeScore'], $row['matchTimestamp'] ),

@@ -74,6 +74,7 @@ class Football_Pool {
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
+		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -111,6 +112,7 @@ class Football_Pool {
 		delete_option( 'footballpool_db_version' );
 		delete_option( 'footballpool_shoutbox_max_chars' );
 		delete_option( 'footballpool_hide_admin_bar' );
+		//delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
