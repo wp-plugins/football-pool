@@ -279,13 +279,15 @@ class Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$pool = new Football_Pool_Pool;
+		
 		// 1. empty table
 		$sql  = "TRUNCATE TABLE {$prefix}scorehistory";
 		$wpdb->query( $sql );
 		// 2. check predictions with actual match result (score type = 0)
 		$sql = "INSERT INTO {$prefix}scorehistory
 					(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
-				SELECT 0, m.playDate, m.nr, u.id, 
+				SELECT 0, m.playDate, m.nr, u.ID, 
 								IF (p.hasJoker = 1, 2, 1) AS score,
 								IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL) AS full,
 								IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
@@ -297,10 +299,13 @@ class Football_Pool_Admin {
 										, NULL)
 								) AS toto,
 								0
-				FROM {$prefix}users u
-				LEFT OUTER JOIN {$prefix}matches m ON 1 = 1
+				FROM {$wpdb->users} u ";
+		if ( $pool->has_leagues ) {
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+		}
+		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON 1 = 1
 				LEFT OUTER JOIN {$prefix}predictions p
-					ON (p.matchNr = m.nr AND (p.userId = u.id OR p.userId IS NULL))
+					ON (p.matchNr = m.nr AND (p.userId = u.ID OR p.userId IS NULL))
 				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL";
 		$wpdb->query( $sql );
 		// 3. update score for matches
@@ -315,12 +320,15 @@ class Football_Pool_Admin {
 		$sql = "INSERT INTO {$prefix}scorehistory 
 					(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
 				SELECT 
-					1, q.scoreDate, q.id, u.id, (IF (a.points <> 0, a.points, q.points) * IFNULL(a.correct, 0)), NULL, NULL, 0 
-				FROM {$prefix}users u 
-				LEFT OUTER JOIN {$prefix}bonusquestions q
+					1, q.scoreDate, q.id, u.ID, (IF (a.points <> 0, a.points, q.points) * IFNULL(a.correct, 0)), NULL, NULL, 0 
+				FROM {$wpdb->users} u ";
+		if ( $pool->has_leagues ) {
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+		}
+		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
 					ON (1=1)
 				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-					ON (a.questionId = q.id AND (a.userId = u.id OR a.userId IS NULL))
+					ON (a.questionId = q.id AND (a.userId = u.ID OR a.userId IS NULL))
 				WHERE q.scoreDate IS NOT NULL";
 		$wpdb->query( $sql );
 		// 5. update score incrementally

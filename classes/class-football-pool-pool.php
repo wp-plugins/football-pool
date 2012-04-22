@@ -45,9 +45,9 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " . ( $this->has_leagues ? "l.leagueId, " : "" ) . "
-					0 AS points, 0 AS full, 0 AS toto, 0 AS bonus 
-				FROM {$wpdb->users} u ";
+		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, ";
+		$sql .= ( $this->has_leagues ? "l.leagueId, " : "" );
+		$sql .= "0 AS points, 0 AS full, 0 AS toto, 0 AS bonus FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users l 
 						ON (u.ID = l.userId" . ( $league > 1 ? ' AND l.leagueId = ' . $league : '' ) . ") ";

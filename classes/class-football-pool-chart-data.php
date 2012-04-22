@@ -24,6 +24,8 @@ class Football_Pool_Chart_Data {
 	public function score_chart_data( $users = array() ) {
 		$data = array();
 		
+		$pool = new Football_Pool_Pool;
+		
 		if ( count( $users ) > 0 ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -31,10 +33,13 @@ class Football_Pool_Chart_Data {
 					COUNT(IF(s.full=1,1,NULL)) AS scorefull, 
 					COUNT(IF(s.toto=1,1,NULL)) AS scoretoto, 
 					COUNT(s.scoreOrder) AS scoretotal,
-					u.name AS username
+					u.display_name AS username
 					FROM {$prefix}scorehistory s 
-					INNER JOIN {$prefix}users u ON (u.id=s.userId)
-					WHERE s.type = 0 AND s.userId IN (" . implode(',', $users) . ")
+					INNER JOIN {$wpdb->users} u ON (u.ID=s.userId) ";
+			if ( $pool->has_leagues ) {
+				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+			}
+			$sql .= "WHERE s.type = 0 AND s.userId IN (" . implode(',', $users) . ")
 					GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			foreach ( $rows as $row ) {
@@ -62,10 +67,13 @@ class Football_Pool_Chart_Data {
 						COUNT(IF(s.score>0,1,NULL)) AS bonuscorrect, 
 						COUNT(IF(s.score=0,1,NULL)) AS bonuswrong,
 						COUNT(s.scoreOrder) AS bonustotal,
-						u.name AS username
+						u.display_name AS username
 					FROM {$prefix}scorehistory s
-					INNER JOIN {$prefix}users u ON (u.id=s.userId)
-					WHERE s.type = 1 AND s.userId IN (" . implode(',', $users) . ")
+					INNER JOIN {$prefix}users u ON (u.id=s.userId) ";
+			if ( $pool->has_leagues ) {
+				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+			}
+			$sql .= "WHERE s.type = 1 AND s.userId IN (" . implode(',', $users) . ")
 					GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
@@ -84,16 +92,14 @@ class Football_Pool_Chart_Data {
 	public function bonus_question_pie_chart_data( $question ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT 
-									COUNT(IF(ua.correct>0,1,NULL)) AS bonuscorrect, 
-									COUNT(IF(ua.correct=0,1,NULL)) AS bonuswrong,
-									COUNT(u.id) AS totalusers 
-								FROM {$prefix}bonusquestions_useranswers AS ua 
-								RIGHT OUTER JOIN {$prefix}users AS u
-								ON (u.id = ua.userId and questionId=%d)", 
-							$question
-						);
+		$sql = "SELECT 
+					COUNT(IF(ua.correct>0,1,NULL)) AS bonuscorrect, 
+					COUNT(IF(ua.correct=0,1,NULL)) AS bonuswrong,
+					COUNT(u.id) AS totalusers 
+				FROM {$prefix}bonusquestions_useranswers AS ua 
+				RIGHT OUTER JOIN {$prefix}users AS u
+				ON (u.id = ua.userId and questionId=%d)";
+		$sql = $wpdb->prepare( $sql, $question );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
 		$data = array(

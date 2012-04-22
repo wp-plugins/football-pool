@@ -86,7 +86,8 @@ class Matches {
 		$sql = $wpdb->prepare( $this->matches_query( 'AND m.nr = %d' ), $match );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		if ( $row ) {
-			$info['matchDateTime'] = date( 'd M Y  H:i', $row['matchTimestamp'] );
+			$matchdate = new DateTime( $row['playDate'] );
+			$info['matchDateTime'] = $matchdate->format( 'd M Y  H:i' );
 			$info['matchHomeScore'] = $row['homeScore'];
 			$info['matchAwayScore'] = $row['awayScore'];
 			$info['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
@@ -202,8 +203,9 @@ class Matches {
 				$output .= sprintf( '<tr><td class="matchtype" colspan="6">%s</td></tr>', $matchtype );
 			}
 			
-			if ( $date_title != date( 'd M Y', $row['matchTimestamp'] ) ) {
-				$date_title = date( 'd M Y', $row['matchTimestamp'] );
+			$matchdate = new DateTime( $row['playDate'] );
+			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
+				$date_title = $matchdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
 									date( 'l', $row['matchTimestamp'] ), $date_title );
 			}
@@ -213,7 +215,7 @@ class Matches {
 								<td class="home"><a href="%s?team=%d">%s</a></td>
 								<td class="flag">%s</td>',
 							$row['nr'],
-							substr( $row['playDate'], 11, 5 ),
+							$matchdate->format( 'H:i' ),
 							$teamspage,
 							$row['homeTeamId'],
 							$teams->team_names[ (integer) $row['homeTeamId'] ],

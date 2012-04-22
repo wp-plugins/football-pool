@@ -157,7 +157,7 @@ class Football_Pool_Statistics {
 									$row['userId'],
 									$row['userName']
 							);
-				$output .= sprintf( '<td class="home">%d</td><td style="text-align: center;">-</td><td class="away">%d</td>',
+				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',
 									$row['homeScore'],
 									$row['awayScore']
 							);
