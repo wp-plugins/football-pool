@@ -338,20 +338,19 @@ class Football_Pool_Admin {
 		$users = get_users( '' );
 		
 		foreach ( $users as $user ) {
-			$sql = $wpdb->prepare( "
-									SELECT * FROM {$prefix}scorehistory 
+			$sql = $wpdb->prepare( "SELECT * FROM {$prefix}scorehistory 
 									WHERE userId=%d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
 									$user->ID
 							);
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId=%d", $user->ID );
 			$wpdb->query( $sql );
 			
 			$score = 0;
 			foreach ( $rows as $row ) {
 				$score += $row['score'];
-				$sql = $wpdb->prepare( "
-										INSERT INTO {$prefix}scorehistory 
+				$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
 											(type, scoreDate, scoreOrder, userId, score, full, toto, totalScore, ranking) 
 										VALUES (%d, %s, %d, %d, %d, %d, %d, %d, 0)",
 										$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
@@ -370,8 +369,7 @@ class Football_Pool_Admin {
 			$rows2 = $wpdb->get_results( $sql, ARRAY_A );
 			$rank = 1;
 			foreach ( $rows2 as $row2 ) {
-				$sql = $wpdb->prepare( "
-										UPDATE {$prefix}scorehistory SET ranking=%d 
+				$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking=%d 
 										WHERE userId=%d AND type=%d AND scoreDate=%s",
 										$rank++,
 										$row2['userId'],
