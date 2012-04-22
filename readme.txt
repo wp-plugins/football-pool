@@ -4,9 +4,9 @@ Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
-This plugin adds all the functionality for a football pool to your blog. 
+This plugin adds a football pool for the 2012 European Championship to your blog. 
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders. If you allready 
@@ -59,8 +59,15 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Changelog ==
 
+= 1.1.4 =
+* New version of Highcharts javascript library. Did a small (cosmetic) change in the line charts.
+* Ranking page en ranking widget now show all users. Even the ones that registered for the pool after the first match was played. In previous versions the new user had to wait for an admin to save a match or bonusquestion to recalculate the points table.
+* Bug fixed: a timezone problem in the display of match times. (Thanks Okoth1)
+* Bug fixed: the admin screen for bonusquestions not displaying user answers.
+* Bug fixed: user selector widget showed all blog users.
+
 = 1.1.3 =
-* Fix for the problem that - on a clean install - the default data for the pool was not loaded (matches, teams, etc.).
+* Fix for the problem that - on a clean install - the default data for the pool was not loaded (matches, teams, etc.) in the database. (Thanks Okoth1)
 
 = 1.1.2 =
 * Fixed a bug in the shoutbox admin (unexpected T_PAAMAYIM_NEKUDOTAYIM).
