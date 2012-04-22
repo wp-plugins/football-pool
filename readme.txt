@@ -51,6 +51,16 @@ After the pool has been set up, all you have to do is monitor the users that sub
 
 For easier/front-end user registration you may consider using an extra plugin and widget. E.g. <a href="http://wordpress.org/extend/plugins/custom-user-registration-lite/">Custom User Registration Lite</a>. Just don't forget the extra user meta that this plugin needs. But you can also use the Login/logout button Widget that is included with this plugin; the plugin adds the needed extra inputs to the WordPress register screen.
 
+== Frequently Asked Questions ==
+
+= I installed the plugin, but there are no matches. What happened? =
+
+Versions before 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
+
+= I don't see my blog users as players of the pool. =
+
+Go to the WordPress Admin » Users and check if these users are added in a league. Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league the users in that league must be placed in another league.
+
 == Screenshots ==
 1. Matches in the tournament
 2. Score charts of multiple players
