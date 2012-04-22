@@ -55,7 +55,7 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 = I installed the plugin, but there are no matches. What happened? =
 
-Versions before 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
+Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
 = I don't see my blog users as players of the pool. =
 
