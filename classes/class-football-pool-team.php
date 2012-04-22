@@ -31,7 +31,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		}
 	}
 	
-	function HTML_thumb() {
+	public function HTML_thumb() {
 		$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
 		return sprintf( '<a id="thumb" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
 								class="teamphotothumb" /></a>',
@@ -44,11 +44,11 @@ class Football_Pool_Team extends Football_Pool_Teams {
 						);
 	}
 	
-	function HTML_image() {
+	public function HTML_image() {
 		return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . str_replace( '_t', '', $this->photo ) . '" title="' . __( 'sluiten', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'teamfoto voor', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name . '" class="teamphoto" onclick="window.close();" />';
 	}
 	
-	function get_plays() {
+	public function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "
@@ -61,7 +61,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 									s.id, 
 									s.name, 
 									t.name AS matchtype, 
-									m.nr 
+									m.nr,
+									m.playDate
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
@@ -73,7 +74,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 
-	function get_stadiums() {
+	public function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "

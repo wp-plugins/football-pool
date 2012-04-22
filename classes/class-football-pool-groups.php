@@ -113,8 +113,7 @@ class Football_Pool_Groups {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT DISTINCT
+		$sql = $wpdb->prepare( "SELECT DISTINCT
 									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
@@ -123,7 +122,8 @@ class Football_Pool_Groups {
 									s.id AS stadiumId, 
 									s.name AS stadiumName, 
 									t.name AS matchtype, 
-									m.nr 
+									m.nr,
+									m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
