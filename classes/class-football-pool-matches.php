@@ -86,7 +86,8 @@ class Matches {
 		$sql = $wpdb->prepare( $this->matches_query( 'AND m.nr = %d' ), $match );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		if ( $row ) {
-			$info['matchDateTime'] = date( 'd M Y  H:i', $row['matchTimestamp'] );
+			$matchdate = new DateTime( $row['playDate'] );
+			$info['matchDateTime'] = $matchdate->format( 'd M Y  H:i' );
 			$info['matchHomeScore'] = $row['homeScore'];
 			$info['matchAwayScore'] = $row['awayScore'];
 			$info['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
