@@ -72,7 +72,10 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 
 = 1.2 =
 * New shortcode [fp-ranking] in case you don't want to use the ranking page or widget, but only want to display the ranking in a post. For complete help on this and other shortcodes, see the new help page in the admin section.
+* New shortcode [fp-group] if you want to include the standing of a group in a page or post.
+* New Group Widget that displays the standing for a group in a sidebar.
 * Added a helpscreen to the admin.
+* Bug fixed: when not using leagues the plugin did not properly show WordPress users as players in the pool.
 
 = 1.1.5 =
 * Bug fixed: playDate index not found on the teams page.

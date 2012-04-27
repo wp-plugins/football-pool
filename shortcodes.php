@@ -12,15 +12,12 @@ add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranki
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 
 class Football_Pool_Shortcodes {
-	//[fp-ranking] 
-	//		league	: only show users in this league, defaults to all
-	//		num 	: number of users to show, defaults to 5
-	//		date	: show ranking up until this date, 
-	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
-	//				  defaults to 'now'
+	//[fp-group] 
+	//		id	: show the standing for the group with this id, defaults to a non-existing group and thus
+	//			  will not show anything when none is given.
 	public function shortcode_group( $atts ) {
 		extract( shortcode_atts( array(
-					'group' => 1,
+					'id' => -1,
 				), $atts ) );
 		
 		$output = '';
@@ -28,8 +25,8 @@ class Football_Pool_Shortcodes {
 		$groups = new Football_Pool_Groups;
 		$group_names = $groups->get_group_names();
 		
-		if ( is_numeric( $group ) && array_key_exists( $group, $group_names ) ) {
-			$output = $groups->print_group_standing( $group );
+		if ( is_numeric( $id ) && array_key_exists( $id, $group_names ) ) {
+			$output = $groups->print_group_standing( $id );
 		}
 		
 		return $output;
