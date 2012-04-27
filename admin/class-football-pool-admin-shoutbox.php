@@ -3,7 +3,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
+		self::admin_header( __( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Berichten in de shoutbox toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.'));
 		
 		$shout_id = Football_Pool_Utils::request_int( 'item_id', 0 );

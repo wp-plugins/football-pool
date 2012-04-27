@@ -69,7 +69,7 @@ class Football_Pool_Chart_Data {
 						COUNT(s.scoreOrder) AS bonustotal,
 						u.display_name AS username
 					FROM {$prefix}scorehistory s
-					INNER JOIN {$prefix}users u ON (u.id=s.userId) ";
+					INNER JOIN {$wpdb->users} u ON (u.id=s.userId) ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
 			}

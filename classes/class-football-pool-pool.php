@@ -83,12 +83,16 @@ class Football_Pool_Pool {
 				GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "l.leagueId ASC, " : "" ) . "LOWER(u.display_name) ASC";
 		
-		return $wpdb->prepare( $sql, $league, $score_date, $type );
+		if ( $this->has_leagues ) 
+			return $wpdb->prepare( $sql, $league, $score_date, $type );
+		else
+			return $wpdb->prepare( $sql, $score_date, $type );
 	}
 	
-	public function get_pool_ranking_for_box( $league, $num_users ) {
+	public function get_pool_ranking_limited( $league, $num_users, $score_date = '' ) {
 		global $wpdb;
-		$sql = $wpdb->prepare( $this->get_ranking_from_score_history( $league ) . ' LIMIT %d', $num_users );
+		$sql = $wpdb->prepare( $this->get_ranking_from_score_history( $league, $score_date ) . ' LIMIT %d', 
+								$num_users );
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	

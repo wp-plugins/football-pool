@@ -60,6 +60,7 @@ require_once 'widgets/widget-football-pool-lastgames.php';
 require_once 'widgets/widget-football-pool-userselector.php';
 require_once 'widgets/widget-football-pool-logout.php';
 require_once 'widgets/widget-football-pool-shoutbox.php';
+require_once 'widgets/widget-football-pool-group.php';
 //require_once 'widgets/widget-football-pool-next-prediction.php';
 
 // activate the plugin
@@ -89,6 +90,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-groups.php';
 	require_once 'admin/class-football-pool-admin-leagues.php';
 	require_once 'admin/class-football-pool-admin-shoutbox.php';
+	require_once 'admin/class-football-pool-admin-help.php';
 
 	add_action( 'delete_user', array( 'Football_Pool', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );

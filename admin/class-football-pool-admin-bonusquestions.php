@@ -3,7 +3,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
+		self::admin_header( __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Bonusvragen toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.') );
 		self::intro( __( 'Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		//self::help( 'points', __( 'Points', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'Set the award for each question.', FOOTBALLPOOL_TEXT_DOMAIN ) );

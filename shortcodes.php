@@ -9,13 +9,43 @@ add_shortcode( 'totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totop
 add_shortcode( 'fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
+add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 
 class Football_Pool_Shortcodes {
-	//[fp-ranking]
+	//[fp-ranking] 
+	//		league	: only show users in this league, defaults to all
+	//		num 	: number of users to show, defaults to 5
+	//		date	: show ranking up until this date, 
+	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
+	//				  defaults to 'now'
+	public function shortcode_group( $atts ) {
+		extract( shortcode_atts( array(
+					'group' => 1,
+				), $atts ) );
+		
+		$output = '';
+		
+		$groups = new Football_Pool_Groups;
+		$group_names = $groups->get_group_names();
+		
+		if ( is_numeric( $group ) && array_key_exists( $group, $group_names ) ) {
+			$output = $groups->print_group_standing( $group );
+		}
+		
+		return $output;
+	}
+	
+	//[fp-ranking] 
+	//		league	: only show users in this league, defaults to all
+	//		num 	: number of users to show, defaults to 5
+	//		date	: show ranking up until this date, 
+	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
+	//				  defaults to 'now'
 	public function shortcode_ranking( $atts ) {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
-					'num' => 5
+					'num' => 5,
+					'date' => 'now',
 				), $atts ) );
 		
 		global $current_user;
@@ -24,12 +54,21 @@ class Football_Pool_Shortcodes {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		$output = '';
-		$rows = $pool->get_pool_ranking_for_box( $league, $num );
+		if ( $date == 'postdate' ) {
+			$score_date = get_the_date( 'Y-m-d H:i' );
+		} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
+			$score_date = $score_date->format( 'Y-m-d H:i' );
+		} else {
+			$score_date = '';
+		}
 		
+		$rows = $pool->get_pool_ranking_limited( $league, $num, $score_date );
+		
+		$output = '';
 		if ( count( $rows ) > 0 ) {
 			$i = 1;
 			$output .= '<table class="poolranking">';
+			//$output .= '<caption>' . __( 'de stand op', FOOTBALLPOOL_TEXT_DOMAIN ) . " {$score_date}</caption>";
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';

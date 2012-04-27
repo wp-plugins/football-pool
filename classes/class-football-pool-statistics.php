@@ -122,14 +122,14 @@ class Football_Pool_Statistics {
 		
 		$sql = "SELECT
 					UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
-						p.homeScore, p.awayScore, p.hasJoker, u.id AS userId, "
-			. ( $pool->has_leagues ? "l.id AS leagueId, " : "" ) 
-			. "			u.name AS userName
-					FROM {$prefix}matches m 
-					LEFT OUTER JOIN {$prefix}predictions p 
-						ON (p.matchNr = m.nr AND m.nr = %d) 
-					RIGHT OUTER JOIN {$prefix}users u 
-						ON (u.id = p.userId) ";
+					p.homeScore, p.awayScore, p.hasJoker, u.id AS userId, ";
+		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
+		$sql .= "	u.name AS userName
+				FROM {$prefix}matches m 
+				LEFT OUTER JOIN {$prefix}predictions p 
+					ON (p.matchNr = m.nr AND m.nr = %d) 
+				RIGHT OUTER JOIN {$prefix}users u 
+					ON (u.id = p.userId) ";
 		if ( $pool->has_leagues ) {
 			$sql .= "JOIN {$prefix}league_users lu 
 						ON (u.id = lu.userId)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget: Ranking Widget
+ * Widget: Group Standing Widget
  */
 
 
@@ -22,9 +22,9 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
  * Register any and all actions here. Nothing should actually be called 
  * directly, the entire system will be based on these actions and hooks.
  */
-add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Ranking_Widget" );' ) );
+add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Group_Widget" );' ) );
 
-class Football_Pool_Ranking_Widget extends WP_Widget {
+class Football_Pool_Group_Widget extends WP_Widget {
 	/**
 	 * Widget settings
 	 * 
@@ -74,11 +74,11 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 	
 	protected $widget = array(
 		// If not set, then name of class will be used (underscores replaced with spaces).
-		'name' => 'Ranking Widget',
+		'name' => 'Group Widget',
 		
 		// this description will display within the administrative widgets area
 		// when a user is deciding which widget to use.
-		'description' => 'Football pool plugin: this widget displays the top X players in the pool.',
+		'description' => 'Football pool plugin: this widget displays the tournament standing for a group.',
 		
 		// determines whether or not to use the sidebar _before and _after html
 		'do_wrapper' => true, 
@@ -93,18 +93,11 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 				'std' => 'stand'
 			),
 			array(
-				'name' => 'Number of users to show',
+				'name'    => 'Show this group',
 				'desc' => '',
-				'id' => 'num_users',
-				'type' => 'text',
-				'std' => '5'
-			),
-			array(
-				'name'    => 'Show players from this league',
-				'desc' => '',
-				'id'      => 'league',
+				'id'      => 'group',
 				'type'    => 'select',
-				'options' => array() // get data from the database later on
+				'options' => array() // get data from the database later on (function form)
 			),
 		)
 	);
@@ -123,35 +116,14 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 	public function html( $title, $args, $instance ) {
 		extract( $args );
 		
-		$num_users = $instance['num_users'];
-		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
+		$group = ! empty( $instance['group'] ) ? $instance['group'] : '1';
 		
 		if ( $title != '' ) {
 			echo $before_title . $title . $after_title;
 		}
 		
-		global $current_user;
-		get_currentuserinfo();
-		$pool = new Football_Pool_Pool;
-		
-		$userpage = Football_Pool::get_page_link( 'user' );
-		
-		$rows = $pool->get_pool_ranking_limited( $league, $num_users );
-		if ( count( $rows ) > 0 ) {
-			$i = 1;
-			echo '<table class="poolranking">';
-			foreach ( $rows as $row ) {
-				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
-				
-				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $userpage, '?user=', $row['userId'], '">', $row['userName'], '</a></td>',
-					'<td class="score">', $row['points'], '</td></tr>';
-			}
-			echo '</table>';
-		} else {
-			echo '<p>'. __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
-		}
+		$groups = new Football_Pool_Groups;
+		echo $groups->print_group_standing( $group );
 	}
 	
 	/**
@@ -215,13 +187,13 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 		//reasons to fail
 		if ( empty( $this->widget['fields'] ) ) return false;
 		
-		// get the league-options from the database
-		$pool = new Football_Pool_Pool();
-		$leagues = $pool->get_leagues();
-		foreach ( $leagues as $league ) {
-			$options[ $league['leagueId'] ] = $league['leagueName'];
+		// get the groups from the database
+		$g = new Football_Pool_Groups();
+		$groups = $g->get_group_names();
+		foreach ( $groups as $id => $group ) {
+			$options[ $id ] = $group;
 		}
-		$this->widget['fields'][2]['options'] = $options;
+		$this->widget['fields'][1]['options'] = $options;
 		
 		$defaults = array(
 			'id' => '',

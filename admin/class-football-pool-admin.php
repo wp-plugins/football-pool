@@ -56,6 +56,15 @@ class Football_Pool_Admin {
 			'footballpool-shoutbox',
 			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
 		);
+		
+		add_submenu_page(
+			$slug,
+			'Help', 
+			'Help', 
+			'administrator', 
+			'footballpool-help',
+			array( 'Football_Pool_Admin_Help', 'admin' )
+		);
 	}
 	
 	public function add_plugin_settings_link( $links, $file ) {
@@ -157,9 +166,9 @@ class Football_Pool_Admin {
 								);
 	}
 	
-	public function admin_header( $title, $subtitle = '', $addnew = false ) {
+	public function admin_header( $title, $subtitle = '', $addnew = '' ) {
 		$page = Football_Pool_Utils::get_string( 'page' );
-		if ( $addnew ) {
+		if ( $addnew == 'add new' ) {
 			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
 		}
 		echo '<div class="wrap">';
