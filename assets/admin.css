@@ -26,3 +26,6 @@ th.manage-column.column-points { width: 50px; }
 /* matches */
 .matchinfo { width: 400px; }
 input.score { width: 2em; }
+
+table.help th { text-align: left; text-decoration: underline; }
+table.help th, table.help td { padding-right: 1em; }

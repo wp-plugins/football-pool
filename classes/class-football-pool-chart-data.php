@@ -92,13 +92,18 @@ class Football_Pool_Chart_Data {
 	public function bonus_question_pie_chart_data( $question ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$pool = new Football_Pool_Pool;
 		$sql = "SELECT 
 					COUNT(IF(ua.correct>0,1,NULL)) AS bonuscorrect, 
 					COUNT(IF(ua.correct=0,1,NULL)) AS bonuswrong,
 					COUNT(u.id) AS totalusers 
 				FROM {$prefix}bonusquestions_useranswers AS ua 
-				RIGHT OUTER JOIN {$prefix}users AS u
-				ON (u.id = ua.userId and questionId=%d)";
+				RIGHT OUTER JOIN {$wpdb->users} AS u
+					ON (u.ID = ua.userId and questionId = %d) ";
+		if ( $pool->has_leagues ) {
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+		}
 		$sql = $wpdb->prepare( $sql, $question );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
@@ -153,10 +158,10 @@ class Football_Pool_Chart_Data {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
-			$sql = "SELECT h.scoreOrder, h.".$history_data_to_plot.", u.name, h.type 
-					FROM {$prefix}scorehistory h, {$prefix}users u 
-					WHERE u.id=h.userId AND h.userId IN (" . implode(',', $users) . ")
-					ORDER BY scoreDate ASC, type ASC, scoreOrder ASC, userId ASC";
+			$sql = "SELECT h.scoreOrder, h." . $history_data_to_plot . ", u.display_name, h.type 
+					FROM {$prefix}scorehistory h, {$wpdb->users} u 
+					WHERE u.ID = h.userId AND h.userId IN (" . implode(',', $users) . ")
+					ORDER BY h.scoreDate ASC, h.type ASC, h.scoreOrder ASC, h.userId ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			foreach ( $rows as $row ) {
@@ -164,7 +169,7 @@ class Football_Pool_Chart_Data {
 								'match'    => $row['scoreOrder'],
 								'type'     => $row['type'],
 								'value'    => $row[$history_data_to_plot],
-								'username' => $row['name']
+								'username' => $row['display_name']
 								);
 			}
 		}

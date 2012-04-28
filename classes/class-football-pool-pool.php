@@ -359,13 +359,15 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT u.ID AS userId, u.display_name AS name, a.answer, a.correct, a.points
-								FROM {$prefix}bonusquestions_useranswers a 
-								JOIN {$wpdb->users} u
-									ON (a.questionId = %d AND a.userId = u.id)
-								ORDER BY u.display_name ASC",
-							$question
-						);
+		$sql = "SELECT u.ID AS userId, u.display_name AS name, a.answer, a.correct, a.points
+				FROM {$prefix}bonusquestions_useranswers a 
+				RIGHT OUTER JOIN {$wpdb->users} u
+					ON (a.questionId = %d AND a.userId = u.ID) ";
+		if ( $this->has_leagues ) {
+			$sql .= "JOIN {$prefix}league_users lu ON (u.ID = lu.userId) ";
+		}
+		$sql .= "ORDER BY u.display_name ASC";
+		$sql = $wpdb->prepare( $sql, $question );
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		return $rows;
 	}

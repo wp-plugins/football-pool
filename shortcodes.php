@@ -17,7 +17,7 @@ class Football_Pool_Shortcodes {
 	//			  will not show anything when none is given.
 	public function shortcode_group( $atts ) {
 		extract( shortcode_atts( array(
-					'id' => -1,
+					'id' => 1,
 				), $atts ) );
 		
 		$output = '';
@@ -39,9 +39,11 @@ class Football_Pool_Shortcodes {
 	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
 	//				  defaults to 'now'
 	public function shortcode_ranking( $atts ) {
+		$default_num = 5;
+		
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
-					'num' => 5,
+					'num' => $default_num,
 					'date' => 'now',
 				), $atts ) );
 		
@@ -50,6 +52,10 @@ class Football_Pool_Shortcodes {
 		$pool = new Football_Pool_Pool;
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
+		
+		if ( !is_numeric( $num ) || $num <= 0 ) {
+			$num = $default_num;
+		}
 		
 		if ( $date == 'postdate' ) {
 			$score_date = get_the_date( 'Y-m-d H:i' );
