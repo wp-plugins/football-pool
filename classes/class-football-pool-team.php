@@ -51,8 +51,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT 
+		$sql = $wpdb->prepare( "SELECT 
 									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
@@ -61,7 +60,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 									s.id, 
 									s.name, 
 									t.name AS matchtype, 
-									m.nr 
+									m.nr,
+									m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 

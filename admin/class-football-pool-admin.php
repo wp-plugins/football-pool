@@ -56,11 +56,21 @@ class Football_Pool_Admin {
 			'footballpool-shoutbox',
 			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
 		);
+		
+		add_submenu_page(
+			$slug,
+			'Help', 
+			'Help', 
+			'administrator', 
+			'footballpool-help',
+			array( 'Football_Pool_Admin_Help', 'admin' )
+		);
 	}
 	
 	public function add_plugin_settings_link( $links, $file ) {
 		if ( $file == plugin_basename( dirname( FOOTBALLPOOL_ERROR_LOG ) . '/football-pool.php' ) ) {
 			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
+			$links[] = '<a href="admin.php?page=footballpool-help">' . __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 		}
 
 		return $links;
@@ -157,9 +167,9 @@ class Football_Pool_Admin {
 								);
 	}
 	
-	public function admin_header( $title, $subtitle = '', $addnew = false ) {
+	public function admin_header( $title, $subtitle = '', $addnew = '' ) {
 		$page = Football_Pool_Utils::get_string( 'page' );
-		if ( $addnew ) {
+		if ( $addnew == 'add new' ) {
 			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
 		}
 		echo '<div class="wrap">';
@@ -279,13 +289,15 @@ class Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$pool = new Football_Pool_Pool;
+		
 		// 1. empty table
 		$sql  = "TRUNCATE TABLE {$prefix}scorehistory";
 		$wpdb->query( $sql );
 		// 2. check predictions with actual match result (score type = 0)
 		$sql = "INSERT INTO {$prefix}scorehistory
 					(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
-				SELECT 0, m.playDate, m.nr, u.id, 
+				SELECT 0, m.playDate, m.nr, u.ID, 
 								IF (p.hasJoker = 1, 2, 1) AS score,
 								IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL) AS full,
 								IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
@@ -297,10 +309,13 @@ class Football_Pool_Admin {
 										, NULL)
 								) AS toto,
 								0
-				FROM {$prefix}users u
-				LEFT OUTER JOIN {$prefix}matches m ON 1 = 1
+				FROM {$wpdb->users} u ";
+		if ( $pool->has_leagues ) {
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+		}
+		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON 1 = 1
 				LEFT OUTER JOIN {$prefix}predictions p
-					ON (p.matchNr = m.nr AND (p.userId = u.id OR p.userId IS NULL))
+					ON (p.matchNr = m.nr AND (p.userId = u.ID OR p.userId IS NULL))
 				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL";
 		$wpdb->query( $sql );
 		// 3. update score for matches
@@ -315,12 +330,15 @@ class Football_Pool_Admin {
 		$sql = "INSERT INTO {$prefix}scorehistory 
 					(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
 				SELECT 
-					1, q.scoreDate, q.id, u.id, (IF (a.points <> 0, a.points, q.points) * IFNULL(a.correct, 0)), NULL, NULL, 0 
-				FROM {$prefix}users u 
-				LEFT OUTER JOIN {$prefix}bonusquestions q
+					1, q.scoreDate, q.id, u.ID, (IF (a.points <> 0, a.points, q.points) * IFNULL(a.correct, 0)), NULL, NULL, 0 
+				FROM {$wpdb->users} u ";
+		if ( $pool->has_leagues ) {
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+		}
+		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
 					ON (1=1)
 				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-					ON (a.questionId = q.id AND (a.userId = u.id OR a.userId IS NULL))
+					ON (a.questionId = q.id AND (a.userId = u.ID OR a.userId IS NULL))
 				WHERE q.scoreDate IS NOT NULL";
 		$wpdb->query( $sql );
 		// 5. update score incrementally
@@ -338,20 +356,19 @@ class Football_Pool_Admin {
 		$users = get_users( '' );
 		
 		foreach ( $users as $user ) {
-			$sql = $wpdb->prepare( "
-									SELECT * FROM {$prefix}scorehistory 
+			$sql = $wpdb->prepare( "SELECT * FROM {$prefix}scorehistory 
 									WHERE userId=%d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
 									$user->ID
 							);
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId=%d", $user->ID );
 			$wpdb->query( $sql );
 			
 			$score = 0;
 			foreach ( $rows as $row ) {
 				$score += $row['score'];
-				$sql = $wpdb->prepare( "
-										INSERT INTO {$prefix}scorehistory 
+				$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
 											(type, scoreDate, scoreOrder, userId, score, full, toto, totalScore, ranking) 
 										VALUES (%d, %s, %d, %d, %d, %d, %d, %d, 0)",
 										$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
@@ -370,8 +387,7 @@ class Football_Pool_Admin {
 			$rows2 = $wpdb->get_results( $sql, ARRAY_A );
 			$rank = 1;
 			foreach ( $rows2 as $row2 ) {
-				$sql = $wpdb->prepare( "
-										UPDATE {$prefix}scorehistory SET ranking=%d 
+				$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking=%d 
 										WHERE userId=%d AND type=%d AND scoreDate=%s",
 										$rank++,
 										$row2['userId'],

@@ -18,6 +18,8 @@ class Football_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$action = empty( $action ) ? 'install' : $action;
+		
 		// install custom tables in database
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
 		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
@@ -74,6 +76,7 @@ class Football_Pool {
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
+		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -111,6 +114,7 @@ class Football_Pool {
 		delete_option( 'footballpool_db_version' );
 		delete_option( 'footballpool_shoutbox_max_chars' );
 		delete_option( 'footballpool_hide_admin_bar' );
+		//delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -311,7 +315,7 @@ class Football_Pool {
 
 			if ( $user->ID == $current_user->ID ) {
 				$league = get_the_author_meta( 'footballpool_league', $user->ID );
-				if ( $league > 1 ) {
+				if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 					$league = $pool->leagues[$league]['leagueName'];
 				} else {
 					$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -325,7 +329,7 @@ class Football_Pool {
 		if ( current_user_can( 'administrator' ) ) {
 			$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			
-			if ( $league > 1 ) {
+			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 				$league = $pool->leagues[$league]['leagueName'];
 			} else {
 				$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );

@@ -118,29 +118,30 @@ class Football_Pool_Statistics {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT
-									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
-									p.homeScore, p.awayScore, p.hasJoker, u.id AS userId, l.id AS leagueId, 
-									u.name AS userName
-								FROM {$prefix}matches m 
-								LEFT OUTER JOIN {$prefix}predictions p 
-									ON (p.matchNr = m.nr AND m.nr = %d) 
-								RIGHT OUTER JOIN {$prefix}users u 
-									ON (u.id = p.userId)
-								JOIN {$prefix}league_users lu 
-									ON (u.id = lu.userId)
-								JOIN {$prefix}leagues l 
-									ON (l.id = lu.leagueId)
-								ORDER BY u.name ASC",
-							$match_info['nr']
-						);
-			
+		$pool = new Football_Pool_Pool;
+		
+		$sql = "SELECT
+					UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
+					p.homeScore, p.awayScore, p.hasJoker, u.id AS userId, ";
+		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
+		$sql .= "	u.display_name AS userName
+				FROM {$prefix}matches m 
+				LEFT OUTER JOIN {$prefix}predictions p 
+					ON (p.matchNr = m.nr AND m.nr = %d) 
+				RIGHT OUTER JOIN {$wpdb->users} u 
+					ON (u.id = p.userId) ";
+		if ( $pool->has_leagues ) {
+			$sql .= "JOIN {$prefix}league_users lu 
+						ON (u.id = lu.userId)
+					JOIN {$prefix}leagues l 
+						ON (l.id = lu.leagueId) ";
+		}
+		$sql .= "ORDER BY u.display_name ASC";
+		$sql = $wpdb->prepare( $sql, $match_info['nr'] );
+		
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		$output = '';
 		if ( count( $rows ) > 0 ) {
-			$pool = new Football_Pool_Pool;
-			
 			$output .= '<table class="matchinfo statistics">';
 			$output .= sprintf( '<tr><th class="username">%s</th>
 									<th colspan="4">%s</th><th>%s</th></tr>',
@@ -156,12 +157,12 @@ class Football_Pool_Statistics {
 									$row['userId'],
 									$row['userName']
 							);
-				$output .= sprintf( '<td class="home">%d</td><td style="text-align: center;">-</td><td class="away">%d</td>',
+				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',
 									$row['homeScore'],
 									$row['awayScore']
 							);
 				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
-									($row['hasJoker'] == 1 ? 'joker' : 'nojoker'));
+									( $row['hasJoker'] == 1 ? 'joker' : 'nojoker' ) );
 				$score = $pool->calc_score(
 									$match_info['matchHomeScore'], 
 									$match_info['matchAwayScore'], 

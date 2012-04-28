@@ -136,7 +136,7 @@ class Football_Pool_Ranking_Widget extends WP_Widget {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		$rows = $pool->get_pool_ranking_for_box( $league, $num_users );
+		$rows = $pool->get_pool_ranking_limited( $league, $num_users );
 		if ( count( $rows ) > 0 ) {
 			$i = 1;
 			echo '<table class="poolranking">';

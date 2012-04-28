@@ -3,7 +3,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
+		self::admin_header( __( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Pool toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.'));
 		
 		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -98,7 +98,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'league', '' ),
-					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' )
+					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' ),
+					array( 'text', __( 'pool nr', FOOTBALLPOOL_TEXT_DOMAIN ), 'nr', '' ),
 				);
 		
 		$rows = array();
@@ -106,7 +107,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 			$rows[] = array(
 						$league['name'], 
 						$league['image'], 
-						$league['id']
+						$league['id'], 
+						$league['id'],
 					);
 		}
 		

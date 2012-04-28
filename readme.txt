@@ -59,18 +59,19 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 
 = I don't see my blog users as players of the pool. =
 
-Go to the WordPress Admin » Users and check if these users are added in a league. Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league the users in that league must be placed in another league.
+Go to the WordPress Admin &raquo; Users and check if these users are added in a league. Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 
 == Screenshots ==
 1. Matches in the tournament
 2. Score charts of multiple players
 3. Admin Screen: change match outcomes
 4. Group rankings
+5. Using the ranking shortcode in a post
 
 == Changelog ==
 
 = 1.1.5 =
-* Bug fixed: playDate index not found on teams page.
+* Bug fixed: playDate index not found on the teams page.
 
 = 1.1.4 =
 * New version of Highcharts javascript library. Did a small (cosmetic) change in the line charts.

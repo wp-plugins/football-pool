@@ -123,7 +123,8 @@ class Football_Pool_Groups {
 									s.id AS stadiumId, 
 									s.name AS stadiumName, 
 									t.name AS matchtype, 
-									m.nr 
+									m.nr,
+									m.playDate
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
@@ -212,6 +213,63 @@ class Football_Pool_Groups {
 				WHERE t.groupId = g.id AND t.id > 0
 				ORDER BY g.name ASC, t.groupOrder ASC, t.id ASC";
 		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+	
+	public function print_group_standing( $group_id ) {
+		$output = '';
+		$teams = new Football_Pool_Teams;
+		$team_names = $teams->team_names;
+
+		$groups = new Football_Pool_Groups;
+		$group_names = $groups->get_group_names();
+
+		$ranking = $groups->get_ranking_array();
+
+		foreach ( $ranking as $group => $rank ) {
+			if ( $group_id == '' || $group_id == $group ) {
+				$output .= sprintf( '<div class="ranking"><h2>%s</h2>', $group_names[$group] );
+				$output .= '<table class="ranking">
+								<thead>
+									<tr>
+										<th class="team"></th>
+										<th class="plays"></th>
+										<th class="wins">w</th>
+										<th class="draws">d</th>
+										<th class="losses">l</th>
+										<th class="points"></th>
+										<th class="goals"></th>
+									</tr>
+								</thead>
+								<tbody>';
+				$teampage = Football_Pool::get_page_link( 'teams' );
+				foreach ( $rank as $teamranking ) {
+					$output .= sprintf( '
+									<tr>
+										<td class="team"><a href="%s?team=%d">%s</a></td>
+										<td class="plays">%d</td>
+										<td class="wins">%d</td>
+										<td class="draws">%d</td>
+										<td class="losses">%d</td>
+										<td class="points">%d</td>
+										<td class="goals">(%d-%d)</td>
+									</tr>',
+									$teampage,
+									$teamranking['team'],
+									$team_names[$teamranking['team']],
+									$teamranking['plays'],
+									$teamranking['wins'],
+									$teamranking['draws'],
+									$teamranking['losses'],
+									$teamranking['points'],
+									$teamranking['for'],
+									$teamranking['against']
+								);
+				}
+				$output .= '</tbody></table></div>';
+			}
+		}
+		
+		return $output;
 	}
 }
 ?>

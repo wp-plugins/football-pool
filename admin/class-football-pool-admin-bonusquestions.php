@@ -3,7 +3,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
+		self::admin_header( __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Bonusvragen toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.') );
 		self::intro( __( 'Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		//self::help( 'points', __( 'Points', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'Set the award for each question.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -67,12 +67,13 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '<form action="" method="post">';
 			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
+			$questiondate = new DateTime( $question['answerBeforeDate'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
 			echo '<h3>', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
 			echo '<p>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
 			echo '<span style="font-size: 75%">', $question['points'], ' ', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 
-						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $question['answerBeforeDate'], '</span></p>';
+						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
 			echo '<table class="widefat">';
 			echo '<thead><tr>
@@ -124,7 +125,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function edit( $id ) {
-		$exampledate = date( 'Y-m-d 18:00', time() + ( 14*24*60*60 ) );
+		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 		$values = array(
 						'question' => '',
 						'points' => '',
@@ -138,6 +139,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		if ( $question ) {
 			$values = $question;
 		}
+		
 		$cols = array(
 					array( 'text', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'Aantal punten dat een speler krijgt voor het juist beantwoorden van de vraag.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
@@ -293,8 +295,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, -1 );
 			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
-				$sql = $wpdb->prepare( "
-										UPDATE {$prefix}bonusquestions_useranswers 
+				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
 											SET correct=%d, 
 												points=%d 
 											WHERE userId=%d AND questionId=%d", 

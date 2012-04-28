@@ -4,6 +4,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	
 	public function admin() {
 		$options = array(
+						//array( 'text', __( 'Verwijder data bij deïnstallatie', FOOTBALLPOOL_TEXT_DOMAIN ), 'remove_data_on_uninstall', __( '', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'text', __( 'Webmaster', FOOTBALLPOOL_TEXT_DOMAIN ), 'webmaster', __( 'Deze waarde wordt gebruikt voor de shortcode [webmaster].', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'text', __( 'Inleg', FOOTBALLPOOL_TEXT_DOMAIN ), 'money', __( 'Als je voor geld speelt, dan is dit het bedrag dat spelers moeten betalen. De shortcode [money] geeft deze waarde weer in de content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'text', __( 'Bank', FOOTBALLPOOL_TEXT_DOMAIN ), 'bank', __( 'Als je voor geld speelt, dan is dit de persoon waar het geld moet worden betaald. De shortcode [bank] geeft deze waarde weer in de content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
