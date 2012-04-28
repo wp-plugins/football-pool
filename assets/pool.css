@@ -76,6 +76,7 @@ table.ranking td.plays, table.ranking td.points { font-size: 90%; }
 /* group ranking in a widget */
 li.widget div.ranking { float: none; border: none; width: auto; }
 li.widget div.ranking h2 { display: none; }
+li.widget div.ranking th { font-size: 80%; }
 
 /* group ranking as shortcode */
 div.entry div.ranking { float: none; }
