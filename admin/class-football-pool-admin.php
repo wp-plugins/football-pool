@@ -311,34 +311,34 @@ class Football_Pool_Admin {
 								0
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 		}
-		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON 1 = 1
+		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}predictions p
-					ON (p.matchNr = m.nr AND (p.userId = u.ID OR p.userId IS NULL))
+					ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
 				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL";
 		$wpdb->query( $sql );
 		// 3. update score for matches
 		$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 		$toto = Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		$sql = "UPDATE {$prefix}scorehistory 
-				SET score = score * (full * " . $full . " + toto * " . $toto . ") 
+				SET score = score * ( full * " . $full . " + toto * " . $toto . " ) 
 				WHERE type = 0";
 		$wpdb->query( $sql );
 		// 4. add bonusquestion scores (score type = 1)
 		//    make sure to take the userpoints into account (we can set an alternate score for an individual user in the admin)
 		$sql = "INSERT INTO {$prefix}scorehistory 
-					(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
+					( type, scoreDate, scoreOrder, userId, score, full, toto, ranking ) 
 				SELECT 
-					1, q.scoreDate, q.id, u.ID, (IF (a.points <> 0, a.points, q.points) * IFNULL(a.correct, 0)), NULL, NULL, 0 
+					1, q.scoreDate, q.id, u.ID, ( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, 0 
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
-					ON (1=1)
+					ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-					ON (a.questionId = q.id AND (a.userId = u.ID OR a.userId IS NULL))
+					ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
 				WHERE q.scoreDate IS NOT NULL";
 		$wpdb->query( $sql );
 		// 5. update score incrementally
@@ -357,20 +357,20 @@ class Football_Pool_Admin {
 		
 		foreach ( $users as $user ) {
 			$sql = $wpdb->prepare( "SELECT * FROM {$prefix}scorehistory 
-									WHERE userId=%d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
+									WHERE userId = %d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
 									$user->ID
 							);
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId=%d", $user->ID );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user->ID );
 			$wpdb->query( $sql );
 			
 			$score = 0;
 			foreach ( $rows as $row ) {
 				$score += $row['score'];
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
-											(type, scoreDate, scoreOrder, userId, score, full, toto, totalScore, ranking) 
-										VALUES (%d, %s, %d, %d, %d, %d, %d, %d, 0)",
+											( type, scoreDate, scoreOrder, userId, score, full, toto, totalScore, ranking ) 
+										VALUES ( %d, %s, %d, %d, %d, %d, %d, %d, 0 )",
 										$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
 										$row['score'], $row['full'], $row['toto'], $score
 								);
@@ -387,8 +387,8 @@ class Football_Pool_Admin {
 			$rows2 = $wpdb->get_results( $sql, ARRAY_A );
 			$rank = 1;
 			foreach ( $rows2 as $row2 ) {
-				$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking=%d 
-										WHERE userId=%d AND type=%d AND scoreDate=%s",
+				$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
+										WHERE userId = %d AND type = %d AND scoreDate = %s",
 										$rank++,
 										$row2['userId'],
 										$row["type"],
@@ -398,6 +398,6 @@ class Football_Pool_Admin {
 			}
 		}
 	}
-	
+
 }
 ?>

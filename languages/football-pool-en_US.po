@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 1.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-04-22 12:13:45+00:00\n"
-"PO-Revision-Date: 2012-04-22 14:17+0100\n"
+"POT-Creation-Date: 2012-04-30 19:52:21+00:00\n"
+"PO-Revision-Date: 2012-04-30 21:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: Antoine Hurkmans <antoine.hurkmans@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -66,8 +66,8 @@ msgstr "question"
 #: admin/class-football-pool-admin-bonusquestions.php:81
 #: admin/class-football-pool-admin-bonusquestions.php:148
 #: admin/class-football-pool-admin-bonusquestions.php:169
-#: classes/class-football-pool-pool.php:301
-#: classes/class-football-pool-pool.php:332
+#: classes/class-football-pool-pool.php:311
+#: classes/class-football-pool-pool.php:342
 #: classes/class-football-pool-statistics.php:83
 #: classes/class-football-pool-statistics.php:103
 msgid "antwoord"
@@ -77,8 +77,8 @@ msgstr "answer"
 #: admin/class-football-pool-admin-bonusquestions.php:84
 #: admin/class-football-pool-admin-bonusquestions.php:145
 #: admin/class-football-pool-admin-bonusquestions.php:166
-#: classes/class-football-pool-pool.php:277
-#: classes/class-football-pool-pool.php:323
+#: classes/class-football-pool-pool.php:287
+#: classes/class-football-pool-pool.php:333
 #: classes/class-football-pool-statistics.php:85
 msgid "punten"
 msgstr "points"
@@ -86,7 +86,7 @@ msgstr "points"
 #: admin/class-football-pool-admin-bonusquestions.php:76
 #: admin/class-football-pool-admin-bonusquestions.php:146
 #: admin/class-football-pool-admin-bonusquestions.php:167
-#: classes/class-football-pool-pool.php:286
+#: classes/class-football-pool-pool.php:296
 msgid "beantwoorden vóór"
 msgstr "answer before"
 
@@ -145,7 +145,7 @@ msgid "bv."
 msgstr "e.g."
 
 #: admin/class-football-pool-admin-bonusquestions.php:184
-#: admin/class-football-pool-admin-leagues.php:113
+#: admin/class-football-pool-admin-leagues.php:115
 #: admin/class-football-pool-admin-shoutbox.php:96
 msgid "Delete"
 msgstr "Delete"
@@ -171,7 +171,7 @@ msgid "Team Positie"
 msgstr "Team Position"
 
 #: admin/class-football-pool-admin-groups.php:13
-#: admin/class-football-pool-admin-options.php:27
+#: admin/class-football-pool-admin-options.php:32
 msgid "Wijzigingen opgeslagen."
 msgstr "Changes saved."
 
@@ -182,6 +182,14 @@ msgstr "The first column contains a value that can be used for the ranking of te
 #: admin/class-football-pool-admin-groups.php:17
 msgid "De startwaarde is de uitgangspositie bij de start van het toernooi. De sortering wordt alleen gebruikt op de poule-pagina"
 msgstr "The start value is the position at the start of the tournament."
+
+#: admin/class-football-pool-admin-help.php:6
+msgid "Shortcodes"
+msgstr "Shortcodes"
+
+#: admin/class-football-pool-admin-help.php:61
+msgid "Leagues"
+msgstr "Leagues"
 
 #: admin/class-football-pool-admin-leagues.php:6
 msgid "Pools"
@@ -216,6 +224,10 @@ msgstr "image"
 #: admin/class-football-pool-admin-leagues.php:56
 msgid "Afbeeldingen moeten worden geplaatst in \"plugin-folder/assets\"."
 msgstr "Images must be saved in the \"plugin-folder/assets\" folder."
+
+#: admin/class-football-pool-admin-leagues.php:102
+msgid "pool nr"
+msgstr "league nr"
 
 #: admin/class-football-pool-admin-options.php:8
 msgid "Webmaster"
@@ -286,8 +298,8 @@ msgid "Gebruik Pools"
 msgstr "Use Leagues"
 
 #: admin/class-football-pool-admin-options.php:16
-msgid "Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik bv. voor betalende spelers en niet betalende spelers, of voor verschillende afdelingen."
-msgstr "Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying players, or different departments."
+msgid "Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik bv. voor betalende spelers en niet betalende spelers, of voor verschillende afdelingen. Let op: als je deze waarde wijzigt en er zijn al punten toegekend, dan wordt de standentabel niet automatisch bijgewerkt met de (eventueel) gewijzigde spelers in de pool. Gebruik hiervoor de knop op deze pagina."
+msgstr "Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying players, or different departments. Important: if you change this value when there are allready points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that."
 
 #: admin/class-football-pool-admin-options.php:17
 msgid "Admin Bar verbergen voor subscribers"
@@ -301,7 +313,11 @@ msgstr "After logging in a subscriber may see an Admin Bar on top of your blog (
 msgid "Plugin Instelllingen"
 msgstr "Plugin Options"
 
-#: admin/class-football-pool-admin-options.php:30
+#: admin/class-football-pool-admin-options.php:24
+msgid "Scores zijn opnieuw berekend."
+msgstr "Scores recalculated."
+
+#: admin/class-football-pool-admin-options.php:36
 msgid "Als waarden in de velden die gemarkeerd zijn met een asterisk, worden leeggelaten, dan zal de plugin terugvallen op de waarden zoals die bij installatie van de plugin zijn ingesteld."
 msgstr "If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values."
 
@@ -331,7 +347,7 @@ msgstr "now"
 
 #: admin/class-football-pool-admin-shoutbox.php:58
 #: admin/class-football-pool-admin-shoutbox.php:81
-#: classes/class-football-pool-statistics.php:147
+#: classes/class-football-pool-statistics.php:148
 msgid "naam"
 msgstr "name"
 
@@ -345,57 +361,61 @@ msgstr "message"
 msgid "tijd"
 msgstr "time"
 
-#: admin/class-football-pool-admin.php:63
+#: admin/class-football-pool-admin.php:72
 msgid "Settings"
 msgstr "Settings"
 
-#: admin/class-football-pool-admin.php:163
+#: admin/class-football-pool-admin.php:73
+msgid "Help"
+msgstr "Help"
+
+#: admin/class-football-pool-admin.php:173
 msgid "Add New"
 msgstr "Add New"
 
-#: admin/class-football-pool-admin.php:222
+#: admin/class-football-pool-admin.php:232
 msgid "no data"
 msgstr "no data"
 
-#: classes/class-football-pool-matches.php:290
-#: classes/class-football-pool-statistics.php:149
+#: classes/class-football-pool-matches.php:292
+#: classes/class-football-pool-statistics.php:150
 msgid "score"
 msgstr "score"
 
-#: classes/class-football-pool-matches.php:311
+#: classes/class-football-pool-matches.php:313
 msgid "bekijk de voorspellingen van andere spelers"
 msgstr "view other users predictions"
 
-#: classes/class-football-pool-matches.php:354
+#: classes/class-football-pool-matches.php:356
 msgid "joker inzetten?"
 msgstr "use your joker?"
 
-#: classes/class-football-pool-pool.php:110
+#: classes/class-football-pool-pool.php:119
 msgid "Nog geen resultaten. Hieronder zie je een lijst met alle spelers."
 msgstr "No results yet. Below is a list of all players."
 
-#: classes/class-football-pool-pool.php:115
+#: classes/class-football-pool-pool.php:124
 msgid "Er hebben zich (nog) geen spelers geregistreerd."
 msgstr "No players are registered in this pool (yet)."
 
-#: classes/class-football-pool-pool.php:282
+#: classes/class-football-pool-pool.php:292
 msgid "Let op:"
 msgstr "Important:"
 
-#: classes/class-football-pool-pool.php:285
+#: classes/class-football-pool-pool.php:295
 msgid "beantwoord deze vraag vóór deze datum"
 msgstr "answer this question before this date"
 
-#: classes/class-football-pool-pool.php:295
+#: classes/class-football-pool-pool.php:305
 msgid "je kan deze vraag niet meer beantwoorden"
 msgstr "it's is no longer possible to answer this question"
 
-#: classes/class-football-pool-pool.php:296
+#: classes/class-football-pool-pool.php:306
 msgid "gesloten op"
 msgstr "closed on"
 
-#: classes/class-football-pool-pool.php:327
-#: classes/class-football-pool-pool.php:329
+#: classes/class-football-pool-pool.php:337
+#: classes/class-football-pool-pool.php:339
 msgid "bekijk antwoorden van andere spelers"
 msgstr "view other users answers"
 
@@ -414,7 +434,7 @@ msgstr "This data is not (yet) available."
 msgid "antwoord is goed"
 msgstr "answer correct"
 
-#: classes/class-football-pool-statistics.php:148
+#: classes/class-football-pool-statistics.php:149
 msgid "voorspelling"
 msgstr "prediction"
 
@@ -575,11 +595,11 @@ msgstr "before the tournament starts"
 msgid " geleden zijn we los gegaan."
 msgstr "ago the tournament started."
 
-#: pages/class-football-pool-groups-page.php:62
+#: pages/class-football-pool-groups-page.php:12
 msgid "wedstrijden in de voorrondes"
 msgstr "matches in the group stage"
 
-#: pages/class-football-pool-groups-page.php:69
+#: pages/class-football-pool-groups-page.php:19
 msgid "bekijk alle poules"
 msgstr "view all groups"
 
@@ -752,14 +772,23 @@ msgstr "Only the matches and bonus questions that can't be changed are shown her
 msgid "Geen speler geselecteerd."
 msgstr "No player selected."
 
-#: widgets/widget-football-pool-lastgames.php:141
-msgid "bekijk voorspellingen"
-msgstr "view predictions"
-
+#: shortcodes.php:85
 #: widgets/widget-football-pool-lastgames.php:146
 #: widgets/widget-football-pool-ranking.php:153
 msgid "Geen wedstrijdgegevens beschikbaar."
 msgstr "No match data available."
+
+#: widgets/widget-football-pool-group.php:209
+msgid "breed"
+msgstr "wide"
+
+#: widgets/widget-football-pool-group.php:210
+msgid "smal"
+msgstr "small"
+
+#: widgets/widget-football-pool-lastgames.php:141
+msgid "bekijk voorspellingen"
+msgstr "view predictions"
 
 #: widgets/widget-football-pool-logout.php:118
 msgid "Uitloggen"
@@ -819,9 +848,6 @@ msgstr "football, pool, game, prediction, competition, euro2012, uefa2012, fifa 
 
 #~ msgid "football soccer UEFA2012 pool plugin"
 #~ msgstr "football soccer UEFA2012 pool plugin"
-
-#~ msgid "league"
-#~ msgstr "league"
 
 #~ msgid "image"
 #~ msgstr "image"
