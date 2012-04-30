@@ -73,7 +73,8 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 = 1.2 =
 * New shortcode [fp-ranking] in case you don't want to use the ranking page or widget, but only want to display the ranking in a post. For complete help on this and other shortcodes, see the new help page in the admin section.
 * New shortcode [fp-group] if you want to include the standing of a group in a page or post.
-* New Group Widget that displays the standing for a group in a sidebar.
+* New Group Widget that displays the standing for teams in the Group Stage in a sidebar.
+* New version of the Highcharts javascript library (2.2.2).
 * Added a helpscreen to the admin.
 * Bug fixed: when not using leagues the plugin did not properly show WordPress users as players in the pool.
 
@@ -81,7 +82,7 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 * Bug fixed: playDate index not found on the teams page.
 
 = 1.1.4 =
-* New version of Highcharts javascript library. Did a small (cosmetic) change in the line charts.
+* New version of Highcharts javascript library (2.2.1). Did a small (cosmetic) change in the line charts.
 * Ranking page en ranking widget now show all users. Even the ones that registered for the pool after the first match was played. In previous versions the new user had to wait for an admin to save a match or bonusquestion to recalculate the points table.
 * Bug fixed: a timezone problem in the display of match times. (Thanks Okoth1)
 * Bug fixed: the admin screen for bonusquestions not displaying user answers.
