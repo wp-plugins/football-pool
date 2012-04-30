@@ -4,7 +4,7 @@ Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.1.5
+Stable tag: 1.2
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
