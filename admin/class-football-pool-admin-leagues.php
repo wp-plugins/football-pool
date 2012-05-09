@@ -94,6 +94,11 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	}
 	
 	private function view() {
+		$pool = new Football_Pool_Pool();
+		if ( ! $pool->has_leagues ) {
+			self::notice( __( '<strong>Let op:</strong> op dit moment maak je nog geen gebruik van pools. Dit komt omdat je nog geen pools hebt aangemaakt, of omdat je deze optie niet aan staat in de <a href="?page=footballpool-options">plugin opties</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+		}
+		
 		$leagues = self::get_leagues();
 		
 		$cols = array(
@@ -131,7 +136,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		if ( is_array( $league_id ) ) {
 			foreach ( $league_id as $id ) self::delete_league( $id );
 		} else {
-			self::delete_league($league_id);
+			self::delete_league( $league_id );
 		}
 	}
 	

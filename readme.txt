@@ -9,9 +9,7 @@ Stable tag: 1.2
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
 == Description ==
-Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders. If you allready 
-have users in your blog before you installed the plugin, make sure you fill in the extra user meta 
-that comes with this plugin.
+Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
 Use your own theme (but I guess you have to do some styling to get it right) and add the widgets 
 that come with this plugin. I used Simply Works Core myself with my own custom skin and background-image (included in the assets folder). 

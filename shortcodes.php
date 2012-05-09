@@ -10,9 +10,34 @@ add_shortcode( 'fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullp
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
+add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
 
 class Football_Pool_Shortcodes {
-	//[fp-group] 
+	//[fp-register]
+	//		title	: title parameter for the <a href>
+	public function shortcode_register_link( $atts, $content = '' ) {
+		extract( shortcode_atts( array(
+					'title' => '',
+					'new' => '0',
+				), $atts ) );
+		
+		$title = ( $title != '' ) ? sprintf( ' title="%s"', $title ) : '';
+		$site_url = get_site_url();
+		$redirect = get_permalink();
+		$redirect = ( $redirect != false ) ? sprintf( '&amp;redirect_to=%s', $redirect ) : '';
+		$content = ( $content > '' ) ? $content : __( 'inschrijven', FOOTBALLPOOL_TEXT_DOMAIN );
+		$target = ( $new == '1' ) ? ' target="_blank"' : '';
+		
+		return sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
+						, $site_url
+						, $redirect
+						, $title
+						, $target
+						, $content
+				);
+	}
+	
+	//[fp-group]
 	//		id	: show the standing for the group with this id, defaults to a non-existing group and thus
 	//			  will not show anything when none is given.
 	public function shortcode_group( $atts ) {

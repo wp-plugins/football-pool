@@ -38,9 +38,13 @@ class Football_Pool_Chart_Data {
 					INNER JOIN {$wpdb->users} u ON (u.ID=s.userId) ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			} else {
+				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
 			}
-			$sql .= "WHERE s.type = 0 AND s.userId IN (" . implode(',', $users) . ")
-					GROUP BY s.userId";
+			$sql .= "WHERE s.type = 0 AND s.userId IN (" . implode(',', $users) . ") ";
+			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql .= "GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			foreach ( $rows as $row ) {
 				$data[ $row['username'] ] = array(
@@ -69,12 +73,16 @@ class Football_Pool_Chart_Data {
 						COUNT(s.scoreOrder) AS bonustotal,
 						u.display_name AS username
 					FROM {$prefix}scorehistory s
-					INNER JOIN {$wpdb->users} u ON (u.id=s.userId) ";
+					INNER JOIN {$wpdb->users} u ON (u.ID=s.userId) ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			} else {
+				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
 			}
-			$sql .= "WHERE s.type = 1 AND s.userId IN (" . implode(',', $users) . ")
-					GROUP BY s.userId";
+			$sql .= "WHERE s.type = 1 AND s.userId IN (" . implode(',', $users) . ") ";
+			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql .= "GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			foreach ( $rows as $row ) {
@@ -97,12 +105,16 @@ class Football_Pool_Chart_Data {
 		$sql = "SELECT 
 					COUNT(IF(ua.correct>0,1,NULL)) AS bonuscorrect, 
 					COUNT(IF(ua.correct=0,1,NULL)) AS bonuswrong,
-					COUNT(u.id) AS totalusers 
+					COUNT(u.ID) AS totalusers 
 				FROM {$prefix}bonusquestions_useranswers AS ua 
 				RIGHT OUTER JOIN {$wpdb->users} AS u
-					ON (u.ID = ua.userId and questionId = %d) ";
+					ON (u.ID = ua.userId AND questionId = %d) ";
 		if ( $pool->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql = $wpdb->prepare( $sql, $question );
 		$row = $wpdb->get_row( $sql, ARRAY_A );

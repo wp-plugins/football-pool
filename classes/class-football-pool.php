@@ -76,6 +76,7 @@ class Football_Pool {
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_DEFAULT_LEAGUE );
 		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
@@ -114,6 +115,8 @@ class Football_Pool {
 		delete_option( 'footballpool_db_version' );
 		delete_option( 'footballpool_shoutbox_max_chars' );
 		delete_option( 'footballpool_hide_admin_bar' );
+		delete_option( 'footballpool_default_league_new_user' );
+		
 		//delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
@@ -228,26 +231,22 @@ class Football_Pool {
 		self::update_user_custom_tables( $user_id, FOOTBALLPOOL_LEAGUE_DEFAULT );
 	}
 	
-	private function update_user_custom_tables( $user_id, $league ) {
+	private function update_user_custom_tables( $user_id, $league_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// add user to custom tables
 		$user = get_userdata( $user_id );
 		// display_name is only added for easy debugging
-		$sql = $wpdb->prepare( "INSERT INTO {$prefix}users (id, name, wantsLeague) 
-								VALUES (%d, %s, %d)
-								ON DUPLICATE KEY UPDATE name=%s", 
-							$user_id, $user->display_name, $league, $user->display_name
-					);
+		$sql = $wpdb->prepare( "INSERT INTO {$prefix}users ( id, name, wantsLeague ) 
+								VALUES ( %d, %s, %d )
+								ON DUPLICATE KEY UPDATE name = %s", 
+							$user_id, $user->display_name, $league_id, $user->display_name
+						);
 		$wpdb->query( $sql );
-		// @todo: fix hardcoded free league
-		$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users (userId, leagueId) 
-								VALUES (%d, %d)
-								ON DUPLICATE KEY UPDATE leagueId=%d", 
-								$user_id, $league, $league
-							);
-		$wpdb->query( $sql );
+		
+		$pool = new Football_Pool_Pool();
+		$pool->update_league_for_user( $user_id, $league_id );
 	}
 	
 	public function registration_form_extra_fields() {

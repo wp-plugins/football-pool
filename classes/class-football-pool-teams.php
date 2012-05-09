@@ -69,7 +69,7 @@ class Football_Pool_Teams {
 	/* return IMG tag for national flag */
 	public function flag_image( $id ) {
 		if ( is_array( $this->team_flags ) && isset( $this->team_flags[$id] ) ) {
-			return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $this->team_flags[$id] . '" title="' . $this->team_names[$id] . '" alt="' . __( 'nationale vlag van ', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->team_names[$id] . '" class="flag" />';
+			return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $this->team_flags[$id] . '" title="' . $this->team_names[$id] . '" alt="' . __( 'nationale vlag van', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->team_names[$id] . '" class="flag" />';
 		} else {
 			return '';
 		}

@@ -46,11 +46,15 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, ";
-		$sql .= ( $this->has_leagues ? "l.leagueId, " : "" );
+		$sql .= ( $this->has_leagues ? "lu.leagueId, " : "" );
 		$sql .= "0 AS points, 0 AS full, 0 AS toto, 0 AS bonus FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users l 
-						ON (u.ID = l.userId" . ( $league > 1 ? ' AND l.leagueId = ' . $league : '' ) . ") ";
+			$sql .= "INNER JOIN {$prefix}league_users lu 
+						ON (u.ID = lu.userId" . ( $league > 1 ? ' AND lu.leagueId = ' . $league : '' ) . ") ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql .= "ORDER BY userName ASC";
 		return $wpdb->get_results( $sql, ARRAY_A );
@@ -60,28 +64,32 @@ class Football_Pool_Pool {
 	public function get_ranking_from_score_history( $league, $score_date = '', $type = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT u.id AS userId, u.display_name AS userName, u.user_email AS email, " 
-			. ( $this->has_leagues ? "l.leagueId, " : "" ) 
+		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
+			. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
 			. "		COALESCE(MAX(s.totalScore), 0) AS points, 
 					COUNT(IF(full=1,1,NULL)) AS full, 
 					COUNT(IF(toto=1,1,NULL)) AS toto,
 					COUNT(IF(type=1 AND score>0,1,NULL)) AS bonus 
 				FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users l 
+			$sql .= "INNER JOIN {$prefix}league_users lu 
 						ON (
-								u.id=l.userId
-								AND (" . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1=1 OR " : "") . "l.leagueId = %d)
+							u.ID=lu.userId
+							AND (" . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1=1 OR " : "") . "lu.leagueId = %d)
 							) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					(
-						s.userId=u.id
+						s.userId=u.ID
 						AND (" . ($score_date == '' ? "1=1 OR " : "") . "s.scoreDate <= %s)
 						AND (" . ($type == 0 ? "1=1 OR " : "") . "s.type = %d)
-					) 
-				GROUP BY u.ID
-				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "l.leagueId ASC, " : "" ) . "LOWER(u.display_name) ASC";
+					) ";
+		if ( ! $this->has_leagues ) $sql .= "WHERE ( leagueId <> 0 OR leagueId IS NULL ) ";
+		$sql .= "GROUP BY u.ID
+				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER(u.display_name) ASC";
 		
 		if ( $this->has_leagues ) 
 			return $wpdb->prepare( $sql, $league, $score_date, $type );
@@ -188,7 +196,7 @@ class Football_Pool_Pool {
 		return $leagues;
 	}
 	
-	public function leagueFilter( $league = 0, $select = 'league' ) {
+	public function league_filter( $league = 0, $select = 'league' ) {
 		$output = '';
 		
 		if ( $this->has_leagues ) {
@@ -223,6 +231,26 @@ class Football_Pool_Pool {
 			$output .= '</select>';
 		}
 		return $output;
+	}
+	
+	public function update_league_for_user( $user_id, $new_league_id, $old_league = 'update league' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $old_league == 'no update' ) {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+									VALUES ( %d, %d )
+									ON DUPLICATE KEY UPDATE leagueId = leagueId", 
+									$user_id, $new_league_id
+								);
+		} else {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+									VALUES ( %d, %d )
+									ON DUPLICATE KEY UPDATE leagueId = %d", 
+									$user_id, $new_league_id, $new_league_id
+								);
+		}
+		$wpdb->query( $sql );
 	}
 	
 	public function get_bonus_questions( $user = 0 ) {
@@ -364,7 +392,11 @@ class Football_Pool_Pool {
 				RIGHT OUTER JOIN {$wpdb->users} u
 					ON (a.questionId = %d AND a.userId = u.ID) ";
 		if ( $this->has_leagues ) {
-			$sql .= "JOIN {$prefix}league_users lu ON (u.ID = lu.userId) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (u.ID = lu.userId) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";
 		$sql = $wpdb->prepare( $sql, $question );
