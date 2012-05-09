@@ -1,0 +1,366 @@
+
+
+/************************************************
+*	General Settings  			
+************************************************/
+body { 
+    background: #fff;
+}
+
+a {color: #193F18;}
+a:visited {color: #193F18;}
+a:hover {color: #333;}
+a:focus {color: #193F18;}
+a:active {color: #193F18;}
+
+table { 
+border:none;
+}
+
+tr td{
+border-top:none;
+}
+
+#respond { background-color: #ADC347; }
+
+h2.contenttitle, h2, h3, h4, h5, h6 { color: #193F18; }
+h4, h5 { font-weight: bold; }
+
+/************************************************
+*	ON CENTER				
+************************************************/
+#webpage {
+  width: 100%;
+}
+/************************************************
+*	Header  					
+************************************************/
+#header {
+background: none;
+color: #fff;
+}
+#header .wrapper{
+background-color: transparent;
+border: none;
+min-height: 135px;
+}
+
+#headerleft img{
+	margin: 15px 0 5px 7px;
+	}
+	
+#headerleft h1 {
+color:#fff;
+text-align:center;
+}	
+
+#headerleft a {color: #fff; text-decoration:none;}
+#headerleft a:visited {color: #fff;}
+#headerleft a:hover {color: #fff; font-style:italic;}
+#headerleft a:focus {color: #fff;}
+#headerleft a:active {color: #fff;}
+
+#headerleft span{
+color: #ccc;
+}
+
+/************************************************
+*	Navbar      		
+************************************************/
+#navbar {
+	background: none;
+	}
+	
+#navbar .wrapper{
+ background: #193F18;
+ height: 30px;
+ }
+	
+#navbar li a, #navbar li a:link, #navbar li a:visited {
+    background: #193F18;
+	text-transform: uppercase;
+    font-weight: 600;
+}
+
+#navbar li a:hover, #navbar li a:active {
+	background: #fff;
+	color: #193F18; 
+	}
+	
+#navbar li li a:hover, #navbar li li a:active {
+    background: #193F18;
+	margin: 0;
+	padding: 5px 10px 0 10px;
+	height: auto;
+	}
+	
+/************************************************
+*	SubNavbar      	
+************************************************/	
+ #subnav {
+    background: none;
+    border: none;
+	}
+#subnav .wrapper{
+	background: #ADC347;
+}
+
+#subnav li a, #subnav li a:link, #subnav li a:visited {
+	color: #000;
+	background: #ADC347;
+	}
+	
+#subnav li a:hover, #subnav li a:active {
+	background: #fff;
+	color: #193F18;
+	}	
+/************************************************
+*	mainbody		    	
+************************************************/
+
+/************************************************
+*	Content 		
+************************************************/
+#contentarea { 
+	/*border-right:1px solid #ddd;*/
+	width: 788px;
+}
+
+.sticky {
+  background: #EAFC92; 
+ }
+ 
+.edit {
+background-color:#193F18;	
+ }
+
+.contenttitle {
+	color: #193F18;
+}
+.contenttitle a:link, .contenttitle a:visited {text-decoration:none; color: #193F18;}
+.contenttitle a:hover {font-style: italic; color: #193F18;}
+.contenttitle a:focus {font-style: italic; color: #193F18;}
+#contentarea .more-link {
+	background: #193F18;
+}
+
+#contentarea .more-link:hover {
+    background: #333;
+}
+
+a.comment-reply-link {
+	background: #193F18;
+	color: #fff;
+}
+a.comment-reply-link:hover,
+a.comment-reply-link:focus,
+a.comment-reply-link:active {
+	background: #888;
+	color: #fff;
+}
+
+
+/************************************************
+* Author Block
+************************************************/
+#author-bio {
+    background: #EAFC92;
+}
+.commentlist > li.bypostauthor {
+    background-color: #EAFC92;
+}.commentlist > li.bypostauthor:before {
+	content: url(../images/comment-arrow-bypostauthor-ek2012-green.png);
+}
+
+.commentlist .children > li.bypostauthor {  
+	background-color: #fff;
+}
+
+/************************************************
+*	Sidebar 		    	        	        * 
+************************************************/
+#sidebar { width: 200px; }
+
+#sidebar h3, #sidebar h4 {
+	padding: 0 3px;
+	font-weight: bold;
+	font-size: .8em;
+	color: #fff;
+	text-transform: none;
+	background-color: #193F18;
+	}
+#sidebar h3 ul li.widget a, 
+#sidebar h3 ul li.widget a:link, 
+#sidebar h3 ul li.widget a:visited, 
+#sidebar h3 ul li.widget a:hover, 
+#sidebar h3 ul li.widget a:active  {
+	color: #fff;
+}
+
+#sidebar ul {
+margin:0 0 30px;
+padding:0;
+	}
+
+	
+#sidebar ul li li {
+	padding: 0;
+	margin: 0;
+	}
+	
+#sidebar ul li ul li {
+	padding: 0;
+	margin: 0;
+	}
+
+#sidebar ul li.widget {
+	padding-bottom: 5px;
+}
+	
+#sidebar ul li.widget_rss a {
+display:inline;
+border: none
+}
+
+#sidebar ul li a {
+color:#5f5f5f;
+display:block;
+border-bottom: none;
+height:100%;
+margin:0 0;
+text-decoration:none;
+}
+#sidebar ul li a:visited {color: #333;}
+#sidebar ul li a:hover {color: #193F18;}
+#sidebar ul li a:focus {color: #333;}
+#sidebar ul li a:active {color: #333;}
+
+#sidebar tr td { padding-top: 1px; padding-bottom: 1px; }
+
+#sidebar li.widget {
+	padding: 0;
+	border: 1px solid #000;
+	margin-bottom: 15px;
+}
+
+#sidebar li.widget ul {
+	padding: 0 3px;
+}
+
+#sidebar li.widget ul li a {
+	border: none;
+}
+
+#sidebar ul.children {
+margin:0;
+}
+
+#sidebar ul.children li{
+text-indent:15px;
+}
+#sidebar ul.children li ul.children li{
+text-indent:30px;
+}
+
+#sidebar .rss-date { font-size: 70%; float: right; }
+
+#sidebar .widget_rss ul li { clear: both; }
+#sidebar .widget_rss ul li:nth-child(odd) { background: #ADC347; }
+
+#sidebar li.widget_rss ul { padding: 0; }
+#sidebar li.widget_rss ul li { padding: 3px; }
+
+/*#sidebar .widget_recent_comments ul li:nth-child(odd) { background: #ADC347; }*/
+
+/************************************************
+*	Left Sidebar              
+************************************************/
+#l_sidebar {
+    padding: 0 12px 0 0;
+    width: 155px;
+}
+
+/************************************************
+*	Footer      		
+************************************************/
+#footer {
+background: none;
+border: none;
+}
+
+#footer .wrapper{
+  background: #d8b3d4;
+  border: 1px solid #193F18;
+  border-width: 1px 0 0;
+}
+
+.flinks h3 {
+margin: 10px 0 6px 0;
+font-size: 18px;
+line-height: 20px;
+}
+
+.flinks ul li{
+border-bottom: none;
+}
+
+/************************************************
+*	Copyright 
+************************************************/
+#copyright{
+	background: none;
+	color: #bbb;
+	}
+	
+#copyright .wrapper{
+	border: none;
+	background: #193F18;
+	color: #bbb;
+}	
+
+#copyright a { color: #bbb; }
+#copyright a:visited {}
+#copyright a:hover {color: #fff;}
+#copyright a:focus {color: #fff;}
+#copyright a:active {color: #fff;}
+
+/************************************************
+*	Copyright 
+************************************************/
+th.wins, td.wins, th.draws, td.draws, th.losses, td.losses { background-color: #ADC347; }
+th.plays, td.plays, th.points, td.points { background-color: #193F18; color: #ddd; }
+th.team, td.team, th.goals, td.goals { background-color: #ADC347; }
+
+table.poolranking tr.currentuser td, table.poolranking tr.currentuser td a, table.poolranking tr.currentuser td a:visited {
+    color: #193F18;
+    font-weight: bolder;
+}
+
+table.poolranking tr.currentuser {
+    background-color: #ADC347;
+}
+
+#sidebar ol.userselector li.selected {
+    background-color: #ADC347;
+}
+
+.widget.button { 
+	border: 1px solid #ADC347; 
+	padding: 2px 10px; 
+	margin: 0 5px; 
+	float: right; 
+	text-decoration: none; 
+	-moz-border-radius: 5px;
+	border-radius: 5px; 
+	background-color: #ADC347;
+}
+#headerright .widget.button:hover {
+	background-color: #193F18;
+	color: #fff;
+}
+
+td.matchtype { color: #fff; background-color: #193F18; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; text-align: center; }
+td.matchdate { color: #fff; background-color: #ADC347; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
+
+table.statistics th { color: #fff; background-color: #193F18; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
+table.statistics td { border-bottom: 1px solid #ADC347; }
