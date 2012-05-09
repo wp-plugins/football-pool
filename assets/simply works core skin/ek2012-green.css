@@ -364,3 +364,10 @@ td.matchdate { color: #fff; background-color: #ADC347; font-weight: bold; font-s
 
 table.statistics th { color: #fff; background-color: #193F18; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 table.statistics td { border-bottom: 1px solid #ADC347; }
+
+.widget_footballpoolshoutboxwidget hr {
+	margin: 3px 3px 5px;
+	border: none 0; 
+	border-top: 1px dashed #193F18; /*the border*/ 
+	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
+}
