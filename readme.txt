@@ -9,9 +9,7 @@ Stable tag: 1.2
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
 == Description ==
-Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders. If you allready 
-have users in your blog before you installed the plugin, make sure you fill in the extra user meta 
-that comes with this plugin.
+Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
 Use your own theme (but I guess you have to do some styling to get it right) and add the widgets 
 that come with this plugin. I used Simply Works Core myself with my own custom skin and background-image (included in the assets folder). 
@@ -69,6 +67,11 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.3 =
+* New admin screen for Users. Add or remove them from the pool, change leagues of the players in one screen.
+* New shortcode [fp-register] for including a link to the WordPress register screen in a post or page. See help page for more information.
+* New version of the Highcharts javascript library (2.2.3).
 
 = 1.2 =
 * New shortcode [fp-ranking] in case you don't want to use the ranking page or widget, but only want to display the ranking in a post. For complete help on this and other shortcodes, see the new help page in the admin section.

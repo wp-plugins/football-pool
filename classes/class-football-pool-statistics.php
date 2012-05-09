@@ -122,19 +122,20 @@ class Football_Pool_Statistics {
 		
 		$sql = "SELECT
 					UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
-					p.homeScore, p.awayScore, p.hasJoker, u.id AS userId, ";
+					p.homeScore, p.awayScore, p.hasJoker, u.ID AS userId, ";
 		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
 		$sql .= "	u.display_name AS userName
 				FROM {$prefix}matches m 
 				LEFT OUTER JOIN {$prefix}predictions p 
 					ON (p.matchNr = m.nr AND m.nr = %d) 
 				RIGHT OUTER JOIN {$wpdb->users} u 
-					ON (u.id = p.userId) ";
+					ON (u.ID = p.userId) ";
 		if ( $pool->has_leagues ) {
-			$sql .= "JOIN {$prefix}league_users lu 
-						ON (u.id = lu.userId)
-					JOIN {$prefix}leagues l 
-						ON (l.id = lu.leagueId) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON (u.ID = lu.userId)
+					INNER JOIN {$prefix}leagues l ON (l.id = lu.leagueId) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";
 		$sql = $wpdb->prepare( $sql, $match_info['nr'] );

@@ -19,7 +19,6 @@ define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
 
 define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . 'error_log.txt' );
 
-// @todo: get leagues from db
 define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
 define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 

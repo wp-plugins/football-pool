@@ -14,6 +14,15 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
+			'Edit users', 
+			'Users', 
+			'administrator', 
+			'footballpool-users',
+			array( 'Football_Pool_Admin_Users', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
 			'Edit games', 
 			'Games', 
 			'administrator', 
@@ -32,6 +41,15 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
+			'Edit shoutbox', 
+			'Shoutbox', 
+			'administrator', 
+			'footballpool-shoutbox',
+			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
 			'Edit group positions', 
 			'Teams', 
 			'administrator', 
@@ -46,15 +64,6 @@ class Football_Pool_Admin {
 			'administrator', 
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )
-		);
-		
-		add_submenu_page(
-			$slug,
-			'Edit shoutbox', 
-			'Shoutbox', 
-			'administrator', 
-			'footballpool-shoutbox',
-			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
 		);
 		
 		add_submenu_page(
@@ -84,8 +93,9 @@ class Football_Pool_Admin {
 		update_option( 'footballpool_' . $key, $value );
 	}
 	
-	// use type 'updated' for yellow message and type 'error' for the red one
+	// use type 'updated' for yellow message and type 'error' or 'important' for the red one
 	public function notice( $msg, $type = 'updated', $fade = true ) {
+		if ( $type == 'important' ) $type = 'error';
 		echo '<div class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
@@ -198,7 +208,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
+	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
 		self::bulk_actions( $bulkactions, 'action' );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
 		self::list_table_def( $cols, 'head' );
@@ -208,7 +218,7 @@ class Football_Pool_Admin {
 		self::bulk_actions( $bulkactions, 'action2' );
 	}
 	
-	private function list_table_def( $cols, $tag ) {
+	protected function list_table_def( $cols, $tag ) {
 		echo "<t{$tag}><tr>";
 		echo '
 			<th class="manage-column column-cb check-column" id="cb" scope="col">
@@ -221,7 +231,7 @@ class Football_Pool_Admin {
 		echo "</tr></t{$tag}>";
 	}
 
-	private function list_table_body( $cols, $rows, $rowactions ) {
+	protected function list_table_body( $cols, $rows, $rowactions ) {
 		echo "<tbody id='the-list'>";
 		
 		$r = count( $rows );
@@ -232,13 +242,14 @@ class Football_Pool_Admin {
 			echo "<tr><td colspan='", $c+1, "'>", __( 'no data', FOOTBALLPOOL_TEXT_DOMAIN ), "</td></tr>";
 		} else {
 			for ( $i = 0; $i < $r; $i++ ) {
+				$row_class = ( $i % 2 == 0 ) ? 'alternate' : '';
 				echo "
-					<tr valign='middle' class='alternate' id='row-{$i}'>
+					<tr valign='middle' class='{$row_class}' id='row-{$i}'>
 					<th class='check-column' scope='row'>
 						<input type='checkbox' value='{$rows[$i][$c]}' name='itemcheck[]'>
 					</th>";
 				for ( $j = 0; $j < $c; $j++ ) {
-					echo "<td class='column-{$cols[$j]}'>";
+					echo "<td class='column-{$cols[$j][2]}'>";
 					if ( $j == 0 ) {
 						echo '<strong><a title="Edit “', esc_attr( $rows[$i][$j] ), '”" href="?page=', esc_attr( $page ), '&amp;action=edit&amp;item_id=', esc_attr( $rows[$i][$c] ), '" class="row-title">';
 					}
@@ -312,11 +323,15 @@ class Football_Pool_Admin {
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}predictions p
 					ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
-				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL";
+				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL ";
+		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		$wpdb->query( $sql );
 		// 3. update score for matches
 		$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
@@ -334,12 +349,16 @@ class Football_Pool_Admin {
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+		} else {
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
 					ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
 					ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
-				WHERE q.scoreDate IS NOT NULL";
+				WHERE q.scoreDate IS NOT NULL ";
+		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		$wpdb->query( $sql );
 		// 5. update score incrementally
 		/* 
