@@ -50,8 +50,9 @@ min-height: 135px;
 	}
 	
 #headerleft h1 {
-color:#fff;
-text-align:center;
+	color:#fff;
+	margin: 20px 0 0 120px;
+	font-size: 3em;
 }	
 
 #headerleft a {color: #fff; text-decoration:none;}
