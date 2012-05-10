@@ -169,7 +169,7 @@ a.comment-reply-link:active {
 .commentlist > li.bypostauthor {
     background-color: #EAFC92;
 }.commentlist > li.bypostauthor:before {
-	content: url(../images/comment-arrow-bypostauthor-ek2012-green.png);
+	content: url(../../../plugins/football-pool/assets/images/site/comment-arrow-bypostauthor-ek2012-green.png);
 }
 
 .commentlist .children > li.bypostauthor {  

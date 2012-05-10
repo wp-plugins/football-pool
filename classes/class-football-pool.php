@@ -14,6 +14,17 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
+	// if theme supports the wp_head action then add some images
+	public function change_html_head() {
+		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
+		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+		
+		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
+	}
+	
 	public function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -51,7 +62,7 @@ class Football_Pool {
 
 			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
 					('" . __( 'alle spelers', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
-					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league_money2.png'),
+					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
 					('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {

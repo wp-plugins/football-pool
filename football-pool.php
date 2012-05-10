@@ -74,6 +74,8 @@ add_action( 'plugins_loaded', array( 'Football_Pool', 'update_db_check' ) );
 add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
 add_action( 'init', array( 'Football_Pool', 'init' ) );
 add_filter( 'the_content', array( 'Football_Pool', 'the_content' ) );
+add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
+
 
 // user registration extension
 add_action( 'user_register', array( 'Football_Pool', 'new_pool_user' ) );
