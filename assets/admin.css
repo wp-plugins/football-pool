@@ -13,7 +13,8 @@
 
 #icon-footballpool-options.icon32
 {
-	background: url(images/admin-menu-32.png) 0 -33px no-repeat;
+/*	background: url(images/admin-menu-32.png) 0 -33px no-repeat; */
+	background: url(images/admin-menu-32.png) 0 0 no-repeat;
 }
 
 th.manage-column { vertical-align: top; }
