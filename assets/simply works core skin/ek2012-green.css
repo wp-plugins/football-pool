@@ -377,3 +377,13 @@ span.bonus.reminder {
     color: #FF8C11;
     font-weight: bolder;
 }
+
+div.bonus {
+/*
+    border-bottom-color: #193F18;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+*/
+	border: none;
+	margin-bottom: 20px;
+}

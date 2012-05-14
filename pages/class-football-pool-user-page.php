@@ -21,7 +21,7 @@ class Football_Pool_User_Page {
 								$user->display_name
 								);
 			$output .= sprintf( '<p>%s</p>',
-								__( 'Alleen wedstrijden en bonusvragen die niet meer kunnen worden aangepast, worden hier getoond.', FOOTBALLPOOL_TEXT_DOMAIN )
+								__( 'Alleen voorspellingen en antwoorden die niet meer kunnen worden aangepast, worden getoond.', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 			$matches = new Matches;
 			$matches->disable_edits();
