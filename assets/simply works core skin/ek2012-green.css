@@ -372,3 +372,8 @@ table.statistics td { border-bottom: 1px solid #ADC347; }
 	border-top: 1px dashed #193F18; /*the border*/ 
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
 }
+
+span.bonus.reminder {
+    color: #FF8C11;
+    font-weight: bolder;
+}

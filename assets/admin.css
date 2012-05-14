@@ -30,3 +30,5 @@ input.score { width: 2em; }
 
 table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
+
+label.radio { font-weight: normal; }

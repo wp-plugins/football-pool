@@ -38,11 +38,13 @@ class Football_Pool_Pool_Page {
 				$output .= sprintf( '<h2>%s</h2>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			
+			// the matches
 			$output .= sprintf( '<form id="predictionform" action="%s" method="post">', get_page_link() );
 			$output .= $matches->print_matches_for_input( $result );
 			$joker = $matches->joker_value;
 			$output .= $this->save_button();
 			
+			// the questions
 			if ( $pool->has_bonus_questions ) {
 				$nr = 1;
 				$output .= sprintf( '<h2 id="bonus">%s</h2>', __( 'bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -149,7 +151,15 @@ class Football_Pool_Pool_Page {
 		if ( $pool->has_bonus_questions ) {
 			$answers = array();
 			foreach ( $questions as $question ) {
-				$answers[ $question['id'] ] = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] );
+				switch ( $question['type'] ) {
+					case 3: // multiple n
+						$answers[ $question['id'] ] = implode( ';', Football_Pool_Utils::post_string_array( '_bonus_' . $question['id'] ) );
+						break;
+					case 1: // text
+					case 2: // multiple 1
+					default:
+						$answers[ $question['id'] ] = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] );
+				}
 			}
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}

@@ -115,6 +115,15 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
+	public function radiolist_input( $label, $key, $value, $options, $description = '' ) {
+		$i = 1;
+		echo '<tr valign="top"><th scope="row"><label for="answer_1">', $label, '</label></th><td>';
+		foreach ( $options as $option ) {
+			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i++, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), '/> ', $option['text'], '</label><br />';
+		}
+		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+	}
+	
 	public function hidden_input( $key, $value ) {
 		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" />';
 	}
@@ -141,11 +150,14 @@ class Football_Pool_Admin {
 				break;
 		}
 	}
-		
+	
 	public function show_value( $option ) {
 		switch ( $option[0] ) {
 			case 'no_input':
 				self::no_input( $option[1], $option[3], $option[4] );
+				break;
+			case 'radiolist':
+				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], $option[5] );
 				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], $option[3], $option[4] );

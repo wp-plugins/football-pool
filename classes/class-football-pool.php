@@ -34,6 +34,7 @@ class Football_Pool {
 		// install custom tables in database
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
 		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
+		
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
@@ -67,6 +68,14 @@ class Football_Pool {
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
+			// fix question type for bonusquestions defined before v1.3
+			$sql = "INSERT INTO {$prefix}bonusquestions_type ( question_id, type )
+					SELECT q.id, 1 
+					FROM {$prefix}bonusquestions q
+					LEFT OUTER JOIN {$prefix}bonusquestions_type qt
+						ON ( qt.question_id = q.id )
+					WHERE qt.type IS NULL";
+			$wpdb->query( $sql );
 		}
 		
 		// define default plugin options
@@ -87,7 +96,7 @@ class Football_Pool {
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
-		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_DEFAULT_LEAGUE );
+		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
