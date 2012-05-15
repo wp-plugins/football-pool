@@ -71,8 +71,10 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 = 1.3 =
 * New admin screen for Users. Add or remove them from the pool, change leagues of the players in one screen.
 * Added support for multiple choice questions (very basic).
+* Added support for photo questions (ask a question about an image).
 * New shortcode [fp-register] for including a link to the WordPress register screen in a post or page. See help page for more information.
 * New version of the Highcharts javascript library (2.2.3).
+* Bug fixed: shortcode [countdown] used UTC+0 time not the CET time of the match which I use everywhere else in the pool. (thanks drsp58)
 
 = 1.2 =
 * New shortcode [fp-ranking] in case you don't want to use the ranking page or widget, but only want to display the ranking in a post. For complete help on this and other shortcodes, see the new help page in the admin section.

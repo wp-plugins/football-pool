@@ -117,12 +117,12 @@ class Football_Pool_Shortcodes {
 	public function shortcode_countdown( $atts ) {
 		$matches = new Matches();
 		$firstMatch = $matches->get_first_match_info();
-		$date = $firstMatch['matchTimestamp'];
-		$year  = date( 'Y', $date );
-		$month = date( 'm', $date );
-		$day   = date( 'd', $date );
-		$hour  = date( 'H', $date );
-		$min   = date( 'i', $date );
+		$date = new DateTime( $firstMatch['playDate'] );
+		$year  = $date->format( 'Y' );
+		$month = $date->format( 'm' );
+		$day   = $date->format( 'd' );
+		$hour  = $date->format( 'H' );
+		$min   = $date->format( 'i' );
 		$sec   = 0;
 		
 		$imgpath = FOOTBALLPOOL_PLUGIN_URL;

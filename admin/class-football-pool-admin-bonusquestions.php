@@ -132,6 +132,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						'answer'			=> '',
 						'type'				=> 1,
 						'options'			=> '',
+						'image'				=> '',
 					);
 		
 		$pool = new Football_Pool_Pool();
@@ -155,6 +156,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array( 'text', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'Het juiste antwoord (geldt als referentiewaarde).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'radiolist', __( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 'type', $values['type'], $types, '' ),
 					array( 'text', __( 'meerkeuze opties', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing bij meerkeuzevragen.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'image', __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Geef een URL naar een afbeelding voor de fotovraag, of kies een afbeelding uit de media-bibliotheek (optioneel).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -205,6 +207,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'scoredate' ),
 						Football_Pool_Utils::post_int( 'type', 1 ),
 						Football_Pool_Utils::post_string( 'options' ),
+						Football_Pool_Utils::post_string( 'image' ),
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -249,6 +252,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$scoredate = $input[5];
 		$type = $input[6];
 		$options = $input[7];
+		$image = $input[8];
 		$matchNr = 0;
 		
 		if ( $id == 0 ) {
@@ -261,9 +265,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$id = $wpdb->insert_id;
 			
 			if ( $id ) {
-				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options )
-										VALUES ( %d, %d, %s )"
-										, $id, $type, $options
+				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
+										VALUES ( %d, %d, %s, %s )"
+										, $id, $type, $options, $image
 								);
 				$wpdb->query( $sql );
 			}
@@ -281,9 +285,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						);
 			$wpdb->query( $sql );
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_type 
-									SET type = %d, options = %s 
+									SET type = %d, options = %s, image = %s 
 									WHERE question_id = %d"
-									, $type, $options, $id );
+									, $type, $options, $image, $id );
 			$wpdb->query( $sql );
 		}
 		

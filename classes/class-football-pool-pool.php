@@ -262,7 +262,7 @@ class Football_Pool_Pool {
 			$sql = "SELECT q.id, q.question, q.answer, q.points, UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
 					DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
 					DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
-					qt.type, qt.options
+					qt.type, qt.options, qt.image
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
 						ON ( q.id = qt.question_id )
@@ -276,7 +276,7 @@ class Football_Pool_Pool {
 										DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
 										DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
 										q.matchNr, a.correct,
-										qt.type, qt.options
+										qt.type, qt.options, qt.image
 									FROM {$prefix}bonusquestions q 
 									INNER JOIN {$prefix}bonusquestions_type qt
 										ON ( q.id = qt.question_id )
@@ -303,7 +303,7 @@ class Football_Pool_Pool {
 									DATE_FORMAT(q.scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
 									q.matchNr, 
 									UNIX_TIMESTAMP(q.answerBeforeDate) as questionDate,
-									qt.type, qt.options
+									qt.type, qt.options, qt.image
 								FROM {$prefix}bonusquestions q
 								INNER JOIN {$prefix}bonusquestions_type qt
 									ON ( q.id = qt.question_id )
@@ -374,10 +374,20 @@ class Football_Pool_Pool {
 	}
 	
 	public function print_bonus_question( $question, $nr ) {
-		$output = sprintf( '<div class="bonus" id="q%d"><p>%d. %s<br />', $question['id'], $nr, $question['question'] );
-		$output .= sprintf( '<span class="bonus points">%d %s</span>', $question['points'], __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		// the question with optional image
+		$output = sprintf( '<div class="bonus" id="q%d"><p>%d. %s</p>', $question['id'], $nr, $question['question'] );
+		if ( $question['image'] != '' ) {
+			$output .= sprintf( '<p class="bonus image"><img src="%s" alt="%s" /></p>'
+								, $question['image']
+								, __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		}
+		
 		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
+			$output .= sprintf( '<p>%s</p>', $this->bonus_question_types( $question ) );
+			
 			// remind a player if there is only 1 day left to answer the question.
+			$output .= '<p>';
 			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
 				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Let op:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
@@ -385,22 +395,22 @@ class Football_Pool_Pool {
 							__( 'beantwoord deze vraag vóór deze datum', FOOTBALLPOOL_TEXT_DOMAIN ),
 							__( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
-			$output .= '</p><p>';
-			$output .= $this->bonus_question_types( $question );
-			$output .= '</p>';
 		} else {
-			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s %s</span>',
-							__( 'je kan deze vraag niet meer beantwoorden', FOOTBALLPOOL_TEXT_DOMAIN ),
-							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$question['answerBeforeDate']
-					);
-			$output .= sprintf( '</p><p class="bonus" id="bonus-%d">%s: ',
+			$output .= sprintf( '<p class="bonus" id="bonus-%d">%s: ',
 							$question['id'],
 							__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
 			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
 			$output .= '</p>';
+			
+			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',
+							__( 'je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen', FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
+							$question['answerBeforeDate']
+					);
 		}
+		
+		$output .= sprintf( '<span class="bonus points">%d %s</span></p>', $question['points'], __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$output .= '</div>';
 		

@@ -17,6 +17,7 @@ class Football_Pool {
 	// if theme supports the wp_head action then add some images
 	public function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
+		
 		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
 		
 		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
@@ -69,8 +70,8 @@ class Football_Pool {
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
 			// fix question type for bonusquestions defined before v1.3
-			$sql = "INSERT INTO {$prefix}bonusquestions_type ( question_id, type )
-					SELECT q.id, 1 
+			$sql = "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
+					SELECT q.id, 1, '', '' 
 					FROM {$prefix}bonusquestions q
 					LEFT OUTER JOIN {$prefix}bonusquestions_type qt
 						ON ( qt.question_id = q.id )
@@ -159,7 +160,7 @@ class Football_Pool {
 	public function init() {
 		load_plugin_textdomain( FOOTBALLPOOL_TEXT_DOMAIN, false, FOOTBALLPOOL_PLUGIN_DIR . 'languages' );
 		
-		if ( !wp_script_is( 'jquery', 'queue' ) ) {
+		if ( ! wp_script_is( 'jquery', 'queue' ) ) {
 			wp_enqueue_script( "jquery" );
 		}
 		
@@ -181,6 +182,17 @@ class Football_Pool {
 			//extra countdown code
 			add_action( 'wp_head', array( 'Football_Pool', 'countdown_texts' ) );
 		} else {
+			// image uploader scripts
+			if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
+				wp_enqueue_script('media-upload');
+			}
+			if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_script('thickbox');
+			}
+			if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_style('thickbox');
+			}
+			
 			// admin css
 			self::include_css( 'assets/admin.css', 'css-admin' );
 			// admin js

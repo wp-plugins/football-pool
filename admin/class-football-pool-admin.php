@@ -1,5 +1,22 @@
 <?php
 class Football_Pool_Admin {
+	/**
+	 * Somewhat hacky way of replacing "Insert into Post" with "Use Image"
+	 *
+	 * @param string $translated_text text that has already been translated (normally passed straight through)
+	 * @param string $source_text text as it is in the code
+	 * @param string $domain domain of the text
+	 * @author Modern Tribe, Inc. (Peter Chester)
+	 */
+	public function replace_text_in_thickbox($translated_text, $source_text, $domain) {
+		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
+			if ('Insert into Post' == $source_text) {
+				return __('Use Image', FOOTBALLPOOL_TEXT_DOMAIN );
+			}
+		}
+		return $translated_text;
+	}
+	
 	public function init() {
 		$slug = 'footballpool-options';
 		
@@ -99,6 +116,34 @@ class Football_Pool_Admin {
 		echo '<div class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
+	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+		$key = esc_attr( $key );
+		echo '<script type="text/javascript">
+			jQuery( document ).ready( function() {
+				jQuery( "#', $key, '_button" ).click( function() {
+					post_id = jQuery( "#post_ID" ).val();
+					tb_show( "", "media-upload.php?football_pool_admin=footballpool-bonus&amp;post_id=0&amp;type=image&amp;TB_iframe=true" );
+					return false;
+				});
+				 
+				window.send_to_editor = function( html ) {
+					imgurl = jQuery( "img", html ).attr( "src" );
+					if ( imgurl == "" && jQuery( "#src" ) ) imgurl = jQuery( "#src" ).val();
+					
+					jQuery( "#', $key, '" ).val( imgurl );
+					tb_remove();
+				}
+			});
+			</script>';
+		
+		echo '<tr valign="top">
+		<th scope="row"><label for="', $key, '">', $label, '</label></th>
+		<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '" />
+		<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></td>
+		<td><span class="description">', $description, '</span></td>
+		</tr>';
+	}
+	
 	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
 		echo '<tr valign="top">
 		<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
@@ -164,6 +209,9 @@ class Football_Pool_Admin {
 				break;
 			case 'hidden':
 				self::hidden_input( $option[2], $option[3] );
+				break;
+			case 'image':
+				self::image_input( $option[1], $option[2], $option[3], $option[4] );
 				break;
 			case 'integer':
 			case 'date':
