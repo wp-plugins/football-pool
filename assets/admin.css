@@ -32,3 +32,8 @@ table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
 
 label.radio { font-weight: normal; }
+
+img.screenshot { 
+	box-shadow: 5px 5px 5px #888;
+	margin: 10px 0;
+}
