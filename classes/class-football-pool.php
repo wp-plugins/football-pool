@@ -254,13 +254,14 @@ class Football_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// add extra meta fields
-		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
-		update_user_meta( $user_id, 'footballpool_league', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
+		$league = Football_Pool_Utils::post_int( 'league', $default_league );
+		update_user_meta( $user_id, 'footballpool_league', $default_league );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
 		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
-		self::update_user_custom_tables( $user_id, FOOTBALLPOOL_LEAGUE_DEFAULT );
+		self::update_user_custom_tables( $user_id, $default_league );
 	}
 	
 	private function update_user_custom_tables( $user_id, $league_id ) {

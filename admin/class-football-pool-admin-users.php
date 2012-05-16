@@ -214,7 +214,18 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
-			$pool->update_league_for_user( $id, $default_league, 'no update' );
+			// if user is in a non-existing league, then force the update
+			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu 
+									LEFT OUTER JOIN {$prefix}leagues l
+										ON ( lu.leagueId = l.id )
+									WHERE lu.userId = %d AND l.id IS NULL"
+									, $id
+							);
+			$non_existing_league = ( $wpdb->get_var( $sql ) == 1 );
+			if ( $non_existing_league )
+				$pool->update_league_for_user( $id, $default_league, 'update league' );
+			else
+				$pool->update_league_for_user( $id, $default_league, 'no update' );
 		} else {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d AND leagueId = 0", $id );
 			$wpdb->query( $sql );
