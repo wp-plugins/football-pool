@@ -18,6 +18,14 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions` (
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `pool_wp_bonusquestions_type` (
+  `question_id` int(10) unsigned NOT NULL,
+  `type` int(10) unsigned NOT NULL,
+  `options` text NOT NULL,
+  `image` text NOT NULL,
+  PRIMARY KEY (`question_id`)
+) DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
   `questionId` tinyint(3) unsigned NOT NULL,
   `userId` int(11) unsigned NOT NULL,

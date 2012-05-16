@@ -14,6 +14,18 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
+	// if theme supports the wp_head action then add some images
+	public function change_html_head() {
+		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
+		
+		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+		
+		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
+	}
+	
 	public function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -23,6 +35,7 @@ class Football_Pool {
 		// install custom tables in database
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
 		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
+		
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
@@ -51,11 +64,19 @@ class Football_Pool {
 
 			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
 					('" . __( 'alle spelers', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
-					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league_money2.png'),
+					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
 					('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
+			// fix question type for bonusquestions defined before v1.3
+			$sql = "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
+					SELECT q.id, 1, '', '' 
+					FROM {$prefix}bonusquestions q
+					LEFT OUTER JOIN {$prefix}bonusquestions_type qt
+						ON ( qt.question_id = q.id )
+					WHERE qt.type IS NULL";
+			$wpdb->query( $sql );
 		}
 		
 		// define default plugin options
@@ -76,7 +97,7 @@ class Football_Pool {
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
-		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_DEFAULT_LEAGUE );
+		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
@@ -139,7 +160,7 @@ class Football_Pool {
 	public function init() {
 		load_plugin_textdomain( FOOTBALLPOOL_TEXT_DOMAIN, false, FOOTBALLPOOL_PLUGIN_DIR . 'languages' );
 		
-		if ( !wp_script_is( 'jquery', 'queue' ) ) {
+		if ( ! wp_script_is( 'jquery', 'queue' ) ) {
 			wp_enqueue_script( "jquery" );
 		}
 		
@@ -161,6 +182,17 @@ class Football_Pool {
 			//extra countdown code
 			add_action( 'wp_head', array( 'Football_Pool', 'countdown_texts' ) );
 		} else {
+			// image uploader scripts
+			if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
+				wp_enqueue_script('media-upload');
+			}
+			if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_script('thickbox');
+			}
+			if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_style('thickbox');
+			}
+			
 			// admin css
 			self::include_css( 'assets/admin.css', 'css-admin' );
 			// admin js
@@ -222,13 +254,14 @@ class Football_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// add extra meta fields
-		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
-		update_user_meta( $user_id, 'footballpool_league', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
+		$league = Football_Pool_Utils::post_int( 'league', $default_league );
+		update_user_meta( $user_id, 'footballpool_league', $default_league );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
 		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
-		self::update_user_custom_tables( $user_id, FOOTBALLPOOL_LEAGUE_DEFAULT );
+		self::update_user_custom_tables( $user_id, $default_league );
 	}
 	
 	private function update_user_custom_tables( $user_id, $league_id ) {

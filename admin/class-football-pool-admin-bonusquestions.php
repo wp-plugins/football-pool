@@ -72,7 +72,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			
 			echo '<h3>', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
 			echo '<p>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
-			echo '<span style="font-size: 75%">', $question['points'], ' ', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			echo '<span style="font-size: 80%; font-style: italic;">', $question['points'], ' ', __( 'punt(en)', FOOTBALLPOOL_TEXT_DOMAIN ), 
 						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
 			echo '<table class="widefat">';
@@ -100,9 +100,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
 					echo '<td><input onchange="togglePoints(this.name)" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
 					echo '<td><input onchange="togglePoints(this.name)" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
-					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" 
-								title="', __( 'Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler.', FOOTBALLPOOL_TEXT_DOMAIN ), '"
-								value="', $points, '" type="text" size="3" ', $input, ' /></td>';
+					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( 'Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler.', FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
 			} else {
@@ -127,12 +125,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	private function edit( $id ) {
 		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 		$values = array(
-						'question' => '',
-						'points' => '',
-						'answerBeforeDate' => $exampledate,
-						'scoreDate'=>'',
-						'answer'=>''
-						);
+						'question'			=> '',
+						'points'			=> '',
+						'answerBeforeDate'	=> $exampledate,
+						'scoreDate'			=> '',
+						'answer'			=> '',
+						'type'				=> 1,
+						'options'			=> '',
+						'image'				=> '',
+					);
 		
 		$pool = new Football_Pool_Pool();
 		$question = $pool->get_bonus_question( $id );
@@ -140,12 +141,22 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$values = $question;
 		}
 		
+		// question types
+		$types = array( 
+						array( 'value' => '1', 'text' => __( 'tekst', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '2', 'text' => __( 'meerkeuze (1 antwoord)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '3', 'text' => __( 'meerkeuze (meer antwoorden mogelijk)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+					);
+		
 		$cols = array(
 					array( 'text', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'Aantal punten dat een speler krijgt voor het juist beantwoorden van de vraag.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'date', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'Een speler mag deze vraag beantwoorden tot deze datum en tijd.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'date', __( 'scoredatum', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( 'De punten voor de vraag worden bij het totaal aantal punten opgeteld vanaf deze datum/tijd (voor de statistieken). Als deze datum niet is ingevuld, dan worden de punten niet geteld.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'text', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'Het juiste antwoord (geldt als referentiewaarde).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'radiolist', __( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 'type', $values['type'], $types, '' ),
+					array( 'text', __( 'meerkeuze opties', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing bij meerkeuzevragen.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'image', __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Geef een URL naar een afbeelding voor de fotovraag, of kies een afbeelding uit de media-bibliotheek (optioneel).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -193,7 +204,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'answer' ),
 						Football_Pool_Utils::post_int( 'points' ),
 						Football_Pool_Utils::post_string( 'lastdate' ),
-						Football_Pool_Utils::post_string( 'scoredate' )
+						Football_Pool_Utils::post_string( 'scoredate' ),
+						Football_Pool_Utils::post_int( 'type', 1 ),
+						Football_Pool_Utils::post_string( 'options' ),
+						Football_Pool_Utils::post_string( 'image' ),
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -213,9 +227,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE questionId=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE questionId = %d", $id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
 		$wpdb->query( $sql );
 	}
 	
@@ -234,15 +250,27 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$points = $input[3];
 		$date = $input[4];
 		$scoredate = $input[5];
+		$type = $input[6];
+		$options = $input[7];
+		$image = $input[8];
 		$matchNr = 0;
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "
-									INSERT INTO {$prefix}bonusquestions 
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
 										(question, points, answerBeforeDate, scoreDate, answer, matchNr)
 									VALUES (%s, %d, %s, NULL, %s, %d)",
 							$question, $points, $date, $answer, $matchNr
 						);
+			$wpdb->query( $sql );
+			$id = $wpdb->insert_id;
+			
+			if ( $id ) {
+				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
+										VALUES ( %d, %d, %s, %s )"
+										, $id, $type, $options, $image
+								);
+				$wpdb->query( $sql );
+			}
 		} else {
 			$sql = $wpdb->prepare( "
 									UPDATE {$prefix}bonusquestions SET
@@ -255,35 +283,18 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 									WHERE id = %d",
 							$question, $points, $date, $scoredate, $answer, $matchNr, $id
 						);
+			$wpdb->query( $sql );
+			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_type 
+									SET type = %d, options = %s, image = %s 
+									WHERE question_id = %d"
+									, $type, $options, $image, $id );
+			$wpdb->query( $sql );
 		}
 		
-		$wpdb->query( $sql );
 		// quick&dirty work-around for prepare's lack of null value support
-		$wpdb->query( "UPDATE {$prefix}bonusquestions SET scoreDate=NULL WHERE scoreDate='0000-00-00 00:00'" );
+		$wpdb->query( "UPDATE {$prefix}bonusquestions SET scoreDate = NULL WHERE scoreDate = '0000-00-00 00:00'" );
 		
-		return ( $id == 0 ) ? $wpdb->insert_id : $id;
-	}
-	
-	private function updateBonusUserAnswers( $questions, $answers, $user ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		foreach ( $questions as $question ) {
-			// check for date
-			if ( $this->bonus_is_editable( $question['questionDate'] ) && $answers[ $question['id'] ] != '' ) {
-				$sql = $wpdb->prepare( "
-										REPLACE INTO {$prefix}bonusquestions_useranswers 
-										SET userId = %d,
-											questionId = %d,
-											answer = %s,
-											points = 0",
-										$user,
-										$question['id'],
-										$answers[ $question['id'] ]
-								);
-				$wpdb->query( $sql );
-			}
-		}
+		return $id;
 	}
 	
 	private function set_bonus_question_for_users( $question ) {
@@ -296,9 +307,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
-											SET correct=%d, 
-												points=%d 
-											WHERE userId=%d AND questionId=%d", 
+											SET correct = %d, 
+												points = %d 
+											WHERE userId = %d AND questionId = %d", 
 										$correct, $points, $user->ID, $question
 								);
 				$wpdb->query( $sql );

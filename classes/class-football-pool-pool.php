@@ -259,23 +259,29 @@ class Football_Pool_Pool {
 		
 		if ( $user == 0 ) {
 			// just the questions
-			$sql = "SELECT id, question, answer, points, UNIX_TIMESTAMP(answerBeforeDate) AS questionDate, 
-					DATE_FORMAT(scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
-					DATE_FORMAT(answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, matchNr 
-					FROM {$prefix}bonusquestions ORDER BY answerBeforeDate ASC";
+			$sql = "SELECT q.id, q.question, q.answer, q.points, UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
+					DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
+					DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
+					qt.type, qt.options, qt.image
+					FROM {$prefix}bonusquestions q 
+					INNER JOIN {$prefix}bonusquestions_type qt
+						ON ( q.id = qt.question_id )
+					ORDER BY q.answerBeforeDate ASC";
 		} else {
 			// also user answers
-			$sql = $wpdb->prepare( "
-									SELECT 
+			$sql = $wpdb->prepare( "SELECT 
 										q.id, q.question, a.answer, 
 										q.points, a.points AS userPoints, 
 										UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
 										DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
 										DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
-										q.matchNr, a.correct 
+										q.matchNr, a.correct,
+										qt.type, qt.options, qt.image
 									FROM {$prefix}bonusquestions q 
+									INNER JOIN {$prefix}bonusquestions_type qt
+										ON ( q.id = qt.question_id )
 									LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
-										ON (a.questionId = q.id AND a.userId = %d)
+										ON ( a.questionId = q.id AND a.userId = %d )
 									ORDER BY q.answerBeforeDate ASC",
 								$user
 							);
@@ -292,13 +298,16 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SElECT id, question, answer, points, 
-									DATE_FORMAT(answerBeforeDate, '%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
-									DATE_FORMAT(scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
-									matchNr, 
-									UNIX_TIMESTAMP(answerBeforeDate) as questionDate 
-								FROM {$prefix}bonusquestions 
-								WHERE id=%d", 
+		$sql = $wpdb->prepare( "SElECT q.id, q.question, q.answer, q.points, 
+									DATE_FORMAT(q.answerBeforeDate, '%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
+									DATE_FORMAT(q.scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
+									q.matchNr, 
+									UNIX_TIMESTAMP(q.answerBeforeDate) as questionDate,
+									qt.type, qt.options, qt.image
+								FROM {$prefix}bonusquestions q
+								INNER JOIN {$prefix}bonusquestions_type qt
+									ON ( q.id = qt.question_id )
+								WHERE q.id = %d", 
 							$id
 							);
 		return $wpdb->get_row( $sql, ARRAY_A );
@@ -310,39 +319,100 @@ class Football_Pool_Pool {
 		return $info;
 	}
 	
-	public function print_bonus_question( $question, $nr ) {
-		$output = sprintf( '<div class="bonus" id="q%d"><p>%d. %s<br />', $question['id'], $nr, $question['question'] );
-		$output .= sprintf( '<span class="bonus points">%d %s</span>', $question['points'], __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
-			$pre = '';
-			// remind a player if there is only 1 day left to answer the question.
-			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
-				$pre .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Let op:', FOOTBALLPOOL_TEXT_DOMAIN ) );
+	private function bonus_question_types( $question ) {
+		switch ( $question['type'] ) {
+			case 2: // multiple 1
+				return $this->bonus_question_multiple( $question, 'radio' );
+			case 3: // multiple n
+				return $this->bonus_question_multiple( $question, 'checkbox' );
+			case 1: // text
+			default:
+				return $this->bonus_question_single( $question );
+		}
+	}
+	
+	private function bonus_question_single( $question ) {
+		return sprintf( '<input maxlength="200" class="bonus" name="_bonus_%d" type="text" value="%s" />'
+						, esc_attr( $question['id'] )
+						, esc_attr( $question['answer'] )
+				);
+	}
+	
+	// type = radio / checkbox / select
+	private function bonus_question_multiple( $question, $type = 'radio' ) {
+		$output = '';
+		
+		if ( $type == 'select' ) {
+			// dropdown
+			// @todo
+			$output .= '<select name=""></select>';
+		} else {
+			// radio or checkbox
+			$options = explode( ';', $question['options'] );
+			foreach ( $options as $option ) {
+				if ( str_replace( ' ', '', $option ) != '' ) {
+					if ( $type == 'checkbox' ) {
+						$checked = in_array( $option, explode( ';', $question['answer'] ) ) ? 'checked="checked" ' : '';
+						$backets = '[]';
+					} else {
+						$checked = $question['answer'] == $option ? 'checked="checked" ' : '';
+						$backets = '';
+					}
+					$output .= sprintf( '<label><input type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/> %3$s</label>'
+										, $type
+										, esc_attr( $question['id'] )
+										, esc_attr( $option )
+										, $checked
+										, $backets 
+								);
+					$output .= '<br />';
+				}
 			}
-			$pre .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $question['answerBeforeDate'] . '</span>',
+		}
+		
+		return $output;
+	}
+	
+	public function print_bonus_question( $question, $nr ) {
+		// the question with optional image
+		$output = sprintf( '<div class="bonus" id="q%d"><p>%d. %s</p>', $question['id'], $nr, $question['question'] );
+		if ( $question['image'] != '' ) {
+			$output .= sprintf( '<p class="bonus image"><img src="%s" alt="%s" /></p>'
+								, $question['image']
+								, __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		}
+		
+		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
+			$output .= sprintf( '<p>%s</p>', $this->bonus_question_types( $question ) );
+			
+			// remind a player if there is only 1 day left to answer the question.
+			$output .= '<p>';
+			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
+				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Let op:', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			}
+			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $question['answerBeforeDate'] . '</span>',
 							__( 'beantwoord deze vraag vóór deze datum', FOOTBALLPOOL_TEXT_DOMAIN ),
 							__( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
-			$pre .= sprintf( '</p><p><input maxlength="200" class="bonus" name="_bonus_%d" type="text" value="',
-							$question['id']
-					);
-			$post = '" /></p>';
-			$answer = $question['answer'];
 		} else {
-			$pre  = sprintf( '<span class="bonus eindtijd" title="%s">%s %s</span>',
-							__( 'je kan deze vraag niet meer beantwoorden', FOOTBALLPOOL_TEXT_DOMAIN ),
-							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$question['answerBeforeDate']
-					);
-			$pre .= sprintf( '</p><p class="bonus" id="bonus-%d">%s: ',
+			$output .= sprintf( '<p class="bonus" id="bonus-%d">%s: ',
 							$question['id'],
 							__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
-			$post = '</p>';
-			$answer = ( $question['answer'] != '' ? $question['answer'] : '...' );
+			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
+			$output .= '</p>';
+			
+			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',
+							__( 'je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen', FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
+							$question['answerBeforeDate']
+					);
 		}
 		
-		$output .= sprintf( '%s%s%s</div>', $pre, $answer, $post );
+		$output .= sprintf( '<span class="bonus points">%d %s</span></p>', $question['points'], __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		
+		$output .= '</div>';
 		
 		return $output;
 	}
@@ -390,12 +460,12 @@ class Football_Pool_Pool {
 		$sql = "SELECT u.ID AS userId, u.display_name AS name, a.answer, a.correct, a.points
 				FROM {$prefix}bonusquestions_useranswers a 
 				RIGHT OUTER JOIN {$wpdb->users} u
-					ON (a.questionId = %d AND a.userId = u.ID) ";
+					ON ( a.questionId = %d AND a.userId = u.ID ) ";
 		if ( $this->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON (u.ID = lu.userId) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.userId ) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";

@@ -48,7 +48,7 @@ table.matchinfo a:hover { text-decoration: underline; }
 
 .nopointer { cursor: default!important; }
 
-input.prediction { width: 2em; text-align: right; }
+input.prediction { width: 3em; text-align: right; }
 div.buttonblock { margin: 1em 0 3em; }
 
 img.teamphotothumb { width: 150px; height: 79px; border: 0; cursor: pointer; }
@@ -127,6 +127,7 @@ div.bonus.userview p { margin: 0; padding: 0; }
 div.bonus.userview span { color: #000; }
 div.bonus.userview p.question { font-weight: bolder; }
 p.bonus { background-color: #eee; padding: 2px; font-weight: bolder; }
+p.bonus.image { background: none; }
 span.bonus { padding-left: 1em; color: #aaa; font-size: 75%;  }
 span.bonus.points { float: right; }
 span.bonus.reminder { color: #990288; font-weight: bolder; }

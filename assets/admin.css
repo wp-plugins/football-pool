@@ -13,7 +13,8 @@
 
 #icon-footballpool-options.icon32
 {
-	background: url(images/admin-menu-32.png) 0 -33px no-repeat;
+/*	background: url(images/admin-menu-32.png) 0 -33px no-repeat; */
+	background: url(images/admin-menu-32.png) 0 0 no-repeat;
 }
 
 th.manage-column { vertical-align: top; }
@@ -29,3 +30,10 @@ input.score { width: 2em; }
 
 table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
+
+label.radio { font-weight: normal; }
+
+img.screenshot { 
+	box-shadow: 5px 5px 5px #888;
+	margin: 10px 0 0 20px;
+}

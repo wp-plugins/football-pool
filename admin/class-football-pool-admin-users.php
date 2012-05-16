@@ -27,13 +27,13 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		switch ( $action ) {
 			case 'save':
 				self::update();
-				self::notice( __("Wijzigingen opgeslagen.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				break;
 			case 'remove':
 				if ( $user_id > 0 ) {
 					self::remove( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __("%s verwijderd als deelnemer.", FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s verwijderd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::remove( $bulk_ids );
@@ -47,7 +47,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				if ( $user_id > 0 ) {
 					self::add( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __("%s toegevoegd als deelnemer.", FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s toegevoegd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::add( $bulk_ids );
@@ -167,7 +167,10 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$pool->update_league_for_user( $user->ID, $plays_in_league );
 			} else {
 				$is_no_player = Football_Pool_Utils::post_integer( 'is_no_player_' . $user->ID );
-				if ( $is_no_player == 1 ) $pool->update_league_for_user( $user->ID, 0 );
+				if ( $is_no_player == 1 ) 
+					self::remove_user( $user->ID );
+				else
+					self::add_user( $user->ID );
 			}
 		}
 	}
@@ -211,7 +214,18 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
-			$pool->update_league_for_user( $id, $default_league, 'no update' );
+			// if user is in a non-existing league, then force the update
+			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu 
+									LEFT OUTER JOIN {$prefix}leagues l
+										ON ( lu.leagueId = l.id )
+									WHERE lu.userId = %d AND l.id IS NULL"
+									, $id
+							);
+			$non_existing_league = ( $wpdb->get_var( $sql ) == 1 );
+			if ( $non_existing_league )
+				$pool->update_league_for_user( $id, $default_league, 'update league' );
+			else
+				$pool->update_league_for_user( $id, $default_league, 'no update' );
 		} else {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d AND leagueId = 0", $id );
 			$wpdb->query( $sql );
