@@ -69,7 +69,7 @@ Go to the WordPress Admin &raquo; Users and check if these users are added in a 
 == Changelog ==
 
 = 1.3 =
-* New admin screen for Users. Add or remove them from the pool, change leagues of the players in one screen.
+* New admin screen for Users. Add or remove them from the pool or change leagues of the players in one screen.
 * Added support for multiple choice questions (very basic).
 * Added support for photo questions (ask a question about an image).
 * New shortcode [fp-register] for including a link to the WordPress register screen in a post or page. See help page for more information.
