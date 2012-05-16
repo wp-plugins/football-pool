@@ -27,13 +27,13 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		switch ( $action ) {
 			case 'save':
 				self::update();
-				self::notice( __("Wijzigingen opgeslagen.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				break;
 			case 'remove':
 				if ( $user_id > 0 ) {
 					self::remove( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __("%s verwijderd als deelnemer.", FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s verwijderd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::remove( $bulk_ids );
@@ -47,7 +47,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				if ( $user_id > 0 ) {
 					self::add( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __("%s toegevoegd als deelnemer.", FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s toegevoegd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::add( $bulk_ids );
@@ -167,7 +167,10 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$pool->update_league_for_user( $user->ID, $plays_in_league );
 			} else {
 				$is_no_player = Football_Pool_Utils::post_integer( 'is_no_player_' . $user->ID );
-				if ( $is_no_player == 1 ) $pool->update_league_for_user( $user->ID, 0 );
+				if ( $is_no_player == 1 ) 
+					self::remove_user( $user->ID );
+				else
+					self::add_user( $user->ID );
 			}
 		}
 	}
