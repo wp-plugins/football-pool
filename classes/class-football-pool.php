@@ -14,6 +14,19 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
+	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
+	public function dashboard_widget() {
+		echo "Hello World, I'm a great Dashboard Widget";
+	}
+	
+	function add_dashboard_widgets() {
+		wp_add_dashboard_widget( 
+				'fp_dashboard_widget', 
+				__( 'Vul direct je voorspellingen in', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				array( 'Football_Pool', 'dashboard_widget' )
+		);	
+	} 
+
 	// if theme supports the wp_head action then add some images
 	public function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
