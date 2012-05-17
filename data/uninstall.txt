@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS `{$prefix}bonusquestions`;
+DROP TABLE IF EXISTS `{$prefix}bonusquestions_type`;
 DROP TABLE IF EXISTS `{$prefix}bonusquestions_useranswers`;
 DROP TABLE IF EXISTS `{$prefix}groups`;
 DROP TABLE IF EXISTS `{$prefix}leagues`;
