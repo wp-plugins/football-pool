@@ -14,51 +14,6 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
-	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
-	public function dashboard_widget() {
-		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
-		
-		echo '<p>', __( 'Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
-		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $assets_dir, 'admin/images/dashboardwidget.png" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
-	}
-	
-	function add_dashboard_widgets() {
-		wp_add_dashboard_widget( 
-				'fp_dashboard_widget', 
-				__( 'Vul direct je voorspellingen in', FOOTBALLPOOL_TEXT_DOMAIN ), 
-				array( 'Football_Pool', 'dashboard_widget' )
-		);
-		
-		// http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Forcing_your_widget_to_the_top
-		global $wp_meta_boxes;
-		
-		// Get the regular dashboard widgets array 
-		// (which has our new widget already but at the end)
-		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
-		
-		// Backup and delete our new dashbaord widget from the end of the array
-		$widget_backup = array('fp_dashboard_widget' => $normal_dashboard['fp_dashboard_widget']);
-		unset($normal_dashboard['fp_dashboard_widget']);
-
-		// Merge the two arrays together so our widget is at the beginning
-		$sorted_dashboard = array_merge($widget_backup, $normal_dashboard);
-
-		// Save the sorted array back into the original metaboxes 
-		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;	
-	} 
-
-	// if theme supports the wp_head action then add some images
-	public function change_html_head() {
-		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
-		
-		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
-		
-		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
-	}
-	
 	public function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -170,7 +125,6 @@ class Football_Pool {
 		delete_option( 'footballpool_shoutbox_max_chars' );
 		delete_option( 'footballpool_hide_admin_bar' );
 		delete_option( 'footballpool_default_league_new_user' );
-		
 		//delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
@@ -458,6 +412,51 @@ class Football_Pool {
 				footballpool_countdown_text['pre_after'] = '{$text_pre_after}';
 				footballpool_countdown_text['post_after'] = '{$text_post_after}';
 				</script>";
+	}
+	
+	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
+	public function dashboard_widget() {
+		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
+		
+		echo '<p>', __( 'Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $assets_dir, 'admin/images/dashboardwidget.png" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
+	}
+	
+	function add_dashboard_widgets() {
+		wp_add_dashboard_widget( 
+				'fp_dashboard_widget', 
+				__( 'Vul direct je voorspellingen in', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				array( 'Football_Pool', 'dashboard_widget' )
+		);
+		
+		// http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Forcing_your_widget_to_the_top
+		global $wp_meta_boxes;
+		
+		// Get the regular dashboard widgets array 
+		// (which has our new widget already but at the end)
+		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
+		
+		// Backup and delete our new dashbaord widget from the end of the array
+		$widget_backup = array('fp_dashboard_widget' => $normal_dashboard['fp_dashboard_widget']);
+		unset($normal_dashboard['fp_dashboard_widget']);
+
+		// Merge the two arrays together so our widget is at the beginning
+		$sorted_dashboard = array_merge($widget_backup, $normal_dashboard);
+
+		// Save the sorted array back into the original metaboxes 
+		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;	
+	} 
+
+	// if theme supports the wp_head action then add some images
+	public function change_html_head() {
+		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
+		
+		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+		
+		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
+		echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
 	}
 	
 //=============================================================================================================//

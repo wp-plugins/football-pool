@@ -36,4 +36,5 @@ label.radio { font-weight: normal; }
 img.screenshot { 
 	box-shadow: 5px 5px 5px #888;
 	margin: 10px 0 0 20px;
+	border: 1px solid #dfdfdf;
 }
