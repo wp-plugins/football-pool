@@ -51,7 +51,7 @@ class Football_Pool_Shortcodes {
 		$group_names = $groups->get_group_names();
 		
 		if ( is_numeric( $id ) && array_key_exists( $id, $group_names ) ) {
-			$output = $groups->print_group_standing( $id );
+			$output = $groups->print_group_standing( $id, 'wide', 'shortcode' );
 		}
 		
 		return $output;

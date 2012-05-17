@@ -215,7 +215,9 @@ class Football_Pool_Groups {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
-	public function print_group_standing( $group_id, $layout = 'wide' ) {
+	public function print_group_standing( $group_id, $layout = 'wide', $class = '' ) {
+		if ( $class != '' ) $class = ' ' . $class;
+		
 		$output = '';
 		$teams = new Football_Pool_Teams;
 		$team_names = $teams->team_names;
@@ -252,7 +254,7 @@ class Football_Pool_Groups {
 		
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {
-				$output .= sprintf( '<div class="ranking"><h2>%s</h2>', $group_names[$group] );
+				$output .= sprintf( '<div class="ranking%s"><h2>%s</h2>', $class, $group_names[$group] );
 				$output .= '<table class="ranking">
 								<thead>
 									<tr>

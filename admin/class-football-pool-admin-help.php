@@ -86,6 +86,9 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		
+		<h3>[countdown]</h3>
+		<p>Counts down to the first match of the tournament. A textual countdown is added to the post (or page) wich updates automatically.</p>
+		
 		<h3>Other shortcodes</h3>
 		<p>See <a href="?page=footballpool-options">Football Pool plugin settings</a> for some basic shortcodes that  will display the value for a plugin setting.</p>
 		<p>

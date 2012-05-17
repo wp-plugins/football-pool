@@ -79,7 +79,7 @@ li.widget div.ranking h2 { display: none; }
 li.widget div.ranking th { font-size: 80%; }
 
 /* group ranking as shortcode */
-div.entry div.ranking { float: none; }
+div.entry div.ranking.shortcode { float: none; }
 
 table.poolranking { border-collapse: collapse; font-size: 75%; }
 table.poolranking td { padding-left: .5em; }
