@@ -17,6 +17,8 @@ define( 'FOOTBALLPOOL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FOOTBALLPOOL_PLUGIN_NAME', 'Football Pool' );
 define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
 
+define( 'FOOTBALLPOOL_ASSETS_URL', FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
+
 define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . 'error_log.txt' );
 
 define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );

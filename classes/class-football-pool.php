@@ -16,7 +16,10 @@ class Football_Pool {
 	
 	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
 	public function dashboard_widget() {
-		echo "Hello World, I'm a great Dashboard Widget";
+		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
+		
+		echo '<p>', __( 'Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $assets_dir, 'admin/images/dashboardwidget.png" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
 	}
 	
 	function add_dashboard_widgets() {
@@ -24,7 +27,24 @@ class Football_Pool {
 				'fp_dashboard_widget', 
 				__( 'Vul direct je voorspellingen in', FOOTBALLPOOL_TEXT_DOMAIN ), 
 				array( 'Football_Pool', 'dashboard_widget' )
-		);	
+		);
+		
+		// http://codex.wordpress.org/Dashboard_Widgets_API#Advanced:_Forcing_your_widget_to_the_top
+		global $wp_meta_boxes;
+		
+		// Get the regular dashboard widgets array 
+		// (which has our new widget already but at the end)
+		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
+		
+		// Backup and delete our new dashbaord widget from the end of the array
+		$widget_backup = array('fp_dashboard_widget' => $normal_dashboard['fp_dashboard_widget']);
+		unset($normal_dashboard['fp_dashboard_widget']);
+
+		// Merge the two arrays together so our widget is at the beginning
+		$sorted_dashboard = array_merge($widget_backup, $normal_dashboard);
+
+		// Save the sorted array back into the original metaboxes 
+		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;	
 	} 
 
 	// if theme supports the wp_head action then add some images
@@ -207,9 +227,9 @@ class Football_Pool {
 			}
 			
 			// admin css
-			self::include_css( 'assets/admin.css', 'css-admin' );
+			self::include_css( 'assets/admin/admin.css', 'css-admin' );
 			// admin js
-			self::include_js( 'assets/admin.js', 'js-admin' );
+			self::include_js( 'assets/admin/admin.js', 'js-admin' );
 		}
 	}
 	

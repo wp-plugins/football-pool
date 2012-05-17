@@ -3,6 +3,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
+		$img_dir = FOOTBALLPOOL_ASSETS_URL . 'admin/images/';
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
 		<h2>Index</h2>
@@ -32,7 +33,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-groups id=2]</span><br />
-		<img class="screenshot" src="<?php echo FOOTBALLPOOL_PLUGIN_URL; ?>admin/assets/example-shortcode-groups.png" alt="screenshot" />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
 		</p>
 		
 		<h3>[fp-ranking]</h3>
@@ -62,7 +63,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
-		<img class="screenshot" src="<?php echo FOOTBALLPOOL_PLUGIN_URL; ?>admin/assets/example-shortcode-ranking.png" alt="screenshot" />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />
 		</p>
 
 		<h3>[fp-register]link text[/fp-register]</h3>
@@ -110,11 +111,11 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For multiple choice questions you have to give 2 or more options to the players. The possible answers must be entered as a semicolon separated list.</p>
 		<h3>Giving points</h3>
 		<p>After the 'answer before' date has passed and your players may not alter their answers, an admin has to manually approve all answers for a question. For this, go to the <a href="?page=footballpool-bonus">Questions admin screen</a> and click on the "User Answers" link.<br />
-		<img class="screenshot" src="<?php echo FOOTBALLPOOL_PLUGIN_URL; ?>admin/assets/example-bonus-user-answers-1.png" alt="screenshot" />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-1.png" alt="screenshot" />
 		</p>
 		<p>In the answer screen information about the question is shown as a reference (1). The answer and default points are shown and - if an admin has filled in the answer - the answer is also shown.<br />
 		For each player click the appropiate radiobutton for a right or wrong answer (2). If an answer is considered right you have the possibility to give a different amount of points to that user (3). For example to give extra bonuspoints or to give half the points for an incomplete answer. Leave blank if you want to give the default points for that question.<br />
-		<img class="screenshot" src="<?php echo FOOTBALLPOOL_PLUGIN_URL; ?>admin/assets/example-bonus-user-answers-2.png" alt="screenshot" />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-2.png" alt="screenshot" />
 		</p>
 		<p>Please note that for points for bonus questions to be added to the total points for a player an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
 		
