@@ -15,7 +15,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						array( 'text', __( 'Maximum lengte shoutboxbericht *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'De maximale lengte (aantal karakters) van een bericht in de shoutbox.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'checkbox', __( 'Gebruik Pools', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik bv. voor betalende spelers en niet betalende spelers, of voor verschillende afdelingen. Let op: als je deze waarde wijzigt en er zijn al punten toegekend, dan wordt de standentabel niet automatisch bijgewerkt met de (eventueel) gewijzigde spelers in de pool. Gebruik hiervoor de knop op deze pagina.') ),
 						array( 'text', __( 'Standaardpool voor nieuwe gebruikers', FOOTBALLPOOL_TEXT_DOMAIN ), 'default_league_new_user', __( 'De standaardpool (<a href="?page=footballpool-leagues">ID van de pool</a>) waar nieuwe spelers in worden geplaatst nadat ze zich hebben geregistreerd.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-						array( 'checkbox', __( 'Admin Bar verbergen voor subscribers', FOOTBALLPOOL_TEXT_DOMAIN ), 'hide_admin_bar', __( 'Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm krijgen (instelbaar per user). Hier kan je instellen of de plugin deze waarde moet negeren en de Admin Bar altijd moet weglaten.') )
+						array( 'checkbox', __( 'Admin Bar verbergen voor subscribers', FOOTBALLPOOL_TEXT_DOMAIN ), 'hide_admin_bar', __( 'Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm krijgen (instelbaar per user). Hier kan je instellen of de plugin deze waarde moet negeren en de Admin Bar altijd moet weglaten.') ),
+						array( 'text', __( 'Afbeelding voor Dashboard Widget', FOOTBALLPOOL_TEXT_DOMAIN ), 'dashboard_image', '<a href="' . get_admin_url() . '">Dashboard</a>' ),
 					);
 		
 		self::admin_header( __( 'Plugin Instelllingen', FOOTBALLPOOL_TEXT_DOMAIN ) );

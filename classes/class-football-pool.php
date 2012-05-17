@@ -86,6 +86,7 @@ class Football_Pool {
 		add_option( 'footballpool_shoutbox_max_chars', 150 );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		add_option( 'footballpool_dashboard_image', FOOTBALLPOOL_ASSETS_URL . 'admin/images/dashboardwidget.png' );
 		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
@@ -125,6 +126,7 @@ class Football_Pool {
 		delete_option( 'footballpool_shoutbox_max_chars' );
 		delete_option( 'footballpool_hide_admin_bar' );
 		delete_option( 'footballpool_default_league_new_user' );
+		delete_option( 'footballpool_dashboard_image' );
 		//delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
@@ -416,10 +418,10 @@ class Football_Pool {
 	
 	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
 	public function dashboard_widget() {
-		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
+		$img = get_option( 'footballpool_dashboard_image' );
 		
 		echo '<p>', __( 'Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
-		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $assets_dir, 'admin/images/dashboardwidget.png" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
+		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $img, '" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
 	}
 	
 	function add_dashboard_widgets() {
@@ -449,7 +451,7 @@ class Football_Pool {
 
 	// if theme supports the wp_head action then add some images
 	public function change_html_head() {
-		$assets_dir = esc_url( FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/' );
+		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
 		
 		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
 		

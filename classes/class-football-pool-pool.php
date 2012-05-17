@@ -353,17 +353,17 @@ class Football_Pool_Pool {
 				if ( str_replace( ' ', '', $option ) != '' ) {
 					if ( $type == 'checkbox' ) {
 						$checked = in_array( $option, explode( ';', $question['answer'] ) ) ? 'checked="checked" ' : '';
-						$backets = '[]';
+						$brackets = '[]';
 					} else {
 						$checked = $question['answer'] == $option ? 'checked="checked" ' : '';
-						$backets = '';
+						$brackets = '';
 					}
 					$output .= sprintf( '<label><input type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/> %3$s</label>'
 										, $type
 										, esc_attr( $question['id'] )
 										, esc_attr( $option )
 										, $checked
-										, $backets 
+										, $brackets 
 								);
 					$output .= '<br />';
 				}
