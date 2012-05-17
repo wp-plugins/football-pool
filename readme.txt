@@ -57,7 +57,8 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 
 = I don't see my blog users as players of the pool. =
 
-Go to the WordPress Admin &raquo; Users and check if these users are added in a league. Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 == Screenshots ==
 1. Matches in the tournament
