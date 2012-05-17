@@ -99,7 +99,7 @@ If you're not using leagues, then make sure the users are not removed from the p
 
 = 1.1.4 =
 * New version of Highcharts javascript library (2.2.1). Did a small (cosmetic) change in the line charts.
-* Ranking page en ranking widget now show all users. Even the ones that registered for the pool after the first match was played. In previous versions the new user had to wait for an admin to save a match or bonusquestion to recalculate the points table.
+* Ranking page and ranking widget now show all users. Even the ones that registered for the pool after the first match was played. In previous versions the new user had to wait for an admin to save a match or bonusquestion to recalculate the points table.
 * Bug fixed: a timezone problem in the display of match times. (Thanks Okoth1)
 * Bug fixed: the admin screen for bonusquestions not displaying user answers.
 * Bug fixed: user selector widget showed all blog users.
