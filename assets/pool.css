@@ -113,7 +113,7 @@ div.chart.left { float: left; padding-right: 20px; }
 div.chart.stats-pie { float: left; margin-right: 20px; }
 
 div.statistics { float: right; }
-a.statistics { background-image: url(images/site/statistics2.jpg); display: block; width: 62px; height: 62px; text-indent: -2000px; }
+a.statistics { background-image: url(images/site/stats.png); display: block; width: 62px; height: 62px; text-indent: -2000px; }
 a.statistics:hover { background-position: 0 62px; }
 
 label { cursor: pointer; }

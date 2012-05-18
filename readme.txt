@@ -4,7 +4,7 @@ Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -43,7 +43,7 @@ Also, I don't have a donate link. If you want to donate, choose a charity fund a
 5. Optional: add the "Football pool" widgets to your sidebar
    (User Selector Widget is needed for the stats page)
 6. Optional: add bonus questions
-7. Optional: 'upgrade' allready existing users in your blog to pool-users 
+7. Optional: 'upgrade' allready existing users in your blog to pool-users
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -68,6 +68,12 @@ If you're not using leagues, then make sure the users are not removed from the p
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.3.3 =
+* Removed custom fields for admin in the standard WordPress user profile. Editing of users can be done in the plugin user screen.
+* Minor style updates and new icon for the statistics.
+* Bug fixed: updating users via the WordPress User screen put them in the wrong league (when using leagues).
+* Bug fixed: new custom table for the question types was not prefixed properly; updated the install-script. (thanks sjonas)
 
 = 1.3.2 =
 * New widget on the WordPress Admin Dashboard: a quick link to the pool. Change the picture for the widget in the Plugin Options.

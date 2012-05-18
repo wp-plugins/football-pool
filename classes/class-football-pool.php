@@ -245,8 +245,10 @@ class Football_Pool {
 		// add extra meta fields
 		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 		$league = Football_Pool_Utils::post_int( 'league', $default_league );
+		
 		update_user_meta( $user_id, 'footballpool_league', $default_league );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
+		
 		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
@@ -257,18 +259,17 @@ class Football_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		// add user to custom tables
-		$user = get_userdata( $user_id );
-		// display_name is only added for easy debugging
-		$sql = $wpdb->prepare( "INSERT INTO {$prefix}users ( id, name, wantsLeague ) 
-								VALUES ( %d, %s, %d )
-								ON DUPLICATE KEY UPDATE name = %s", 
-							$user_id, $user->display_name, $league_id, $user->display_name
-						);
-		$wpdb->query( $sql );
-		
-		$pool = new Football_Pool_Pool();
-		$pool->update_league_for_user( $user_id, $league_id );
+		$pool = new Football_Pool_Pool;
+		if ( $pool->has_leagues ) {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+									VALUES ( %d, %d )
+									ON DUPLICATE KEY UPDATE leagueId = %d" 
+									, $user_id
+									, $league_id
+									, $league_id
+							);
+			$wpdb->query( $sql );
+		}
 	}
 	
 	public function registration_form_extra_fields() {
@@ -295,74 +296,47 @@ class Football_Pool {
 	}
 	
 	public function update_user_options( $user_id ) {
-		if ( !current_user_can( 'edit_user', $user_id ) ) {
+		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return false;
 		}
 		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
-		
-		self::update_user_custom_tables( $user_id, $league );
-		
-		if ( current_user_can( 'administrator' ) ) {
-			update_user_meta( $user_id, 'footballpool_league', $league );
-			update_user_meta( $user_id, 'footballpool_payed', Football_Pool_Utils::post_int( 'payed', 0 ) );
-			
-			global $wpdb;
-			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			
-			$sql = $wpdb->prepare( "UPDATE {$prefix}league_users SET leagueId=%d WHERE userId=%d",
-									$league, $user_id
-								);
-			$wpdb->query( $sql );
-		}
 	}
 	
 	public function add_extra_profile_fields( $user ) {
 		// add extra profile fields to user edit page
-		echo '<h3>', FOOTBALLPOOL_TEXT_DOMAIN, '</h3>';
-		echo '<table class="form-table">';
 		$pool = new Football_Pool_Pool();
+				
 		if ( $pool->has_leagues ) {
+			echo '<h3>', FOOTBALLPOOL_PLUGIN_NAME, '</h3>';
+			echo '<table class="form-table">';
+			
 			global $current_user;
 			get_currentuserinfo();
 			
-			if ( $user->ID == $current_user->ID ) {
-				$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
-			} else {
-				$league = get_the_author_meta( 'footballpool_league', $user->ID );
-			}
-			echo'<tr><th><label for="league">', __( 'Speel mee in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td>', $pool->league_select( $league, 'league' ), '</td></tr>';
-
-			if ( $user->ID == $current_user->ID ) {
-				$league = get_the_author_meta( 'footballpool_league', $user->ID );
-				if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
-					$league = $pool->leagues[$league]['leagueName'];
-				} else {
-					$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
-				}
-					
-				echo '<tr><th>', __( 'De webmaster heeft je ingedeeld in', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-				echo '<td>', $league, 
-					' <span class="description">(', __( 'als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de webmaster je inschrijving nog niet aangepast.', FOOTBALLPOOL_TEXT_DOMAIN ),')</span></td></tr>';
-			}
-		}
-		if ( current_user_can( 'administrator' ) ) {
 			$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
+			echo'<tr><th><label for="league">', __( 'Speel mee in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
+			echo '<td>', $pool->league_select( $league, 'league' ); 
+			if ( current_user_can( 'administrator' ) ) {
+				echo '<span class="description">', __( '<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool bijwerken op de plugin admin pagina', FOOTBALLPOOL_TEXT_DOMAIN ), ' <a href="admin.php?page=footballpool-users">Users</a>.</span>';
+			}
+			echo '</td></tr>';
 			
+			$league = get_the_author_meta( 'footballpool_league', $user->ID );
 			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 				$league = $pool->leagues[$league]['leagueName'];
 			} else {
 				$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
-			echo '<tr><th>', __( 'Speler heeft geregistreerd voor pool', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td style="font-style:italic">', $league, '</td></tr>';
+				
+			echo '<tr><th>', __( 'De webmaster heeft je ingedeeld in', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
+			echo '<td>', $league, 
+				' <span class="description">(', 
+				__( 'als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de webmaster je inschrijving nog niet aangepast.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				')</span></td></tr>';
 			
-			$checked = get_the_author_meta( 'footballpool_payed', $user->ID ) == 1 ? "checked='checked'" : "";
-			echo '<tr><th><label for="payed">', __( 'Speler heeft betaald?', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo "<td><input {$checked} type='checkbox' id='payed' name='payed' value='1' /></td></tr>";
+			echo '</table>';
 		}
-		echo '</table>';
 	}
 	
 	public function delete_user_from_pool( $user_id ) {
@@ -376,8 +350,6 @@ class Football_Pool {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE userId = %d", $user_id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}users WHERE id = %d", $user_id );
 		$wpdb->query( $sql );
 		// also recalculate scorehistory
 		$score = new Football_Pool_Admin();
