@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Football pool package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Football pool 1.3.2\n"
+"Project-Id-Version: Football pool 1.3.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-05-17 21:04:54+00:00\n"
+"POT-Creation-Date: 2012-05-18 18:16:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -522,7 +522,7 @@ msgid "%s spelers toegevoegd als deelnemer."
 msgstr ""
 
 #: admin/class-football-pool-admin-users.php:93
-#: classes/class-football-pool.php:342 classes/class-football-pool.php:356
+#: classes/class-football-pool.php:329
 msgid "onbekend"
 msgstr ""
 
@@ -725,83 +725,81 @@ msgstr ""
 msgid "voor nop"
 msgstr ""
 
-#: classes/class-football-pool.php:277 classes/class-football-pool.php:334
+#: classes/class-football-pool.php:278 classes/class-football-pool.php:318
 msgid "Speel mee in de pool"
 msgstr ""
 
-#: classes/class-football-pool.php:291
+#: classes/class-football-pool.php:292
 msgid "<strong>ERROR:</strong> Je moet een pool kiezen waar je in gaat spelen!"
 msgstr ""
 
-#: classes/class-football-pool.php:345
+#: classes/class-football-pool.php:321
+msgid ""
+"<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool "
+"bijwerken op de plugin admin pagina"
+msgstr ""
+
+#: classes/class-football-pool.php:332
 msgid "De webmaster heeft je ingedeeld in"
 msgstr ""
 
-#: classes/class-football-pool.php:347
+#: classes/class-football-pool.php:335
 msgid ""
 "als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de "
 "webmaster je inschrijving nog niet aangepast."
 msgstr ""
 
-#: classes/class-football-pool.php:358
-msgid "Speler heeft geregistreerd voor pool"
-msgstr ""
-
-#: classes/class-football-pool.php:362
-msgid "Speler heeft betaald?"
-msgstr ""
-
-#: classes/class-football-pool.php:388
+#: classes/class-football-pool.php:360
 msgid "seconde"
 msgstr ""
 
-#: classes/class-football-pool.php:389
+#: classes/class-football-pool.php:361
 msgid "seconden"
 msgstr ""
 
-#: classes/class-football-pool.php:390
+#: classes/class-football-pool.php:362
 msgid "dag"
 msgstr ""
 
-#: classes/class-football-pool.php:391
+#: classes/class-football-pool.php:363
 msgid "dagen"
 msgstr ""
 
-#: classes/class-football-pool.php:392 classes/class-football-pool.php:393
+#: classes/class-football-pool.php:364 classes/class-football-pool.php:365
 msgid "uur"
 msgstr ""
 
-#: classes/class-football-pool.php:394
+#: classes/class-football-pool.php:366
 msgid "minuut"
 msgstr ""
 
-#: classes/class-football-pool.php:395
+#: classes/class-football-pool.php:367
 msgid "minuten"
 msgstr ""
 
-#: classes/class-football-pool.php:397
+#: classes/class-football-pool.php:369
 msgid "Nog "
 msgstr ""
 
-#: classes/class-football-pool.php:398
+#: classes/class-football-pool.php:370
 msgid " voor het feest start!!"
 msgstr ""
 
-#: classes/class-football-pool.php:400
+#: classes/class-football-pool.php:372
 msgid " geleden zijn we los gegaan."
 msgstr ""
 
-#: classes/class-football-pool.php:423
+#: classes/class-football-pool.php:395
 msgid ""
 "Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te "
 "voeren. Veel succes!"
 msgstr ""
 
-#: classes/class-football-pool.php:424
+#: classes/class-football-pool.php:396
 msgid "Voer je voorspellingen in."
 msgstr ""
 
-#: classes/class-football-pool.php:430
+#: classes/class-football-pool.php:402
 msgid "Vul direct je voorspellingen in"
 msgstr ""
 
