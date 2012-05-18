@@ -98,7 +98,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
 
 		<h2 id="players">Players</h2>
-		<p>There's two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
+		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
 		If not playing with leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		
 		<h2 id="bonusquestions">Bonus questions</h2>
