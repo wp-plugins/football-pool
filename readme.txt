@@ -71,7 +71,7 @@ If you're not using leagues, then make sure the users are not removed from the p
 
 = 1.3.3 =
 * Removed custom fields for admin in the standard WordPress user profile. Editing of users can be done in the plugin user screen.
-* Minor style updates and new icon for the statistics.
+* Minor style updates.
 * Bug fixed: updating users via the WordPress User screen put them in the wrong league (when using leagues).
 * Bug fixed: new custom table for the question types was not prefixed properly; updated the install-script. (thanks sjonas)
 
