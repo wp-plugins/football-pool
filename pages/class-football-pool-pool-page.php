@@ -21,19 +21,19 @@ class Football_Pool_Pool_Page {
 		}
 		$output .= $msg;
 		
-		if ( $current_user->ID != 0 ) {
-			$pool = new Football_Pool_Pool;
+		$pool = new Football_Pool_Pool;
+		if ( $current_user->ID != 0 && $pool->user_is_player( $current_user->ID ) ) {
 			$questions = $pool->get_bonus_questions( $current_user->ID );
 			
-			$matches = new Matches;
+			$matches = new Football_Pool_Matches;
 			$result = $matches->get_match_info_for_user( $current_user->ID );
 			
 			$empty = $matches->first_empty_match_for_user( $current_user->ID );
 			if ( $pool->has_bonus_questions ) {
-				$output .= sprintf( '<p><a href="#bonus">%s</a> | <a href="#match-%d">%s</a></p>',
-								__( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ),
-								$empty,
-								__( 'Wedstrijdvoorspellingen', FOOTBALLPOOL_TEXT_DOMAIN )
+				$output .= sprintf( '<p><a href="#bonus">%s</a> | <a href="#match-%d">%s</a></p>'
+									, __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN )
+									, $empty
+									, __( 'Wedstrijdvoorspellingen', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 				$output .= sprintf( '<h2>%s</h2>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
@@ -58,7 +58,7 @@ class Football_Pool_Pool_Page {
 			$output .= '<input type="hidden" id="_action" name="_action" value="update" /></form>';
 		} else {
 			$output .= '<p>';
-			$output .= sprintf( __( 'Je moet <a href="%s">ingelogd</a> zijn om mee te spelen in de pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			$output .= sprintf( __( 'Je moet ingeschreven en <a href="%s">ingelogd</a> zijn om mee te spelen in de pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								wp_login_url(
 									apply_filters( 'the_permalink', get_permalink( get_the_ID() ) )
 								)
@@ -83,12 +83,11 @@ class Football_Pool_Pool_Page {
 		
 		foreach ( $questions as $question ) {
 			if ( $pool->bonus_is_editable( $question['questionDate'] ) && $answers[ $question['id'] ] != '') {
-				$sql = $wpdb->prepare("
-									REPLACE INTO {$prefix}bonusquestions_useranswers 
-									SET userId = %d,
-										questionId = %d,
-										answer = %s,
-										points = 0",
+				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
+										SET userId = %d,
+											questionId = %d,
+											answer = %s,
+											points = 0",
 								$user, $question['id'], $answers[$question['id']]
 							);
 				$wpdb->query( $sql );
@@ -97,9 +96,11 @@ class Football_Pool_Pool_Page {
 	}
 	
 	private function update_predictions( $user ) {
-		$matches = new Matches;
+		$pool = new Football_Pool_Pool;
+		$matches = new Football_Pool_Matches;
 		
-		if ( $user <= 0 ) return false;
+		// only allow logged in users and players in the pool to update their predictions
+		if ( $user <= 0 || ! $pool->user_is_player( $user ) ) return false;
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -107,13 +108,12 @@ class Football_Pool_Pool_Page {
 		$joker = 0;
 		
 		// only allow setting of joker if it wasn't used before on a played match
-		$sql = $wpdb->prepare("
-								SELECT UNIX_TIMESTAMP(m.playDate) AS matchTimestamp
+		$sql = $wpdb->prepare( "SELECT UNIX_TIMESTAMP(m.playDate) AS matchTimestamp
 								FROM {$prefix}predictions p, {$prefix}matches m 
 								WHERE p.matchNr = m.nr 
-									AND p.hasJoker = 1 AND p.userId = %d", 
-							$user
-						);
+									AND p.hasJoker = 1 AND p.userId = %d" 
+								, $user
+							);
 		$ts = $wpdb->get_var( $sql );
 		if ( $ts ) {
 			if ( $matches->match_is_editable( $ts ) ) {
@@ -146,7 +146,6 @@ class Football_Pool_Pool_Page {
 		}
 		
 		// update bonusquestions
-		$pool = new Football_Pool_Pool;
 		$questions = $pool->get_bonus_questions();
 		if ( $pool->has_bonus_questions ) {
 			$answers = array();
@@ -160,6 +159,11 @@ class Football_Pool_Pool_Page {
 					default:
 						$answers[ $question['id'] ] = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] );
 				}
+				
+				// add user input to answer (for multiple choice questions) if there is some input
+				$user_input = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] . '_userinput' );
+				if ( $user_input != '' )
+					$answers[ $question['id'] ] .= " {$user_input}";
 			}
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}

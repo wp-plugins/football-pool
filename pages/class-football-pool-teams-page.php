@@ -47,7 +47,7 @@ class Football_Pool_Teams_Page {
 			// the games for this team
 			$output .= sprintf( '<h4>%s</h4>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$plays = $team->get_plays();
-			$matches = new Matches;
+			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches( $plays );
 
 			$output .= sprintf( '<p><a href="%s">%s</a></p>', get_page_link(), __( 'bekijk alle teams', FOOTBALLPOOL_TEXT_DOMAIN ) );

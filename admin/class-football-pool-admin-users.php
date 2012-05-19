@@ -295,12 +295,12 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 						echo '</a></strong><br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="user-edit.php?user_id=', esc_attr( $rows[$i][$c] ), '">Edit</a> |
+										<a href="user-edit.php?user_id=', esc_attr( $rows[$i][$c] ), '">Edit</a>
 									</span>';
 						foreach ( $rowactions as $action ) {
 							$span_class = $action[0] == 'remove' ? 'delete' : 'edit';
 							echo '<span class="', $span_class, '">
-									<a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a> |
+									| <a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a>
 								</span>';
 						}
 						echo "</div>";

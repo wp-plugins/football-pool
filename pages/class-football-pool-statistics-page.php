@@ -39,7 +39,7 @@ class Football_Pool_Statistics_Page {
 					}
 					break;
 				case 'matchpredictions':
-					$m = new Matches();
+					$m = new Football_Pool_Matches();
 					$match_info = $m->get_match_info( $match );
 					$output .= $stats->show_match_info( $match_info );
 					if ( $stats->stats_visible ) {

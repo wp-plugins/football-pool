@@ -71,7 +71,7 @@ class Football_Pool {
 		global $current_user;
 		get_currentuserinfo();
 		
-		$matches = new Matches();
+		$matches = new Football_Pool_Matches();
 		$first_match = $matches->get_first_match_info();
 		$date = date( 'j F', $first_match['matchTimestamp'] );
 		

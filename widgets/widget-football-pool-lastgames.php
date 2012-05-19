@@ -122,7 +122,7 @@ class Football_Pool_Last_Games_Widget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		
-		$matches = new Matches;
+		$matches = new Football_Pool_Matches;
 		$teams = new Football_Pool_Teams;
 		
 		$teampage = Football_Pool::get_page_link( 'teams' );

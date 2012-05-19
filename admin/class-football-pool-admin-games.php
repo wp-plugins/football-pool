@@ -12,7 +12,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		self::intro( __( 'Bij het wijzigen van wedstrijduitslagen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		$matches = new Matches();
+		$matches = new Football_Pool_Matches();
 		$rows = $matches->get_info();
 		
 		submit_button();
@@ -24,7 +24,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function update() {
-		$matches = new Matches;
+		$matches = new Football_Pool_Matches;
 		$rows = $matches->get_info();
 		
 		// update scores for all matches

@@ -16,7 +16,7 @@ class Football_Pool_Stadiums_Page {
 			$output .= sprintf( '<h4>%s</h4>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			
 			$plays = $stadium->get_plays();
-			$matches = new Matches;
+			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches($plays);
 
 			$output .= '<p><a href="' . get_page_link() . '">'

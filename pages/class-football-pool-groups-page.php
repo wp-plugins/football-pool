@@ -12,7 +12,7 @@ class Football_Pool_Groups_Page {
 			$output .= '<h2 style="clear: both;">' . __( 'wedstrijden in de voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . '</h2>';
 			$plays = $groups->get_plays_for_group( $group_id );
 			
-			$matches = new Matches;
+			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches( $plays );
 
 			$output .= '<p style="clear: both;"><a href="' . get_page_link() . '">' 

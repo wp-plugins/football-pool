@@ -23,7 +23,7 @@ class Football_Pool_User_Page {
 			$output .= sprintf( '<p>%s</p>',
 								__( 'Alleen voorspellingen en antwoorden die niet meer kunnen worden aangepast, worden getoond.', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
-			$matches = new Matches;
+			$matches = new Football_Pool_Matches;
 			$matches->disable_edits();
 			
 			$result = $matches->get_match_info_for_user( $user_ID );

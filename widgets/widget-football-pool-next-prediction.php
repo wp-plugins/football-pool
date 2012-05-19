@@ -168,7 +168,7 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 		if ( ! is_user_logged_in() ) return;
 		
 		// do not output a widget if there is no next match
-		$matches = new Matches;
+		$matches = new Football_Pool_Matches;
 		$match = $matches->get_next_match();
 		if ( $match != null ) {
 			//initializing variables

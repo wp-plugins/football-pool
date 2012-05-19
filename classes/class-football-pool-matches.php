@@ -1,5 +1,5 @@
 <?php
-class Matches {
+class Football_Pool_Matches {
 	private $joker_blocked;
 	private $teams;
 	private $matches_are_editable;

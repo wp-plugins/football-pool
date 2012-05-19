@@ -115,7 +115,7 @@ class Football_Pool_Shortcodes {
 	
 	//[countdown]
 	public function shortcode_countdown( $atts ) {
-		$matches = new Matches();
+		$matches = new Football_Pool_Matches();
 		$firstMatch = $matches->get_first_match_info();
 		$date = new DateTime( $firstMatch['playDate'] );
 		$year  = $date->format( 'Y' );

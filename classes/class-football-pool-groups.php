@@ -63,7 +63,7 @@ class Football_Pool_Groups {
 		$for = array();
 		$against = array();
 		
-		$matches = new Matches;
+		$matches = new Football_Pool_Matches;
 		$rows = $matches->get_info( 1 );
 		
 		foreach ( $rows as $row ) {
@@ -143,7 +143,7 @@ class Football_Pool_Groups {
 			// check if they have the same number of plays
 			if ( $a['plays'] == $b['plays'] ) {
 				// if so, check if they played each other
-				$matches = new Matches;
+				$matches = new Football_Pool_Matches;
 				$gameresult = $matches->get_match_info_for_teams( $a['team'], $b['team'] );
 				
 				if ( is_array( $gameresult ) ) {

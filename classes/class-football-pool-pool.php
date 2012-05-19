@@ -60,6 +60,20 @@ class Football_Pool_Pool {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
+	public function user_is_player( $user_id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT COUNT(*) 
+								FROM {$prefix}league_users lu
+								RIGHT OUTER JOIN {$wpdb->users} u
+									ON ( u.ID = lu.userId )
+								WHERE u.ID = %d AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL )"
+								, $user_id );
+		
+		return ( $wpdb->get_var( $sql ) == 1 );
+	}
+	
 	// use league=0 to include all users
 	public function get_ranking_from_score_history( $league, $score_date = '', $type = 0 ) {
 		global $wpdb;
@@ -319,7 +333,7 @@ class Football_Pool_Pool {
 		return $info;
 	}
 	
-	private function bonus_question_types( $question ) {
+	private function bonus_question_form_input( $question ) {
 		switch ( $question['type'] ) {
 			case 2: // multiple 1
 				return $this->bonus_question_multiple( $question, 'radio' );
@@ -349,21 +363,50 @@ class Football_Pool_Pool {
 		} else {
 			// radio or checkbox
 			$options = explode( ';', $question['options'] );
+			$i = 1;
 			foreach ( $options as $option ) {
-				if ( str_replace( ' ', '', $option ) != '' ) {
+				// strip out any empty options
+				if ( str_replace( array( ' ', "\t", "\r", "\n" ), array( '', '', '', '' ), $option ) != '' ) {
+					$answer = $question['answer'];
+					$js = sprintf( 'onclick="jQuery( \'#_bonus_%d_userinput\' ).val( \'\' )" ', $question['id'] );
+					
 					if ( $type == 'checkbox' ) {
-						$checked = in_array( $option, explode( ';', $question['answer'] ) ) ? 'checked="checked" ' : '';
+						$checked = in_array( $option, explode( ';', $answer ) ) ? 'checked="checked" ' : '';
 						$brackets = '[]';
+						$user_input = '';
 					} else {
-						$checked = $question['answer'] == $option ? 'checked="checked" ' : '';
+						// @todo: very hacky (and therefor undocumented) feature of adding a text input
+						//        after a radio input
+						if ( substr( $option, -2 ) == '[]' ) {
+							$js = '';
+							
+							$option = substr( $option, 0, -2 );
+							$len = strlen( $option );
+							$checked = substr( $answer, 0, $len ) == $option ? 'checked="checked" ' : '';
+							
+							$user_input_name = sprintf( '_bonus_%d_userinput', esc_attr( $question['id'] ) );
+							$user_input_value = substr( $answer, $len+1 );
+							$user_input = sprintf( ' <input type="text" id="%1$s" name="%1$s" value="%2$s" onclick="jQuery( \'#_bonus_%3$d_%4$d\' ).attr( \'checked\', \'checked\' )" class="bonus userinput" />'
+													, $user_input_name
+													, $user_input_value
+													, $question['id']
+													, $i
+												);
+						} else {
+							$user_input = '';
+							$checked = ( $answer == $option ) ? 'checked="checked" ' : '';
+						}
 						$brackets = '';
 					}
-					$output .= sprintf( '<label><input type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/> %3$s</label>'
+					$output .= sprintf( '<label><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/> %3$s</label>%6$s'
 										, $type
 										, esc_attr( $question['id'] )
 										, esc_attr( $option )
 										, $checked
-										, $brackets 
+										, $brackets
+										, $user_input
+										, $i++
+										, $js
 								);
 					$output .= '<br />';
 				}
@@ -384,7 +427,7 @@ class Football_Pool_Pool {
 		}
 		
 		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
-			$output .= sprintf( '<p>%s</p>', $this->bonus_question_types( $question ) );
+			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
 			
 			// remind a player if there is only 1 day left to answer the question.
 			$output .= '<p>';
