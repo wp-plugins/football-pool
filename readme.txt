@@ -63,6 +63,7 @@ That's correct. The plugin has some basic styling, but it will not change your e
 2. Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
 3. Go to the theme options in de WordPress back-end and select the ek2012 skin (Appearance @raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
 4. Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
+5. Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
 
 == Screenshots ==
 1. Matches in the tournament
