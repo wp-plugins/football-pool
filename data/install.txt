@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}shoutbox` (
 
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `question` varchar(200) NOT NULL DEFAULT '',
+  `question` text NOT NULL DEFAULT '',
   `answer` varchar(200) NOT NULL DEFAULT '',
   `points` smallint(5) unsigned NOT NULL DEFAULT '0',
   `answerBeforeDate` datetime NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_type` (
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
   `questionId` tinyint(3) unsigned NOT NULL,
   `userId` int(11) unsigned NOT NULL,
-  `answer` varchar(200) NOT NULL DEFAULT '',
+  `answer` text NOT NULL DEFAULT '',
   `correct` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `points` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`questionId`,`userId`)

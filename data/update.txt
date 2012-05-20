@@ -1,0 +1,10 @@
+INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
+SELECT q.id, 1, '', '' 
+FROM {$prefix}bonusquestions q
+LEFT OUTER JOIN {$prefix}bonusquestions_type qt
+	ON ( qt.question_id = q.id )
+WHERE qt.type IS NULL;
+
+ALTER TABLE `{$prefix}bonusquestions` CHANGE `question` `question` TEXT NOT NULL DEFAULT '';
+
+ALTER TABLE `{$prefix}bonusquestions_useranswers` CHANGE `answer` `answer` TEXT NOT NULL DEFAULT '';

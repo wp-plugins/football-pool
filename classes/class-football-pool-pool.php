@@ -398,7 +398,7 @@ class Football_Pool_Pool {
 						}
 						$brackets = '';
 					}
-					$output .= sprintf( '<label><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/> %3$s</label>%6$s'
+					$output .= sprintf( '<label><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/><span class="multi-option"> %3$s</span></label>%6$s'
 										, $type
 										, esc_attr( $question['id'] )
 										, esc_attr( $option )
@@ -418,7 +418,10 @@ class Football_Pool_Pool {
 	
 	public function print_bonus_question( $question, $nr ) {
 		// the question with optional image
-		$output = sprintf( '<div class="bonus" id="q%d"><p>%d. %s</p>', $question['id'], $nr, $question['question'] );
+		$output = sprintf( '<div class="bonus" id="q%d"><p><span class="nr">%d.</span> %s</p>'
+							, $question['id']
+							, $nr, $question['question'] 
+					);
 		if ( $question['image'] != '' ) {
 			$output .= sprintf( '<p class="bonus image"><img src="%s" alt="%s" /></p>'
 								, $question['image']
@@ -453,7 +456,11 @@ class Football_Pool_Pool {
 					);
 		}
 		
-		$output .= sprintf( '<span class="bonus points">%d %s</span></p>', $question['points'], __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$points = $question['points'] == 0 ? __( 'variabele', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
+		$output .= sprintf( '<span class="bonus points">%s %s</span></p>'
+							, $points
+							, __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) 
+					);
 		
 		$output .= '</div>';
 		

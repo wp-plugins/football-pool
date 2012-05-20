@@ -72,7 +72,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			
 			echo '<h3>', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
 			echo '<p>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
-			echo '<span style="font-size: 80%; font-style: italic;">', $question['points'], ' ', __( 'punt(en)', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			
+			$points = $question['points'] == 0 ? __( 'variabele', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
+			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'punt(en)', FOOTBALLPOOL_TEXT_DOMAIN ), 
 						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
 			echo '<table class="widefat">';

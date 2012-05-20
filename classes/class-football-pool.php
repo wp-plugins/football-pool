@@ -22,11 +22,10 @@ class Football_Pool {
 		
 		// install custom tables in database
 		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
-		$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
-		
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
+			$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
 			self::db_actions( $data_sql );
 			
 			// insert data in custom tables
@@ -57,14 +56,13 @@ class Football_Pool {
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
-			// fix question type for bonusquestions defined before v1.3
-			$sql = "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
-					SELECT q.id, 1, '', '' 
-					FROM {$prefix}bonusquestions q
-					LEFT OUTER JOIN {$prefix}bonusquestions_type qt
-						ON ( qt.question_id = q.id )
-					WHERE qt.type IS NULL";
-			$wpdb->query( $sql );
+			/*
+			database changes, see data/update.txt for details:
+				- fix question type for bonusquestions defined before v1.3
+				- alter bonusquestions and answers to text fields
+			*/
+			$update_sql = self::prepare( self::read_from_file( 'data/update.txt' ) );
+			self::db_actions( $update_sql );
 		}
 		
 		// define default plugin options

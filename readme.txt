@@ -18,21 +18,17 @@ This plugin installs some custom tables in the database with match information f
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. This year I decided to transform it into a WordPress plugin. I hope you like it.
 
-Btw. I'm not a software developer, so please don't use this code as an example for other plugins. It has 
-some terrible coding. But, hey, it works. :)
-Also, I don't have a donate link. If you want to donate, choose a charity fund and give them the money.
-
 **Features**
 
 * Users can predict match outcomes.
-* You can add bonus questions for extra fun.
+* You can add bonus questions for extra fun (single answer and multiple choice).
 * Configurable scoring options.
 * Use different leagues for your users (optional).
 * Automatic calculation of the pool ranking.
 * Automatic calculation of championship standing.
 * Users have charts where their scores are plotted. And they can compare themselves to other players.
-* Widgets: ranking of your players, last matches, shoutbox.
-* Shortcodes: countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
+* Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
+* Shortcodes: add the ranking in a post, show a group standing, countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
 * Extra info pages with all the venues and teams.
 
 == Installation ==
@@ -59,6 +55,14 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 
 Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
+
+= I installed the plugin, but it does not look like your screenshots. =
+
+That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
+1. Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
+2. Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
+3. Go to the theme options in de WordPress back-end and select the ek2012 skin (Appearance @raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
+4. Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
 
 == Screenshots ==
 1. Matches in the tournament

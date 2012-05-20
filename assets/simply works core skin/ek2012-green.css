@@ -373,7 +373,9 @@ table.statistics td { border-bottom: 1px solid #ADC347; }
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
 }
 
+span.oranje,
 span.bonus.reminder {
+	/*color: #ff6600;*/
     color: #FF8C11;
     font-weight: bolder;
 }
@@ -389,3 +391,17 @@ div.bonus {
 }
 
 span.username { color: #193F18; }
+
+/* drop caps */
+div.bonus p { clear: both; }
+/*div.bonus p:first-of-type:first-letter {*/
+div.bonus span.nr {
+	font-size: 200%;
+	font-family: “Royal Initialen”;
+	float: left;
+	font-size: 4em;
+	line-height: .8em;
+	margin-right: .1em;
+	margin-left: 0;
+	color: #ADC347;
+}
