@@ -59,7 +59,7 @@ If you're not using leagues, then make sure the users are not removed from the p
 The plugin comes with an **en_GB** translation file (in the 'languages' dir). To use the English texts, change the WPLANG constant in the wp-config.php to "en_GB".
 
 If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file.
-You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on the previous page in my plugin.
+You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
 
