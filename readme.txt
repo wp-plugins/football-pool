@@ -71,12 +71,12 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 
 That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
 
-1. Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
-1. Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
-1. Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
-1. Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
-1. Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
-1. Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
+* Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
+* Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
+* Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
+* Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
+* Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
+* Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
 
 = Why do some pages not show any content (e.g. when I click on a team name)? =
 
