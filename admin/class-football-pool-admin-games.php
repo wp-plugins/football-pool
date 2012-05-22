@@ -51,7 +51,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		foreach( $rows as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
-				echo '<tr><td class="sidebar-name" colspan="8"><h3>', $matchtype, '</h3></td></tr>';
+				echo '<tr><td class="sidebar-name" colspan="8"><h3>', __( $matchtype, FOOTBALLPOOL_TEXT_DOMAIN ), '</h3></td></tr>';
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );

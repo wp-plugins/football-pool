@@ -16,8 +16,7 @@ class Football_Pool_Teams {
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name AS groupName 
+		$sql = $wpdb->prepare( "SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name AS groupName 
 								FROM {$prefix}teams t, {$prefix}groups g 
 								WHERE t.groupId = g.id AND t.id = %d",
 								$id
@@ -86,7 +85,7 @@ class Football_Pool_Teams {
 
 		$teams = array();
 		foreach ( $rows as $row ) {
-			$teams[ $row['id'] ] = $row['name'];
+			$teams[ $row['id'] ] = __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN );
 		}
 		return $teams;
 	}

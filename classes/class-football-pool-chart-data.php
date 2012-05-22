@@ -266,7 +266,7 @@ class Football_Pool_Chart_Data {
 				if ( $match != $datarow['match'] || $type != $datarow['type'] ) {
 					$match = $datarow['match'];
 					$type = $datarow['type'];
-					$categoriesdata[] = ( $type == 0 ? 'wedstrijd ' . ++$matchnr : 'bonusvraag ' . ++$questionnr );
+					$categoriesdata[] = ( $type == 0 ? sprintf( '%s ', __( 'wedstrijd', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$matchnr : sprintf( '%s ', __( 'bonusvraag', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$questionnr );
 				}
 				$seriesdata[$user]['data'][] = (int) $datarow['value'];
 			}

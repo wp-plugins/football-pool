@@ -139,9 +139,16 @@ class Football_Pool {
 
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
-		$no_show = current_user_can( 'subscriber' ) && Football_Pool_Utils::get_wp_option( 'footballpool_hide_admin_bar', 1 ) == 1;
+		$no_show = current_user_can( 'subscriber' ) 
+					&& Football_Pool_Utils::get_wp_option( 'footballpool_hide_admin_bar', 1 ) == 1;
 		
 		return $no_show ? false : $content;
+	}
+	
+	private function get_locale() {
+		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+		return $locale;
 	}
 	
 	public function init() {
@@ -150,13 +157,13 @@ class Football_Pool {
 		
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
-		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+		$locale = self::get_locale();
 		
 		$path_to_custom_mo = WP_LANG_DIR . '/' . $domain . '/'. $domain . '-' . $locale . '.mo';
 		load_textdomain( $domain, $path_to_custom_mo );
 		
-		$path_to_plugin_lang_files = $domain . '/languages';
-		load_plugin_textdomain( $domain, false, $path_to_plugin_lang_files );
+		$path_to_plugin_language_files = $domain . '/languages';
+		load_plugin_textdomain( $domain, false, $path_to_plugin_language_files );
 		// end i18n
 		
 		if ( ! wp_script_is( 'jquery', 'queue' ) ) {
@@ -501,12 +508,12 @@ class Football_Pool {
 	}
 	
 	private function read_from_file( $file ) {
-		$dir = FOOTBALLPOOL_PLUGIN_DIR.$file;
+		$file = FOOTBALLPOOL_PLUGIN_DIR . $file;
 		
-		if ( file_exists( $dir ) ) {
-			return file_get_contents( $dir );
+		if ( file_exists( $file ) ) {
+			return file_get_contents( $file );
 		} else {
-			wp_die( $dir . ' not found' );
+			wp_die( $file . ' not found' );
 		}
 	}
 	

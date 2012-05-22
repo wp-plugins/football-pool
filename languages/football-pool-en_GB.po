@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 1.3.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-05-22 20:26:22+00:00\n"
-"PO-Revision-Date: 2012-05-22 22:33+0100\n"
+"POT-Creation-Date: 2012-05-22 20:42:12+00:00\n"
+"PO-Revision-Date: 2012-05-23 00:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: Antoine Hurkmans <antoine.hurkmans@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -985,6 +985,97 @@ msgstr "http://twitter.com/AntoineH"
 #. Tags of the plugin/theme
 msgid "football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship"
 msgstr "football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship"
+
+#. data.txt translation keys
+msgid "Polen"
+msgstr "Poland"
+
+msgid "Griekenland"
+msgstr "Greece"
+
+msgid "Rusland"
+msgstr "Russia"
+
+msgid "Tjechië"
+msgstr "Czech Republic"
+
+msgid "Nederland"
+msgstr "Netherlands"
+
+msgid "Denemarken"
+msgstr "Denmark"
+
+msgid "Duitsland"
+msgstr "Germany"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+msgid "Spanje"
+msgstr "Spain"
+
+msgid "Italië"
+msgstr "Italy"
+
+msgid "Ierland"
+msgstr "Republic of Ireland"
+
+msgid "Kroatië"
+msgstr "Croatia"
+
+msgid "Oekraïne"
+msgstr "Ukraine"
+
+msgid "Zweden"
+msgstr "Sweden"
+
+msgid "Frankrijk"
+msgstr "France"
+
+msgid "Engeland"
+msgstr "England"
+
+msgid "Winnaar A"
+msgstr "Winner group A"
+
+msgid "Winnaar B"
+msgstr "Winner group B"
+
+msgid "Winnaar C"
+msgstr "Winner group C"
+
+msgid "Winnaar D"
+msgstr "Winner group D"
+
+msgid "2e plaats A"
+msgstr "Runner-up group A"
+
+msgid "2e plaats B"
+msgstr "Runner-up group B"
+
+msgid "2e plaats C"
+msgstr "Runner-up group C"
+
+msgid "2e plaats D"
+msgstr "Runner-up group D"
+
+msgid "Winnaar wedstrijd 25"
+msgstr "Winner match 25"
+
+msgid "Winnaar wedstrijd 26"
+msgstr "Winner match 26"
+
+msgid "Winnaar wedstrijd 27"
+msgstr "Winner match 27"
+
+msgid "Winnaar wedstrijd 28"
+msgstr "Winner match 28"
+
+msgid "Winnaar wedstrijd 29"
+msgstr "Winner match 29"
+
+msgid "Winnaar wedstrijd 30"
+msgstr "Winner match 30"
 
 #~ msgid "Speler heeft geregistreerd voor pool"
 #~ msgstr "Player registered for this league"

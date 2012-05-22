@@ -167,26 +167,33 @@ class Football_Pool_Chart {
 									}
 								}
 							}";
-		$this->options[] = "yAxis: {
-								title: { text: 'punten' }, 
-								min: 0, 
-								showFirstLabel: true, 
-								startOnTick: false,
-								allowDecimals: false
-							}";
-		$this->options[] = "xAxis: { 
-								allowDecimals: false,
-								title: { text: 'wedstrijdverloop' }, 
-								labels: { 
-									enabled: true
-									//,rotation: -45
-									//,align: 'right'
-								}
-							}";
-		$this->options[] = "subtitle: { 
-								text: document.ontouchstart === undefined ?
-									'Klik en sleep in de grafiek om in te zoomen' :
-									'Sleep je vinger over de grafiek om in te zoomen' }";
+		$this->options[] = sprintf( "yAxis: {
+										title: { text: '%s' }, 
+										min: 0, 
+										showFirstLabel: true, 
+										startOnTick: false,
+										allowDecimals: false
+									}"
+									, __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+		$this->options[] = sprintf( "xAxis: { 
+										allowDecimals: false,
+										title: { text: '%s' }, 
+										labels: { 
+											enabled: true
+											//,rotation: -45
+											//,align: 'right'
+										}
+									}"
+									, __( 'wedstrijdverloop', FOOTBALLPOOL_TEXT_DOMAIN ) 
+							);
+		$this->options[] = sprintf( "subtitle: { 
+										text: document.ontouchstart === undefined ?
+											'%s' :
+											'%s' }"
+									, __( 'Klik en sleep in de grafiek om in te zoomen', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Sleep je vinger over de grafiek om in te zoomen', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
 		$this->JS_options[] = "options.chart.zoomType = 'x'";
 		
 		$onepoint = false;

@@ -13,7 +13,7 @@ Logged in users of your blog can predict outcomes of matches and earn extra poin
 Use your own theme (but I guess you have to do some styling to get it right) and add the widgets 
 that come with this plugin. I used Simply Works Core myself with my own custom skin and background-image (included in the assets folder). 
 
-This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt" file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the "data/data.txt"-file for this). **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. This year I decided to transform it into a WordPress plugin. I hope you like it.
 
@@ -31,6 +31,8 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Extra info pages with all the venues and teams.
 
 == Installation ==
+**Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG before installing the plugin. See FAQ for more information on translating the plugin.
+
 1. Upload `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the `Plugins` panel in WordPress
 3. Edit the plugin configuration via the admin menu
@@ -39,7 +41,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 6. Optional: add the "Football pool" widgets to your sidebar
    (User Selector Widget is needed for the stats page)
 7. Optional: add bonus questions
-8. Optional: 'upgrade' allready existing users in your blog to pool-users
+8. Optional: 'upgrade' existing users in your blog to pool-users
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -47,11 +49,16 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Frequently Asked Questions ==
 
-= The plugin is Dutch. Is there a translation? =
+= I don't see my blog users as players of the pool. =
 
-The plugin comes with an **en_GB** translation file (in the 'languages' dir). To use the English texts change the WPLANG constant in the wp-config.php to "en_GB" before activating the plugin. Upon activation some texts are placed in the database and if your locale was not "en_GB" these texts will be Dutch.
+Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
-If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. 
+= The plugin is Dutch. Is there a translation available? =
+
+The plugin comes with an **en_GB** translation file (in the 'languages' dir). To use the English texts, change the WPLANG constant in the wp-config.php to "en_GB".
+
+If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file.
 You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on the previous page in my plugin.
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
@@ -59,11 +66,6 @@ Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is
 = I installed the plugin, but there are no matches. What happened? =
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
-
-= I don't see my blog users as players of the pool. =
-
-Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
-If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = I installed the plugin, but it does not look like your screenshots. =
 

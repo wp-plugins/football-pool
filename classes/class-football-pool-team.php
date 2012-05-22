@@ -13,21 +13,21 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			$t = $this->get_team_by_ID( $team );
 			if ( is_object( $t ) ) {
 				$this->id = $t->id;
-				$this->name = $t->name;
+				$this->name = __( $t->name, FOOTBALLPOOL_TEXT_DOMAIN );
 				$this->photo = $t->photo;
 				$this->flag = $t->flag;
 				$this->link = $t->link;
 				$this->group_ID = $t->group_ID;
-				$this->group_name = $t->group_name;
+				$this->group_name = __( $t->group_name, FOOTBALLPOOL_TEXT_DOMAIN );
 			}
 		} elseif ( is_array( $team ) ) {
 			$this->id = $team['id'];
-			$this->name = $team['name'];
+			$this->name = __( $team['name'], FOOTBALLPOOL_TEXT_DOMAIN );
 			$this->photo = $team['photo'];
 			$this->flag = $team['flag'];
 			$this->link = $team['link'];
 			$this->group_ID = $team['groupId'];
-			$this->group_name = $team['groupName'];
+			$this->group_name = __( $team['groupName'], FOOTBALLPOOL_TEXT_DOMAIN );
 		}
 	}
 	
@@ -76,8 +76,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT DISTINCT s.id, s.name, s.photo
+		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo
 								FROM {$prefix}stadiums s, {$prefix}matches m 
 								WHERE s.id = m.stadiumId 
 								AND (m.homeTeamId = %d OR awayTeamId = %d)

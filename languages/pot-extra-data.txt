@@ -1,0 +1,91 @@
+﻿#. data.txt translation keys
+msgid "Polen"
+msgstr ""
+
+msgid "Griekenland"
+msgstr ""
+
+msgid "Rusland"
+msgstr ""
+
+msgid "Tjechië"
+msgstr ""
+
+msgid "Nederland"
+msgstr ""
+
+msgid "Denemarken"
+msgstr ""
+
+msgid "Duitsland"
+msgstr ""
+
+msgid "Portugal"
+msgstr ""
+
+msgid "Spanje"
+msgstr ""
+
+msgid "Italië"
+msgstr ""
+
+msgid "Ierland"
+msgstr ""
+
+msgid "Kroatië"
+msgstr ""
+
+msgid "Oekraïne"
+msgstr ""
+
+msgid "Zweden"
+msgstr ""
+
+msgid "Frankrijk"
+msgstr ""
+
+msgid "Engeland"
+msgstr ""
+
+msgid "Winnaar A"
+msgstr ""
+
+msgid "Winnaar B"
+msgstr ""
+
+msgid "Winnaar C"
+msgstr ""
+
+msgid "Winnaar D"
+msgstr ""
+
+msgid "2e plaats A"
+msgstr ""
+
+msgid "2e plaats B"
+msgstr ""
+
+msgid "2e plaats C"
+msgstr ""
+
+msgid "2e plaats D"
+msgstr ""
+
+msgid "Winnaar wedstrijd 25"
+msgstr ""
+
+msgid "Winnaar wedstrijd 26"
+msgstr ""
+
+msgid "Winnaar wedstrijd 27"
+msgstr ""
+
+msgid "Winnaar wedstrijd 28"
+msgstr ""
+
+msgid "Winnaar wedstrijd 29"
+msgstr ""
+
+msgid "Winnaar wedstrijd 30"
+msgstr ""
+
