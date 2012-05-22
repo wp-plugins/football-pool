@@ -204,7 +204,7 @@ class Football_Pool_Matches {
 			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
 				$date_title = $matchdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
-									date( 'l', $row['matchTimestamp'] ), $date_title );
+									$matchdate->format( 'l' ), $date_title );
 			}
 			
 			$output .= sprintf( '<tr title="%s %s">
@@ -250,7 +250,7 @@ class Football_Pool_Matches {
 		foreach ( $matches as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
-				$output .= sprintf( '<tr><td class="matchtype" colspan="11">%s</td></tr>', $matchtype );
+				$output .= sprintf( '<tr><td class="matchtype" colspan="11">%s</td></tr>', __( $matchtype, FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );

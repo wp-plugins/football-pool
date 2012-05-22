@@ -5,7 +5,7 @@ class Football_Pool_Groups {
 		
 		$rows = $this->get_groups();
 		foreach ( $rows as $row ) {
-			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'] );
+			$group_names[ (integer) $row['id'] ] = htmlentities( __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
 		return $group_names;
@@ -113,8 +113,7 @@ class Football_Pool_Groups {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT DISTINCT
+		$sql = $wpdb->prepare( "SELECT DISTINCT
 									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
@@ -130,7 +129,8 @@ class Football_Pool_Groups {
 									AND m.matchtypeId = t.id 
 									AND t.id = 1 -- only round 1
 									AND (m.homeTeamId = tm.id OR m.awayTeamId = tm.id)
-									AND tm.groupId = %d",
+									AND tm.groupId = %d
+								ORDER BY m.playDate ASC, m.nr ASC",
 							$group
 						);
 		
