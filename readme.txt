@@ -70,6 +70,7 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 = I installed the plugin, but it does not look like your screenshots. =
 
 That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
+
 1. Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
 1. Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
 1. Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
