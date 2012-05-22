@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.3.4
+Stable tag: 1.4
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -90,7 +90,7 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 
 == Changelog ==
 
-= 1.3.4 =
+= 1.4 =
 * Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)
 * Bonus questions and user answers can now contain more than 200 characters.
 * Style updates.
