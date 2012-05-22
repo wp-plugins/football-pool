@@ -145,7 +145,19 @@ class Football_Pool {
 	}
 	
 	public function init() {
-		load_plugin_textdomain( FOOTBALLPOOL_TEXT_DOMAIN, false, FOOTBALLPOOL_PLUGIN_DIR . 'languages' );
+		// i18n support:
+		// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
+		
+		// The "plugin_locale" filter is also used in load_plugin_textdomain()
+		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+		
+		$path_to_custom_mo = WP_LANG_DIR . '/' . $domain . '/'. $domain . '-' . $locale . '.mo';
+		load_textdomain( $domain, $path_to_custom_mo );
+		
+		$path_to_plugin_lang_files = $domain . '/languages';
+		load_plugin_textdomain( $domain, false, $path_to_plugin_lang_files );
+		// end i18n
 		
 		if ( ! wp_script_is( 'jquery', 'queue' ) ) {
 			wp_enqueue_script( "jquery" );

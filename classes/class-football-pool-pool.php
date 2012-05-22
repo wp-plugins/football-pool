@@ -364,6 +364,7 @@ class Football_Pool_Pool {
 			// radio or checkbox
 			$options = explode( ';', $question['options'] );
 			$i = 1;
+			$output .= '<ul class="multi-select">';
 			foreach ( $options as $option ) {
 				// strip out any empty options
 				if ( str_replace( array( ' ', "\t", "\r", "\n" ), array( '', '', '', '' ), $option ) != '' ) {
@@ -375,7 +376,7 @@ class Football_Pool_Pool {
 						$brackets = '[]';
 						$user_input = '';
 					} else {
-						// @todo: very hacky (and therefor undocumented) feature of adding a text input
+						// @todo: very hacky (and therefore undocumented) feature of adding a text input
 						//        after a radio input
 						if ( substr( $option, -2 ) == '[]' ) {
 							$js = '';
@@ -385,8 +386,8 @@ class Football_Pool_Pool {
 							$checked = substr( $answer, 0, $len ) == $option ? 'checked="checked" ' : '';
 							
 							$user_input_name = sprintf( '_bonus_%d_userinput', esc_attr( $question['id'] ) );
-							$user_input_value = substr( $answer, $len+1 );
-							$user_input = sprintf( ' <input type="text" id="%1$s" name="%1$s" value="%2$s" onclick="jQuery( \'#_bonus_%3$d_%4$d\' ).attr( \'checked\', \'checked\' )" class="bonus userinput" />'
+							$user_input_value = ( $checked ) ? substr( $answer, $len + 1 ) : '';
+							$user_input = sprintf( '<span> <input type="text" id="%1$s" name="%1$s" value="%2$s" onclick="jQuery( \'#_bonus_%3$d_%4$d\' ).attr( \'checked\', \'checked\' )" /></span>'
 													, $user_input_name
 													, $user_input_value
 													, $question['id']
@@ -398,7 +399,10 @@ class Football_Pool_Pool {
 						}
 						$brackets = '';
 					}
-					$output .= sprintf( '<label><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/><span class="multi-option"> %3$s</span></label>%6$s'
+					
+					$user_input_class = ( $user_input != '' ) ? ' class="user-input"' : '';
+
+					$output .= sprintf( '<li><label%9$s><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/><span class="multi-option"> %3$s</span></label>%6$s</li>'
 										, $type
 										, esc_attr( $question['id'] )
 										, esc_attr( $option )
@@ -407,10 +411,12 @@ class Football_Pool_Pool {
 										, $user_input
 										, $i++
 										, $js
+										, $user_input_class
 								);
-					$output .= '<br />';
 				}
 			}
+			
+			$output .= '</ul>';
 		}
 		
 		return $output;

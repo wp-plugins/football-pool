@@ -101,12 +101,9 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_match_info_for_user( $user ) {
-		if ( ! is_integer( $user ) ) return 0;
-		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT 
+		$sql = $wpdb->prepare( "SELECT 
 									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
@@ -353,7 +350,7 @@ class Football_Pool_Matches {
 		
 		if ( ! $this->joker_blocked ) {
 			if ( $this->match_is_editable( $ts ) ) {
-				$add_joker = ' onclick="change_joker( this.id )" title="' . __( 'joker inzetten?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
+				$add_joker = ' onclick="change_joker( this.id )" title="' . __( 'gouden bal inzetten?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}
 		} else {
 			//$style = ' style="cursor: text!important;"';

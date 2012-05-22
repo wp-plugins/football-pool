@@ -1,6 +1,5 @@
 === Football Pool ===
 Contributors: AntoineH
-Donate link:
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
@@ -48,6 +47,15 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Frequently Asked Questions ==
 
+= The plugin is Dutch. Is there a translation? =
+
+The plugin comes with an **en_GB** translation file (in the 'languages' dir). To use the English texts change the WPLANG constant in the wp-config.php to "en_GB" before activating the plugin. Upon activation some texts are placed in the database and if your locale was not "en_GB" these texts will be Dutch.
+
+If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. 
+You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on the previous page in my plugin.
+
+Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
+
 = I installed the plugin, but there are no matches. What happened? =
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
@@ -67,7 +75,7 @@ That's correct. The plugin has some basic styling, but it will not change your e
 5. Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
 6. Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
 
-= Why do some pages not show any content? =
+= Why do some pages not show any content (e.g. when I click on a team name)? =
 
 Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalinks) to something other than the default.
 
@@ -79,6 +87,11 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.3.4 =
+* Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information.
+* Bonus questions and user answers can now contain more than 200 characters.
+* Minor style updates (bonus questions).
 
 = 1.3.3 =
 * Removed custom fields for admin in the standard WordPress user profile. Editing of users can be done in the plugin user screen.

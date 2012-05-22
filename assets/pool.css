@@ -122,7 +122,6 @@ span.username { color: #330039; font-weight: bolder; }
 
 div.bonus { border-bottom: 1px solid #330039; }
 div.bonus, p.bonus, input.bonus { width: 550px; }
-input.bonus.userinput { width: 250px; }
 div.bonus.userview { margin-top: 1em; padding-bottom: .5em; }
 div.bonus.userview p { margin: 0; padding: 0; }
 div.bonus.userview span { color: #000; }
@@ -134,11 +133,34 @@ span.bonus.points { float: right; }
 span.bonus.reminder { color: #990288; font-weight: bolder; }
 span.extra { font-size: 80%; color: #666; }
 
-div.bonus input[type=checkbox], div.bonus input[type=radio] {
-	float: left; display: block; width: 20px;
+div.bonus ul.multi-select { list-style: none; margin: 0; padding: 0; }
+div.bonus p, div.bonus li { clear: both; }
+
+div.bonus ul.multi-select label { 
+	display: block; margin-bottom: 10px;
 }
-div.bonus span.multi-option { display: block; margin-left: 30px; }
-div.bonus label { clear: both; }
+
+div.bonus ul.multi-select input[type=radio], 
+div.bonus ul.multi-select input[type=checkbox] {
+	float: left; display: block;
+	height: 13px; width: 15px;
+}
+
+div.bonus ul.multi-select span { 
+	margin-left: 20px;
+	padding-left: 10px;
+	display: block;
+	width: 530px; /* standard column width = 550px */
+}
+
+/* handle the multi-select option with user input */
+div.bonus ul.multi-select label + span { width: 530px; float: left; }
+div.bonus ul.multi-select label + span input[type=text] { width: 100%; }
+div.bonus ul.multi-select label.user-input span { width: 530px; }
+
+/* example 4 column layout
+#q1 ul.multi-select li { float: left; width: 25%; }
+*/
 
 #sidebar .widget_footballpoollastgameswidget p,
 #sidebar .widget_footballpoolrankingwidget p { padding: 2px 3px; margin: 0; font-size: 75%; }

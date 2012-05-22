@@ -397,7 +397,7 @@ div.bonus p { clear: both; }
 /*div.bonus p:first-of-type:first-letter {*/
 div.bonus span.nr {
 	font-size: 200%;
-	font-family: “Royal Initialen”;
+	font-family: Times Roman;
 	float: left;
 	font-size: 4em;
 	line-height: .8em;
