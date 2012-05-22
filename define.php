@@ -27,4 +27,25 @@ define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
 define( 'FOOTBALLPOOL_FULLPOINTS',   5 );
 define( 'FOOTBALLPOOL_TOTOPOINTS',   2 );
+
+/*
+
+__('Polen')
+__('Griekenland')
+__('Rusland')
+__('Tjechië')
+__('Nederland')
+__('Denemarken')
+__('Duitsland')
+__('Portugal')
+__('Spanje')
+__('Italië')
+__('Ierland')
+__('Kroatië')
+__('Oekraïne')
+__('Zweden')
+__('Frankrijk')
+__('Engeland')
+
+*/
 ?>

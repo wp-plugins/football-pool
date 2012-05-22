@@ -89,9 +89,9 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 == Changelog ==
 
 = 1.3.4 =
-* Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information.
+* Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)
 * Bonus questions and user answers can now contain more than 200 characters.
-* Minor style updates (bonus questions).
+* Style updates.
 
 = 1.3.3 =
 * Removed custom fields for admin in the standard WordPress user profile. Editing of users can be done in the plugin user screen.
