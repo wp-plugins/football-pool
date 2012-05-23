@@ -91,6 +91,9 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 
 == Changelog ==
 
+= 1.4.1 =
+* Some texts were lost in translation. I added them.
+
 = 1.4 =
 * Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)
 * Bonus questions and user answers can now contain more than 200 characters.

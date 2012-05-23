@@ -477,8 +477,7 @@ class Football_Pool {
 	}
 	
 	private function create_page( $page, $menuOrder = null ) {
-		if ( ! get_option( 'footballpool_page_id_' . $page['slug'] ) )
-		{
+		if ( ! get_option( 'footballpool_page_id_' . $page['slug'] ) ) {
 			global $current_user;
 			
 			$newpage = array();

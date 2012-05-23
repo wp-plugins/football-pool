@@ -1,4 +1,9 @@
 jQuery( document ).ready( function() {
+	
+	// examples of setting the max possible answers for a multiple choice question (checkbox)
+	//set_max_answers( 1, 2 ); // question 1 has a max of 2
+	//set_max_answers( 5, 4 ); // question 5 has a max of 4
+	
 	// set some default Highchart options
 	Highcharts.setOptions( {
 		// no link to highcharts.com
@@ -105,4 +110,24 @@ function do_countdown( el, text, year, month, day, hour, minute, second, format 
 	}
 	
 	jQuery( el ).text( pre + txt + post );
+}
+
+function set_max_answers( id, max ) {
+	var question = "#q" + id;
+	
+	// check onload
+	check_max_answers( id, max );
+	// and set the click action
+	jQuery( question + " :checkbox" ).click( function() {
+		check_max_answers( id, max )
+	});
+}
+
+function check_max_answers( id, max ) {
+	var question = "#q" + id;
+	if( jQuery( question + " :checkbox:checked" ).length >= max) {
+		jQuery( question + " :checkbox:not(:checked)" ).attr( "disabled", "disabled" );
+	} else {
+		jQuery( question + " :checkbox" ).removeAttr( "disabled" );
+	}
 }
