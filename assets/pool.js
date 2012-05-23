@@ -1,6 +1,10 @@
 jQuery( document ).ready( function() {
 	
-	// examples of setting the max possible answers for a multiple choice question (checkbox)
+	/**
+	 *	Examples of setting the max possible answers for a multiple choice question (checkbox).
+	 *
+	 *	function set_max_answers( <question ID>, <max number of answers> )
+	 */
 	//set_max_answers( 1, 2 ); // question 1 has a max of 2
 	//set_max_answers( 5, 4 ); // question 5 has a max of 4
 	

@@ -93,6 +93,7 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 
 = 1.4.1 =
 * Some texts were lost in translation. I added them.
+* pool.js file contains functions to handle maximum allowed answers for multiple choice questions (checkbox). Check is only done client-side. See top of pool.js file for usage. I recommend adding the calls to the functions in a separate file or add them to your theme.
 
 = 1.4 =
 * Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)
