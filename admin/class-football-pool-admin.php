@@ -31,8 +31,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit users', 
-			'Users', 
+			__( 'Beheer spelers', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'Spelers', 
 			'administrator', 
 			'footballpool-users',
 			array( 'Football_Pool_Admin_Users', 'admin' )
@@ -40,8 +40,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit games', 
-			'Games', 
+			__( 'Beheer wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-games',
 			array( 'Football_Pool_Admin_Games', 'admin' )
@@ -49,8 +49,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit questions', 
-			'Questions', 
+			__( 'Beheer bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Vragen', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-bonus',
 			array( 'Football_Pool_Admin_Bonus_Questions', 'admin' )
@@ -58,8 +58,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit shoutbox', 
-			'Shoutbox', 
+			__( 'Beheer shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-shoutbox',
 			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
@@ -67,8 +67,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit group positions', 
-			'Teams', 
+			__( 'Beheer positie in de poule', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-groups',
 			array( 'Football_Pool_Admin_Groups', 'admin' )
@@ -76,8 +76,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Edit leagues', 
-			'Leagues', 
+			__( 'Beheer pools', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )
@@ -85,8 +85,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			'Help', 
-			'Help', 
+			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-help',
 			array( 'Football_Pool_Admin_Help', 'admin' )
