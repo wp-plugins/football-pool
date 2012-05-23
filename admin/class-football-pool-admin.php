@@ -21,8 +21,8 @@ class Football_Pool_Admin {
 		$slug = 'footballpool-options';
 		
 		add_menu_page(
-			'Football Pool',
-			'Football Pool',
+			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
+			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
 			'administrator',
 			$slug,
 			array( 'Football_Pool_Admin_Options', 'admin' ),
@@ -32,7 +32,7 @@ class Football_Pool_Admin {
 		add_submenu_page(
 			$slug,
 			__( 'Beheer spelers', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'Spelers', 
+			__( 'Spelers', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-users',
 			array( 'Football_Pool_Admin_Users', 'admin' )
