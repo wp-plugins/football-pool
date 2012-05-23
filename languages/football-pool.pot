@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Football pool package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Football pool 1.3.4\n"
+"Project-Id-Version: Football pool 1.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-05-22 23:19:31+00:00\n"
+"POT-Creation-Date: 2012-05-23 07:58:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -216,6 +216,7 @@ msgid "Antwoorden Spelers"
 msgstr ""
 
 #: admin/class-football-pool-admin-games.php:6
+#: admin/class-football-pool-admin.php:44
 msgid "Wedstrijden"
 msgstr ""
 
@@ -259,11 +260,14 @@ msgid ""
 msgstr ""
 
 #: admin/class-football-pool-admin-help.php:7
+#: admin/class-football-pool-admin.php:88
+#: admin/class-football-pool-admin.php:89
 #: admin/class-football-pool-admin.php:99
 msgid "Help"
 msgstr ""
 
 #: admin/class-football-pool-admin-leagues.php:6
+#: admin/class-football-pool-admin.php:80
 msgid "Pools"
 msgstr ""
 
@@ -446,6 +450,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-football-pool-admin-shoutbox.php:6
+#: admin/class-football-pool-admin.php:62
 msgid "Shoutbox"
 msgstr ""
 
@@ -487,6 +492,7 @@ msgid "tijd"
 msgstr ""
 
 #: admin/class-football-pool-admin-users.php:6
+#: admin/class-football-pool-admin.php:35
 msgid "Spelers"
 msgstr ""
 
@@ -570,6 +576,43 @@ msgstr ""
 
 #: admin/class-football-pool-admin.php:14
 msgid "Use Image"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:24
+#: admin/class-football-pool-admin.php:25
+msgid "Football Pool"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:34
+msgid "Beheer spelers"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:43
+msgid "Beheer wedstrijden"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:52
+msgid "Beheer bonusvragen"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:53
+msgid "Vragen"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:61
+msgid "Beheer shoutbox"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:70
+msgid "Beheer positie in de poule"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:71
+msgid "Teams"
+msgstr ""
+
+#: admin/class-football-pool-admin.php:79
+msgid "Beheer pools"
 msgstr ""
 
 #: admin/class-football-pool-admin.php:98
