@@ -5,8 +5,8 @@ jQuery( document ).ready( function() {
 	 *
 	 *	function set_max_answers( <question ID>, <max number of answers> )
 	 */
-	//set_max_answers( 1, 2 ); // question 1 has a max of 2
-	//set_max_answers( 5, 4 ); // question 5 has a max of 4
+	//set_max_answers( 1, 2 ); // question ID 1 has a max of 2
+	//set_max_answers( 5, 4 ); // question ID 5 has a max of 4
 	
 	// set some default Highchart options
 	Highcharts.setOptions( {
