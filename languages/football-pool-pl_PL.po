@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 1.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-05-28 20:03:22+00:00\n"
-"PO-Revision-Date: 2012-05-28 22:34+0100\n"
+"POT-Creation-Date: 2012-05-28 20:56:31+00:00\n"
+"PO-Revision-Date: 2012-05-28 22:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: Łukasz Ciastoń\n"
 "MIME-Version: 1.0\n"
@@ -529,19 +529,16 @@ msgstr "Liga"
 
 # Edit players
 #: admin/class-football-pool-admin.php:34
-#, fuzzy
 msgid "Beheer spelers"
 msgstr "wszyscy gracze"
 
 # Edit matches
 #: admin/class-football-pool-admin.php:43
-#, fuzzy
 msgid "Beheer wedstrijden"
 msgstr "mecze"
 
 # Edit bonus questions
 #: admin/class-football-pool-admin.php:52
-#, fuzzy
 msgid "Beheer bonusvragen"
 msgstr "Pytania bonusowe"
 
@@ -552,13 +549,11 @@ msgstr "Pytania"
 
 # Edit shoutbox
 #: admin/class-football-pool-admin.php:61
-#, fuzzy
 msgid "Beheer shoutbox"
 msgstr "Shoutbox"
 
 # Edit team position
 #: admin/class-football-pool-admin.php:70
-#, fuzzy
 msgid "Beheer positie in de poule"
 msgstr "pozycja w lidze"
 
@@ -1010,9 +1005,8 @@ msgstr "Informacje o meczach są niedostępne."
 # Standing
 #: widgets/widget-football-pool-group.php:28
 #: widgets/widget-football-pool-ranking.php:28
-#, fuzzy
 msgid "stand"
-msgstr "Rosja"
+msgstr "rosja"
 
 #: widgets/widget-football-pool-group.php:216
 msgid "breed"
@@ -1061,7 +1055,6 @@ msgstr "zapisz"
 
 # players
 #: widgets/widget-football-pool-userselector.php:27
-#, fuzzy
 msgid "spelers"
 msgstr "gracz"
 

@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4
+Stable tag: 1.4.1
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -31,7 +31,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Extra info pages with all the venues and teams.
 
 **Translations**
-At the moment the plugin is available in Dutch (default) and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me (<a href="http://wordpress.org/support/plugin/football-pool">support forum</a>). The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
+At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me (wordpressfootballpool[at] gmail[dot]com). The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
 
 == Installation ==
 **Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG before installing the plugin. See FAQ for more information on translating the plugin.
@@ -89,7 +89,7 @@ That's correct. The plugin has some basic styling, but it will not change your e
 * Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
 * Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
 
-= Why do some pages not show any content (e.g. when I click on a team name)? =
+= Why do some pages show no content (e.g. when I click on a team name)? =
 
 Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalinks) to something other than the default.
 
@@ -105,7 +105,7 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 = 1.4.1 =
 * Some texts were lost in translation. I added them.
 * New configuration options for a single 'lock time' for matches and bonus questions. If set, users have to finish all their predictions before this date and time.
-* Plugin supports a maximum number of answers a user may select in a multiple choice question (checkbox). The check is only done client-side and requires a bit of javascript knowledge. See top of pool.js file for usage. I recommend adding the javascript calls in a separate file, add them to your theme or use a plugin that helps adding custom javascript to your blog. (thanks srozemuller)
+* Plugin supports a maximum number of answers a user may select in a multiple choice question (checkbox). The check is only done client-side and requires a bit of javascript knowledge to use it. See top of pool.js file for usage. I recommend adding the javascript calls in a separate file, add them to your theme or use a plugin that helps adding custom javascript to your blog. (thanks srozemuller)
 * Added Polish translation. (thanks Łukasz Ciastoń)
 
 = 1.4 =
