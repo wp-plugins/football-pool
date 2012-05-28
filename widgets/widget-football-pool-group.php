@@ -24,6 +24,9 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
  */
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Group_Widget" );' ) );
 
+// dummy var for translation files
+$fp_dummy_var = __( 'stand', FOOTBALLPOOL_TEXT_DOMAIN );
+
 class Football_Pool_Group_Widget extends WP_Widget {
 	/**
 	 * Widget settings
@@ -34,7 +37,7 @@ class Football_Pool_Group_Widget extends WP_Widget {
 	 * 
 	 * 
 		array(
-			'name' => 'title',
+			'name' => 'Title',
 			'desc' => '',
 			'id' => 'title',
 			'type' => 'text',
@@ -86,7 +89,7 @@ class Football_Pool_Group_Widget extends WP_Widget {
 		'fields' => array(
 			// You should always offer a widget title
 			array(
-				'name' => 'title',
+				'name' => 'Title',
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
@@ -195,6 +198,10 @@ class Football_Pool_Group_Widget extends WP_Widget {
 	public function form( $instance ) {
 		//reasons to fail
 		if ( empty( $this->widget['fields'] ) ) return false;
+		
+		// translate the default title
+		if ( $this->widget['fields'][0]['name'] == 'Title' )
+			$this->widget['fields'][0]['std'] = __( $this->widget['fields'][0]['std'], FOOTBALLPOOL_TEXT_DOMAIN );
 		
 		// get the groups from the database
 		$g = new Football_Pool_Groups();

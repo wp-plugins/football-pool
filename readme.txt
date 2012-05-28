@@ -30,6 +30,9 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Shortcodes: add the ranking in a post, show a group standing, countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
 * Extra info pages with all the venues and teams.
 
+**Translations**
+At the moment the plugin is available in Dutch (default) and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me (<a href="http://wordpress.org/support/plugin/football-pool">support forum</a>). The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
+
 == Installation ==
 **Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG before installing the plugin. See FAQ for more information on translating the plugin.
 
@@ -49,16 +52,24 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Frequently Asked Questions ==
 
+= Do I need the "Voorspellingen" page? =
+Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus). Some themes or WordPress configurations automatically put all top level pages in the navigation.
+
 = I don't see my blog users as players of the pool. =
 
-Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added. But users that allready existed in your pool have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = The plugin is Dutch. Is there a translation available? =
 
-The plugin comes with an **en_GB** translation file (in the 'languages' dir). To use the English texts, change the WPLANG constant in the wp-config.php to "en_GB".
+The plugin comes with the following translations:
 
-If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file.
+* English, en_GB
+* Polish, pl_PL (translator: Łukasz Ciastoń)
+
+The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "en_GB").
+
+If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. If you give me the translation, I'll add it to the plugin and give you the credits.
 You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
@@ -93,7 +104,9 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 
 = 1.4.1 =
 * Some texts were lost in translation. I added them.
-* pool.js file contains functions to handle maximum allowed answers for multiple choice questions (checkbox). Check is only done client-side. See top of pool.js file for usage. I recommend adding the calls to the functions in a separate file or add them to your theme.
+* New configuration options for a single 'lock time' for matches and bonus questions. If set, users have to finish all their predictions before this date and time.
+* Plugin supports a maximum number of answers a user may select in a multiple choice question (checkbox). The check is only done client-side and requires a bit of javascript knowledge. See top of pool.js file for usage. I recommend adding the javascript calls in a separate file, add them to your theme or use a plugin that helps adding custom javascript to your blog. (thanks srozemuller)
+* Added Polish translation. (thanks Łukasz Ciastoń)
 
 = 1.4 =
 * Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)

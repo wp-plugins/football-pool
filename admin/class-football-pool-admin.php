@@ -103,10 +103,10 @@ class Football_Pool_Admin {
 	}
 	
 	public function get_value( $key, $default = '' ) {
-		return get_option( 'footballpool_' . $key );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_' . $key, $default );
 	}
 	
-	public function set_value( $key, $value ) {
+	public function set_value( $key, $value, $type = 'text' ) {
 		update_option( 'footballpool_' . $key, $value );
 	}
 	
@@ -181,13 +181,40 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
+	public function datetime_input( $label, $key, $value, $description = '' ) {
+		echo '<tr valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
+		if ( $value != '' ) {
+			$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
+			$year = $date->format( 'Y' );
+			$month = $date->format( 'm' );
+			$day = $date->format( 'd');
+			$hour = $date->format( 'H' );
+			$minute = $date->format( 'i' );
+		} else {
+			$year = $month = $day = $hour = $minute = '';
+		}
+		echo '<input name="', esc_attr( $key ),'_y" type="text" id="', esc_attr( $key ), '_y" value="', esc_attr( $year ), '" class="with-hint date-y" title="yyyy" maxlength="4" />';
+		echo '-';
+		echo '<input name="', esc_attr( $key ),'_m" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $month ), '" class="with-hint date-m" title="mm" maxlength="2" />';
+		echo '-';
+		echo '<input name="', esc_attr( $key ),'_d" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $day ), '" class="with-hint date-d" title="dd" maxlength="2" />';
+		echo '&nbsp;';
+		echo '<input name="', esc_attr( $key ),'_h" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $hour ), '" class="with-hint date-h" title="hr" maxlength="2" />';
+		echo ':';
+		echo '<input name="', esc_attr( $key ),'_i" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $minute ), '" class="with-hint date-i" title="mn" maxlength="2" />';
+		
+		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+	}
+	
 	public function show_option( $option ) {
 		switch ( $option[0] ) {
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3] );
 				break;
+			case 'datetime':
+				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3] );
+				break;
 			case 'integer':
-			case 'date':
 			case 'string':
 			case 'text':
 			default:

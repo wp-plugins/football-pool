@@ -3,10 +3,20 @@ class Football_Pool_Pool {
 	public $leagues;
 	public $has_bonus_questions = false;
 	public $has_leagues;
+	private $force_lock_time = '';
+	private $lock;
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
 		$this->has_leagues = ( get_option('footballpool_use_leagues') == '1' ) && ( count( $this->leagues ) > 1 );
+		
+		$this->force_lock_time = Football_Pool_Utils::get_wp_option( 'footballpool_force_locktime', '' );
+		if ( $this->force_lock_time != '' ) {
+			$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
+			$this->lock = $date->getTimestamp();
+		} else {
+			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
+		}
 	}
 	
 	private function is_toto_result($home, $away, $user_home, $user_away ) {
@@ -455,10 +465,11 @@ class Football_Pool_Pool {
 			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
 			$output .= '</p>';
 			
+			$lock_time = ( $this->force_lock_time != '' ) ? $this->force_lock_time : $question['answerBeforeDate'];
 			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',
 							__( 'je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen', FOOTBALLPOOL_TEXT_DOMAIN ),
 							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$question['answerBeforeDate']
+							$lock_time
 					);
 		}
 		
@@ -503,8 +514,14 @@ class Football_Pool_Pool {
 	}
 	
 	public function bonus_is_editable( $ts ) {
-		$diff = $ts - time();
-		return ( $diff > 0 );
+		if ( $this->force_lock_time != '' ) {
+			$editable = ( current_time( 'timestamp' ) < $this->lock );
+		} else {
+			$diff = $ts - time();
+			$editable = ( $diff > $this->lock );
+		}
+		
+		return $editable;
 	}
 
 	public function get_bonus_question_answers_for_users( $question = 0 ) {

@@ -4,10 +4,20 @@ class Football_Pool_Matches {
 	private $teams;
 	private $matches_are_editable;
 	public $joker_value;
+	private $force_lock_time = '';
+	private $lock;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
 		$this->enable_edits();
+		
+		$this->force_lock_time = Football_Pool_Utils::get_wp_option( 'footballpool_force_locktime', '' );
+		if ( $this->force_lock_time != '' ) {
+			$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
+			$this->lock = $date->getTimestamp();
+		} else {
+			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
+		}
 	}
 	
 	public function disable_edits() {
@@ -130,8 +140,7 @@ class Football_Pool_Matches {
 
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT m.nr FROM {$prefix}matches m 
+		$sql = $wpdb->prepare( "SELECT m.nr FROM {$prefix}matches m 
 								LEFT OUTER JOIN {$prefix}predictions p 
 									ON (p.matchNr = m.nr AND p.userId = %d)
 								WHERE p.userId IS NULL
@@ -146,8 +155,7 @@ class Football_Pool_Matches {
 	public function get_match_info_for_teams( $a, $b ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT homeTeamId, awayTeamId, homeScore, awayScore 
+		$sql = $wpdb->prepare( "SELECT homeTeamId, awayTeamId, homeScore, awayScore 
 								FROM {$prefix}matches 
 								WHERE (homeTeamId = %d AND awayTeamId = %d) 
 									OR (homeTeamId = %d AND awayTeamId = %d)",
@@ -324,8 +332,14 @@ class Football_Pool_Matches {
 	}
 	
 	public function match_is_editable( $ts ) {
-		$diff = $ts - time();
-		return ( $diff > Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' ) );
+		if ( $this->force_lock_time != '' ) {
+			$editable = ( current_time( 'timestamp' ) < $this->lock );
+		} else {
+			$diff = $ts - time();
+			$editable = ( $diff > $this->lock );
+		}
+		
+		return $editable;
 	}
 	
 	private function block_joker() {

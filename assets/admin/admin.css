@@ -38,3 +38,11 @@ img.screenshot {
 	margin: 10px 0 0 20px;
 	border: 1px solid #dfdfdf;
 }
+
+input.date-y { width: 4em; }
+input.date-m { width: 2.5em; }
+input.date-d { width: 2.5em; }
+input.date-h { width: 2.5em; }
+input.date-i { width: 2.5em; }
+
+.hint { font-style: italic; color: #ccc; }

@@ -3,7 +3,6 @@
  * Widget: User Selector Widget
  */
 
-
 /**
  * Based on Empty Widget template
  * https://gist.github.com/1229641
@@ -24,6 +23,9 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
  */
 add_action( 'widgets_init', create_function( '', 'register_widget("Football_Pool_User_Selector_Widget");' ) );
 
+// dummy var for translation files
+$fp_dummy_var = __( 'spelers', FOOTBALLPOOL_TEXT_DOMAIN );
+
 class Football_Pool_User_Selector_Widget extends WP_Widget {
 	/**
 	 * Widget settings
@@ -34,7 +36,7 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 	 * 
 	 * 
 		array(
-			'name' => 'title',
+			'name' => 'Title',
 			'desc' => '',
 			'id' => 'title',
 			'type' => 'text',
@@ -86,7 +88,7 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 		'fields' => array(
 						// You should always offer a widget title
 						array(
-							'name' => 'title',
+							'name' => 'Title',
 							'desc' => '',
 							'id' => 'title',
 							'type' => 'text',
@@ -226,6 +228,10 @@ class Football_Pool_User_Selector_Widget extends WP_Widget {
 	public function form( $instance ) {
 		//reasons to fail
 		if ( empty( $this->widget['fields'] ) ) return false;
+		
+		// translate the default title
+		if ( $this->widget['fields'][0]['name'] == 'Title' )
+			$this->widget['fields'][0]['std'] = __( $this->widget['fields'][0]['std'], FOOTBALLPOOL_TEXT_DOMAIN );
 		
 		$defaults = array(
 			'id' => '',

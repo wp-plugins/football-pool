@@ -85,7 +85,10 @@ class Football_Pool {
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		add_option( 'footballpool_dashboard_image', FOOTBALLPOOL_ASSETS_URL . 'admin/images/dashboardwidget.png' );
-		//add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_force_locktime', '' );
+		// add_option( 'footballpool_matches_locktime', '' );
+		// add_option( 'footballpool_bonus_question_locktime', '' );
+		// add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -125,7 +128,10 @@ class Football_Pool {
 		delete_option( 'footballpool_hide_admin_bar' );
 		delete_option( 'footballpool_default_league_new_user' );
 		delete_option( 'footballpool_dashboard_image' );
-		//delete_option( 'footballpool_remove_data_on_uninstall' );
+		delete_option( 'footballpool_force_locktime' );
+		// delete_option( 'footballpool_matches_locktime' );
+		// delete_option( 'footballpool_bonus_question_locktime' );
+		// delete_option( 'footballpool_remove_data_on_uninstall' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {

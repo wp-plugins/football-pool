@@ -34,7 +34,7 @@ class Football_Pool_Logout_Widget extends WP_Widget {
 	 * 
 	 * 
 		array(
-			'name' => 'title',
+			'name' => 'Title',
 			'desc' => '',
 			'id' => 'title',
 			'type' => 'text',
@@ -86,7 +86,7 @@ class Football_Pool_Logout_Widget extends WP_Widget {
 		'fields' => array(
 			// You should always offer a widget title
 			array(
-				'name' => 'title',
+				'name' => 'Title',
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
