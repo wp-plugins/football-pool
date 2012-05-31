@@ -13,7 +13,8 @@ class Football_Pool_Matches {
 		
 		$this->force_lock_time = Football_Pool_Utils::get_wp_option( 'footballpool_force_locktime', '' );
 		if ( $this->force_lock_time != '' ) {
-			$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
+			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
+			$date = new DateTime( $this->force_lock_time );
 			$this->lock = $date->getTimestamp();
 		} else {
 			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );

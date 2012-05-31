@@ -1,6 +1,6 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
+Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: 1.4.1
@@ -31,6 +31,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Extra info pages with all the venues and teams.
 
 **Translations**
+
 At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me (wordpressfootballpool[at] gmail[dot]com). The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
 
 == Installation ==
@@ -53,7 +54,8 @@ For easier/front-end user registration you may consider using an extra plugin an
 == Frequently Asked Questions ==
 
 = Do I need the "Voorspellingen" page? =
-Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus). Some themes or WordPress configurations automatically put all top level pages in the navigation.
+Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
+Some themes or WordPress configurations automatically put all top level pages in the navigation. See information from the theme maker on how to make a custom menu or how to exclude pages from the menu.
 
 = I don't see my blog users as players of the pool. =
 
@@ -101,6 +103,10 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.4.2 =
+* DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
+* New version of Fancybox (2.0.6) added.
 
 = 1.4.1 =
 * Some texts were lost in translation. I added them.

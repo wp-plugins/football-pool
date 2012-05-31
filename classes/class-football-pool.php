@@ -181,9 +181,8 @@ class Football_Pool {
 			self::include_js( 'assets/highcharts/highcharts.js', 'js-highcharts' );
 			
 			//fancybox
-			self::include_js( 'assets/fancybox/jquery.fancybox-1.3.4.pack.js', 'js-fancybox' );
-			self::include_js( 'assets/fancybox/jquery.easing-1.3.pack.js', 'js-fancybox' );
-			self::include_css( 'assets/fancybox/jquery.fancybox-1.3.4.css', 'css-fancybox' );
+			self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
+			self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
 			
 			//pool js
 			self::include_js( 'assets/pool.js', 'js-pool' );

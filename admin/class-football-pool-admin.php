@@ -184,7 +184,8 @@ class Football_Pool_Admin {
 	public function datetime_input( $label, $key, $value, $description = '' ) {
 		echo '<tr valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
 		if ( $value != '' ) {
-			$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
+			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
+			$date = new DateTime( $value );
 			$year = $date->format( 'Y' );
 			$month = $date->format( 'm' );
 			$day = $date->format( 'd');

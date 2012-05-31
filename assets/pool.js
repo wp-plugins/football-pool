@@ -31,11 +31,11 @@ jQuery( document ).ready( function() {
 	line_chart_control();
 	
 	// fancybox
-	jQuery( "a#thumb" ).fancybox( {
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200 
+	jQuery( ".fancybox" ).fancybox( {
+		openEffect	: 'elastic',
+		closeEffect	: 'elastic',
+		openSpeed	: 600, 
+		closeSpeed	: 200 
 	} );
 
 });

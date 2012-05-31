@@ -88,8 +88,8 @@ class Football_Pool_Pool_Page {
 											questionId = %d,
 											answer = %s,
 											points = 0",
-								$user, $question['id'], $answers[$question['id']]
-							);
+										$user, $question['id'], stripslashes( $answers[$question['id']] )
+									);
 				$wpdb->query( $sql );
 			}
 		}

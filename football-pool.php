@@ -6,7 +6,7 @@
  Version: 1.4.1
  Author: Antoine Hurkmans
  Author URI: wordpressfootballpool@gmail.com
- Tags: football, pool, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
+ Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
  */
 
 define( 'FOOTBALLPOOL_DB_VERSION', '1.4.1' );
