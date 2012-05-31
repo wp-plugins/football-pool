@@ -106,10 +106,11 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 
 = 1.4.2 =
 * DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
-* New version of Fancybox (2.0.6) added.
+* New version of the Fancybox javascript library (2.0.6).
+* New version of the Highcharts javascript library (2.2.4).
 
 = 1.4.1 =
-* Some texts were lost in translation. I added them.
+ Some texts were lost in translation. I added them.
 * New configuration options for a single 'lock time' for matches and bonus questions. If set, users have to finish all their predictions before this date and time.
 * Plugin supports a maximum number of answers a user may select in a multiple choice question (checkbox). The check is only done client-side and requires a bit of javascript knowledge to use it. See top of pool.js file for usage. I recommend adding the javascript calls in a separate file, add them to your theme or use a plugin that helps adding custom javascript to your blog. (thanks srozemuller)
 * Added Polish translation. (thanks Łukasz Ciastoń)
