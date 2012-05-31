@@ -127,7 +127,7 @@ class Football_Pool_Shoutbox_Widget extends WP_Widget {
 		$shoutbox = new Football_Pool_Shoutbox;
 		
 		// save a new shout?
-		$shout = stripslashes( Football_Pool_Utils::post_string( 'shouttext' ) );
+		$shout = Football_Pool_Utils::post_string( 'shouttext' );
 		if ( $shout != '' && $current_user->ID > 0 ) {
 			$shoutbox->save_shout( $shout, $current_user->ID, $max_chars );
 		}

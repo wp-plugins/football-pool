@@ -52,7 +52,6 @@ class Football_Pool_Teams {
 		foreach ( $this->team_names as $team => $name ) {
 			if (Football_Pool_Utils::post_string( '_name_' . $team) != '' ) {
 				$name = Football_Pool_Utils::post_string( '_name_' . $team, 'unknown' . $team );
-				//if ( get_magic_quotes_gpc() === 1 ) $name = stripslashes( $name );
 				$order = Football_Pool_Utils::post_integer( '_order_' . $team );
 				
 				$sql = $wpdb->prepare( "

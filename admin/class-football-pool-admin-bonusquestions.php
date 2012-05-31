@@ -247,7 +247,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$id = $input[0];
-		$question = stripslashes( $input[1] );
+		$question = $input[1];
 		$answer = $input[2];
 		$points = $input[3];
 		$date = $input[4];

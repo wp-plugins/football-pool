@@ -28,13 +28,13 @@ class Football_Pool_Utils {
 		return self::get_string( $key, $default );
 	}
 	public function get_string( $key, $default = '' ) {
-		return ( isset( $_GET[$key] ) ? $_GET[$key] : $default );
+		return ( isset( $_GET[$key] ) ? stripslashes( $_GET[$key] ) : $default );
 	}
 	public function post_str( $key, $default = '' ) {
 		return self::post_string( $key, $default );
 	}
 	public function post_string( $key, $default = '' ) {
-		return ( isset( $_POST[$key] ) ? $_POST[$key] : $default );
+		return ( isset( $_POST[$key] ) ? stripslashes( $_POST[$key] ) : $default );
 	}
 	
 	// Integer GET and POST
@@ -103,13 +103,13 @@ class Football_Pool_Utils {
 		return self::get_string_array( $key, $default );
 	}
 	public function get_string_array( $key, $default = array() ) {
-		return ( isset( $_GET[$key] ) && is_array( $_GET[$key] ) ? $_GET[$key] : $default );
+		return ( isset( $_GET[$key] ) && is_array( $_GET[$key] ) ? stripslashes_deep( $_GET[$key] ) : $default );
 	}
 	public function post_str_array( $key, $default = array() ) {
 		return self::post_string_array( $key, $default );
 	}
 	public function post_string_array( $key, $default = array() ) {
-		return ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ? $_POST[$key] : $default );
+		return ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ? stripslashes_deep( $_POST[$key] ) : $default );
 	}
 	
 	// print information about a variable in a human readable way
