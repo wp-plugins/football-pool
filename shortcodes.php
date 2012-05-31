@@ -84,7 +84,8 @@ class Football_Pool_Shortcodes {
 		
 		if ( $date == 'postdate' ) {
 			$score_date = get_the_date( 'Y-m-d H:i' );
-		} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
+		//} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
+		} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
 			$score_date = $score_date->format( 'Y-m-d H:i' );
 		} else {
 			$score_date = '';

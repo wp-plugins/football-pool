@@ -89,6 +89,8 @@ class Football_Pool {
 		// add_option( 'footballpool_matches_locktime', '' );
 		// add_option( 'footballpool_bonus_question_locktime', '' );
 		// add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_use_favicon', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_use_touchicon', 1 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -132,6 +134,8 @@ class Football_Pool {
 		// delete_option( 'footballpool_matches_locktime' );
 		// delete_option( 'footballpool_bonus_question_locktime' );
 		// delete_option( 'footballpool_remove_data_on_uninstall' );
+		delete_option( 'footballpool_use_favicon' );
+		delete_option( 'footballpool_use_touchicon' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -447,12 +451,16 @@ class Football_Pool {
 	public function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
 		
-		echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+		if ( get_option( 'footballpool_use_favicon' ) == 1 ) {
+			echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+		}
 		
-		echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
-		echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
+		if ( get_option( 'footballpool_use_touchicon' ) == 1 ) {
+			echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
+		}
 	}
 	
 //=============================================================================================================//

@@ -32,7 +32,11 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me (wordpressfootballpool[at] gmail[dot]com). The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
+At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
+
+**Other things**
+This plugin requires PHP 5.2 or higher.
+If you find bugs, please contact me via the support forum, or at wordpressfootballpool [at] gmail [dot] com.
 
 == Installation ==
 **Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG before installing the plugin. See FAQ for more information on translating the plugin.
@@ -108,9 +112,11 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 * DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
 * New version of the Fancybox javascript library (2.0.6).
 * New version of the Highcharts javascript library (2.2.4).
+* Added two more layout options to the plugin options (favicon and apple-touch-icon).
+* Moved body font-styling from the global stylesheet to the theme skin.
 
 = 1.4.1 =
- Some texts were lost in translation. I added them.
+* Some texts were lost in translation. I added them.
 * New configuration options for a single 'lock time' for matches and bonus questions. If set, users have to finish all their predictions before this date and time.
 * Plugin supports a maximum number of answers a user may select in a multiple choice question (checkbox). The check is only done client-side and requires a bit of javascript knowledge to use it. See top of pool.js file for usage. I recommend adding the javascript calls in a separate file, add them to your theme or use a plugin that helps adding custom javascript to your blog. (thanks srozemuller)
 * Added Polish translation. (thanks Łukasz Ciastoń)

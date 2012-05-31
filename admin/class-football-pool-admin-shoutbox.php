@@ -100,7 +100,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	private function update( $shout_id ) {
 		$message = array(
 						$shout_id,
-						Football_Pool_Utils::post_string( 'message' )
+						stripslashes( Football_Pool_Utils::post_string( 'message' ) )
 					);
 		
 		$id = self::update_message( $message );
