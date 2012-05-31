@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -89,7 +89,7 @@ Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the 
 That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
 
 * Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
-* Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-conten/themes/simply-works-core/skins).
+* Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-content/themes/simply-works-core/skins).
 * Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
 * Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
 * Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
