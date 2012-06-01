@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -110,6 +110,9 @@ The Football Pool plugin is available in the following languages:
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.4.3 =
+* Fixed a potential problem with magic quotes (wp_magic_quotes adds them regardless of your PHP setup).
 
 = 1.4.2 =
 * DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
