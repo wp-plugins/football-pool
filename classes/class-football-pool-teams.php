@@ -29,12 +29,18 @@ class Football_Pool_Teams {
 	public function get_group_order( $team ) {
 		if ( ! is_integer( $team ) ) return 0;
 		
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "SELECT groupOrder FROM {$prefix}teams WHERE id = %d", $team );
-		$groupOrder = $wpdb->get_var( $sql );
+		$cache_key = 'fp_group_order_' . $team;
+		$group_order = wp_cache_get( $cache_key );
 		
-		return ( $groupOrder ) ? (integer) $groupOrder : 0;
+		if ( $group_order === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = $wpdb->prepare( "SELECT groupOrder FROM {$prefix}teams WHERE id = %d", $team );
+			$group_order = $wpdb->get_var( $sql );
+			wp_cache_set( $cache_key, $group_order );
+		}
+		
+		return ( $group_order ) ? (integer) $group_order : 0;
 	}
 	
 	public function print_lines( $teams ) {
@@ -52,7 +58,6 @@ class Football_Pool_Teams {
 		foreach ( $this->team_names as $team => $name ) {
 			if (Football_Pool_Utils::post_string( '_name_' . $team) != '' ) {
 				$name = Football_Pool_Utils::post_string( '_name_' . $team, 'unknown' . $team );
-				//if ( get_magic_quotes_gpc() === 1 ) $name = stripslashes( $name );
 				$order = Football_Pool_Utils::post_integer( '_order_' . $team );
 				
 				$sql = $wpdb->prepare( "
@@ -75,14 +80,20 @@ class Football_Pool_Teams {
 	}
 	
 	public function get_extra_teams() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT id, name 
-				FROM {$prefix}teams
-				WHERE id < 0
-				ORDER BY id DESC";
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-
+		$cache_key = 'fp_get_extra_teams';
+		$rows = wp_cache_get( $cache_key );
+		
+		if ( $rows === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = "SELECT id, name 
+					FROM {$prefix}teams
+					WHERE id < 0
+					ORDER BY id DESC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			wp_cache_set( $cache_key, $rows );
+		}
+		
 		$teams = array();
 		foreach ( $rows as $row ) {
 			$teams[ $row['id'] ] = __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN );
@@ -91,14 +102,19 @@ class Football_Pool_Teams {
 	}
 	
 	public function get_teams() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder 
-				FROM {$prefix}teams t, {$prefix}groups g
-				WHERE t.groupId = g.id AND t.id > 0
-				ORDER BY t.name ASC";
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-
+		$rows = wp_cache_get( 'fp_get_teams' );
+		
+		if ( $rows === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = "SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder 
+					FROM {$prefix}teams t, {$prefix}groups g
+					WHERE t.groupId = g.id AND t.id > 0
+					ORDER BY t.name ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			wp_cache_set( 'fp_get_teams', $rows );
+		}
+		
 		$teams = array();
 		foreach ( $rows as $row ) {
 			$teams[] = new Football_Pool_Team( $row );

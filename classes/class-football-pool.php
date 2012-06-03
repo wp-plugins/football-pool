@@ -398,19 +398,20 @@ class Football_Pool {
 		$text_post_after = __( ' geleden zijn we los gegaan.', FOOTBALLPOOL_TEXT_DOMAIN );
 	
 		echo "<script type='text/javascript'>
-				var footballpool_countdown_text = new Array();
-				footballpool_countdown_text['second'] = '{$text_second}';
-				footballpool_countdown_text['seconds'] = '{$text_seconds}';
-				footballpool_countdown_text['day'] = '{$text_day}';
-				footballpool_countdown_text['days'] = '{$text_days}';
-				footballpool_countdown_text['hour'] = '{$text_hour}';
-				footballpool_countdown_text['hours'] = '{$text_hours}';
-				footballpool_countdown_text['minute'] = '{$text_minute}';
-				footballpool_countdown_text['minutes'] = '{$text_minutes}';
-				footballpool_countdown_text['pre_before'] = '{$text_pre_before}';
-				footballpool_countdown_text['post_before'] = '{$text_post_before}';
-				footballpool_countdown_text['pre_after'] = '{$text_pre_after}';
-				footballpool_countdown_text['post_after'] = '{$text_post_after}';
+				var footballpool_countdown_extra_text = new Array();
+				var footballpool_countdown_time_text = new Array();
+				footballpool_countdown_time_text['second'] = '{$text_second}';
+				footballpool_countdown_time_text['seconds'] = '{$text_seconds}';
+				footballpool_countdown_time_text['day'] = '{$text_day}';
+				footballpool_countdown_time_text['days'] = '{$text_days}';
+				footballpool_countdown_time_text['hour'] = '{$text_hour}';
+				footballpool_countdown_time_text['hours'] = '{$text_hours}';
+				footballpool_countdown_time_text['minute'] = '{$text_minute}';
+				footballpool_countdown_time_text['minutes'] = '{$text_minutes}';
+				footballpool_countdown_extra_text['pre_before'] = '{$text_pre_before}';
+				footballpool_countdown_extra_text['post_before'] = '{$text_post_before}';
+				footballpool_countdown_extra_text['pre_after'] = '{$text_pre_after}';
+				footballpool_countdown_extra_text['post_after'] = '{$text_post_after}';
 				</script>";
 	}
 	

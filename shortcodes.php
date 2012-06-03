@@ -116,24 +116,57 @@ class Football_Pool_Shortcodes {
 	
 	//[countdown]
 	public function shortcode_countdown( $atts ) {
+		extract( shortcode_atts( array(
+					'date' => '',
+					'match' => '',
+					'texts' => '',
+				), $atts ) );
+		
 		$matches = new Football_Pool_Matches();
-		$firstMatch = $matches->get_first_match_info();
-		$date = new DateTime( $firstMatch['playDate'] );
-		$year  = $date->format( 'Y' );
-		$month = $date->format( 'm' );
-		$day   = $date->format( 'd' );
-		$hour  = $date->format( 'H' );
-		$min   = $date->format( 'i' );
+		
+		$cache_key = 'fp_countdown_id';
+		$id = wp_cache_get( $cache_key );
+		if ( $id === false ) {
+			$id = 1;
+		}
+		wp_cache_set( $cache_key, $id + 1 );
+		
+		$countdown_date = 0;
+		if ( (int) $match > 0 ) {
+			$match_info = $matches->get_match_info( (int) $match );
+			if ( array_key_exists( 'playDate', $match_info ) )
+				$countdown_date = new DateTime( $match_info['playDate'] );
+		}
+		
+		if ( ! is_object( $countdown_date ) ) {
+			// $countdown_date = DateTime::createFromFormat( 'Y-m-d H:i', $date );
+			$countdown_date = date_create( $date );
+			if ( $date == '' || $countdown_date === false ) {
+				$firstMatch = $matches->get_first_match_info();
+				$countdown_date = new DateTime( $firstMatch['playDate'] );
+			}
+		}
+		
+		$texts = explode( ';', $texts );
+		if ( is_array( $texts ) && count( $texts ) == 4 ) {
+			$extra_text = "{'pre_before':'{$texts[0]}', 'post_before':'{$texts[1]}', 'pre_after':'{$texts[2]}', 'post_after':'{$texts[3]}'}";
+		} else {
+			$extra_text = 'footballpool_countdown_extra_text';
+		}
+		
+		$year  = $countdown_date->format( 'Y' );
+		$month = $countdown_date->format( 'm' );
+		$day   = $countdown_date->format( 'd' );
+		$hour  = $countdown_date->format( 'H' );
+		$min   = $countdown_date->format( 'i' );
 		$sec   = 0;
 		
-		$imgpath = FOOTBALLPOOL_PLUGIN_URL;
-		
 		return "<div style='text-align:center; width: 80%;'>
-					<h2 id='countdown'>&nbsp;</h2>
+					<h2 id='countdown-{$id}'>&nbsp;</h2>
 				</div>
 				<script type='text/javascript'>
-				do_countdown( '#countdown', footballpool_countdown_text, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
-				window.setInterval( function() { do_countdown( '#countdown', footballpool_countdown_text, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
+				do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
+				window.setInterval( function() { do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
 				</script>";
 	}
 	

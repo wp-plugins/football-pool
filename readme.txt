@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -68,12 +68,7 @@ If you're not using leagues, then make sure the users are not removed from the p
 
 = The plugin is Dutch. Is there a translation available? =
 
-The plugin comes with the following translations:
-
-* English, en_GB
-* Polish, pl_PL (translator: Łukasz Ciastoń)
-
-The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "en_GB").
+See the 'Other notes' section for the available languages (and there translators). The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "en_GB").
 
 If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. If you give me the translation, I'll add it to the plugin and give you the credits.
 You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
@@ -99,6 +94,14 @@ That's correct. The plugin has some basic styling, but it will not change your e
 
 Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalinks) to something other than the default.
 
+== Localizations ==
+
+The Football Pool plugin is available in the following languages:
+
+* Polish (`pl_PL`) by Łukasz Ciastoń.
+* English (`en_GB`) by me.
+* Dutch (default) by me.
+
 == Screenshots ==
 1. Matches in the tournament
 2. Score charts of multiple players
@@ -107,6 +110,12 @@ Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalin
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.4.3 =
+* Fixed a potential problem with magic quotes (wp_magic_quotes adds slashes regardless of your PHP setup).
+* Performance update. Reduced number of database queries for a page request.
+* New widget (bèta): countdown to next match.
+* Extra options for countdown shortcode (see help page for details).
 
 = 1.4.2 =
 * DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
