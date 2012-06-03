@@ -81,7 +81,7 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 		
 		// this description will display within the administrative widgets area
 		// when a user is deciding which widget to use.
-		'description' => 'Football pool plugin: this widget displays the time that is left to predict the next game.',
+		'description' => 'Football pool plugin: this widget displays the time that is left to predict the next match.',
 		
 		// determines whether or not to use the sidebar _before and _after html
 		'do_wrapper' => true, 

@@ -3,7 +3,7 @@ class Football_Pool_Pool {
 	public $leagues;
 	public $has_bonus_questions = false;
 	public $has_leagues;
-	private $force_lock_time = '';
+	public $force_lock_time = '';
 	private $lock;
 	
 	public function __construct() {

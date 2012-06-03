@@ -112,8 +112,10 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 1.4.3 =
-* Performance update. Reduced number of database queries.
-* Fixed a potential problem with magic quotes (wp_magic_quotes adds them regardless of your PHP setup).
+* Fixed a potential problem with magic quotes (wp_magic_quotes adds slashes regardless of your PHP setup).
+* Performance update. Reduced number of database queries for a page request.
+* New widget (bèta): countdown to next match.
+* Extra options for countdown shortcode (see help page for details).
 
 = 1.4.2 =
 * DateTime::createFromFormat requires PHP 5.3 or higher. I replaced those calls in the core classes with code that doesn't break on PHP version 5.2.
