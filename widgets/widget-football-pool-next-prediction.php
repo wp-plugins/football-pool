@@ -115,30 +115,47 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 		$teams = new Football_Pool_Teams;
 		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
+		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $match['nr'];
 		
 		if ( $title != '' ) {
 			echo $before_title . $title . $after_title;
 		}
 		
-		$year = 2012;
-		$month = 4;
-		$day = 1;
-		$hour = 19;
-		$min = 15;
+		$countdown_date = new DateTime( $match['playDate'] );
+		$year  = $countdown_date->format( 'Y' );
+		$month = $countdown_date->format( 'm' );
+		$day   = $countdown_date->format( 'd' );
+		$hour  = $countdown_date->format( 'H' );
+		$min   = $countdown_date->format( 'i' );
 		$sec = 0;
 		
-		echo '<p class="next-prediction-countdown" id="next-prediction-countdown">&nbsp;</p>';
+		$cache_key = 'fp_countdown_id';
+		$id = wp_cache_get( $cache_key );
+		if ( $id === false ) {
+			$id = 1;
+		}
+		wp_cache_set( $cache_key, $id + 1 );
+		
+		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
+								, __( 'Nog ', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( ' tot', FOOTBALLPOOL_TEXT_DOMAIN )
+								, ''
+								, ''
+						);
+		printf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
+				, $predictionpage
+				, $id
+				, __( 'klik om in te voeren', FOOTBALLPOOL_TEXT_DOMAIN )
+		);
 		echo "<script type='text/javascript'>
-				//footballpool_countdown_text['post_before'] = '';
-				//footballpool_countdown_text['post_after'] = '';
-				window.setInterval( function() { do_countdown( '#next-prediction-countdown', footballpool_countdown_text, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
+				do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
+				window.setInterval( function() { do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
 				</script>";
 		echo '<p><a href="', $teampage, '?team=', $match['homeTeamId'], '">', 
 			$teams->team_names[ (integer) $match['homeTeamId'] ], '</a>',
 			' - ', 
 			'<a href="', $teampage, '?team=', $match['awayTeamId'], '">', 
 			$teams->team_names[ (integer) $match['awayTeamId'] ], '</a></p>';
-		echo '<p>klik om in te voeren</p>';
 	}
 	
 	/**

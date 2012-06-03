@@ -40,7 +40,7 @@ class Football_Pool_Matches {
 		
 		if ( $ts == -1 ) $ts = time();
 		
-		$sql = "SELECT nr, homeTeamId, awayTeamId, UNIX_TIMESTAMP( playDate ) AS ts
+		$sql = "SELECT nr, homeTeamId, awayTeamId, UNIX_TIMESTAMP( playDate ) AS ts, playDate
 				FROM {$prefix}matches
 				WHERE UNIX_TIMESTAMP( playDate ) > {$ts}
 				ORDER BY playDate ASC
@@ -105,7 +105,8 @@ class Football_Pool_Matches {
 				$match_info[$i] = array();
 				$matchdate = new DateTime( $row['playDate'] );
 				
-				$match_info[$i]['matchDateTime'] = $matchdate->format( 'd M Y  H:i' );
+				$match_info[$i]['matchDateTime'] = $matchdate->format( 'd M Y H:i' );
+				$match_info[$i]['playDate'] = $row['playDate'];
 				$match_info[$i]['matchHomeScore'] = $row['homeScore'];
 				$match_info[$i]['matchAwayScore'] = $row['awayScore'];
 				$match_info[$i]['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
@@ -123,7 +124,7 @@ class Football_Pool_Matches {
 	
 	public function get_match_info( $match ) {
 		if ( is_integer( $match ) && array_key_exists( $match, $this->matches ) ) 
-			return $this->matches[$match];
+			return $this->matches[ $match ];
 		else
 			return array();
 	}

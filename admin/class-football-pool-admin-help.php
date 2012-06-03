@@ -87,7 +87,36 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<h3>[countdown]</h3>
-		<p>Counts down to the first match of the tournament. A textual countdown is added to the post (or page) wich updates automatically.</p>
+		<p>Counts down to a date and time. If no date is given, the time of the first match of the tournament is used. If a valid match number is given, it counts down to that match. A textual countdown is added to the post (or page) wich updates automatically.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="">
+				<td class="row-title">date</td>
+				<td>The date and time to count down to.</td>
+				<td>Y-m-d H:i</td>
+				<td>empty</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>Number of the match to count down to.</td>
+				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
+				<td>empty</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">texts</td>
+				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol></td>
+				<td>string;string;string;string</td>
+				<td>empty; default texts are used.</td>
+			</tr>
+		</table>
+		</p>
+		<p>examples:<br />
+		<span class="code">[countdown]</span><br />
+		<span class="code">[countdown date="2012-06-22 11:00"]</span><br />
+		<span class="code">[countdown match="3"]</span><br />
+		<span class="code">[countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
+		</p>
 		
 		<h3>Other shortcodes</h3>
 		<p>See <a href="?page=footballpool-options">Football Pool plugin settings</a> for some basic shortcodes that  will display the value for a plugin setting.</p>

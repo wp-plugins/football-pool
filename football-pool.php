@@ -60,7 +60,7 @@ require_once 'widgets/widget-football-pool-userselector.php';
 require_once 'widgets/widget-football-pool-logout.php';
 require_once 'widgets/widget-football-pool-shoutbox.php';
 require_once 'widgets/widget-football-pool-group.php';
-//require_once 'widgets/widget-football-pool-next-prediction.php';
+require_once 'widgets/widget-football-pool-next-prediction.php';
 
 // activate the plugin
 register_activation_hook( __FILE__, array( 'Football_Pool', 'activate' ) );

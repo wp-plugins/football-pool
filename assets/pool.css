@@ -198,3 +198,13 @@ p.next-prediction-countdown { font-size: 60%; color: #330039; }
 	border-top: 1px dashed #990288; /*the border*/ 
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
 }
+
+#sidebar .widget_footballpoolnextpredictionwidget  a.next-prediction-countdown {
+	font-weight: bold;
+}
+#sidebar .widget_footballpoolnextpredictionwidget  p {
+	margin: 3px 3px 5px;
+}
+#sidebar ul li.widget_footballpoolnextpredictionwidget a {
+	display: inline;
+}
