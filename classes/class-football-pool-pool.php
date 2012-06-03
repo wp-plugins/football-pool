@@ -91,10 +91,10 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
 			. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
-			. "		COALESCE(MAX(s.totalScore), 0) AS points, 
-					COUNT(IF(full=1,1,NULL)) AS full, 
-					COUNT(IF(toto=1,1,NULL)) AS toto,
-					COUNT(IF(type=1 AND score>0,1,NULL)) AS bonus 
+			. "		COALESCE( MAX( s.totalScore ), 0 ) AS points, 
+					COUNT( IF( s.full=1, 1, NULL ) ) AS full, 
+					COUNT( IF( s.toto=1, 1, NULL ) ) AS toto,
+					COUNT( IF( s.type=1 AND score>0, 1, NULL ) ) AS bonus 
 				FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu 
@@ -130,9 +130,17 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_pool_ranking( $league ) {
-		global $wpdb;
-		$sql = $this->get_ranking_from_score_history( $league );
-		return $wpdb->get_results( $sql, ARRAY_A );
+		$cache_key = 'fp_get_pool_ranking';
+		$rows = wp_cache_get( $cache_key );
+		
+		if ( $rows === false ) {
+			global $wpdb;
+			$sql = $this->get_ranking_from_score_history( $league );
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			wp_cache_set( $cache_key, $rows );
+		}
+		
+		return $rows;
 	}
 	
 	public function print_pool_ranking( $league, $user ) {
@@ -169,7 +177,6 @@ class Football_Pool_Pool {
 									<td><a href="%s?user=%d">%s</a></td>
 									<td>%d</td>
 									%s
-									<!-- full: %d || toto: %d -->
 									</tr>',
 								$class,
 								$i++,
@@ -178,9 +185,7 @@ class Football_Pool_Pool {
 								$row['userName'],
 								$row['points'],
 								( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues 
-										? $this->league_image( $row['leagueId'] ) : '' ),
-								$row['full'],
-								$row['toto']
+										? $this->league_image( $row['leagueId'] ) : '' )
 							);
 				$output .= "\n";
 			}
@@ -205,19 +210,26 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_leagues( $only_user_defined = false ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$cache_key = 'fp_get_leagues_' . ( $only_user_defined ? 'user_defined' : 'all' );
+		$leagues = wp_cache_get( $cache_key );
 		
-		$filter = $only_user_defined ? 'WHERE userDefined=1' : '';
-		
-		$sql = "SELECT id AS leagueId, name AS leagueName, userDefined, image 
-				FROM {$prefix}leagues {$filter} ORDER BY userDefined ASC, name ASC";
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-		
-		$leagues = array();
-		foreach ( $rows as $row ) {
-			$leagues[$row['leagueId']] = $row;
+		if ( $leagues === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$filter = $only_user_defined ? 'WHERE userDefined=1' : '';
+			
+			$sql = "SELECT id AS leagueId, name AS leagueName, userDefined, image 
+					FROM {$prefix}leagues {$filter} ORDER BY userDefined ASC, name ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			$leagues = array();
+			foreach ( $rows as $row ) {
+				$leagues[$row['leagueId']] = $row;
+			}
+			wp_cache_set( $cache_key, $leagues );
 		}
+		
 		return $leagues;
 	}
 	

@@ -206,13 +206,21 @@ class Football_Pool_Groups {
 	}
 	
 	private function get_groups() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
-				FROM {$prefix}teams t, {$prefix}groups g 
-				WHERE t.groupId = g.id AND t.id > 0
-				ORDER BY g.name ASC, t.groupOrder ASC, t.id ASC";
-		return $wpdb->get_results( $sql, ARRAY_A );
+		$cache_key = 'fp_get_groups';
+		$rows = wp_cache_get( $cache_key );
+		
+		if ( $rows === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
+					FROM {$prefix}teams t, {$prefix}groups g 
+					WHERE t.groupId = g.id AND t.id > 0
+					ORDER BY g.name ASC, t.groupOrder ASC, t.id ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			wp_cache_set( $cache_key, $rows );
+		}
+		
+		return $rows;
 	}
 	
 	public function print_group_standing( $group_id, $layout = 'wide', $class = '' ) {

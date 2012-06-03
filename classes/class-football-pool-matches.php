@@ -6,6 +6,7 @@ class Football_Pool_Matches {
 	public $joker_value;
 	private $force_lock_time = '';
 	private $lock;
+	private $matches;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -19,6 +20,9 @@ class Football_Pool_Matches {
 		} else {
 			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 		}
+		
+		// cache match info
+		$this->matches = $this->match_info();
 	}
 	
 	public function disable_edits() {
@@ -86,29 +90,42 @@ class Football_Pool_Matches {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
-	public function get_match_info( $match ) {
-		global $wpdb;
-		$info = array();
+	private function match_info() {
+		$cache_key = 'fp_match_info';
+		$match_info = wp_cache_get( $cache_key );
 		
-		$teams = new Football_Pool_Teams;
-		
-		if ( ! is_integer( $match ) ) return $info;
-		
-		$sql = $wpdb->prepare( $this->matches_query( 'AND m.nr = %d' ), $match );
-		$row = $wpdb->get_row( $sql, ARRAY_A );
-		if ( $row ) {
-			$matchdate = new DateTime( $row['playDate'] );
-			$info['matchDateTime'] = $matchdate->format( 'd M Y  H:i' );
-			$info['matchHomeScore'] = $row['homeScore'];
-			$info['matchAwayScore'] = $row['awayScore'];
-			$info['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
-			$info['teamAway'] = $teams->team_names[(integer) $row['awayTeamId'] ];
-			$info['matchTimestamp'] = $row['matchTimestamp'];
-			$info['match_is_editable'] = $this->match_is_editable( $row['matchTimestamp'] );
-			$info['nr'] = $row['nr'];
+		if ( $match_info === false ) {
+			global $wpdb;
+			$match_info = array();
+			$teams = new Football_Pool_Teams;
+			
+			$rows = $wpdb->get_results( $this->matches_query(), ARRAY_A );
+			foreach ( $rows as $row ) {
+				$i = $row['nr'];
+				$match_info[$i] = array();
+				$matchdate = new DateTime( $row['playDate'] );
+				
+				$match_info[$i]['matchDateTime'] = $matchdate->format( 'd M Y  H:i' );
+				$match_info[$i]['matchHomeScore'] = $row['homeScore'];
+				$match_info[$i]['matchAwayScore'] = $row['awayScore'];
+				$match_info[$i]['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
+				$match_info[$i]['teamAway'] = $teams->team_names[(integer) $row['awayTeamId'] ];
+				$match_info[$i]['matchTimestamp'] = $row['matchTimestamp'];
+				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $row['matchTimestamp'] );
+				$match_info[$i]['nr'] = $row['nr'];
+			}
+			
+			wp_cache_set( $cache_key, $match_info );
 		}
 		
-		return $info;
+		return $match_info;
+	}
+	
+	public function get_match_info( $match ) {
+		if ( is_integer( $match ) && array_key_exists( $match, $this->matches ) ) 
+			return $this->matches[$match];
+		else
+			return array();
 	}
 	
 	public function get_match_info_for_user( $user ) {

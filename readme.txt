@@ -112,6 +112,7 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 1.4.3 =
+* Performance update. Reduced number of database queries.
 * Fixed a potential problem with magic quotes (wp_magic_quotes adds them regardless of your PHP setup).
 
 = 1.4.2 =
