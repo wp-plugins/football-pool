@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 1.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-05-31 20:35:35+00:00\n"
-"PO-Revision-Date: 2012-05-31 22:39+0100\n"
+"POT-Creation-Date: 2012-06-03 21:44:08+00:00\n"
+"PO-Revision-Date: 2012-06-03 23:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -69,15 +69,15 @@ msgstr "question"
 #: admin/class-football-pool-admin-bonusquestions.php:83
 #: admin/class-football-pool-admin-bonusquestions.php:158
 #: admin/class-football-pool-admin-bonusquestions.php:182
-#: classes/class-football-pool-pool.php:464
-#: classes/class-football-pool-pool.php:508
+#: classes/class-football-pool-pool.php:476
+#: classes/class-football-pool-pool.php:520
 #: classes/class-football-pool-statistics.php:83
 #: classes/class-football-pool-statistics.php:103
 msgid "antwoord"
 msgstr "answer"
 
 #: admin/class-football-pool-admin-bonusquestions.php:76
-#: classes/class-football-pool-pool.php:477
+#: classes/class-football-pool-pool.php:489
 msgid "variabele"
 msgstr "variable"
 
@@ -88,7 +88,7 @@ msgstr "point(s)"
 #: admin/class-football-pool-admin-bonusquestions.php:78
 #: admin/class-football-pool-admin-bonusquestions.php:156
 #: admin/class-football-pool-admin-bonusquestions.php:180
-#: classes/class-football-pool-pool.php:459
+#: classes/class-football-pool-pool.php:471
 msgid "beantwoorden vóór"
 msgstr "answer before"
 
@@ -116,8 +116,8 @@ msgstr "Leave empty if you don't want to give extra or less points."
 #: admin/class-football-pool-admin-bonusquestions.php:155
 #: admin/class-football-pool-admin-bonusquestions.php:179
 #: classes/class-football-pool-chart.php:177
-#: classes/class-football-pool-pool.php:480
-#: classes/class-football-pool-pool.php:499
+#: classes/class-football-pool-pool.php:492
+#: classes/class-football-pool-pool.php:511
 #: classes/class-football-pool-statistics.php:85
 msgid "punten"
 msgstr "points"
@@ -176,7 +176,7 @@ msgid "Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing
 msgstr "A semicolon separated list of answer possibilities. Only applicable for multiple choice questions."
 
 #: admin/class-football-pool-admin-bonusquestions.php:161
-#: classes/class-football-pool-pool.php:445
+#: classes/class-football-pool-pool.php:457
 msgid "fotovraag"
 msgstr "photo question"
 
@@ -581,7 +581,7 @@ msgid "Add New"
 msgstr "Add New"
 
 #: classes/class-football-pool-chart-data.php:269
-#: classes/class-football-pool-matches.php:223
+#: classes/class-football-pool-matches.php:241
 msgid "wedstrijd"
 msgstr "match"
 
@@ -602,45 +602,45 @@ msgstr "Click and drag in the plot area to zoom in"
 msgid "Sleep je vinger over de grafiek om in te zoomen"
 msgstr "Drag your finger over the plot to zoom in"
 
-#: classes/class-football-pool-matches.php:299
+#: classes/class-football-pool-matches.php:317
 #: classes/class-football-pool-statistics.php:151
 msgid "score"
 msgstr "score"
 
-#: classes/class-football-pool-matches.php:320
+#: classes/class-football-pool-matches.php:338
 msgid "bekijk de voorspellingen van andere spelers"
 msgstr "view other users predictions"
 
-#: classes/class-football-pool-matches.php:369
+#: classes/class-football-pool-matches.php:387
 msgid "gouden bal inzetten?"
 msgstr "use your joker?"
 
-#: classes/class-football-pool-pool.php:152
+#: classes/class-football-pool-pool.php:160
 msgid "Nog geen resultaten. Hieronder zie je een lijst met alle spelers."
 msgstr "No results yet. Below is a list of all users."
 
-#: classes/class-football-pool-pool.php:157
+#: classes/class-football-pool-pool.php:165
 msgid "Er hebben zich (nog) geen spelers geregistreerd."
 msgstr "No users have registered for this pool (yet)."
 
-#: classes/class-football-pool-pool.php:455
+#: classes/class-football-pool-pool.php:467
 msgid "Let op:"
 msgstr "Important:"
 
-#: classes/class-football-pool-pool.php:458
+#: classes/class-football-pool-pool.php:470
 msgid "beantwoord deze vraag vóór deze datum"
 msgstr "answer this question before this date"
 
-#: classes/class-football-pool-pool.php:471
+#: classes/class-football-pool-pool.php:483
 msgid "je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen"
 msgstr "it's is no longer possible to answer this question, or change your answer"
 
-#: classes/class-football-pool-pool.php:472
+#: classes/class-football-pool-pool.php:484
 msgid "gesloten op"
 msgstr "closed on"
 
-#: classes/class-football-pool-pool.php:503
-#: classes/class-football-pool-pool.php:505
+#: classes/class-football-pool-pool.php:515
+#: classes/class-football-pool-pool.php:517
 msgid "bekijk antwoorden van andere spelers"
 msgstr "view other users answers"
 
@@ -676,7 +676,7 @@ msgstr "team photo for"
 msgid "sluiten"
 msgstr "close"
 
-#: classes/class-football-pool-teams.php:71
+#: classes/class-football-pool-teams.php:76
 msgid "nationale vlag van"
 msgstr "national flag for"
 
@@ -799,6 +799,7 @@ msgid "minuten"
 msgstr "minutes"
 
 #: classes/class-football-pool.php:395
+#: widgets/widget-football-pool-next-prediction.php:140
 msgid "Nog "
 msgstr "Wait"
 
@@ -810,15 +811,15 @@ msgstr "before the tournament starts"
 msgid " geleden zijn we los gegaan."
 msgstr "ago the tournament started."
 
-#: classes/class-football-pool.php:421
+#: classes/class-football-pool.php:422
 msgid "Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!"
 msgstr "Click below to go to the football pool and predict your scores. Good luck!"
 
-#: classes/class-football-pool.php:422
+#: classes/class-football-pool.php:423
 msgid "Voer je voorspellingen in."
 msgstr "Fill in your predictions."
 
-#: classes/class-football-pool.php:428
+#: classes/class-football-pool.php:429
 msgid "Vul direct je voorspellingen in"
 msgstr "Start immediately with your predictions"
 
@@ -1038,6 +1039,14 @@ msgstr "Log in"
 msgid "aftellen"
 msgstr "countdown"
 
+#: widgets/widget-football-pool-next-prediction.php:141
+msgid " tot"
+msgstr " until"
+
+#: widgets/widget-football-pool-next-prediction.php:148
+msgid "klik om in te voeren"
+msgstr "click to enter prediction"
+
 #: widgets/widget-football-pool-shoutbox.php:28
 msgid "shoutbox"
 msgstr "shoutbox"
@@ -1083,8 +1092,8 @@ msgid "Antoine Hurkmans"
 msgstr "Antoine Hurkmans"
 
 #. Author URI of the plugin/theme
-msgid "wordpressfootballpool@gmail.com"
-msgstr "wordpressfootballpool@gmail.com"
+msgid "mailto:wordpressfootballpool@gmail.com"
+msgstr "mailto:wordpressfootballpool@gmail.com"
 
 #. Tags of the plugin/theme
 msgid "football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship"
