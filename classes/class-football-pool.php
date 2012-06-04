@@ -81,7 +81,7 @@ class Football_Pool {
 		add_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS );
 		add_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD );
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
-		add_option( 'footballpool_shoutbox_max_chars', 150 );
+		add_option( 'footballpool_shoutbox_max_chars', FOOTBALLPOOL_SHOUTBOX_MAXCHARS );
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		add_option( 'footballpool_dashboard_image', FOOTBALLPOOL_ASSETS_URL . 'admin/images/dashboardwidget.png' );
