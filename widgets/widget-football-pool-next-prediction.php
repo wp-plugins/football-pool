@@ -71,7 +71,7 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 			'name' => 'Checkbox',
 			'desc' => '',
 			'id' => 'checkbox_id',
-			'type' => 'checkbox'
+			'type' => 'checkbox'	// value is 'on' or ''
 		),
 	 */
 	
@@ -94,6 +94,12 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 				'id' => 'title',
 				'type' => 'text',
 				'std' => 'aftellen'
+			),
+			array(
+				'name' => 'Also show when not logged in?',
+				'desc' => '',
+				'id' => 'all_users',
+				'type' => 'checkbox',
 			),
 		)
 	);
@@ -184,8 +190,8 @@ class Football_Pool_Next_Prediction_Widget extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		// only for logged in users
-		if ( ! is_user_logged_in() ) return;
+		// only for logged in users?
+		if ( $instance['all_users'] != 'on' && ! is_user_logged_in() ) return;
 		
 		// do not output a widget if there is no next match
 		$matches = new Football_Pool_Matches;
