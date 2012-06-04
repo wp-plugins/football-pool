@@ -75,13 +75,16 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	}
 	
 	public function __construct() {
-		// get the league-options from the database
-		$pool = new Football_Pool_Pool();
-		$leagues = $pool->get_leagues();
-		foreach ( $leagues as $league ) {
-			$options[ $league['leagueId'] ] = $league['leagueName'];
+		// fields data only needed in the admin
+		if ( is_admin() ) {
+			// get the league-options from the database
+			$pool = new Football_Pool_Pool();
+			$leagues = $pool->get_leagues();
+			foreach ( $leagues as $league ) {
+				$options[ $league['leagueId'] ] = $league['leagueName'];
+			}
+			$this->widget['fields'][2]['options'] = $options;
 		}
-		$this->widget['fields'][2]['options'] = $options;
 		
 		$classname = str_replace( '_', '', get_class( $this ) );
 		

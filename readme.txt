@@ -32,9 +32,10 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different translation.
+At the moment the plugin is available in Dutch (default), Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
+
 This plugin requires PHP 5.2 or higher.
 If you find bugs, please contact me via the support forum, or at wordpressfootballpool [at] gmail [dot] com.
 
