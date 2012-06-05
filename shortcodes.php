@@ -120,6 +120,7 @@ class Football_Pool_Shortcodes {
 					'date' => '',
 					'match' => '',
 					'texts' => '',
+					'display' => 'block',
 				), $atts ) );
 		
 		$matches = new Football_Pool_Matches();
@@ -147,7 +148,9 @@ class Football_Pool_Shortcodes {
 			}
 		}
 		
+		if ( $texts == 'none' ) $texts = ';;;';
 		$texts = explode( ';', $texts );
+		
 		if ( is_array( $texts ) && count( $texts ) == 4 ) {
 			$extra_text = "{'pre_before':'{$texts[0]}', 'post_before':'{$texts[1]}', 'pre_after':'{$texts[2]}', 'post_after':'{$texts[3]}'}";
 		} else {
@@ -161,13 +164,19 @@ class Football_Pool_Shortcodes {
 		$min   = $countdown_date->format( 'i' );
 		$sec   = 0;
 		
-		return "<div style='text-align:center; width: 80%;'>
-					<h2 id='countdown-{$id}'>&nbsp;</h2>
-				</div>
-				<script type='text/javascript'>
-				do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
-				window.setInterval( function() { do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
-				</script>";
+		$output = '';
+		if ( $display == 'inline' ) {
+			$output .= "<span id='countdown-{$id}'>&nbsp;</span>";
+		} else {
+			$output .= "<div style='text-align:center; width: 80%;'><h2 id='countdown-{$id}'>&nbsp;</h2></div>";
+		}
+		
+		$output .= "<script type='text/javascript'>
+					footballpool_do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
+					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
+					</script>";
+		
+		return $output;
 	}
 	
 	//[link slug=""]

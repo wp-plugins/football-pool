@@ -28,10 +28,10 @@ jQuery( document ).ready( function() {
 	});
 	
 	// user selection on the statistics page
-	line_chart_control();
+	footballpool_line_chart_control();
 	
 	// fancybox
-	jQuery( ".fancybox" ).fancybox( {
+	jQuery( ".fp-fancybox" ).fancybox( {
 		openEffect	: 'elastic',
 		closeEffect	: 'elastic',
 		openSpeed	: 600, 
@@ -40,13 +40,13 @@ jQuery( document ).ready( function() {
 
 });
 
-function line_chart_control() {
+function footballpool_line_chart_control() {
 	jQuery( "input:checkbox", "ol.userselector" ).bind( "click", function() {
 		jQuery( this ).parent().toggleClass( "selected" );
 	} );
 }
 
-function change_joker( id ) {
+function footballpool_change_joker( id ) {
 	// set the joker input
 	jQuery( "input[name*='_joker']", "#predictionform" ).val( id.substring( id.indexOf( "_" ) + 1 ) );
 	// remove old joker
@@ -55,13 +55,13 @@ function change_joker( id ) {
 	jQuery( "#" + id ).removeClass( "nojoker" ).addClass( "joker" );
 }
 
-function update_chars( id, chars ) {
+function footballpool_update_chars( id, chars ) {
 	var length = jQuery( "#" + id ).val().length;
 	var remaining = chars - length;
 	jQuery( "#" + id ).parent().find( "span span" ).replaceWith( "<span>" + remaining + "</span>" );
 }
 
-function do_countdown( el, time_text, extra_text, year, month, day, hour, minute, second, format ) {
+function footballpool_do_countdown( el, time_text, extra_text, year, month, day, hour, minute, second, format ) {
 	var date_to = new Date(year, month-1, day, hour, minute, second).getTime();
 	var date_now = new Date().getTime();
 	var diff = Math.abs(Math.round((date_to - date_now) / 1000));

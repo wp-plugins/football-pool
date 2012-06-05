@@ -69,7 +69,7 @@ If you're not using leagues, then make sure the users are not removed from the p
 
 = The plugin is Dutch. Is there a translation available? =
 
-See the 'Other notes' section for the available languages (and there translators). The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "en_GB").
+See the 'Other notes' section for the available languages (and their translators). The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "en_GB").
 
 If you want to make your own translation, you can use the pot-file (if you're familiar with Dutch) or make a copy of the football-pool-en_GB.po file in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. If you give me the translation, I'll add it to the plugin and give you the credits.
 You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
@@ -114,7 +114,7 @@ The Football Pool plugin is available in the following languages:
 
 = 1.4.4 =
 * Bugfix release.
-* Changed widget code.
+* Refactored code for the widgets.
 
 = 1.4.3 =
 * Fixed a potential problem with magic quotes (wp_magic_quotes adds slashes regardless of your PHP setup).

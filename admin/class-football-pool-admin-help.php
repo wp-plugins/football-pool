@@ -105,9 +105,16 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</tr>
 			<tr class="">
 				<td class="row-title">texts</td>
-				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol></td>
-				<td>string;string;string;string</td>
+				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
+				If value is "none" then no texts are added.</td>
+				<td><ul><li>- string;string;string;string</li><li>- none</li></ul></td>
 				<td>empty; default texts are used.</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">display</td>
+				<td>Display counter inline or as a separate block.</td>
+				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
+				<td>block</td>
 			</tr>
 		</table>
 		</p>
@@ -116,6 +123,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[countdown date="2012-06-22 11:00"]</span><br />
 		<span class="code">[countdown match="3"]</span><br />
 		<span class="code">[countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
+		<span class="code">[countdown display="inline" match="3"]</span><br />
 		</p>
 		
 		<h3>Other shortcodes</h3>

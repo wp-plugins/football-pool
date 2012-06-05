@@ -33,7 +33,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	
 	function HTML_thumb() {
 		$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
-		return sprintf( '<a class="thumb fancybox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
+		return sprintf( '<a class="thumb fp-fancybox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
 								class="teamphotothumb" /></a>',
 						$img_url,
 						$img_url,

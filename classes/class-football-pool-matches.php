@@ -384,7 +384,7 @@ class Football_Pool_Matches {
 		
 		if ( ! $this->joker_blocked ) {
 			if ( $this->match_is_editable( $ts ) ) {
-				$add_joker = ' onclick="change_joker( this.id )" title="' . __( 'gouden bal inzetten?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
+				$add_joker = ' onclick="footballpool_change_joker( this.id )" title="' . __( 'gouden bal inzetten?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}
 		} else {
 			//$style = ' style="cursor: text!important;"';
