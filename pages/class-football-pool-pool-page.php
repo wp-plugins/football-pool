@@ -4,11 +4,14 @@ class Football_Pool_Pool_Page {
 		global $current_user;
 		get_currentuserinfo();
 
-		$userleague = isset( $current_user->league ) ? $current_user->league : 0;
-		$output = '';
+		$pool = new Football_Pool_Pool;
+		$user_is_player = $pool->user_is_player( $current_user->ID );
 		
+		$output = '';
 		$msg = '';
-		if ( $current_user->ID != 0 && Football_Pool_Utils::post_string( '_action' ) == 'update' ) {
+		
+		if ( $current_user->ID != 0 && $user_is_player 
+									&& Football_Pool_Utils::post_string( '_action' ) == 'update' ) {
 			$success = $this->update_predictions( $current_user->ID );
 			
 			if ( $success ) {
@@ -21,8 +24,7 @@ class Football_Pool_Pool_Page {
 		}
 		$output .= $msg;
 		
-		$pool = new Football_Pool_Pool;
-		if ( $current_user->ID != 0 && $pool->user_is_player( $current_user->ID ) ) {
+		if ( $current_user->ID != 0 && $user_is_player ) {
 			$questions = $pool->get_bonus_questions( $current_user->ID );
 			
 			$matches = new Football_Pool_Matches;

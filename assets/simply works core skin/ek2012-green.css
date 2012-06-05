@@ -51,6 +51,9 @@ min-height: 135px;
 	margin: 15px 0 5px 7px;
 	}
 	
+#headerleft { width: auto; }	
+#headerright { width: auto; }	
+
 #headerleft h1 {
 	color:#fff;
 	margin: 20px 0 0 120px;

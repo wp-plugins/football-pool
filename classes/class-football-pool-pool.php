@@ -75,14 +75,34 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT COUNT(*) 
-								FROM {$prefix}league_users lu
-								RIGHT OUTER JOIN {$wpdb->users} u
-									ON ( u.ID = lu.userId )
-								WHERE u.ID = %d AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL )"
-								, $user_id );
+		if ( $this->has_leagues ) {
+			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
+									INNER JOIN {$wpdb->users} u ON ( u.ID = lu.userId )
+									WHERE u.ID = %d AND lu.leagueId <> 0"
+									, $user_id );
+		} else {
+			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
+									RIGHT OUTER JOIN {$wpdb->users} u ON ( u.ID = lu.userId )
+									WHERE u.ID = %d AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL )"
+									, $user_id );
+		}
 		
 		return ( $wpdb->get_var( $sql ) == 1 );
+	}
+	
+	// returns null if no leagues are available or user does not exist
+	public function get_league_for_user( $user_id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $this->has_leagues ) {
+			$sql = $wpdb->prepare( "SELECT leagueId FROM {$prefix}league_users WHERE userId = %d", $user_id );
+			$league = $wpdb->get_var( $sql );
+		} else {
+			$league = null;
+		}
+		
+		return (int) $league;
 	}
 	
 	// use league=0 to include all users

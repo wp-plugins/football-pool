@@ -113,7 +113,8 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 1.4.4 =
-* Bugfix release.
+* Bug fixed: check if user is a player in the pool did not work correct for users that are added to the blog, but are not in a league.
+* If using leagues the ranking page now defaults to the league the user is in.
 * Refactored code for the widgets.
 
 = 1.4.3 =
