@@ -21,11 +21,11 @@ class Football_Pool {
 		$action = empty( $action ) ? 'install' : $action;
 		
 		// install custom tables in database
-		$install_sql = self::prepare( self::read_from_file( 'data/install.txt' ) );
+		$install_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/install.txt' ) );
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
-			$data_sql = self::prepare( self::read_from_file( 'data/data.txt' ) );
+			$data_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/data.txt' ) );
 			self::db_actions( $data_sql );
 			
 			// insert data in custom tables
@@ -61,7 +61,7 @@ class Football_Pool {
 				- fix question type for bonusquestions defined before v1.3
 				- alter bonusquestions and answers to text fields
 			*/
-			$update_sql = self::prepare( self::read_from_file( 'data/update.txt' ) );
+			$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
 			self::db_actions( $update_sql );
 		}
 		
@@ -95,7 +95,13 @@ class Football_Pool {
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
 		// create pages
-		$rules_text = self::read_from_file( 'data/rules-page-content.txt' );
+		$locale = self::get_locale();
+		if ( file_exists( FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt" ) ) {
+			$file = FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt";
+		} else {
+			$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
+		}
+		$rules_text = self::read_from_file( $file );
 		self::$pages['rules']['text'] = $rules_text;
 		foreach ( self::$pages as $page ) {
 			self::create_page($page);
@@ -113,7 +119,7 @@ class Football_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// delete custom tables from database
-		$uninstall_sql = self::prepare( self::read_from_file( 'data/uninstall.txt' ) );
+		$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );
 		self::db_actions( $uninstall_sql );
 		
 		// delete plugin options
@@ -521,8 +527,6 @@ class Football_Pool {
 	}
 	
 	private function read_from_file( $file ) {
-		$file = FOOTBALLPOOL_PLUGIN_DIR . $file;
-		
 		if ( file_exists( $file ) ) {
 			return file_get_contents( $file );
 		} else {
