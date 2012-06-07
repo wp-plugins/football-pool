@@ -115,7 +115,8 @@ The Football Pool plugin is available in the following languages:
 
 = 1.4.4 =
 * Bug fixed: check if user is a player in the pool did not work correct for users that are added to the blog, but are not in a league.
-* If using leagues the ranking page now defaults to the league the user is in.
+* New: if using leagues the ranking page now defaults to the league the user is in.
+* New: list of email adresses of players in your pool in the plugin User Admin screen. You can copy and paste it in an email.
 * Refactored code for the widgets.
 
 = 1.4.3 =

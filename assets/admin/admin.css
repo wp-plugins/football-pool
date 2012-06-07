@@ -46,3 +46,9 @@ input.date-h { width: 2.5em; }
 input.date-i { width: 2.5em; }
 
 .hint { font-style: italic; color: #ccc; }
+
+.email-addresses textarea { width: 500px; height: 50px; }
+.email-addresses.players textarea { border: 1px solid green; }
+.email-addresses.not-players textarea { border: 1px solid red; }
+.email-addresses { margin-bottom: 20px; }
+.email-addresses label { margin-right: 20px; }

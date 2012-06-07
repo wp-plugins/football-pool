@@ -102,7 +102,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 							'plays_in_league'		=> $plays_in_league,
 							'subscribed_for_league'	=> $league_name,
 							'is_no_player'			=> $is_no_player,
-							'payed_for_pool'		=> get_the_author_meta( 'footballpool_payed', $user->ID )
+							'payed_for_pool'		=> get_the_author_meta( 'footballpool_payed', $user->ID ),
+							'email_address'			=> $user->user_email,
 						);
 		}
 		return $output;
@@ -146,8 +147,38 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 		
 		submit_button();
+		
+		self::list_email_addresses( $users );
 	}
 
+	private function list_email_addresses( $users ) {
+		$players = $not_players = array();
+		
+		foreach ( $users as $user ) {
+			if ( $user['is_no_player'] == 1 ) {
+				$not_players[] = $user['email_address'];
+			} else {
+				$players[] = $user['email_address'];
+			}
+		}
+		
+		printf( '<h3>%s</h3>', __( 'E-mailadressen', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		printf( '<div class="email-addresses players">
+					<label for="player-addresses">%s</label>
+					<textarea id="player-addresses" onfocus="this.select()">%s</textarea>
+					</div>'
+				, __( 'Spelen mee', FOOTBALLPOOL_TEXT_DOMAIN )
+				, implode( '; ', $players ) 
+		);
+		printf( '<div class="email-addresses not-players">
+					<label for="not-player-addresses">%s</label>
+					<textarea id="not-player-addresses" onfocus="this.select()">%s</textarea>
+					</div>'
+				, __( 'Spelen niet mee', FOOTBALLPOOL_TEXT_DOMAIN )
+				, implode( '; ', $not_players ) 
+		);
+	}
+	
 	private function update() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
