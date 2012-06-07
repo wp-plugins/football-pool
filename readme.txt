@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -114,9 +114,9 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 1.4.4 =
-* Bug fixed: check if user is a player in the pool did not work correct for users that are added to the blog, but are not in a league.
+* New: list of email adresses of players in your pool available in the plugin User Admin screen. You can copy and paste it in an email to quickly mail your users (without the need of installing a mail plugin).
 * New: if using leagues the ranking page now defaults to the league the user is in.
-* New: list of email adresses of players in your pool in the plugin User Admin screen. You can copy and paste it in an email.
+* Bug fixed: check if user is a player in the pool did not work correct for users that are added to the blog, but are not in a league.
 * Refactored code for the widgets.
 
 = 1.4.3 =
