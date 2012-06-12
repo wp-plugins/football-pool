@@ -1,8 +1,8 @@
-INSERT INTO `{$prefix}teams` (`id`, `name`, `photo`, `flag`, `link`, `groupId`, `groupOrder`) VALUES
+﻿INSERT INTO `{$prefix}teams` (`id`, `name`, `photo`, `flag`, `link`, `groupId`, `groupOrder`) VALUES
 (1, 'Polen', 'pol.jpg', 'pol.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=109/index.html', 1, 1),
 (2, 'Griekenland', 'gre.jpg', 'gre.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=49/index.html', 1, 2),
 (3, 'Rusland', 'rus.jpg', 'rus.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=57451/index.html', 1, 3),
-(4, 'Tjechië', 'cze.jpg', 'cze.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=58837/index.html', 1, 4),
+(4, 'Tsjechië', 'cze.jpg', 'cze.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=58837/index.html', 1, 4),
 (5, 'Nederland', 'ned.jpg', 'ned.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html', 2, 1),
 (6, 'Denemarken', 'den.jpg', 'den.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=35/index.html', 2, 2),
 (7, 'Duitsland', 'ger.jpg', 'ger.png', 'http://www.uefa.com/uefaeuro/season=2012/teams/team=47/index.html', 2, 3),

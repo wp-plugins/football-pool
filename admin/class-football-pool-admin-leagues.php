@@ -160,21 +160,18 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$userDefined = 1;
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "
-									INSERT INTO {$prefix}leagues 
-										(name, userDefined, image)
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}leagues (name, userDefined, image)
 									VALUES (%s, %d, %s)",
-								$name, $userDefined, $image
-						);
+									$name, $userDefined, $image
+								);
 		} else {
-			$sql = $wpdb->prepare( "
-									UPDATE {$prefix}leagues SET
+			$sql = $wpdb->prepare( "UPDATE {$prefix}leagues SET
 										name = %s,
 										userDefined = %d,
 										image = %s
 									WHERE id = %d",
-								$name, $userDefined, $image, $id
-						);
+									$name, $userDefined, $image, $id
+								);
 		}
 		
 		$wpdb->query( $sql );

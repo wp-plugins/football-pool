@@ -27,8 +27,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::admin_header( __( 'Plugin Instelllingen', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		if ( Football_Pool_Utils::post_string( 'recalculate' ) == 'Recalculate Scores' ) {
-			self::update_score_history();
-			self::notice( __( 'Scores zijn opnieuw berekend.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$success = self::update_score_history();
+			if ( $success )
+				self::notice( __( 'Scores zijn opnieuw berekend.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			else
+				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		} elseif ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
 			foreach ( $options as $option ) {
 				if ( $option[0] == 'text' ) {

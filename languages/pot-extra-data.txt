@@ -8,7 +8,7 @@ msgstr ""
 msgid "Rusland"
 msgstr ""
 
-msgid "Tjechië"
+msgid "Tsjechië"
 msgstr ""
 
 msgid "Nederland"

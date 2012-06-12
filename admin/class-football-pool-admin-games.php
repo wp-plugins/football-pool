@@ -6,8 +6,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_header( __( 'Wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
-			self::update();
-			self::notice( 'Values updated.' );
+			$success = self::update();
+			if ( $success )
+				self::notice( 'Values updated.' );
+			else
+				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
 		
 		self::intro( __( 'Bij het wijzigen van wedstrijduitslagen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -40,7 +43,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		// scorehistory table for statistics
-		self::update_score_history();
+		return self::update_score_history();
 	}
 	
 	private function print_matches( $rows ) {

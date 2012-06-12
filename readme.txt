@@ -113,6 +113,9 @@ The Football Pool plugin is available in the following languages:
 
 == Changelog ==
 
+= 1.4.5 =
+* Fixed a problem for DB users that don't have `TRUNCATE` rights.
+
 = 1.4.4 =
 * New: list of email adresses of players in your pool available in the plugin User Admin screen. You can copy and paste it in an email to quickly mail your users (without the need of installing a mail plugin).
 * New: if using leagues the ranking page now defaults to the league the user is in.

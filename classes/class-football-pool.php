@@ -385,7 +385,7 @@ class Football_Pool {
 		$wpdb->query( $sql );
 		// also recalculate scorehistory
 		$score = new Football_Pool_Admin();
-		$score->update_score_history();
+		$success = $score->update_score_history();
 	}
 	
 	public function countdown_texts() {

@@ -60,8 +60,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'list' ) {
-			self::update_score_history();
-			self::notice( __( 'Scores zijn opnieuw berekend.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			$success = self::update_score_history();
+			if ( $success )
+				self::notice( __( 'Scores zijn opnieuw berekend.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			else
+				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
 		
 		self::view();
@@ -265,7 +268,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 
 	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
 		parent::bulk_actions( $bulkactions, 'action' );
-		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
+		echo "<table cellspacing='0' class='wp-list-table widefat fixed user-list'>";
 		parent::list_table_def( $cols, 'head' );
 		parent::list_table_def( $cols, 'foot' );
 		self::list_table_body( $cols, $rows, $rowactions );

@@ -30,7 +30,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			case 'user-answers-save':
 				$id = Football_Pool_Utils::post_integer( 'item_id' );
 				self::set_bonus_question_for_users( $id );
-				self::update_bonus_question_points();
+				$success = self::update_bonus_question_points();
+				if ( ! $success ) self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 				
 				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
@@ -77,7 +78,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'punt(en)', FOOTBALLPOOL_TEXT_DOMAIN ), 
 						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
-			echo '<table class="widefat">';
+			echo '<table class="widefat bonus user-answers">';
 			echo '<thead><tr>
 					<th>', __( 'speler', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
@@ -100,8 +101,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					$points = $answer['points'] == 0 ? '' : $answer['points'];
 					
 					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
-					echo '<td><input onchange="togglePoints(this.name)" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
-					echo '<td><input onchange="togglePoints(this.name)" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
+					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
+					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
 					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( 'Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler.', FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
@@ -239,7 +240,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	
 	private function update_bonus_question_points() {
 		// scorehistory table for statistics
-		self::update_score_history();
+		return self::update_score_history();
 	}
 	
 	private function update_bonus_question( $input ) {
@@ -305,7 +306,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		
 		$users = get_users();
 		foreach ( $users as $user ) {
-			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, -1 );
+			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, 0 );
 			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
