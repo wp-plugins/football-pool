@@ -4,6 +4,7 @@ Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, u
 Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: 1.4.4
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -114,7 +115,9 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 1.4.5 =
-* Fixed a problem for DB users that don't have `TRUNCATE` rights.
+* Fixed a problem for DB users that don't have `TRUNCATE` rights. (thanks Millvi)
+* Bug fixed: prediction page for a user did not show the right points for a bonus question. (thanks Maly77)
+* New version of the Highcharts javascript library (2.2.5).
 
 = 1.4.4 =
 * New: list of email adresses of players in your pool available in the plugin User Admin screen. You can copy and paste it in an email to quickly mail your users (without the need of installing a mail plugin).

@@ -61,6 +61,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 			// get the groups from the database
 			$g = new Football_Pool_Groups();
 			$groups = $g->get_group_names();
+			$options = array();
 			foreach ( $groups as $id => $group ) {
 				$options[ $id ] = $group;
 			}

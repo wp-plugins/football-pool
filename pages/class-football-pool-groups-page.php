@@ -15,9 +15,12 @@ class Football_Pool_Groups_Page {
 			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches( $plays );
 
-			$output .= '<p style="clear: both;"><a href="' . get_page_link() . '">' 
-					. __( 'bekijk alle poules', FOOTBALLPOOL_TEXT_DOMAIN ) 
-					. '</a></p>';
+			$group_names = $groups->get_group_names();
+			if ( count( $group_names ) > 1 ) {
+				$output .= '<p style="clear: both;"><a href="' . get_page_link() . '">' 
+						. __( 'bekijk alle poules', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						. '</a></p>';
+			}
 		}
 		
 		return $output;

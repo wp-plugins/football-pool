@@ -523,11 +523,15 @@ class Football_Pool_Pool {
 		$statspage = Football_Pool::get_page_link( 'statistics' );
 		foreach ( $questions as $question ) {
 			if ( ! $this->bonus_is_editable( $question['questionDate'] ) ) {
-				$output .= sprintf( '<div class="bonus userview"><p class="question">%d. %s</p><span class="bonus points">', 
+				$output .= '<div class="bonus userview">';
+				$output .= sprintf( '<p class="question">%d. %s</p>', 
 									$nr++, $question['question'] );
+				$output .= '<span class="bonus points">';
 				if ( $question['scoreDate'] ) {
+					// standard points or user-defined points?
+					$points = ( $question['userPoints'] != 0 ) ? $question['userPoints'] : $question['points'];
 					$output .= sprintf( '%d %s ', 
-									( $question['correct'] * $question['points'] ),
+									( $question['correct'] * $points ),
 									__( 'punten', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 				}
@@ -536,10 +540,11 @@ class Football_Pool_Pool {
 				$output .= sprintf( '<img alt="%s" src="%sassets/images/site/charts.png" />',
 									__( 'bekijk antwoorden van andere spelers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
 				$output .= '</a></span>';
-				$output .= sprintf( '<p>%s: %s</p></div>',
+				$output .= sprintf( '<p>%s: %s</p>',
 									__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ),
 									( $question['answer'] != '' ? $question['answer'] : '...' )
 							);
+				$output .= '</div>';
 			}
 		}
 		
