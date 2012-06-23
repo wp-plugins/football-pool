@@ -53,7 +53,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				
 				self::set_value( $option[2], $value );
 			}
-			self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 
 		

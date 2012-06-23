@@ -86,7 +86,7 @@ class Football_Pool_Statistics_Page {
 							}
 						}
 
-						// chart 5: pie, percentage van totaal aantal punten gescoord
+						// chart 5: pie, percentage of total points scored
 						$raw_data = $chart_data->points_total_pie_chart_data( $user );
 						$chart = new Football_Pool_Chart( 'chart5', 'pie', 300, 300 );
 						$chart->data = $chart_data->points_total_pie_series( $raw_data );

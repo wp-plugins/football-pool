@@ -83,7 +83,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					<th>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'false', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
+					<th title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
 				</tr></thead>';
 			echo '<tbody>';
 			if ( count( $answers ) > 0 ) {

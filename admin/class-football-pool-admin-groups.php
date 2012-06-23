@@ -10,7 +10,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 			$teams->update_teams();
 			// reset the teams
 			$teams = new Football_Pool_Teams;
-			self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
 		self::intro( __( "The first column contains a value that can be used for the ranking of teams in a group (Group Stage). In most cases the plugin will calculate this position automatically based on the results in the tournament. If two teams end up on the same position, even after considering all the tournament, then extra data is needed. Data this plugin doesn't have. You can manually tweak the last sort parameter here.", FOOTBALLPOOL_TEXT_DOMAIN ) );

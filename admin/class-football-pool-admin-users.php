@@ -27,7 +27,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		switch ( $action ) {
 			case 'save':
 				self::update();
-				self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				break;
 			case 'remove':
 				if ( $user_id > 0 ) {
