@@ -16,8 +16,7 @@ class Football_Pool_Statistics {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT COUNT(*) FROM {$prefix}scorehistory 
+		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
 								WHERE (" . ( $match > 0 ? '' : '1=1 OR ' ) . "(type=0 AND scoreOrder=%d))", 
 								$match
 							);

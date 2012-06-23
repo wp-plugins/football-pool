@@ -62,7 +62,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		wp_cache_set( $cache_key, $id + 1 );
 		
 		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
-								, __( 'Nog ', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Just ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' until', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' ago:', FOOTBALLPOOL_TEXT_DOMAIN )

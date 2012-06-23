@@ -20,11 +20,11 @@ jQuery( document ).ready( function() {
 				'#E67300', '#8B0707', '#651067', '#329262', '#5574A6', '#3B3EAC', '#B77322',
 				'#16D620', '#B91383', '#F4359E', '#9C5935', '#A9C413', '#2A778D', '#668D1C',
 				'#BEA413', '#0C5922', '#743411' ],
-		// NL
-		lang: {
-			resetZoom: "weer uitzoomen",
-			resetZoomTitle: "uitzoomen naar 1:1"
-		}
+		// // NL
+		// lang: {
+			// resetZoom: "weer uitzoomen",
+			// resetZoomTitle: "uitzoomen naar 1:1"
+		// }
 	});
 	
 	// user selection on the statistics page
