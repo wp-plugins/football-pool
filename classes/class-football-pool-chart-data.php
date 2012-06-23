@@ -196,9 +196,9 @@ class Football_Pool_Chart_Data {
 		$data = array();
 		foreach ( $rows as $name => $row ) {
 			$data[$name] = array(
-								array( 'volle score', (int) $row['scorefull'] ),
-								array( 'toto score', (int) $row['scoretoto'] ),
-								array( 'geen score', (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
+								array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
+								array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
+								array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
 							);
 		}
 		return $data;
@@ -206,17 +206,17 @@ class Football_Pool_Chart_Data {
 	
 	public function predictions_pie_series( $row ) {
 		$data = array(
-					array( 'volle score', (int) $row['scorefull'] ),
-					array( 'toto score', (int) $row['scoretoto'] ),
-					array( 'geen score', (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
+					array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
+					array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
+					array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
 				);
 		return $data;
 	}
 	
 	public function points_total_pie_series( $row ) {
 		$data = array(
-					array( 'punten gescoord', (int) $row['totalScore'] ),
-					array( 'punten gemist', (int) $row['maxScore'] - $row['totalScore'] )
+					array( __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['totalScore'] ),
+					array( __( 'points missed', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['maxScore'] - $row['totalScore'] )
 				);
 		return $data;
 	}
@@ -225,10 +225,10 @@ class Football_Pool_Chart_Data {
 		$data = array();
 		foreach ( $rows as $name => $row ) {
 			$data[$name] = array(
-								array( 'correct', (int) $row['bonuscorrect'] ), 
-								array( 'fout', (int) $row['bonuswrong'] ),
-								array( 'nog open', (int) $row['bonustotal'] - $row['bonuscorrect'] - $row['bonuswrong'] )
-								//array( 'geen antwoord', (int) $row['bonusnoanswer'] )
+								array( __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuscorrect'] ), 
+								array( __( 'wrong', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuswrong'] ),
+								array( __( 'still open', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonustotal'] - $row['bonuscorrect'] - $row['bonuswrong'] )
+								//array( __( 'no answer', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonusnoanswer'] )
 							);
 		}
 		return $data;
@@ -236,9 +236,9 @@ class Football_Pool_Chart_Data {
 	
 	public function bonus_question_pie_series_one_question( $row ) {
 		$data = array(
-					array( 'correct', (int) $row['bonuscorrect'] ), 
-					array( 'fout', (int) $row['bonuswrong'] ),
-					array( 'geen antwoord', (int) $row['totalusers'] - $row['bonuscorrect'] - $row['bonuswrong'] )
+					array( __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuscorrect'] ), 
+					array( __( 'wrong', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuswrong'] ),
+					array( __( 'no answer', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['totalusers'] - $row['bonuscorrect'] - $row['bonuswrong'] )
 				);
 		return $data;
 	}
@@ -266,7 +266,7 @@ class Football_Pool_Chart_Data {
 				if ( $match != $datarow['match'] || $type != $datarow['type'] ) {
 					$match = $datarow['match'];
 					$type = $datarow['type'];
-					$categoriesdata[] = ( $type == 0 ? sprintf( '%s ', __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$matchnr : sprintf( '%s ', __( 'bonusvraag', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$questionnr );
+					$categoriesdata[] = ( $type == 0 ? sprintf( '%s ', __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$matchnr : sprintf( '%s ', __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$questionnr );
 				}
 				$seriesdata[$user]['data'][] = (int) $datarow['value'];
 			}

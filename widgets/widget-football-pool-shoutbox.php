@@ -76,7 +76,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 			echo '</span><br />';
 			echo '<textarea id="shouttext" name="shouttext" 
 					onkeyup="footballpool_update_chars( this.id, ', $max_chars, ' )" 
-					title="', sprintf( __( 'tekst langer dan %s karakters wordt afgekapt!', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars ), '"></textarea>';
+					title="', sprintf( __( 'all text longer than %s characters will be removed!', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars ), '"></textarea>';
 			echo '<input type="submit" name="submit" value="', __( 'save', FOOTBALLPOOL_TEXT_DOMAIN ), '" />';
 			echo '</p></form>';
 		}

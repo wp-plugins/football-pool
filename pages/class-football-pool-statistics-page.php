@@ -132,7 +132,7 @@ class Football_Pool_Statistics_Page {
 							if ( count( $raw_data ) > 0 ) {
 								$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
 								$chart->data = $chart_data->bonus_question_pie_series( $raw_data );
-								$chart->title = __( 'bonusvraag', FOOTBALLPOOL_TEXT_DOMAIN );
+								$chart->title = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->options[] = "xAxis: { 
 															categories: [ '" . __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'false answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
 													}";

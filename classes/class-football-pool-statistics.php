@@ -73,13 +73,16 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		$info = $pool->get_bonus_question_info( $question );
 		if ( $info ) {
-			$output .= sprintf( '<h1>Bonusvraag</h1><h2>%s</h2>', $info['question'] );
+			$output .= sprintf( '<h1>%s</h1><h2>%s</h2>'
+								, __( 'Bonus question', FOOTBALLPOOL_TEXT_DOMAIN )
+								, $info['question'] 
+						);
 			if ( $info['bonus_is_editable'] == true ) {
 				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$this->stats_visible = false;
 			} else {
 				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
-									__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ),
+									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['answer'],
 									__( 'points', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['points']
@@ -99,7 +102,7 @@ class Football_Pool_Statistics {
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
 		
 		$output = '<table class="statistics">
-					<tr><th>' . __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th>' . __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th class="correct">' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '?</th></tr>';
+					<tr><th>' . __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th>' . __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th class="correct">' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '?</th></tr>';
 		
 		$img = '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/correct.jpg" 
 					title="' . __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" width="16" height="16" />';

@@ -372,7 +372,7 @@ class Football_Pool {
 			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
 				$league = $pool->leagues[$league]['leagueName'];
 			} else {
-				$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
+				$league = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
 				
 			echo '<tr><th>', __( 'The webmaster put you in this league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';

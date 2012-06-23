@@ -4,9 +4,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	
 	public function admin() {
 		self::admin_header( __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Bonusvragen toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.') );
+		self::intro( __( 'Add, change or delete bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving bonus question data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		//self::help( 'points', __( 'Points', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'Set the award for each question.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$question_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -31,7 +30,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$id = Football_Pool_Utils::post_integer( 'item_id' );
 				self::set_bonus_question_for_users( $id );
 				$success = self::update_bonus_question_points();
-				if ( ! $success ) self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+				if ( ! $success ) self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 				
 				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
@@ -154,8 +153,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'radiolist', __( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 'type', $values['type'], $types, '' ),
 					array( 'text', __( 'multiple choice options', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'A semicolon separated list of answer possibilities. Only applicable for multiple choice questions.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
@@ -178,8 +177,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', '' ), 
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', '' ), 
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'lastdate', ''), 
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'lastdate', ''), 
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
 				);
 		
@@ -196,7 +195,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 		
 		$bulkactions[] = array( 'delete', __( 'Delete' ) );
-		$rowactions[] = array( 'user-answers', __( 'Antwoorden Spelers', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$rowactions[] = array( 'user-answers', __( 'User Answers', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
 	

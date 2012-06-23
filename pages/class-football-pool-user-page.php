@@ -33,7 +33,7 @@ class Football_Pool_User_Page {
 			$pool = new Football_Pool_Pool;
 			$questions = $pool->get_bonus_questions( $user_ID );
 			if ( $pool->has_bonus_questions ) {
-				$output .= sprintf( '<h2>%s</h2>', __( 'bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<h2>%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$output .= $pool->print_bonus_question_for_user( $questions );
 			}
 		} else {

@@ -494,7 +494,7 @@ class Football_Pool_Pool {
 		} else {
 			$output .= sprintf( '<p class="bonus" id="bonus-%d">%s: ',
 							$question['id'],
-							__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN )
+							__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
 			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
 			$output .= '</p>';
@@ -542,7 +542,7 @@ class Football_Pool_Pool {
 									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
 				$output .= '</a></span>';
 				$output .= sprintf( '<p>%s: %s</p>',
-									__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ),
+									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
 									( $question['answer'] != '' ? $question['answer'] : '...' )
 							);
 				$output .= '</div>';

@@ -51,7 +51,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::add( $bulk_ids );
-					self::notice( sprintf( __( '%s spelers toegevoegd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN )
+					self::notice( sprintf( __( '%s users added as user.', FOOTBALLPOOL_TEXT_DOMAIN )
 											, count( $bulk_ids )
 										)
 								);
@@ -64,7 +64,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			if ( $success )
 				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 			else
-				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
 		
 		self::view();
