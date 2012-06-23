@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( 'widgets_init', create_function( '', 'register_widget("Football_Pool_User_Selector_Widget");' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'spelers', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_dummy_var = __( 'players', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -66,10 +66,10 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 						<label for="user', $row['userId'], '"> ', $row['userName'], '</label></li>';
 			}
 			echo '</ol>';
-			echo '<p><input type="submit" value="', __( 'Grafieken aanpassen', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></p>';
+			echo '<p><input type="submit" value="', __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></p>';
 			echo '</form>';
 		} else {
-			echo '<p>', __( 'Geen spelers in de pool.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			echo '<p>', __( 'No users in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 		}
 	}
 	

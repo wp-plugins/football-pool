@@ -25,7 +25,7 @@ class Football_Pool_Shortcodes {
 		$site_url = get_site_url();
 		$redirect = get_permalink();
 		$redirect = ( $redirect != false ) ? sprintf( '&amp;redirect_to=%s', $redirect ) : '';
-		$content = ( $content > '' ) ? $content : __( 'inschrijven', FOOTBALLPOOL_TEXT_DOMAIN );
+		$content = ( $content > '' ) ? $content : __( 'register', FOOTBALLPOOL_TEXT_DOMAIN );
 		$target = ( $new == '1' ) ? ' target="_blank"' : '';
 		
 		return sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
@@ -108,7 +108,7 @@ class Football_Pool_Shortcodes {
 			}
 			$output .= '</table>';
 		} else {
-			$output = '<p>' . __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+			$output = '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 		
 		return $output;

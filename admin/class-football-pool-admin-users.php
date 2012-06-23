@@ -3,14 +3,14 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	public function __construct() {}
 
 	public function admin() {
-		self::admin_header( __( 'Spelers', FOOTBALLPOOL_TEXT_DOMAIN ), '', '' );
-		self::intro( __( 'Spelers in de voetbalpool beheren.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_header( __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), '', '' );
+		self::intro( __( 'Change users in the football pool.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
-			self::intro( __( 'Je maakt gebruik van pools. Om deelnemers uit te sluiten van deelname kan je ze uit een pool halen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			self::intro( __( 'You are using leagues. To exclude users from the pool you have to take them out of any league.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		} else {
-			self::intro( __( 'Om deelnemers uit te sluiten van deelname zet je een vinkje in de betreffende kolom.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			self::intro( __( 'To exclude users tick the appropiate column', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
 		$user_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -33,11 +33,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				if ( $user_id > 0 ) {
 					self::remove( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __( '%s verwijderd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s deleted as a user.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::remove( $bulk_ids );
-					self::notice( sprintf( __( '%s spelers verwijderd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN )
+					self::notice( sprintf( __( '%s users removed as user.', FOOTBALLPOOL_TEXT_DOMAIN )
 											, count( $bulk_ids )
 										)
 								);
@@ -47,7 +47,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				if ( $user_id > 0 ) {
 					self::add( $user_id );
 					$user = get_userdata( $user_id );
-					self::notice( sprintf( __( '%s toegevoegd als deelnemer.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
+					self::notice( sprintf( __( '%s added as a user.', FOOTBALLPOOL_TEXT_DOMAIN ), $user->display_name ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::add( $bulk_ids );
@@ -62,7 +62,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		if ( $action != 'list' ) {
 			$success = self::update_score_history();
 			if ( $success )
-				self::notice( __( 'Scores zijn opnieuw berekend.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 			else
 				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
@@ -93,7 +93,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			$league_name = array_key_exists( $league_id, $pool->leagues ) ? 
 									$pool->leagues[$league_id]['leagueName'] : 
-									__( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
+									__( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 			
 			$is_no_player = in_array( $user->ID, $excluded_players ) ? 1 : 0;
 			$plays_in_league = array_key_exists( $user->ID, $league_users ) ? $league_users[$user->ID] : 0;
@@ -118,14 +118,14 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$users = self::get_users();
 		
 		$cols = array();
-		$cols[] = array( 'text', __( 'naam', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' );
+		$cols[] = array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' );
 		if ( $has_leagues ) {
-			$cols[] = array( 'select', __( 'speelt in pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'plays_in_league', '' );
-			$cols[] = array( 'text', __( 'ingeschreven voor pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'subscribed_for_league', '' );
+			$cols[] = array( 'select', __( 'plays in league', FOOTBALLPOOL_TEXT_DOMAIN ), 'plays_in_league', '' );
+			$cols[] = array( 'text', __( 'registered for league', FOOTBALLPOOL_TEXT_DOMAIN ), 'subscribed_for_league', '' );
 		} else {
-			$cols[] = array( 'checkbox', __( 'geen speler in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_no_player', '' );
+			$cols[] = array( 'checkbox', __( 'not a user in the pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_no_player', '' );
 		}
-		$cols[] = array( 'checkbox', __( 'betaald?', FOOTBALLPOOL_TEXT_DOMAIN ), 'payed_for_pool', '' );
+		$cols[] = array( 'checkbox', __( 'payed?', FOOTBALLPOOL_TEXT_DOMAIN ), 'payed_for_pool', '' );
 
 		$rows = array();
 		foreach( $users as $user ) {
@@ -165,19 +165,19 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			}
 		}
 		
-		printf( '<h3>%s</h3>', __( 'E-mailadressen', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		printf( '<h3>%s</h3>', __( 'Email addresses', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		printf( '<div class="email-addresses players">
 					<label for="player-addresses">%s</label>
 					<textarea id="player-addresses" onfocus="this.select()">%s</textarea>
 					</div>'
-				, __( 'Spelen mee', FOOTBALLPOOL_TEXT_DOMAIN )
+				, __( 'Player', FOOTBALLPOOL_TEXT_DOMAIN )
 				, implode( '; ', $players ) 
 		);
 		printf( '<div class="email-addresses not-players">
 					<label for="not-player-addresses">%s</label>
 					<textarea id="not-player-addresses" onfocus="this.select()">%s</textarea>
 					</div>'
-				, __( 'Spelen niet mee', FOOTBALLPOOL_TEXT_DOMAIN )
+				, __( 'Not a player', FOOTBALLPOOL_TEXT_DOMAIN )
 				, implode( '; ', $not_players ) 
 		);
 	}

@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Group_Widget" );' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'stand', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_dummy_var = __( 'standing', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Group_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -69,8 +69,8 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 			
 			// set the layout options
 			$this->widget['fields'][2]['options'] = array ( 
-															1 => __( 'breed', FOOTBALLPOOL_TEXT_DOMAIN ), 
-															2 => __( 'smal', FOOTBALLPOOL_TEXT_DOMAIN ) 
+															1 => __( 'wide', FOOTBALLPOOL_TEXT_DOMAIN ), 
+															2 => __( 'small', FOOTBALLPOOL_TEXT_DOMAIN ) 
 														);
 		}
 		

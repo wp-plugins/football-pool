@@ -39,7 +39,7 @@ class Football_Pool_Statistics {
 			$output = sprintf( '<h1>%s</h1>', $user->display_name );
 			$this->stats_visible = true;
 		} else {
-			$output = sprintf( '<p>%s</p>', __( 'Speler onbekend.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output = sprintf( '<p>%s</p>', __( 'User unknown.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$this->stats_visible = false;
 		}
 		
@@ -53,7 +53,7 @@ class Football_Pool_Statistics {
 		if ( count( $info ) > 0 ) {
 			if ( $info['match_is_editable'] == true ) {
 				$output .= sprintf('<h1>%s - %s</h1>', $info['teamHome'], $info['teamAway']);
-				$output .= sprintf( '<p>%s</p>', __( 'Deze gegevens zijn nog niet beschikbaar. Nog even geduld.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			} else {
 				$output .= sprintf( '<h2>%s - %s', $info['teamHome'], $info['teamAway'] );
 				if ( $info['matchHomeScore'] != '' && $info['matchAwayScore'] != '' ) {
@@ -63,7 +63,7 @@ class Football_Pool_Statistics {
 				$this->stats_visible = true;
 			}
 		} else {
-			$output .= sprintf( '<p>%s</p>', __( 'Deze gegevens zijn nog niet beschikbaar. Nog even geduld.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
 		return $output;
@@ -76,19 +76,19 @@ class Football_Pool_Statistics {
 		if ( $info ) {
 			$output .= sprintf( '<h1>Bonusvraag</h1><h2>%s</h2>', $info['question'] );
 			if ( $info['bonus_is_editable'] == true ) {
-				$output .= sprintf( '<p>%s</p>', __( 'Deze gegevens zijn nog niet beschikbaar. Nog even geduld.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$this->stats_visible = false;
 			} else {
 				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
 									__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['answer'],
-									__( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ),
+									__( 'points', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['points']
 								);
 				$this->stats_visible = true;
 			}
 		} else {
-			$output .= sprintf( '<p>%s</p>', __( 'Deze gegevens zijn nog niet beschikbaar. Nog even geduld.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$this->stats_visible = false;
 		}
 		
@@ -100,10 +100,10 @@ class Football_Pool_Statistics {
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
 		
 		$output = '<table class="statistics">
-					<tr><th>' . __( 'speler', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th>' . __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th class="correct">' . __( 'goed', FOOTBALLPOOL_TEXT_DOMAIN ) . '?</th></tr>';
+					<tr><th>' . __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th>' . __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th class="correct">' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '?</th></tr>';
 		
 		$img = '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/correct.jpg" 
-					title="' . __( 'antwoord is goed', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'goed', FOOTBALLPOOL_TEXT_DOMAIN ) . '" width="16" height="16" />';
+					title="' . __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" width="16" height="16" />';
 		
 		foreach ( $answers as $answer ) {
 			$output .= sprintf( '<tr><td>%s</td><td>%s</td>', $answer['name'], $answer['answer'] );
@@ -146,8 +146,8 @@ class Football_Pool_Statistics {
 			$output .= '<table class="matchinfo statistics">';
 			$output .= sprintf( '<tr><th class="username">%s</th>
 									<th colspan="4">%s</th><th>%s</th></tr>',
-									__( 'naam', FOOTBALLPOOL_TEXT_DOMAIN ),
-									__( 'voorspelling', FOOTBALLPOOL_TEXT_DOMAIN ),
+									__( 'name', FOOTBALLPOOL_TEXT_DOMAIN ),
+									__( 'prediction', FOOTBALLPOOL_TEXT_DOMAIN ),
 									__( 'score', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 			

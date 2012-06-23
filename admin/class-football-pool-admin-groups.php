@@ -3,7 +3,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Team Positie', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_header( __( 'Team Position', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$teams = new Football_Pool_Teams;
 		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
@@ -13,8 +13,8 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 			self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
-		self::intro( __( 'De eerste kolom bevat een waarde die kan worden gebruikt voor het sorteren van teams in een poule. Normaalgesproken is het niet nodig om deze waarde aan te passen. De plugin berekent de positie automatisch op basis van de resultaten in het toernooi. Als teams gelijk eindigen na het meewegen van alle resultaten in het toernooi, dan stellen de regels van de UEFA/FIFA dat de resultaten uit de kwalificatie moeten worden meegewogen. Omdat deze gegevens niet bekend zijn voor de plugin, is het op dat moment soms nodig om de sortering handmatig aan te passen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::intro( __( 'De startwaarde is de uitgangspositie bij de start van het toernooi. De sortering wordt alleen gebruikt op de poule-pagina', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::intro( __( "The first column contains a value that can be used for the ranking of teams in a group (Group Stage). In most cases the plugin will calculate this position automatically based on the results in the tournament. If two teams end up on the same position, even after considering all the tournament, then extra data is needed. Data this plugin doesn't have. You can manually tweak the last sort parameter here.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::intro( __( 'The start value is the position at the start of the tournament.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$team_names = $teams->team_names;
 		$groups = new Football_Pool_Groups;

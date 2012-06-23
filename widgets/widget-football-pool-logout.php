@@ -32,9 +32,9 @@ class Football_Pool_Logout_Widget extends Football_Pool_Widget {
 		global $current_user;
 		get_currentuserinfo();
 		if ( $current_user->ID > 0 ) {
-			echo '<a class="widget button logout" href="', wp_logout_url( $return_url ), '" title="Logout">', __( 'Uitloggen', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
+			echo '<a class="widget button logout" href="', wp_logout_url( $return_url ), '" title="Logout">', __( 'Log out', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
 		} else {
-			echo '<a class="widget button login" href="', wp_login_url( $return_url ), '" title="Login">', __( 'Inloggen', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
+			echo '<a class="widget button login" href="', wp_login_url( $return_url ), '" title="Login">', __( 'Log in', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
 		}
 	}
 	

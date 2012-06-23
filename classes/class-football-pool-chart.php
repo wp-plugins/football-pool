@@ -174,7 +174,7 @@ class Football_Pool_Chart {
 										startOnTick: false,
 										allowDecimals: false
 									}"
-									, __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 		$this->options[] = sprintf( "xAxis: { 
 										allowDecimals: false,
@@ -185,14 +185,14 @@ class Football_Pool_Chart {
 											//,align: 'right'
 										}
 									}"
-									, __( 'wedstrijdverloop', FOOTBALLPOOL_TEXT_DOMAIN ) 
+									, __( 'matches and questions', FOOTBALLPOOL_TEXT_DOMAIN ) 
 							);
 		$this->options[] = sprintf( "subtitle: { 
 										text: document.ontouchstart === undefined ?
 											'%s' :
 											'%s' }"
-									, __( 'Klik en sleep in de grafiek om in te zoomen', FOOTBALLPOOL_TEXT_DOMAIN )
-									, __( 'Sleep je vinger over de grafiek om in te zoomen', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Click and drag in the plot area to zoom in', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Drag your finger over the plot to zoom in', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 		$this->JS_options[] = "options.chart.zoomType = 'x'";
 		

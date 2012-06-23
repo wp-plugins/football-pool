@@ -1,91 +1,91 @@
 ﻿#. data.txt translation keys
-msgid "Polen"
+msgid "Poland"
 msgstr ""
 
-msgid "Griekenland"
+msgid "Greece"
 msgstr ""
 
-msgid "Rusland"
+msgid "Russia"
 msgstr ""
 
-msgid "Tsjechië"
+msgid "Czech Republic"
 msgstr ""
 
-msgid "Nederland"
+msgid "Netherlands"
 msgstr ""
 
-msgid "Denemarken"
+msgid "Denmark"
 msgstr ""
 
-msgid "Duitsland"
+msgid "Germany"
 msgstr ""
 
 msgid "Portugal"
 msgstr ""
 
-msgid "Spanje"
+msgid "Spain"
 msgstr ""
 
-msgid "Italië"
+msgid "Italy"
 msgstr ""
 
-msgid "Ierland"
+msgid "Republic of Ireland"
 msgstr ""
 
-msgid "Kroatië"
+msgid "Croatia"
 msgstr ""
 
-msgid "Oekraïne"
+msgid "Ukrain"
 msgstr ""
 
-msgid "Zweden"
+msgid "Sweden"
 msgstr ""
 
-msgid "Frankrijk"
+msgid "France"
 msgstr ""
 
-msgid "Engeland"
+msgid "England"
 msgstr ""
 
-msgid "Winnaar A"
+msgid "Winner group A"
 msgstr ""
 
-msgid "Winnaar B"
+msgid "Winner group B"
 msgstr ""
 
-msgid "Winnaar C"
+msgid "Winner group C"
 msgstr ""
 
-msgid "Winnaar D"
+msgid "Winner group D"
 msgstr ""
 
-msgid "2e plaats A"
+msgid "Runner-up group A"
 msgstr ""
 
-msgid "2e plaats B"
+msgid "Runner-up group B"
 msgstr ""
 
-msgid "2e plaats C"
+msgid "Runner-up group C"
 msgstr ""
 
-msgid "2e plaats D"
+msgid "Runner-up group D"
 msgstr ""
 
-msgid "Winnaar wedstrijd 25"
+msgid "Winner match 25"
 msgstr ""
 
-msgid "Winnaar wedstrijd 26"
+msgid "Winner match 26"
 msgstr ""
 
-msgid "Winnaar wedstrijd 27"
+msgid "Winner match 27"
 msgstr ""
 
-msgid "Winnaar wedstrijd 28"
+msgid "Winner match 28"
 msgstr ""
 
-msgid "Winnaar wedstrijd 29"
+msgid "Winner match 29"
 msgstr ""
 
-msgid "Winnaar wedstrijd 30"
+msgid "Winner match 30"
 msgstr ""
 

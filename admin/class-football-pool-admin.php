@@ -31,8 +31,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer spelers', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			__( 'Spelers', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-users',
 			array( 'Football_Pool_Admin_Users', 'admin' )
@@ -40,8 +40,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			__( 'Wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-games',
 			array( 'Football_Pool_Admin_Games', 'admin' )
@@ -49,8 +49,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			__( 'Vragen', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-bonus',
 			array( 'Football_Pool_Admin_Bonus_Questions', 'admin' )
@@ -58,7 +58,7 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-shoutbox',
@@ -67,7 +67,7 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer positie in de poule', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit team position', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-groups',
@@ -76,8 +76,8 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Beheer pools', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			__( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )

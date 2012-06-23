@@ -9,7 +9,7 @@ class Football_Pool_Groups_Page {
 		
 		if ( $group_id ) {
 			// the games for this group
-			$output .= '<h2 style="clear: both;">' . __( 'wedstrijden in de voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . '</h2>';
+			$output .= '<h2 style="clear: both;">' . __( 'matches in the group stage', FOOTBALLPOOL_TEXT_DOMAIN ) . '</h2>';
 			$plays = $groups->get_plays_for_group( $group_id );
 			
 			$matches = new Football_Pool_Matches;
@@ -18,7 +18,7 @@ class Football_Pool_Groups_Page {
 			$group_names = $groups->get_group_names();
 			if ( count( $group_names ) > 1 ) {
 				$output .= '<p style="clear: both;"><a href="' . get_page_link() . '">' 
-						. __( 'bekijk alle poules', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						. __( 'view all groups', FOOTBALLPOOL_TEXT_DOMAIN ) 
 						. '</a></p>';
 			}
 		}

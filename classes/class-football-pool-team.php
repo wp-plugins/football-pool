@@ -37,15 +37,15 @@ class Football_Pool_Team extends Football_Pool_Teams {
 								class="teamphotothumb" /></a>',
 						$img_url,
 						$img_url,
-						__( 'klik om te vergroten: ', FOOTBALLPOOL_TEXT_DOMAIN ),
+						__( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ),
 						$this->name,
-						__( 'teamfoto voor', FOOTBALLPOOL_TEXT_DOMAIN ),
+						__( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ),
 						$this->name
 						);
 	}
 	
 	function HTML_image() {
-		return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . str_replace( '_t', '', $this->photo ) . '" title="' . __( 'sluiten', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'teamfoto voor', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name . '" class="teamphoto" onclick="window.close();" />';
+		return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . str_replace( '_t', '', $this->photo ) . '" title="' . __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name . '" class="teamphoto" onclick="window.close();" />';
 	}
 	
 	function get_plays() {

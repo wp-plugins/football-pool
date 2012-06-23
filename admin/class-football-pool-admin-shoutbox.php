@@ -4,7 +4,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	
 	public function admin() {
 		self::admin_header( __( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Berichten in de shoutbox toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.'));
+		self::intro( __( 'Add, change or delete messages in the shoutbox.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$shout_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -17,7 +17,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 			case 'save':
 				// new or updated message
 				$league_id = self::update( $shout_id );
-				self::notice( __( "Bericht opgeslagen.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __( "Message saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
 					break;
@@ -28,11 +28,11 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 			case 'delete':
 				if ( $shout_id > 0 ) {
 					self::delete( $shout_id );
-					self::notice( sprintf( __("Bericht id:%s verwijderd.", FOOTBALLPOOL_TEXT_DOMAIN ), $shout_id ) );
+					self::notice( sprintf( __("Message id:%s deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), $shout_id ) );
 				}
 				if ( count( $bulk_ids ) > 0 ) {
 					self::delete( $bulk_ids );
-					self::notice( sprintf( __( '%s berichten verwijderd.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
+					self::notice( sprintf( __( '%s messages deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
 				}
 			default:
 				self::view();
@@ -47,7 +47,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$values = array(
 						'userName' => $current_user->display_name,
 						'shoutText' => '',
-						'shoutDate' => __( 'nu', FOOTBALLPOOL_TEXT_DOMAIN )
+						'shoutDate' => __( 'now', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		
 		$message = self::get_message( $id );
@@ -55,9 +55,9 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 			$values = $message;
 		}
 		$cols = array(
-					array( 'no_input', __( 'naam', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['userName'], '' ),
-					array( 'text', __( 'bericht', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', $values['shoutText'], '' ),
-					array( 'no_input', __( 'tijd', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', $values['shoutDate'], '' ),
+					array( 'no_input', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['userName'], '' ),
+					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', $values['shoutText'], '' ),
+					array( 'no_input', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', $values['shoutDate'], '' ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -78,9 +78,9 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$messages = $shoutbox->get_messages();
 		
 		$cols = array(
-					array( 'text', __( 'naam', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
-					array( 'text', __( 'bericht', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', '' ),
-					array( 'text', __( 'tijd', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', '' )
+					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
+					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', '' ),
+					array( 'text', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', '' )
 				);
 		
 		$rows = array();
@@ -93,7 +93,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ) );
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	

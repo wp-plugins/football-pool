@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Ranking_Widget" );' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'stand', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_dummy_var = __( 'standing', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -70,7 +70,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 			}
 			echo '</table>';
 		} else {
-			echo '<p>'. __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+			echo '<p>'. __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 	}
 	

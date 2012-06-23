@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_Next_Prediction_Widget" );' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'aftellen', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_dummy_var = __( 'countdown', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -63,14 +63,14 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
 								, __( 'Nog ', FOOTBALLPOOL_TEXT_DOMAIN )
-								, __( ' tot', FOOTBALLPOOL_TEXT_DOMAIN )
-								, ''
-								, ''
+								, __( ' until', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( ' ago:', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		printf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
 				, $predictionpage
 				, $id
-				, __( 'klik om in te voeren', FOOTBALLPOOL_TEXT_DOMAIN )
+				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
 		echo "<script type='text/javascript'>
 				footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );

@@ -13,14 +13,14 @@ class Football_Pool_Stadiums_Page {
 			$output .= sprintf( '<p>%s</p>', $stadium->HTML_image() );
 
 			// the games played in this stadium
-			$output .= sprintf( '<h4>%s</h4>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output .= sprintf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			
 			$plays = $stadium->get_plays();
 			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches($plays);
 
 			$output .= '<p><a href="' . get_page_link() . '">'
-					. __( 'bekijk alle stadions', FOOTBALLPOOL_TEXT_DOMAIN )
+					. __( 'view all venues', FOOTBALLPOOL_TEXT_DOMAIN )
 					. '</a></p>';
 		}
 		else

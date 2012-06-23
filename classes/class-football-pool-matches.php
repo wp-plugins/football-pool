@@ -238,7 +238,7 @@ class Football_Pool_Matches {
 								<td class="time">%s</td>
 								<td class="home"><a href="%s?team=%d">%s</a></td>
 								<td class="flag">%s</td>',
-							__( 'wedstrijd', FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
 							$matchdate->format( 'H:i' ),
 							$teamspage,
@@ -335,7 +335,7 @@ class Football_Pool_Matches {
 	private function show_users_link( $match, $ts ) {
 		$output = '';
 		if ( ! $this->match_is_editable( $ts ) ) {
-			$title = __( 'bekijk de voorspellingen van andere spelers', FOOTBALLPOOL_TEXT_DOMAIN );
+			$title = __( 'view other users predictions', FOOTBALLPOOL_TEXT_DOMAIN );
 			$output .= sprintf( '<a href="%s?view=matchpredictions&amp;match=%d" title="%s">',
 							Football_Pool::get_page_link( 'statistics' ),
 							$match,
@@ -384,7 +384,7 @@ class Football_Pool_Matches {
 		
 		if ( ! $this->joker_blocked ) {
 			if ( $this->match_is_editable( $ts ) ) {
-				$add_joker = ' onclick="footballpool_change_joker( this.id )" title="' . __( 'gouden bal inzetten?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
+				$add_joker = ' onclick="footballpool_change_joker( this.id )" title="' . __( 'use your joker?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}
 		} else {
 			//$style = ' style="cursor: text!important;"';

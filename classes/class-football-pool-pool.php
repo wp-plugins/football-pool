@@ -177,12 +177,12 @@ class Football_Pool_Pool {
 			// no results, show a list of users
 			$rows = $this->get_users( $league );
 			if ( count( $rows ) > 0 ) {
-				$output .= '<p>' . __( 'Nog geen resultaten. Hieronder zie je een lijst met alle spelers.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+				$output .= '<p>' . __( 'No results yet. Below is a list of all users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 				foreach ( $rows as $row ) {
 					$ranking[] = $row;
 				}
 			} else {
-				$output .= '<p>'. __( 'Er hebben zich (nog) geen spelers geregistreerd.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+				$output .= '<p>'. __( 'No users have registered for this pool (yet).', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 			}
 		}
 		
@@ -192,6 +192,8 @@ class Football_Pool_Pool {
 			$output .= '<table style="width:300px;" class="poolranking">';
 			foreach ( $ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
+				$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
+				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
 				if ( $row['userId'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
 									<td><a href="%s?user=%d">%s</a></td>
@@ -204,8 +206,7 @@ class Football_Pool_Pool {
 								$row['userId'],
 								$row['userName'],
 								$row['points'],
-								( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues 
-										? $this->league_image( $row['leagueId'] ) : '' )
+								( $all_user_view ? $this->league_image( $row['leagueId'] ) : '' )
 							);
 				$output .= "\n";
 			}
@@ -474,7 +475,7 @@ class Football_Pool_Pool {
 		if ( $question['image'] != '' ) {
 			$output .= sprintf( '<p class="bonus image"><img src="%s" alt="%s" /></p>'
 								, $question['image']
-								, __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'photo question', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		}
 		
@@ -484,11 +485,11 @@ class Football_Pool_Pool {
 			// remind a player if there is only 1 day left to answer the question.
 			$output .= '<p>';
 			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
-				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Let op:', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $question['answerBeforeDate'] . '</span>',
-							__( 'beantwoord deze vraag vóór deze datum', FOOTBALLPOOL_TEXT_DOMAIN ),
-							__( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN )
+							__( 'answer this question before this date', FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
 		} else {
 			$output .= sprintf( '<p class="bonus" id="bonus-%d">%s: ',
@@ -500,16 +501,16 @@ class Football_Pool_Pool {
 			
 			$lock_time = ( $this->force_lock_time != '' ) ? $this->force_lock_time : $question['answerBeforeDate'];
 			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',
-							__( 'je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen', FOOTBALLPOOL_TEXT_DOMAIN ),
-							__( 'gesloten op', FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( "it's is no longer possible to answer this question, or change your answer", FOOTBALLPOOL_TEXT_DOMAIN ),
+							__( 'closed on', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$lock_time
 					);
 		}
 		
-		$points = $question['points'] == 0 ? __( 'variabele', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
+		$points = $question['points'] == 0 ? __( 'variable', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
 		$output .= sprintf( '<span class="bonus points">%s %s</span></p>'
 							, $points
-							, __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ) 
+							, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ) 
 					);
 		
 		$output .= '</div>';
@@ -521,24 +522,24 @@ class Football_Pool_Pool {
 		$output = '';
 		$nr = 1;
 		$statspage = Football_Pool::get_page_link( 'statistics' );
+		
 		foreach ( $questions as $question ) {
 			if ( ! $this->bonus_is_editable( $question['questionDate'] ) ) {
 				$output .= '<div class="bonus userview">';
-				$output .= sprintf( '<p class="question">%d. %s</p>', 
-									$nr++, $question['question'] );
+				$output .= sprintf( '<p class="question">%d. %s</p>', $nr++, $question['question'] );
 				$output .= '<span class="bonus points">';
 				if ( $question['scoreDate'] ) {
-					// standard points or user-defined points?
+					// standard points or alternate points as reward for question?
 					$points = ( $question['userPoints'] != 0 ) ? $question['userPoints'] : $question['points'];
 					$output .= sprintf( '%d %s ', 
-									( $question['correct'] * $points ),
-									__( 'punten', FOOTBALLPOOL_TEXT_DOMAIN )
+										( $question['correct'] * $points ),
+										__( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 				}
 				$output .= sprintf( '<a title="%s" href="%s?view=bonusquestion&amp;question=%d">', 
-									__( 'bekijk antwoorden van andere spelers', FOOTBALLPOOL_TEXT_DOMAIN ), $statspage, $question['id'] );
+									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), $statspage, $question['id'] );
 				$output .= sprintf( '<img alt="%s" src="%sassets/images/site/charts.png" />',
-									__( 'bekijk antwoorden van andere spelers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
+									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
 				$output .= '</a></span>';
 				$output .= sprintf( '<p>%s: %s</p>',
 									__( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ),

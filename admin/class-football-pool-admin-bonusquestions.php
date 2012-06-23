@@ -3,9 +3,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
+		self::admin_header( __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Bonusvragen toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.') );
-		self::intro( __( 'Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::intro( __( 'After saving bonus question data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		//self::help( 'points', __( 'Points', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'Set the award for each question.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$question_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -19,7 +19,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			case 'save':
 				// new or updated question
 				$question_id = self::update( $question_id );
-				self::notice( __( 'Vraag opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __( 'Question saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
 					break;
@@ -39,22 +39,22 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					break;
 				}
 			case 'user-answers':
-				self::intro( __( 'Op deze pagina kan je instellen of een speler een vraag goed heeft beantwoord. Als je bij een vraag het juiste antwoord hebt opgeslagen, dan wordt deze hier getoond ter referentie.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				self::intro( __( '<strong>Let op:</strong> De punten voor het juist beantwoorden van een vraag worden pas bij het totaal geteld als je dit scherm hebt opgeslagen!', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				self::intro( __( 'Je hebt de mogelijkheid om een speler meer of minder punten te geven dan het ingestelde aantal bij de vraag. Vul hiervoor een waarde in in het punten veld; laat het veld leeg als je geen afwijkend aantal wil geven.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::intro( __( 'On this page you can edit if a user answered the question correctly. If you entered the correct answer with the question, it is displayed on this page as a reference.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::intro( __( '<strong>Important:</strong> The points for getting a correct answer are only awarded once you saved this admin page.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::intro( __( "You can give a user more points (or less) for a question. Use the field 'points' for this; leave the field empty for standard points.", FOOTBALLPOOL_TEXT_DOMAIN ) );
 				self::edit_user_answers();
 				break;
 			case 'delete':
 				if ( $question_id > 0 ) {
 					self::delete( $question_id );
-					self::notice(sprintf( __( 'Vraag id:%s verwijderd.', FOOTBALLPOOL_TEXT_DOMAIN ), $question_id ) );
+					self::notice(sprintf( __( 'Question id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $question_id ) );
 				}
 				if ( count( $bulk_ids ) > 0 ) {
 					self::delete( $bulk_ids );
-					self::notice( sprintf( __("%s vragen verwijderd.", FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
+					self::notice( sprintf( __("%s questions deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
 				}
 			default:
-				self::intro( __( 'Gebruik de "Antwoorden Spelers" link om te controleren of vragen juist zijn beantwoord door de spelers.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::intro( __( 'Use the "User Answers" link to check if users answered the questions correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				self::view();
 		}
 		
@@ -71,20 +71,20 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$questiondate = new DateTime( $question['answerBeforeDate'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
-			echo '<h3>', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
-			echo '<p>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
+			echo '<h3>', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
+			echo '<p>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
 			
-			$points = $question['points'] == 0 ? __( 'variabele', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
-			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'punt(en)', FOOTBALLPOOL_TEXT_DOMAIN ), 
-						', ', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
+			$points = $question['points'] == 0 ? __( 'variable', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
+			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'point(s)', FOOTBALLPOOL_TEXT_DOMAIN ), 
+						', ', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
 			echo '<table class="widefat bonus user-answers">';
 			echo '<thead><tr>
-					<th>', __( 'speler', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th>', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th>', __( 'goed', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th>', __( 'fout', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th title="', __( 'Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler.', FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
+					<th>', __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th>', __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th>', __( 'false', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
 				</tr></thead>';
 			echo '<tbody>';
 			if ( count( $answers ) > 0 ) {
@@ -103,11 +103,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
-					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( 'Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler.', FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
+					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
 			} else {
-				echo '<tr><td colspan="4">', __( 'Nog geen antwoorden van spelers.', FOOTBALLPOOL_TEXT_DOMAIN ), '</td></tr>';
+				echo '<tr><td colspan="4">', __( 'No answers yet.', FOOTBALLPOOL_TEXT_DOMAIN ), '</td></tr>';
 			}
 			
 			echo '</tbody>';
@@ -121,7 +121,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			self::hidden_input( 'action', 'user-answers-save' );
 			echo '</form>';
 		} else {
-			echo '<p>', __( 'Geen vragen, spelers of antwoorden gevonden.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			echo '<p>', __( 'No questions, users or answers found.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 		}
 	}
 	
@@ -146,20 +146,20 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		
 		// question types
 		$types = array( 
-						array( 'value' => '1', 'text' => __( 'tekst', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
-						array( 'value' => '2', 'text' => __( 'meerkeuze (1 antwoord)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
-						array( 'value' => '3', 'text' => __( 'meerkeuze (meer antwoorden mogelijk)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '1', 'text' => __( 'text', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '2', 'text' => __( 'multiple choice (1 answer)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '3', 'text' => __( 'multiple choice (one or more answers)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 					);
 		
 		$cols = array(
-					array( 'text', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
-					array( 'integer', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'Aantal punten dat een speler krijgt voor het juist beantwoorden van de vraag.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'Een speler mag deze vraag beantwoorden tot deze datum en tijd.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'scoredatum', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( 'De punten voor de vraag worden bij het totaal aantal punten opgeteld vanaf deze datum/tijd (voor de statistieken). Als deze datum niet is ingevuld, dan worden de punten niet geteld.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'text', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'Het juiste antwoord (geldt als referentiewaarde).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
+					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(bv. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'radiolist', __( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 'type', $values['type'], $types, '' ),
-					array( 'text', __( 'meerkeuze opties', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing bij meerkeuzevragen.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'image', __( 'fotovraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Geef een URL naar een afbeelding voor de fotovraag, of kies een afbeelding uit de media-bibliotheek (optioneel).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'text', __( 'multiple choice options', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'A semicolon separated list of answer possibilities. Only applicable for multiple choice questions.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'image', __( 'photo question', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Add a URL to a photo for a photo question, or choose one from the media library (optional).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -176,11 +176,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 
 		$cols = array(
-					array( 'text', __( 'vraag', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', '' ), 
-					array( 'integer', __( 'punten', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', '' ), 
-					array( 'date', __( 'beantwoorden vóór', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'lastdate', ''), 
-					array( 'date', __( 'scoredatum', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
-					array( 'text', __( 'antwoord', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
+					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', '' ), 
+					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', '' ), 
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'lastdate', ''), 
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'bv.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
+					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
 				);
 		
 		$rows = array();
@@ -195,7 +195,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ) );
 		$rowactions[] = array( 'user-answers', __( 'Antwoorden Spelers', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}

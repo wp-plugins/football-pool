@@ -15,10 +15,10 @@ class Football_Pool_Pool_Page {
 			$success = $this->update_predictions( $current_user->ID );
 			
 			if ( $success ) {
-				$msg = sprintf( '<p style="errormessage">%s</p>', __( 'Wijzigingen zijn opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$msg = sprintf( '<p style="errormessage">%s</p>', __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			} else {
 				$msg = sprintf( '<p style="error">%s</p>',
-							__( 'Er is iets foutgegaan bij het opslaan van de wijzigingen. Controleer of je nog steeds ingelogd bent. Als de problemen aanhouden, neem dan contact op met de webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
+							__( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 			}
 		}
@@ -33,11 +33,11 @@ class Football_Pool_Pool_Page {
 			$empty = $matches->first_empty_match_for_user( $current_user->ID );
 			if ( $pool->has_bonus_questions ) {
 				$output .= sprintf( '<p><a href="#bonus">%s</a> | <a href="#match-%d">%s</a></p>'
-									, __( 'Bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN )
 									, $empty
-									, __( 'Wedstrijdvoorspellingen', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Predictions', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
-				$output .= sprintf( '<h2>%s</h2>', __( 'wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<h2>%s</h2>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			
 			// the matches
@@ -60,7 +60,7 @@ class Football_Pool_Pool_Page {
 			$output .= '<input type="hidden" id="_action" name="_action" value="update" /></form>';
 		} else {
 			$output .= '<p>';
-			$output .= sprintf( __( 'Je moet ingeschreven en <a href="%s">ingelogd</a> zijn om mee te spelen in de pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			$output .= sprintf( __( 'You have to be a registered user and <a href="%s">logged in</a> to play in this pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								wp_login_url(
 									apply_filters( 'the_permalink', get_permalink( get_the_ID() ) )
 								)
@@ -73,7 +73,7 @@ class Football_Pool_Pool_Page {
 	
 	private function save_button() {
 		return sprintf( '<div class="buttonblock"><input type="submit" name="_submit" value="%s" /></div>',
-						__( 'Opslaan', FOOTBALLPOOL_TEXT_DOMAIN )
+						__( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
 	}
 	

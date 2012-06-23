@@ -30,29 +30,29 @@ class Football_Pool {
 			
 			// insert data in custom tables
 			$sql = "INSERT INTO `{$prefix}groups` (`id`, `name`) VALUES
-					(1, '" . __( 'poule A', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(2, '" . __( 'poule B', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(3, '" . __( 'poule C', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(4, '" . __( 'poule D', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(5, '" . __( 'poule E', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(6, '" . __( 'poule F', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(7, '" . __( 'poule G', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(8, '" . __( 'poule H', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
+					(1, '" . __( 'group A', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(2, '" . __( 'group B', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(3, '" . __( 'group C', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(4, '" . __( 'group D', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(5, '" . __( 'group E', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(6, '" . __( 'group F', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(7, '" . __( 'group G', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(8, '" . __( 'group H', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
 			$wpdb->query( $sql );
 			
 			$sql = "INSERT INTO `{$prefix}matchtypes` (`id`, `name`) VALUES
-					(1, '" . __( 'Voorrondes', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(2, '" . __( 'Achtste finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(3, '" . __( 'Kwartfinales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(4, '" . __( 'Halve finales', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(5, '" . __( 'Wedstrijd voor de 3e plek', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(6, '" . __( 'Finale', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
+					(1, '" . __( 'Group stage', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(2, '" . __( 'Round of 16', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(3, '" . __( 'Quarter finals', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(4, '" . __( 'Semi finals', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(5, '" . __( 'For third position', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
+					(6, '" . __( 'Final', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
 			$wpdb->query( $sql );
 
 			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
-					('" . __( 'alle spelers', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
-					('" . __( 'voor de pot', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
-					('" . __( 'voor nop', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
+					('" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
+					('" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
+					('" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
@@ -106,6 +106,20 @@ class Football_Pool {
 		foreach ( self::$pages as $page ) {
 			self::create_page($page);
 		}
+	}
+	
+	// checks if plugin is at least a certain version (makes sure it has sufficient comparison decimals)
+	// based on http://wikiduh.com/1611/php-function-to-check-if-wordpress-is-at-least-version-x-y-z
+	private function is_version( $is_ver ) {
+		$plugin_ver = explode( '.', get_site_option( 'footballpool_db_version' ) );
+		$is_ver = explode( '.', $is_ver );
+		for ( $i = 0; $i <= count( $is_ver ); $i++ )
+			if( ! isset( $plugin_ver[$i] ) ) array_push( $plugin_ver, 0 );
+	 
+		foreach ( $is_ver as $i => $is_val )
+			if ( $plugin_ver[$i] < $is_val ) return false;
+		
+		return true;
 	}
 	
 	public function update_db_check() {
@@ -307,7 +321,7 @@ class Football_Pool {
 	public function registration_form_extra_fields() {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
-			echo '<p><label for="league">', __( 'Speel mee in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), '<br>', 
+			echo '<p><label for="league">', __( 'Play in league', FOOTBALLPOOL_TEXT_DOMAIN ), '<br>', 
 				$pool->league_select( 0, 'league' ), '</label></p><p><br></p>';
 		}
 	}
@@ -321,7 +335,7 @@ class Football_Pool {
 		if ( $pool->has_leagues ) {
 			// check if the new player picked a league to play in
 			if (Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
-				$errors->add( 'league_error', __( '<strong>ERROR:</strong> Je moet een pool kiezen waar je in gaat spelen!', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$errors->add( 'league_error', __( '<strong>ERROR:</strong> You must choose a league to play in!', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		}
 		return $errors;
@@ -347,10 +361,10 @@ class Football_Pool {
 			get_currentuserinfo();
 			
 			$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
-			echo'<tr><th><label for="league">', __( 'Speel mee in de pool', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
+			echo'<tr><th><label for="league">', __( 'Play in league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
 			echo '<td>', $pool->league_select( $league, 'league' ); 
 			if ( current_user_can( 'administrator' ) ) {
-				echo '<span class="description">', __( '<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool bijwerken op de plugin admin pagina', FOOTBALLPOOL_TEXT_DOMAIN ), ' <a href="admin.php?page=footballpool-users">Users</a>.</span>';
+				echo '<span class="description">', __( "<strong>Important:</strong> An administrator can change users in the plugin's admin page for", FOOTBALLPOOL_TEXT_DOMAIN ), ' <a href="admin.php?page=footballpool-users">', __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>.</span>';
 			}
 			echo '</td></tr>';
 			
@@ -361,10 +375,10 @@ class Football_Pool {
 				$league = __( 'onbekend', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
 				
-			echo '<tr><th>', __( 'De webmaster heeft je ingedeeld in', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
+			echo '<tr><th>', __( 'The webmaster put you in this league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
 			echo '<td>', $league, 
 				' <span class="description">(', 
-				__( 'als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de webmaster je inschrijving nog niet aangepast.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				__( 'if this value is different from the one you entered on registration, then the webmaster did not approve it yet.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 				')</span></td></tr>';
 			
 			echo '</table>';
@@ -389,19 +403,19 @@ class Football_Pool {
 	}
 	
 	public function countdown_texts() {
-		$text_second = __( 'seconde', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_seconds = __( 'seconden', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_day = __( 'dag', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_days = __( 'dagen', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_hour = __( 'uur', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_hours = __( 'uur', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_minute = __( 'minuut', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_minutes = __( 'minuten', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_second = __( 'second', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_seconds = __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_day = __( 'day', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_days = __( 'days', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_hour = __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_hours = __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_minute = __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_minutes = __( 'minutes', FOOTBALLPOOL_TEXT_DOMAIN );
 		
-		$text_pre_before = __( 'Nog ', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_post_before = __( ' voor het feest start!!', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_pre_before = __( 'Wait ', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_post_before = __( ' before the tournament starts', FOOTBALLPOOL_TEXT_DOMAIN );
 		$text_pre_after = '';
-		$text_post_after = __( ' geleden zijn we los gegaan.', FOOTBALLPOOL_TEXT_DOMAIN );
+		$text_post_after = __( ' ago the tournament started.', FOOTBALLPOOL_TEXT_DOMAIN );
 	
 		echo "<script type='text/javascript'>
 				var footballpool_countdown_extra_text = new Array();
@@ -425,14 +439,14 @@ class Football_Pool {
 	public function dashboard_widget() {
 		$img = get_option( 'footballpool_dashboard_image' );
 		
-		echo '<p>', __( 'Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
-		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $img, '" alt="', __( 'Voer je voorspellingen in.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
+		echo '<p>', __( 'Click below to go to the football pool and predict your scores. Good luck!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $img, '" alt="', __( 'Fill in your predictions.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
 	}
 	
 	function add_dashboard_widgets() {
 		wp_add_dashboard_widget( 
 				'fp_dashboard_widget', 
-				__( 'Vul direct je voorspellingen in', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				__( 'Start immediately with your predictions', FOOTBALLPOOL_TEXT_DOMAIN ), 
 				array( 'Football_Pool', 'dashboard_widget' )
 		);
 		

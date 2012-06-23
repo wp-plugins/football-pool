@@ -3,8 +3,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Pools', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Pool toevoegen, wijzigen of verwijderen.', FOOTBALLPOOL_TEXT_DOMAIN ) );// See help for more information.'));
+		self::admin_header( __( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
+		self::intro( __( 'Add, change or delete leagues.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -17,7 +17,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 			case 'save':
 				// new or updated league
 				$league_id = self::update( $league_id );
-				self::notice( __("Pool opgeslagen.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+				self::notice( __("League saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str('submit') == 'Save & Close' ) {
 					self::view();
 					break;
@@ -28,11 +28,11 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 			case 'delete':
 				if ( $league_id > 0 ) {
 					self::delete( $league_id );
-					self::notice( sprintf( __("Pool id:%s verwijderd.", FOOTBALLPOOL_TEXT_DOMAIN ), $league_id ) );
+					self::notice( sprintf( __("League id:%s deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), $league_id ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::delete( $bulk_ids );
-					self::notice( sprintf( __( '%s pools verwijderd.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
+					self::notice( sprintf( __( '%s leagues deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
 				}
 			default:
 				self::view();
@@ -52,8 +52,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 			$values = $league;
 		}
 		$cols = array(
-					array( 'text', __( 'pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', $values['name'], '' ),
-					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Afbeeldingen moeten worden geplaatst in "plugin-folder/assets".', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'text', __( 'league', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', $values['name'], '' ),
+					array( 'text', __( 'image', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Images must be saved in the "plugin-folder/assets" folder.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -96,15 +96,15 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	private function view() {
 		$pool = new Football_Pool_Pool();
 		if ( ! $pool->has_leagues ) {
-			self::notice( __( '<strong>Let op:</strong> op dit moment maak je nog geen gebruik van pools. Dit komt omdat je nog geen pools hebt aangemaakt, of omdat deze optie niet aan staat in de <a href="?page=footballpool-options">plugin opties</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			self::notice( __( '<strong>Important:</strong> at this moment you are not using leagues. This may be caused by the fact that you didn\'t add any leagues in the admin, or because you changed this setting in the <a href="?page=footballpool-options">plugin options</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
 		
 		$leagues = self::get_leagues();
 		
 		$cols = array(
-					array( 'text', __( 'pool', FOOTBALLPOOL_TEXT_DOMAIN ), 'league', '' ),
-					array( 'text', __( 'afbeelding', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' ),
-					array( 'text', __( 'pool nr', FOOTBALLPOOL_TEXT_DOMAIN ), 'nr', '' ),
+					array( 'text', __( 'league', FOOTBALLPOOL_TEXT_DOMAIN ), 'league', '' ),
+					array( 'text', __( 'image', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', '' ),
+					array( 'text', __( 'league nr', FOOTBALLPOOL_TEXT_DOMAIN ), 'nr', '' ),
 				);
 		
 		$rows = array();
@@ -117,7 +117,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ) );
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	

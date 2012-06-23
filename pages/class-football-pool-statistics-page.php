@@ -18,8 +18,8 @@ class Football_Pool_Statistics_Page {
 
 		if ( ! $stats->data_available && $view != 'matchpredictions' ) {
 			$output.= sprintf( '<h2>%s</h2><p>%s</p>',
-								__( 'Statistieken nog niet beschikbaar', FOOTBALLPOOL_TEXT_DOMAIN ),
-								__( 'Na de eerste wedstrijd kan je hier de scores van jezelf en de andere spelers zien.', FOOTBALLPOOL_TEXT_DOMAIN )
+								__( 'Statistics not yet available', FOOTBALLPOOL_TEXT_DOMAIN ),
+								__( 'After the first match you can view your scores and those of other users here.', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 		} else {
 			$chart_data = new Football_Pool_Chart_Data();
@@ -31,7 +31,7 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
 						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
 						$chart->data = $chart_data->bonus_question_pie_series_one_question( $raw_data );
-						$chart->title = __( 'wat hebben de spelers gescoord?', FOOTBALLPOOL_TEXT_DOMAIN );
+						$chart->title = __( 'what dit other users score?', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->custom_css = 'right';
 						$output .= $chart->draw();
 						
@@ -48,7 +48,7 @@ class Football_Pool_Statistics_Page {
 							$raw_data = $chart_data->predictions_pie_chart_data( $match );
 							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
 							$chart->data = $chart_data->predictions_pie_series( $raw_data );
-							$chart->title = __( 'scoreverdeling alle spelers', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->title = __( 'other users scores', FOOTBALLPOOL_TEXT_DOMAIN );
 							//$chart->options[] = '';
 							$chart->custom_css = 'right';
 							$output .= $chart->draw();
@@ -60,7 +60,7 @@ class Football_Pool_Statistics_Page {
 					$userInfo = get_userdata( $user );
 					$output .= $stats->show_user_info( $userInfo );
 					if ( $stats->stats_visible ) {
-						$output .= sprintf( '<p><a href="?users[]=%d">' . __( 'Vergelijk de scores van %s met andere spelers.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a></p>',
+						$output .= sprintf( '<p><a href="?users[]=%d">' . __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a></p>',
 											$userInfo->ID, $userInfo->display_name );
 						$output .= "<div>";
 						
@@ -70,7 +70,7 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->score_chart_data( array( $user ) );
 						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 300 );
 						$chart->data = array_shift( $chart_data->score_chart_series( $raw_data ) ); // only one user
-						$chart->title = __( 'scoreverdeling wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN );
+						$chart->title = __( 'scores in matches', FOOTBALLPOOL_TEXT_DOMAIN );
 						if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
 						$output .= $chart->draw();
 						
@@ -80,7 +80,7 @@ class Football_Pool_Statistics_Page {
 							if ( count( $raw_data ) > 0 ) {
 								$chart = new Football_Pool_Chart( 'chart4', 'pie', 300, 300 );
 								$chart->data = array_shift( $chart_data->bonus_question_pie_series( $raw_data ) ); // only one user
-								$chart->title = __( 'scoreverdeling bonusvragen', FOOTBALLPOOL_TEXT_DOMAIN );
+								$chart->title = __( 'scores in bonus questions', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->custom_css = 'stats-pie left';
 								$output .= $chart->draw();
 							}
@@ -90,8 +90,8 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->points_total_pie_chart_data( $user );
 						$chart = new Football_Pool_Chart( 'chart5', 'pie', 300, 300 );
 						$chart->data = $chart_data->points_total_pie_series( $raw_data );
-						$chart->title = __( '% van maximaal te halen punten', FOOTBALLPOOL_TEXT_DOMAIN );
-						$chart->options[] = "subtitle: { text: '(" . __( 'met inzet van joker', FOOTBALLPOOL_TEXT_DOMAIN ) . ")' }";
+						$chart->title = __( '% of the max points', FOOTBALLPOOL_TEXT_DOMAIN );
+						$chart->options[] = "subtitle: { text: '(" . __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) . ")' }";
 						$chart->JS_options[] = "options.series[0].data[0].sliced = true";
 						$chart->JS_options[] = "options.series[0].data[0].selected = true";
 						//if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
@@ -103,10 +103,10 @@ class Football_Pool_Statistics_Page {
 				case 'stats':
 					if ( $view == 'stats' ) {
 						if ( count( $users ) < 1 ) {
-							$output .= sprintf( '<h2>%s</h2>', __( 'Geen speler(s) geselecteerd :\'(', FOOTBALLPOOL_TEXT_DOMAIN ) );
-							$output .= sprintf( '<p>%s</p>', __( 'Tja, dan is hier niets te zien.<br />Je kan andere spelers selecteren aan de linkerzijde.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<h2>%s</h2>', __( 'No users selected :\'(', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<p>%s</p>', __( 'You can select other users on the left side.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						} elseif ( count( $users ) == 1 ) {
-							$output .= sprintf( '<h2>%s</h2>', __( 'Je kan andere spelers selecteren aan de linkerzijde.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users on the left side.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						}
 						
 						if ( count( $users ) >= 1 ) {
@@ -115,9 +115,9 @@ class Football_Pool_Statistics_Page {
 							$raw_data = $chart_data->score_chart_data( $users );
 							$chart = new Football_Pool_Chart( 'chart6', 'column', 720, 300 );
 							$chart->data = $chart_data->score_chart_series( $raw_data );
-							$chart->title = __( 'scoreverdeling', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->title = __( 'scores', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "xAxis: { 
-														categories: [ '" . __( 'volle score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'geen score', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
+														categories: [ '" . __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
 												}";
 							$chart->options[] = "tooltip: {
 													formatter: function() {
@@ -134,7 +134,7 @@ class Football_Pool_Statistics_Page {
 								$chart->data = $chart_data->bonus_question_pie_series( $raw_data );
 								$chart->title = __( 'bonusvraag', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->options[] = "xAxis: { 
-															categories: [ '" . __( 'antwoord goed', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'antwoord fout', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
+															categories: [ '" . __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'false answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
 													}";
 								$chart->options[] = "tooltip: {
 														formatter: function() {
@@ -156,7 +156,7 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->score_per_match_line_chart_data( $users );
 						$chart = new Football_Pool_Chart( 'chart2', 'line', 720, 500 );
 						$chart->data = $chart_data->score_per_match_line_series( $raw_data );
-						$chart->title = __( 'puntenopbouw', FOOTBALLPOOL_TEXT_DOMAIN );
+						$chart->title = __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
 												shared: true, crosshairs: true, 
 												formatter: function() {
@@ -164,7 +164,7 @@ class Football_Pool_Statistics_Page {
 													jQuery.each( this.points, function( i, point ) {
 														s += '<b style=\"color:' + point.series.color + '\">' 
 															+ point.series.name + '</b>: ' 
-															+ point.y + ' punten<br>';
+															+ point.y + ' " . __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
 													} );
 													return s;
 												}
@@ -179,7 +179,7 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->ranking_per_match_line_chart_data( $users );
 						$chart = new Football_Pool_Chart( 'chart3', 'line', 720, 500 );
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
-						$chart->title = __( 'positie in de pool', FOOTBALLPOOL_TEXT_DOMAIN );
+						$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
 												shared: true, crosshairs: true,
 												formatter: function() {
@@ -187,12 +187,12 @@ class Football_Pool_Statistics_Page {
 													jQuery.each( this.points, function ( i, point ) {
 														s += '<b style=\"color:' + point.series.color + '\">' 
 															+ point.series.name + '</b>: ' 
-															+ point.y + '" . __( 'e in de pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
+															+ point.y + '" . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
 													} );
 													return s;
 												}
 											}";
-						$chart->JS_options[] = 'options.yAxis.title.text = "' . __( 'positie in de pool', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
+						$chart->JS_options[] = 'options.yAxis.title.text = "' . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 						//$chart->JS_options[] = 'options.yAxis.endOnTick = true';
 						$chart->JS_options[] = 'options.yAxis.reversed = true';
 						$chart->JS_options[] = 'options.yAxis.showFirstLabel = false';

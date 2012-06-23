@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_Last_Games_Widget" );' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'laatste wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_dummy_var = __( 'last matches', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -58,12 +58,12 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 					'<td><a href="', $teampage, '?team=', $row['awayTeamId'], '">', 
 					$teams->team_names[ (integer) $row['awayTeamId'] ], '</a></td>';
 				echo '<td class="score"><a href="', $statisticspage, '?view=matchpredictions&match=', $row['nr'], '"
-						title="', __( 'bekijk voorspellingen', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
+						title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
 					$row['homeScore'], ' - ', $row['awayScore'], '</a></td></tr>';
 			}
 			echo '</table>';
 		} else {
-			echo '<p>', __( 'Geen wedstrijdgegevens beschikbaar.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			echo '<p>', __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 		}
 	}
 	

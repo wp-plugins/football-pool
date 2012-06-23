@@ -3,7 +3,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
-		self::admin_header( __( 'Wedstrijden', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
 			$success = self::update();
@@ -13,7 +13,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				self::notice( __( 'Er is iets fout gegaan bij het (her)berekenen van de scores. Controleer of TRUNCATE/DROP of DELETE rechten op de database aanwezig zijn.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		}
 		
-		self::intro( __( 'Bij het wijzigen van wedstrijduitslagen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->get_info();
@@ -71,7 +71,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					'<td>-</td>',
 					'<td class="score">', self::show_input( '_away_score_' . $row['nr'], $row['awayScore'] ), '</td>',
 					'<td class="away">', self::teamname_input( (integer) $row['awayTeamId'], (integer) $row['typeId'], '_away_team_' . $row['nr'] ), '</td>',
-					'<td title="', __( 'speeldatum wijzigen', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
+					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
 					'</tr>';
 		}
 		echo '</table>';

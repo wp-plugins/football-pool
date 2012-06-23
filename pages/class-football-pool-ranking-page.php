@@ -22,7 +22,7 @@ class Football_Pool_Ranking_Page {
 								</div>
 								</form>',
 								get_page_link(),
-								__( 'Kies pool', FOOTBALLPOOL_TEXT_DOMAIN ),
+								__( 'Choose league', FOOTBALLPOOL_TEXT_DOMAIN ),
 								$pool->league_filter( $league )
 							);
 		}
