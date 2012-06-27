@@ -59,8 +59,8 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		if ( count( $messages ) > 0 ) {
 			echo '<div class="wrapper">';
 			foreach ( $messages as $message ) {
-				echo '<p><a class="name" href="', $userpage, '?user=', $message['userId'], '">', 
-					$message['userName'], '</a>&nbsp;
+				$url = esc_url( add_query_arg( array( 'user' => $message['userId'] ), $userpage ) );
+				echo '<p><a class="name" href="', $url, '">', $message['userName'], '</a>&nbsp;
 					<span class="date">(', $message['shoutDate'], ')</span></p>
 					<p class="text">', htmlspecialchars($message['shoutText']), '</p><hr />';
 			}

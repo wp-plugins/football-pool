@@ -44,12 +44,11 @@ If you find bugs, please contact me via the support forum, or at wordpressfootba
 1. Upload `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the `Plugins` panel in WordPress
 3. Edit the plugin configuration via the admin menu
-4. Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalinks) to something other than the default.
-5. Optional: add the pages for the pool to your menu, or use some other method to link to the pages
-6. Optional: add the "Football pool" widgets to your sidebar
+4. Optional: add the pages for the pool to your menu, or use some other method to link to the pages
+5. Optional: add the "Football pool" widgets to your sidebar
    (User Selector Widget is needed for the stats page)
-7. Optional: add bonus questions
-8. Optional: 'upgrade' existing users in your blog to pool-users
+6. Optional: add bonus questions
+7. Optional: 'upgrade' existing users in your blog to pool-users
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -99,10 +98,6 @@ That's correct. The plugin has some basic styling, but it will not change your e
 * Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
 * Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
 
-= Why do some pages show no content (e.g. when I click on a team name)? =
-
-Change the Permalink settings (WordPress admin &raquo; Settings &raquo; Permalinks) to something other than the default.
-
 == Localizations ==
 
 The Football Pool plugin is available in the following languages:
@@ -122,16 +117,17 @@ The Football Pool plugin is available in the following languages:
 
 = 2.0.0 =
 * Please notice that the default language is now English. If you were using Dutch as the language for the plugin you have to change de `WPLANG` constant in the `wp-config.php` file to `nl_NL`.
-* This upgrade makes it easier to use the plugin for other competitions.
 
 == Changelog ==
 
 = 2.0.0 =
 * Added or changed admin screens for teams, groups, match types and matches so they can be easily manipulated. This way the plugin is not limited to the European championship, but can also be used for other competitions, e.g. the English Premier League.
 * Changed default language to English. This makes the plugin easier to translate.
-* Changed layout of the plugins option screen. More options and better grouped.
+* Changed layout of the Plugin Option admin screen. More options and better grouped.
 * Fixed a problem for DB users that don't have `TRUNCATE` rights. (thanks Millvi)
+* Plugin now supports WordPress installs with default permalinks settings.
 * Bug fixed: prediction page for a user did not show the right points for a bonus question. (thanks Maly77)
+* Bug fixed: User Selector Widget caused a notice on 404 pages.
 * New version of the Highcharts javascript library (2.2.5).
 
 = 1.4.4 =

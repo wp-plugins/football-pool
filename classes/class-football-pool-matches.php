@@ -236,29 +236,30 @@ class Football_Pool_Matches {
 			
 			$output .= sprintf( '<tr title="%s %s">
 								<td class="time">%s</td>
-								<td class="home"><a href="%s?team=%d">%s</a></td>
+								<td class="home"><a href="%s">%s</a></td>
 								<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
 							$matchdate->format( 'H:i' ),
-							$teamspage,
-							$row['homeTeamId'],
+							esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teamspage ) ),
 							$teams->team_names[ (integer) $row['homeTeamId'] ],
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
-			$output .= sprintf( '<td class="score">
-								<a href="%s?view=matchpredictions&match=%d">%s - %s</a></td>',
-							$statisticspage,
-							$row['nr'],
+			$output .= sprintf( '<td class="score"><a href="%s">%s - %s</a></td>',
+							esc_url( 
+								add_query_arg( 
+									array( 'view' => 'matchpredictions', 'match' => $row['nr'] ), 
+									$statisticspage 
+								)
+							),
 							$row['homeScore'],
 							$row['awayScore']
 						);
 			$output .= sprintf( '<td class="flag">%s</td>
-								<td class="away"><a href="%s?team=%d">%s</a></td>
+								<td class="away"><a href="%s">%s</a></td>
 								</tr>',
 							$teams->flag_image( (integer) $row['awayTeamId'] ),
-							$teamspage,
-							$row['awayTeamId'],
+							esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teamspage ) ),
 							$teams->team_names[ (integer) $row['awayTeamId'] ]
 						);
 		}
@@ -336,10 +337,13 @@ class Football_Pool_Matches {
 		$output = '';
 		if ( ! $this->match_is_editable( $ts ) ) {
 			$title = __( 'view other users predictions', FOOTBALLPOOL_TEXT_DOMAIN );
-			$output .= sprintf( '<a href="%s?view=matchpredictions&amp;match=%d" title="%s">',
-							Football_Pool::get_page_link( 'statistics' ),
-							$match,
-							$title
+			$output .= sprintf( '<a href="%s" title="%s">'
+							, esc_url(
+								add_query_arg( 
+										array( 'view' => 'matchpredictions', 'match' => $match ), 
+										Football_Pool::get_page_link( 'statistics' ) )
+								)
+							, $title
 						);
 			$output .= sprintf( '<img src="%sassets/images/site/charts.png" alt="%s" title="%s" /></a>',
 							FOOTBALLPOOL_PLUGIN_URL,

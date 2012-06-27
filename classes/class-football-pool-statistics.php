@@ -155,9 +155,8 @@ class Football_Pool_Statistics {
 			
 			$userpage = Football_Pool::get_page_link( 'user' );
 			foreach ( $rows as $row ) {
-				$output .= sprintf( '<tr><td><a href="%s?user=%d">%s</a></td>',
-									$userpage,
-									$row['userId'],
+				$output .= sprintf( '<tr><td><a href="%s">%s</a></td>',
+									esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
 									$row['userName']
 							);
 				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',

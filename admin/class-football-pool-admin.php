@@ -97,6 +97,7 @@ class Football_Pool_Admin {
 		if ( $file == plugin_basename( dirname( FOOTBALLPOOL_ERROR_LOG ) . '/football-pool.php' ) ) {
 			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 			$links[] = '<a href="admin.php?page=footballpool-help">' . __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
+			$links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 		}
 
 		return $links;
@@ -136,7 +137,7 @@ class Football_Pool_Admin {
 			});
 			</script>';
 		
-		echo '<tr valign="top">
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', $key, '">', $label, '</label></th>
 			<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '" />
 			<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></td>
@@ -144,25 +145,27 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
-		echo '<tr valign="top">
+	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text', $depends_on = '' ) {
+		$hide = ( $depends_on != '' && (int)self::get_value( $depends_on ) == 0 ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
 			<td><input name="', esc_attr( $key ),'" type="text" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '" /></td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
 	}
 	
-	public function checkbox_input( $label, $key, $checked, $description = '' ) {
-		echo '<tr valign="top">
+	public function checkbox_input( $label, $key, $checked, $description = '', $extra_attr = '' ) {
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), '/></td>
+			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), ' ', $extra_attr, '/></td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
 	}
 	
 	public function radiolist_input( $label, $key, $value, $options, $description = '' ) {
 		$i = 1;
-		echo '<tr valign="top"><th scope="row"><label for="answer_1">', $label, '</label></th><td>';
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_1">', $label, '</label></th><td>';
 		foreach ( $options as $option ) {
 			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i++, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), '/> ', $option['text'], '</label><br />';
 		}
@@ -181,8 +184,8 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '' ) {
-		echo '<tr valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
+	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '' ) {
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
 		if ( $value != '' ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
 			$date = new DateTime( $value );
@@ -210,16 +213,16 @@ class Football_Pool_Admin {
 	public function show_option( $option ) {
 		switch ( $option[0] ) {
 			case 'checkbox':
-				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3] );
+				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
 				break;
 			case 'datetime':
-				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3] );
+				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
 				break;
 			case 'integer':
 			case 'string':
 			case 'text':
 			default:
-				self::text_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3] );
+				self::text_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], 'regular-text', ( isset( $option[4] ) ? $option[4] : '' ) );
 				break;
 		}
 	}
@@ -263,6 +266,10 @@ class Football_Pool_Admin {
 												'content'	=> '<p>' . $content . '</p>'
 											) 
 								);
+	}
+	
+	public function admin_sectiontitle( $title ) {
+		echo '<h3>', $title, '</h3>';
 	}
 	
 	public function admin_header( $title, $subtitle = '', $addnew = '' ) {
@@ -521,6 +528,9 @@ class Football_Pool_Admin {
 		
 		return $result;
 	}
-
+	
+	public function cancel_button( $wrap = false ) {
+		submit_button( __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'cancel', $wrap, array( 'onclick' => "jQuery('#action').val('cancel')" ) );
+	}
 }
 ?>

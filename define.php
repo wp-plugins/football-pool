@@ -29,4 +29,6 @@ define( 'FOOTBALLPOOL_FULLPOINTS',   5 );
 define( 'FOOTBALLPOOL_TOTOPOINTS',   2 );
 
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
+
+define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=S83YHERL39GHA');
 ?>

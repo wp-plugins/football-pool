@@ -22,7 +22,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::print_matches( $rows );
 		self::hidden_input( 'action', 'update' );
 		submit_button();
-		
+				
 		self::admin_footer();
 	}
 	

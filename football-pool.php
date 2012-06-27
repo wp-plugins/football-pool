@@ -2,14 +2,14 @@
 /*
  Plugin Name: Football pool
  Plugin URI: http://wordpress.org/extend/plugins/football-pool/
- Description: This plugin adds a football pool for the 2012 European Champioship to your blog. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. View scores and charts of the pool contenders. Use your own theme (or use the skin for Simply Works Core that is included in the assets folder) and add the widgets that come with this plugin. The plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the data/data.txt file for this). <strong>Please note that deactivating this plugin also destroys all your pool data</strong> (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
- Version: 1.4.5
+ Description: This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches to a national competition. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool players.
+ Version: 2.0.0
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
  Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '1.4.5' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.0.0' );
 
 /*
  This program is free software; you can redistribute it and/or modify

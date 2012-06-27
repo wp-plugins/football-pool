@@ -196,14 +196,13 @@ class Football_Pool_Pool {
 				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
 				if ( $row['userId'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
-									<td><a href="%s?user=%d">%s</a></td>
+									<td><a href="%s">%s</a></td>
 									<td>%d</td>
 									%s
 									</tr>',
 								$class,
 								$i++,
-								$userpage,
-								$row['userId'],
+								esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
 								$row['userName'],
 								$row['points'],
 								( $all_user_view ? $this->league_image( $row['leagueId'] ) : '' )
@@ -536,8 +535,15 @@ class Football_Pool_Pool {
 										__( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 				}
-				$output .= sprintf( '<a title="%s" href="%s?view=bonusquestion&amp;question=%d">', 
-									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), $statspage, $question['id'] );
+				$output .= sprintf( '<a title="%s" href="%s">', 
+									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN )
+									, esc_url(
+										add_query_arg( 
+											array( 'view' => 'bonusquestion', 'question' => $question['id'] ), 
+											$statspage
+										)
+									) 
+							);
 				$output .= sprintf( '<img alt="%s" src="%sassets/images/site/charts.png" />',
 									__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
 				$output .= '</a></span>';

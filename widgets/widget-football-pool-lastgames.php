@@ -52,13 +52,20 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		if ( count( $rows ) > 0 ) {
 			echo '<table class="gamesbox">';
 			foreach ( $rows as $row ) {
-				echo '<tr><td><a href="', $teampage, '?team=', $row['homeTeamId'], '">', 
+				$url_home = esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teampage ) );
+				$url_away = esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teampage ) );
+				$url_stats = esc_url( add_query_arg( 
+											array( 'view' => 'matchpredictions', 'match' => $row['nr'] ),
+											$statisticspage 
+											) 
+									);
+				
+				echo '<tr><td><a href="', $url_home, '">', 
 					$teams->team_names[ (integer) $row['homeTeamId'] ], '</a>',
 					'</td><td>-</td>', 
-					'<td><a href="', $teampage, '?team=', $row['awayTeamId'], '">', 
+					'<td><a href="', $url_away, '">', 
 					$teams->team_names[ (integer) $row['awayTeamId'] ], '</a></td>';
-				echo '<td class="score"><a href="', $statisticspage, '?view=matchpredictions&match=', $row['nr'], '"
-						title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
+				echo '<td class="score"><a href="', $url_stats, '" title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
 					$row['homeScore'], ' - ', $row['awayScore'], '</a></td></tr>';
 			}
 			echo '</table>';

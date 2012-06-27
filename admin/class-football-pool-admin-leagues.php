@@ -58,9 +58,10 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 					array( 'hidden', '', 'action', 'save' )
 				);
 		self::value_form( $cols );
-		echo '<p>';
-		submit_button( 'Save & Close', 'primary', 'submit', false );
+		echo '<p class="submit">';
+		submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
 		submit_button( null, 'secondary', 'save', false );
+		self::cancel_button();
 		echo '</p>';
 	}
 	

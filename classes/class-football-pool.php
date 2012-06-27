@@ -56,6 +56,7 @@ class Football_Pool {
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			delete_option( 'footballpool_show_admin_bar' );
+			delete_option( 'footballpool_force_locktime' );
 			/*
 			database changes, see data/update.txt for details:
 				- fix question type for bonusquestions defined before v1.3
@@ -85,9 +86,8 @@ class Football_Pool {
 		add_option( 'footballpool_hide_admin_bar', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		add_option( 'footballpool_dashboard_image', FOOTBALLPOOL_ASSETS_URL . 'admin/images/dashboardwidget.png' );
-		add_option( 'footballpool_force_locktime', '' );
-		// add_option( 'footballpool_matches_locktime', '' );
-		// add_option( 'footballpool_bonus_question_locktime', '' );
+		add_option( 'footballpool_matches_locktime', '' );
+		add_option( 'footballpool_bonus_question_locktime', '' );
 		// add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_favicon', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_touchicon', 1 ); // 1: yes, 0: no
@@ -150,9 +150,8 @@ class Football_Pool {
 		delete_option( 'footballpool_hide_admin_bar' );
 		delete_option( 'footballpool_default_league_new_user' );
 		delete_option( 'footballpool_dashboard_image' );
-		delete_option( 'footballpool_force_locktime' );
-		// delete_option( 'footballpool_matches_locktime' );
-		// delete_option( 'footballpool_bonus_question_locktime' );
+		delete_option( 'footballpool_matches_locktime' );
+		delete_option( 'footballpool_bonus_question_locktime' );
 		// delete_option( 'footballpool_remove_data_on_uninstall' );
 		delete_option( 'footballpool_use_favicon' );
 		delete_option( 'footballpool_use_touchicon' );

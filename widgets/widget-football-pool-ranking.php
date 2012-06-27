@@ -64,8 +64,9 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
 				
+				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
 				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $userpage, '?user=', $row['userId'], '">', $row['userName'], '</a></td>',
+					'<td><a href="', $url, '">', $row['userName'], '</a></td>',
 					'<td class="score">', $row['points'], '</td></tr>';
 			}
 			echo '</table>';

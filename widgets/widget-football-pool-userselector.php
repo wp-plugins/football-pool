@@ -43,7 +43,6 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		
-		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		
 		$users = Football_Pool_Utils::get_integer_array( 'users' );
@@ -84,7 +83,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 	}
 	
 	public function widget( $args, $instance ) {
-		$page_id = get_the_ID();
+		$page_id = @get_the_ID(); // on a 404 error-page this was causing troubles
 		$view = Football_Pool_Utils::get_string( 'view' );
 		$stats_id = get_option( 'footballpool_page_id_statistics' );
 		

@@ -17,11 +17,15 @@ class Football_Pool_Teams_Page {
 			$output .= sprintf( '<table class="teaminfo">
 								<tr>
 									<th>%s:</th>
-									<td><a href="%s?group=%d">%s</a></td>
+									<td><a href="%s">%s</a></td>
 								</tr>', 
 								__( 'plays in', FOOTBALLPOOL_TEXT_DOMAIN ),
-								Football_Pool::get_page_link('groups'), 
-								$team->group_ID, 
+								esc_url( 
+									add_query_arg( 
+										array( 'group' => $team->group_ID ),
+										Football_Pool::get_page_link('groups')
+									)
+								), 
 								$team->group_name
 						);
 
@@ -34,8 +38,12 @@ class Football_Pool_Teams_Page {
 							);
 				$stadium_page = Football_Pool::get_page_link( 'stadiums' );
 				while ( $stadium = array_shift( $stadiums ) ) {
-					$output .= sprintf( '<li><a href="%s?stadium=%d">%s</a></li>', 
-										$stadium_page, $stadium->id, $stadium->name );
+					$output .= sprintf( '<li><a href="%s">%s</a></li>'
+										, esc_url( 
+											add_query_arg( array( 'stadium' => $stadium->id ), $stadium_page )
+										)
+										, $stadium->name 
+								);
 				}
 				$output .= '</ol></td></tr>';
 			}
@@ -50,7 +58,10 @@ class Football_Pool_Teams_Page {
 			$matches = new Football_Pool_Matches;
 			$output .= $matches->print_matches( $plays );
 
-			$output .= sprintf( '<p><a href="%s">%s</a></p>', get_page_link(), __( 'view all teams', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output .= sprintf( '<p><a href="%s">%s</a></p>'
+								, get_page_link()
+								, __( 'view all teams', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						);
 		} else {
 			// show all teams
 			$teams = new Football_Pool_Teams();

@@ -46,7 +46,10 @@ class Football_Pool_Teams {
 	public function print_lines( $teams ) {
 		$output = '';
 		while ( $team = array_shift( $teams ) ) {
-			$output .= sprintf( '<li><a href="?team=%d">%s</a></li>', $team->id, $team->name );
+			$output .= sprintf( '<li><a href="%s">%s</a></li>'
+								, add_query_arg( array( 'team' => $team->id ) )
+								, $team->name 
+						);
 		}
 		return $output;
 	}

@@ -97,13 +97,14 @@ class Football_Pool_Shortcodes {
 		if ( count( $rows ) > 0 ) {
 			$i = 1;
 			$output .= '<table class="poolranking">';
-			//$output .= '<caption>' . __( 'de stand op', FOOTBALLPOOL_TEXT_DOMAIN ) . " {$score_date}</caption>";
+			//$output .= '<caption>' . __( 'ranking on date', FOOTBALLPOOL_TEXT_DOMAIN ) . " {$score_date}</caption>";
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
 				
+				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
 				$output .= '<tr class="' . $class . '"><td>' . $i++ . '.</td>'
-						. '<td><a href="' . $userpage . '?user=' . $row['userId'] . '">' . $row['userName'] 
+						. '<td><a href="' . $url . '">' . $row['userName'] 
 						. '</a></td>' . '<td class="score">' . $row['points'] . '</td></tr>';
 			}
 			$output .= '</table>';

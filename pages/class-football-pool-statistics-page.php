@@ -60,8 +60,18 @@ class Football_Pool_Statistics_Page {
 					$userInfo = get_userdata( $user );
 					$output .= $stats->show_user_info( $userInfo );
 					if ( $stats->stats_visible ) {
-						$output .= sprintf( '<p><a href="?users[]=%d">' . __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a></p>',
-											$userInfo->ID, $userInfo->display_name );
+						// can't use esc_url() here because it also strips the square brackets from users[]
+						$url = add_query_arg( 
+												array( 
+													'user' => false,
+													'view' => false,
+													'users[]' => $userInfo->ID
+												) 
+								);
+						$output .= sprintf( '<p><a href="%s">' . __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a></p>'
+											, $url
+											, $userInfo->display_name
+									);
 						$output .= "<div>";
 						
 						$pool = new Football_Pool_Pool;

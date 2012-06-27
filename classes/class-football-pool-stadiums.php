@@ -16,7 +16,10 @@ class Football_Pool_Stadiums {
 	public function print_lines( $stadiums ) {
 		$output = '';
 		while ( $stadium = array_shift( $stadiums ) ) {
-			$output .= sprintf( '<li><a href="?stadium=%d">%s</a></li>', $stadium->id, htmlentities( $stadium->name ) );
+			$output .= sprintf( '<li><a href="%s">%s</a></li>'
+								, add_query_arg( array( 'stadium' => $stadium->id ) )
+								, htmlentities( $stadium->name ) 
+						);
 		}
 		return $output;
 	}

@@ -240,7 +240,7 @@ class Football_Pool_Groups {
 			$th1 = '';
 			$th2 = '';
 			$format = '<tr>
-							<td class="team"><a href="%s?team=%d">%s</a></td>
+							<td class="team"><a href="%s">%s</a></td>
 							<td class="plays">%d</td>
 							<td class="wins">%d</td>
 							<td class="draws">%d</td>
@@ -253,12 +253,14 @@ class Football_Pool_Groups {
 			$th1 = '<span title="matches">m</span>';
 			$th2 = '<span title="points">p</span>';
 			$format = '<tr>
-							<td class="team"><a href="%s?team=%d">%s</a></td>
+							<td class="team"><a href="%s">%s</a></td>
 							<td class="plays">%d</td>
 							<td class="points">%d</td>
 							<td class="goals">(%d-%d)</td>
 						</tr>';
 		}
+		
+		$teampage = Football_Pool::get_page_link( 'teams' );
 		
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {
@@ -274,12 +276,15 @@ class Football_Pool_Groups {
 									</tr>
 								</thead>
 								<tbody>';
-				$teampage = Football_Pool::get_page_link( 'teams' );
 				foreach ( $rank as $teamranking ) {
 					if ( $layout == 'wide' ) { 
 						$args_array = array(
-											$teampage,
-											$teamranking['team'],
+											esc_url( 
+												add_query_arg( 
+													array( 'team' => $teamranking['team'] ), 
+													$teampage 
+												) 
+											),
 											$team_names[$teamranking['team']],
 											$teamranking['plays'],
 											$teamranking['wins'],
@@ -291,8 +296,12 @@ class Football_Pool_Groups {
 										);
 					} else {
 						$args_array = array(
-											$teampage,
-											$teamranking['team'],
+											esc_url( 
+												add_query_arg( 
+													array( 'team' => $teamranking['team'] ), 
+													$teampage 
+												)
+											),
 											$team_names[$teamranking['team']],
 											$teamranking['plays'],
 											$teamranking['points'],

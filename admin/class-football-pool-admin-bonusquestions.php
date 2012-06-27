@@ -13,7 +13,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		
 		if ( count( $bulk_ids ) > 0 && $action == '-1' )
 			$action = Football_Pool_Utils::request_string( 'action2', 'list' );
-		
+				
 		switch ( $action ) {
 			case 'save':
 				// new or updated question
@@ -61,8 +61,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function edit_user_answers() {
-		$id = Football_Pool_Utils::get_integer( 'item_id' );
-
+		$id = Football_Pool_Utils::request_integer( 'item_id' );
+		
 		if ( $id > 0 ) {
 			echo '<form action="" method="post">';
 			$pool = new Football_Pool_Pool;
@@ -112,9 +112,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '</tbody>';
 			echo '</table>';
 			
-			echo '<p>';
-			submit_button( 'Save & Close', 'primary', 'submit', false );
+			echo '<p class="submit">';
+			submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
 			submit_button( null, 'secondary', 'save', false );
+			self::cancel_button();
 			echo '</p>';
 			self::hidden_input( 'item_id', $id );
 			self::hidden_input( 'action', 'user-answers-save' );
@@ -163,9 +164,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array( 'hidden', '', 'action', 'save' )
 				);
 		self::value_form( $cols );
-		echo '<p>';
-		submit_button( 'Save & Close', 'primary', 'submit', false );
+		echo '<p class="submit">';
+		submit_button( __( 'Save & Close' ), 'primary', 'submit', false );
 		submit_button( null, 'secondary', 'save', false );
+		self::cancel_button();
+		submit_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'edit-user-answers', false, array( 'onclick' => "jQuery('#action').val('user-answers')" ) );
 		echo '</p>';
 	}
 	

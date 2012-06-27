@@ -9,9 +9,13 @@ class Football_Pool_User_Page {
 		if ( $user ) {
 			$output .= sprintf( '<div class="statistics" title="%s">', __( 'view all statistics for these users', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$output .= sprintf( '<h5>%s</h5>', __( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			$output .= sprintf( '<p><a class="statistics" href="%s?view=user&amp;user=%d">%s</a></p>',
-								Football_Pool::get_page_link( 'statistics' ),
-								$user->ID,
+			$output .= sprintf( '<p><a class="statistics" href="%s">%s</a></p>',
+								esc_url(
+									add_query_arg(
+										array( 'view' => 'user', 'user' => $user->ID ),
+										Football_Pool::get_page_link( 'statistics' )
+									)
+								),
 								__( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 			$output .= '</div>';
