@@ -94,6 +94,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-shoutbox.php';
 	require_once 'admin/class-football-pool-admin-help.php';
 	require_once 'admin/class-football-pool-admin-users.php';
+	require_once 'admin/class-football-pool-admin-stadiums.php';
 
 	add_action( 'delete_user', array( 'Football_Pool', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );

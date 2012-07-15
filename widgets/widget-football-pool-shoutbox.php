@@ -60,8 +60,9 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 			echo '<div class="wrapper">';
 			foreach ( $messages as $message ) {
 				$url = esc_url( add_query_arg( array( 'user' => $message['userId'] ), $userpage ) );
+				$shout_date = new DateTime( Football_Pool_Utils::date_from_gmt( $message['shoutDate'] ) );
 				echo '<p><a class="name" href="', $url, '">', $message['userName'], '</a>&nbsp;
-					<span class="date">(', $message['shoutDate'], ')</span></p>
+					<span class="date">(', $shout_date->format( 'j-n-Y, H:i' ), ')</span></p>
 					<p class="text">', htmlspecialchars($message['shoutText']), '</p><hr />';
 			}
 			echo '</div>';

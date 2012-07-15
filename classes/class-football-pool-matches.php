@@ -4,7 +4,7 @@ class Football_Pool_Matches {
 	private $teams;
 	private $matches_are_editable;
 	public $joker_value;
-	private $force_lock_time = '';
+	private $force_lock_time = false;
 	private $lock;
 	private $matches;
 	
@@ -12,10 +12,13 @@ class Football_Pool_Matches {
 		$this->joker_blocked = false;
 		$this->enable_edits();
 		
-		$this->force_lock_time = Football_Pool_Utils::get_wp_option( 'footballpool_force_locktime', '' );
-		if ( $this->force_lock_time != '' ) {
-			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
-			$date = new DateTime( $this->force_lock_time );
+		$datetime = Football_Pool_Utils::get_wp_option( 'footballpool_matches_locktime', '' );
+		$this->force_lock_time = 
+			( Football_Pool_Utils::get_wp_option( 'footballpool_stop_time_method_matches', 0, 'int' ) == 1 )
+			&& ( $datetime != '' );
+		if ( $this->force_lock_time ) {
+			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $datetime );
+			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime ) );
 			$this->lock = $date->getTimestamp();
 		} else {
 			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
@@ -194,12 +197,13 @@ class Football_Pool_Matches {
 		}
 	}
 	
-	/*
-	Shows pool input for games that are still editable. For games where the edit period has expired only the value is
-	shown.
-	The property matches_are_editable is used for the users page. It prevents the display of inputs and it prevents the 
-	display of games that are still editable. The latter to make sure users do not copy results from each other.
-	*/
+	/**
+	 * Shows pool input for games that are still editable. For games where the edit period has expired 
+	 * only the value is shown.
+	 * The property matches_are_editable is used for the users page. It prevents the display of inputs
+	 * and it prevents the display of games that are still editable. The latter to make sure users do 
+	 * not copy results from each other.
+	 */
 	public function show_pool_input( $name, $value, $ts ) {
 		if ( $this->match_is_editable( $ts ) ) {
 			if ( $this->matches_are_editable ) {
@@ -355,7 +359,7 @@ class Football_Pool_Matches {
 	}
 	
 	public function match_is_editable( $ts ) {
-		if ( $this->force_lock_time != '' ) {
+		if ( $this->force_lock_time ) {
 			$editable = ( current_time( 'timestamp' ) < $this->lock );
 		} else {
 			$diff = $ts - time();

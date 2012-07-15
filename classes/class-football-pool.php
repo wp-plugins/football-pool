@@ -91,6 +91,8 @@ class Football_Pool {
 		// add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_favicon', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_touchicon', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_stop_time_method_matches', 0 ); // 0: dynamic, 1: one stop date
+		add_option( 'footballpool_stop_time_method_questions', 0 ); // 0: dynamic, 1: one stop date
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -155,6 +157,8 @@ class Football_Pool {
 		// delete_option( 'footballpool_remove_data_on_uninstall' );
 		delete_option( 'footballpool_use_favicon' );
 		delete_option( 'footballpool_use_touchicon' );
+		delete_option( 'footballpool_stop_time_method_matches' );
+		delete_option( 'footballpool_stop_time_method_questions' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {

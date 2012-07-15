@@ -16,7 +16,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		switch ( $action ) {
 			case 'save':
 				// new or updated message
-				$league_id = self::update( $shout_id );
+				$shout_id = self::update( $shout_id );
 				self::notice( __( "Message saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
@@ -53,6 +53,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$message = self::get_message( $id );
 		if ( $message && $id > 0 ) {
 			$values = $message;
+			$values['shoutDate'] = self::date_from_gmt( $values['shoutDate'] );
 		}
 		$cols = array(
 					array( 'no_input', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['userName'], '' ),
@@ -89,12 +90,12 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 			$rows[] = array(
 						$message['userName'], 
 						$message['shoutText'],
-						$message['shoutDate'],
+						self::date_from_gmt( $message['shoutDate'] ),
 						$message['id']
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete' ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more shoutbox messages.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? \'OK\' to delete, \'Cancel\' to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	

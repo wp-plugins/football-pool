@@ -3,20 +3,24 @@ class Football_Pool_Pool {
 	public $leagues;
 	public $has_bonus_questions = false;
 	public $has_leagues;
-	public $force_lock_time = '';
-	private $lock;
+	public $force_lock_time = false;
+	private $lock_timestamp;
+	private $lock_datestring;
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
 		$this->has_leagues = ( get_option('footballpool_use_leagues') == '1' ) && ( count( $this->leagues ) > 1 );
 		
-		$this->force_lock_time = Football_Pool_Utils::get_wp_option( 'footballpool_force_locktime', '' );
-		if ( $this->force_lock_time != '' ) {
-			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->force_lock_time );
-			$date = new DateTime( $this->force_lock_time );
-			$this->lock = $date->getTimestamp();
+		$this->lock_datestring = Football_Pool_Utils::get_wp_option( 'footballpool_bonus_question_locktime', '' );
+		$this->force_lock_time = 
+			( Football_Pool_Utils::get_wp_option( 'footballpool_stop_time_method_questions', 0, 'int' ) == 1 )
+			&& ( $this->lock_datestring != '' );
+		if ( $this->force_lock_time ) {
+			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->lock_datestring );
+			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->lock_datestring ) );
+			$this->lock_timestamp = $date->getTimestamp();
 		} else {
-			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
+			$this->lock_timestamp = 0; // bonus questions have no time threshold
 		}
 	}
 	
@@ -41,9 +45,9 @@ class Football_Pool_Pool {
 		if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
 			// check for exact match
 			if ( $home == $user_home && $away == $user_away ) {
-				$score = (integer) Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+				$score = (int) Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 			} else {
-				$score = (integer) Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+				$score = (int) Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			}
 		}
 		
@@ -319,7 +323,7 @@ class Football_Pool_Pool {
 			$sql = "SELECT q.id, q.question, q.answer, q.points, UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
 					DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
 					DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
-					qt.type, qt.options, qt.image
+					qt.type, qt.options, qt.image, qt.max_answers
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
 						ON ( q.id = qt.question_id )
@@ -333,7 +337,7 @@ class Football_Pool_Pool {
 										DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
 										DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
 										q.matchNr, a.correct,
-										qt.type, qt.options, qt.image
+										qt.type, qt.options, qt.image, qt.max_answers
 									FROM {$prefix}bonusquestions q 
 									INNER JOIN {$prefix}bonusquestions_type qt
 										ON ( q.id = qt.question_id )
@@ -360,7 +364,7 @@ class Football_Pool_Pool {
 									DATE_FORMAT(q.scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
 									q.matchNr, 
 									UNIX_TIMESTAMP(q.answerBeforeDate) as questionDate,
-									qt.type, qt.options, qt.image
+									qt.type, qt.options, qt.image, qt.max_answers
 								FROM {$prefix}bonusquestions q
 								INNER JOIN {$prefix}bonusquestions_type qt
 									ON ( q.id = qt.question_id )
@@ -405,6 +409,14 @@ class Football_Pool_Pool {
 			$output .= '<select name=""></select>';
 		} else {
 			// radio or checkbox
+			if ( $type == 'checkbox' && $question['max_answers'] > 0 ) {
+				// add some javascript for the max number of answers a user may give
+				$output .= sprintf( '<script type="text/javascript">jQuery( document ).ready( function() { set_max_answers( %d, %d ); } );</script>'
+									, $question['id']
+									, $question['max_answers']
+							);
+			}
+			
 			$options = explode( ';', $question['options'] );
 			$i = 1;
 			$output .= '<ul class="multi-select">';
@@ -478,15 +490,21 @@ class Football_Pool_Pool {
 						);
 		}
 		
+		$lock_time = ( $this->force_lock_time ) ? $this->lock_datestring : $question['answerBeforeDate'];
+		// to local time
+		$lock_time = Football_Pool_Utils::date_from_gmt( $lock_time );
+		
 		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
 			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
 			
-			// remind a player if there is only 1 day left to answer the question.
 			$output .= '<p>';
-			if ( ( $question['questionDate'] - time() ) <= ( 24 * 60 * 60 ) ) {
+			
+			// remind a player if there is only 1 day left to answer the question.
+			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['questionDate'] );
+			if ( ( $timestamp - current_time( 'timestamp' ) ) <= ( 24 * 60 * 60 ) ) {
 				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
-			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $question['answerBeforeDate'] . '</span>',
+			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $lock_time . '</span>',
 							__( 'answer this question before this date', FOOTBALLPOOL_TEXT_DOMAIN ),
 							__( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
@@ -498,7 +516,6 @@ class Football_Pool_Pool {
 			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
 			$output .= '</p>';
 			
-			$lock_time = ( $this->force_lock_time != '' ) ? $this->force_lock_time : $question['answerBeforeDate'];
 			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',
 							__( "it's is no longer possible to answer this question, or change your answer", FOOTBALLPOOL_TEXT_DOMAIN ),
 							__( 'closed on', FOOTBALLPOOL_TEXT_DOMAIN ),
@@ -525,7 +542,10 @@ class Football_Pool_Pool {
 		foreach ( $questions as $question ) {
 			if ( ! $this->bonus_is_editable( $question['questionDate'] ) ) {
 				$output .= '<div class="bonus userview">';
-				$output .= sprintf( '<p class="question">%d. %s</p>', $nr++, $question['question'] );
+				$output .= sprintf( '<p class="question"><span class="nr">%d.</span> %s</p>'
+									, $nr++
+									, $question['question'] 
+							);
 				$output .= '<span class="bonus points">';
 				if ( $question['scoreDate'] ) {
 					// standard points or alternate points as reward for question?
@@ -559,11 +579,11 @@ class Football_Pool_Pool {
 	}
 	
 	public function bonus_is_editable( $ts ) {
-		if ( $this->force_lock_time != '' ) {
-			$editable = ( current_time( 'timestamp' ) < $this->lock );
+		if ( $this->force_lock_time ) {
+			$editable = ( current_time( 'timestamp' ) < $this->lock_timestamp );
 		} else {
 			$diff = $ts - time();
-			$editable = ( $diff > $this->lock );
+			$editable = ( $diff > $this->lock_timestamp );
 		}
 		
 		return $editable;
@@ -591,6 +611,5 @@ class Football_Pool_Pool {
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		return $rows;
 	}
-
 }
 ?>

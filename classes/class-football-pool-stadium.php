@@ -20,8 +20,12 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 	}
 	
 	public function HTML_image() {
-		return sprintf( '<img src="%sassets/images/stadiums/%s" title="%s" alt="%s" class="stadiumphoto" />',
-						FOOTBALLPOOL_PLUGIN_URL,
+		$path = '';
+		if ( strpos( $this->photo, 'http://' ) !== 0 && strpos( $this->photo, 'https://' ) !== 0 ) {
+			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/stadiums/';
+		}
+		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />',
+						$path,
 						$this->photo,
 						htmlentities( $this->name ),
 						htmlentities( $this->name )

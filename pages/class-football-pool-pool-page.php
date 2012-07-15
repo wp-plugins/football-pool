@@ -154,7 +154,14 @@ class Football_Pool_Pool_Page {
 			foreach ( $questions as $question ) {
 				switch ( $question['type'] ) {
 					case 3: // multiple n
-						$answers[ $question['id'] ] = implode( ';', Football_Pool_Utils::post_string_array( '_bonus_' . $question['id'] ) );
+						$user_answers = Football_Pool_Utils::post_string_array( '_bonus_' . $question['id'] );
+						if ( $question['max_answers'] > 0 && count( $user_answers ) > $question['max_answers'] ) {
+							// remove answers from the end of the array
+							// (user is cheating or admin changed the max possible answers)
+							while ( count( $user_answers ) > $question['max_answers'] ) 
+								array_pop( $user_answers );
+						}
+						$answers[ $question['id'] ] = implode( ';', $user_answers );
 						break;
 					case 1: // text
 					case 2: // multiple 1

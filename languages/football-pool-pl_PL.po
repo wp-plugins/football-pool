@@ -354,7 +354,7 @@ msgid "One prediction lock *"
 msgstr "zobacz typy"
 
 #: admin/class-football-pool-admin-options.php:17
-msgid "If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions have to be entered by users. (local time is:"
+msgid "If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions have to be entered by users. (your local time is:"
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:18

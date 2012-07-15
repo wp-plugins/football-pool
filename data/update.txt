@@ -1,5 +1,5 @@
 INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
-SELECT q.id, 1, '', '' 
+SELECT q.id, 1, '', ''
 FROM {$prefix}bonusquestions q
 LEFT OUTER JOIN {$prefix}bonusquestions_type qt
 	ON ( qt.question_id = q.id )
@@ -38,3 +38,7 @@ ALTER TABLE `{$prefix}teams` CHANGE `name` `name` VARCHAR( 30 ) CHARACTER SET ut
 ALTER TABLE `{$prefix}teams` CHANGE `photo` `photo` VARCHAR( 35 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}teams` CHANGE `flag` `flag` VARCHAR( 35 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}teams` CHANGE `link` `link` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
+
+ALTER TABLE `{$prefix}bonusquestions_type` ADD `max_answers` TINYINT UNSIGNED NOT NULL DEFAULT '0';
+
+ALTER TABLE `pool_wp_stadiums` CHANGE `photo` `photo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';

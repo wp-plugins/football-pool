@@ -1,6 +1,18 @@
 <?php
 class Football_Pool_Utils {
 
+	// accepts a date in Y-m-d H:i format and changes it to UTC
+	public function gmt_from_date( $date_string ) {
+		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';
+		return $date_string != '' ? get_gmt_from_date( $date_string, 'Y-m-d H:i' ) : '';
+	}
+	
+	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
+	public function date_from_gmt( $date_string ) {
+		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';
+		return $date_string != '' ? get_date_from_gmt( $date_string, 'Y-m-d H:i' ) : '';
+	}
+	
 	public function full_url() {
 		// http://snipplr.com/view.php?codeview&id=2734
 		$s = empty( $_SERVER["HTTPS"] ) ? '' : ( $_SERVER["HTTPS"] == "on" ) ? "s" : "";
@@ -130,6 +142,7 @@ class Football_Pool_Utils {
 		$pre .= "<div style='padding:2px;color:#fff;background-color:#000;'>debug</div><div style='padding:2px;'>";
 		$post = "</div></pre>";
 		switch ( $type ) {
+			case 'log':
 			case 'file':
 				$pre  = "[" . date('D d/M/Y H:i P') . "]\n";
 				$post = "\n-----------------------------------------------\n";
@@ -140,6 +153,7 @@ class Football_Pool_Utils {
 					error_log( $pre . var_export( $var, true ) . $post, 3, FOOTBALLPOOL_ERROR_LOG );
 				}
 				break;
+			case 'output':
 			case 'return':
 				return $pre . var_export( $var, true ) . $post;
 				break;

@@ -57,3 +57,8 @@ input.date-i { width: 2.5em; }
 .email-addresses.not-players textarea { border: 1px solid red; }
 .email-addresses { margin-bottom: 20px; }
 .email-addresses label { margin-right: 20px; }
+
+table.form-table td:nth-child(2) { width: 310px; }
+
+div.donate { text-align: right; }
+div.donate form { margin-left: 2em; }

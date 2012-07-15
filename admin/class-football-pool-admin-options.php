@@ -1,4 +1,5 @@
 <?php
+//@todo: add options for leaving out links to teampages, links to venuepages, icons/flags for teams 
 class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	public function __construct() {}
 	
@@ -19,12 +20,62 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'text', __( 'Full score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'totopoints' => 
 							array( 'text', __( 'Toto score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'totopoints', __( 'The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [totopoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'stop_time_method_matches' =>
+							array( 
+								'radiolist', 
+								__( 'Prediction stop method for matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'stop_time_method_matches', 
+								array( 
+									array( 'value' => 0, 'text' => __( 'Dynamic time', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+									array( 'value' => 1, 'text' => __( 'One stop date', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+								), 
+								__( 'Select which method to use for the prediction stop.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								array(
+									'onclick="toggle_linked_radio_options( \'#r-maxperiod\', [ \'#r-matches_locktime\' ] )"',
+									'onclick="toggle_linked_radio_options( \'#r-matches_locktime\', [ \'#r-maxperiod\' ] )"',
+								),
+							),
 						'maxperiod' => 
-							array( 'text', __( 'Prediction stop (in seconds) *', FOOTBALLPOOL_TEXT_DOMAIN ), 'maxperiod', __( 'A user may change his/her predictions untill this amount of time before game kick-off. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 
+								'text', 
+								__( 'Dynamic stop threshold (in seconds) for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'maxperiod', 
+								__( 'A user may change his/her predictions untill this amount of time before game kick-off. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								array( 'stop_time_method_matches' => 1 ) 
+							),
 						'matches_locktime' => 
-							array( 'datetime', __( 'One prediction lock for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 'matches_locktime', __( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the matches have to be entered by users. (local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)' ),
+							array( 
+								'datetime', 
+								__( 'Prediction stop date for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'matches_locktime', 
+								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the matches have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)', 
+								'',
+								array( 'stop_time_method_matches' => 0 )
+							),
+						'stop_time_method_questions' =>
+							array( 
+								'radiolist', 
+								__( 'Use one prediction stop date for questions?', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'stop_time_method_questions', 
+								array( 
+									array( 'value' => 0, 'text' => __( 'No', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 1, 'text' => __( 'Yes', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+								),
+								__( 'Select which method to use for the prediction stop.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								array(
+									'onclick="toggle_linked_radio_options( \'\', [ \'#r-bonus_question_locktime\' ] )"',
+									'onclick="toggle_linked_radio_options( \'#r-bonus_question_locktime\', null )"',
+								),
+							),
 						'bonus_question_locktime' => 
-							array( 'datetime', __( 'One prediction lock for questions *', FOOTBALLPOOL_TEXT_DOMAIN ), 'bonus_question_locktime', __( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the bonus questions have to be entered by users. (local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)' ),
+							array( 
+								'datetime', 
+								__( 'Prediction stop date for questions *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'bonus_question_locktime', 
+								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the bonus questions have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)',
+								'',
+								array( 'stop_time_method_questions' => 0 )
+							),
 						'shoutbox_max_chars' =>
 							array( 'text', __( 'Maximum length for a shoutbox message *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_leagues' => 
@@ -41,8 +92,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Use Apple touch icon', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_touchicon', __( "Switch off if you don't want to use the icons in the plugin.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
-		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		echo get_option('permalink_structure');
+		$donate = '<div class="donate">' 
+				. __( 'Please consider donating', FOOTBALLPOOL_TEXT_DOMAIN )
+				. self::donate_button( 'return' ) . '</div>';
+		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
+		
 		if ( Football_Pool_Utils::post_string( 'recalculate' ) == 'Recalculate Scores' ) {
 			$success = self::update_score_history();
 			if ( $success )
@@ -54,16 +108,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				if ( $option[0] == 'text' ) {
 					$value = Football_Pool_Utils::post_string( $option[2] );
 				} elseif ( $value != '' && $option[0] == 'date' || $option[0] == 'datetime' ) {
-					$y = Football_Pool_Utils::post_integer( $option[2] . '_y' );
-					$m = Football_Pool_Utils::post_integer( $option[2] . '_m' );
-					$d = Football_Pool_Utils::post_integer( $option[2] . '_d' );
-					$value = ( $y != 0 && $m != 0 && $d != 0 ) ? sprintf( '%04d-%02d-%02d', $y, $m, $d ) : '';
-					
-					if ( $value != '' && $option[0] == 'datetime' ) {
-						$h = Football_Pool_Utils::post_integer( $option[2] . '_h', -1 );
-						$i = Football_Pool_Utils::post_integer( $option[2] . '_i', -1 );
-						$value = ( $h != -1 && $i != -1 ) ? sprintf( '%s %02d:%02d', $value, $h, $i ) : '';
-					}
+					$value = self::gmt_from_date( self::make_date_from_input( $option[2], $option[0] ) );
 				} else {
 					$value = Football_Pool_Utils::post_integer( $option[2] );
 				}
@@ -72,14 +117,18 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			}
 			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
-
 		
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		self::admin_sectiontitle( __( 'Scoring Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['fullpoints'],
 									$options['totopoints'], 
+									$options['stop_time_method_matches'],
+									$options['maxperiod'],
+									$options['matches_locktime'],
+									$options['stop_time_method_questions'],
+									$options['bonus_question_locktime'],
 								) 
 							);
 		echo '<p class="submit">';
@@ -98,7 +147,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
 		echo '</p>';
 		
-		self::admin_sectiontitle( __( 'Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['shoutbox_max_chars'],
 									$options['use_favicon'],

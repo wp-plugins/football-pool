@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_type` (
   `type` int(10) unsigned NOT NULL,
   `options` text NOT NULL,
   `image` text NOT NULL,
+  `max_answers` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_id`)
 ) DEFAULT CHARSET=utf8;
 

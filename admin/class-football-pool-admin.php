@@ -1,21 +1,5 @@
 <?php
 class Football_Pool_Admin {
-	/**
-	 * Somewhat hacky way of replacing "Insert into Post" with "Use Image"
-	 *
-	 * @param string $translated_text text that has already been translated (normally passed straight through)
-	 * @param string $source_text text as it is in the code
-	 * @param string $domain domain of the text
-	 * @author Modern Tribe, Inc. (Peter Chester)
-	 */
-	public function replace_text_in_thickbox($translated_text, $source_text, $domain) {
-		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
-			if ('Insert into Post' == $source_text) {
-				return __('Use Image', FOOTBALLPOOL_TEXT_DOMAIN );
-			}
-		}
-		return $translated_text;
-	}
 	
 	public function init() {
 		$slug = 'footballpool-options';
@@ -72,6 +56,15 @@ class Football_Pool_Admin {
 			'administrator', 
 			'footballpool-groups',
 			array( 'Football_Pool_Admin_Groups', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
+			__( 'Edit venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'administrator', 
+			'footballpool-venues',
+			array( 'Football_Pool_Admin_Stadiums', 'admin' )
 		);
 		
 		add_submenu_page(
@@ -139,18 +132,8 @@ class Football_Pool_Admin {
 		
 		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', $key, '">', $label, '</label></th>
-			<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '" />
-			<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></td>
-			<td><span class="description">', $description, '</span></td>
-			</tr>';
-	}
-	
-	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text', $depends_on = '' ) {
-		$hide = ( $depends_on != '' && (int)self::get_value( $depends_on ) == 0 ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
-			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td><input name="', esc_attr( $key ),'" type="text" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '" /></td>
+			<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" title="', esc_attr( $value ), '" class="', esc_attr( $type ), '">
+			<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '"></td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
 	}
@@ -158,22 +141,28 @@ class Football_Pool_Admin {
 	public function checkbox_input( $label, $key, $checked, $description = '', $extra_attr = '' ) {
 		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), ' ', $extra_attr, '/></td>
+			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), ' ', $extra_attr, '></td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
 	}
 	
-	public function radiolist_input( $label, $key, $value, $options, $description = '' ) {
-		$i = 1;
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_1">', $label, '</label></th><td>';
+	public function radiolist_input( $label, $key, $value, $options, $description = '', $extra_attr = '' ) {
+		$i = 0;
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_0">', $label, '</label></th><td>';
 		foreach ( $options as $option ) {
-			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i++, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), '/> ', $option['text'], '</label><br />';
+			if ( is_array( $extra_attr ) ) {
+				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
+			} else {
+				$extra = $extra_attr;
+			}
+			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), ' ', $extra, '> ', $option['text'], '</label><br />';
+			$i++;
 		}
 		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
 	public function hidden_input( $key, $value ) {
-		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" />';
+		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '">';
 	}
 	
 	public function no_input( $label, $value, $description ) {
@@ -184,11 +173,30 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '' ) {
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
+	// helper function for the date_time input. 
+	// returns the combined date(time) string from the individual inputs
+	public function make_date_from_input( $input_name, $type = 'datetime' ) {
+		$y = Football_Pool_Utils::post_integer( $input_name . '_y' );
+		$m = Football_Pool_Utils::post_integer( $input_name . '_m' );
+		$d = Football_Pool_Utils::post_integer( $input_name . '_d' );
+		$value = ( $y != 0 && $m != 0 && $d != 0 ) ? sprintf( '%04d-%02d-%02d', $y, $m, $d ) : '';
+		
+		if ( $value != '' && $type == 'datetime' ) {
+			$h = Football_Pool_Utils::post_integer( $input_name . '_h', -1 );
+			$i = Football_Pool_Utils::post_integer( $input_name . '_i', -1 );
+			$value = ( $h != -1 && $i != -1 ) ? sprintf( '%s %02d:%02d', $value, $h, $i ) : '';
+		}
+		
+		return $value;
+	}
+	
+	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
 		if ( $value != '' ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
-			$date = new DateTime( $value );
+			$date = new DateTime( self::date_from_gmt ( $value ) );
 			$year = $date->format( 'Y' );
 			$month = $date->format( 'm' );
 			$day = $date->format( 'd');
@@ -197,26 +205,64 @@ class Football_Pool_Admin {
 		} else {
 			$year = $month = $day = $hour = $minute = '';
 		}
-		echo '<input name="', esc_attr( $key ),'_y" type="text" id="', esc_attr( $key ), '_y" value="', esc_attr( $year ), '" class="with-hint date-y" title="yyyy" maxlength="4" />';
+		echo '<input name="', esc_attr( $key ),'_y" type="text" id="', esc_attr( $key ), '_y" value="', esc_attr( $year ), '" class="with-hint date-y" title="yyyy" maxlength="4">';
 		echo '-';
-		echo '<input name="', esc_attr( $key ),'_m" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $month ), '" class="with-hint date-m" title="mm" maxlength="2" />';
+		echo '<input name="', esc_attr( $key ),'_m" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $month ), '" class="with-hint date-m" title="mm" maxlength="2">';
 		echo '-';
-		echo '<input name="', esc_attr( $key ),'_d" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $day ), '" class="with-hint date-d" title="dd" maxlength="2" />';
+		echo '<input name="', esc_attr( $key ),'_d" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $day ), '" class="with-hint date-d" title="dd" maxlength="2">';
 		echo '&nbsp;';
-		echo '<input name="', esc_attr( $key ),'_h" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $hour ), '" class="with-hint date-h" title="hr" maxlength="2" />';
+		echo '<input name="', esc_attr( $key ),'_h" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $hour ), '" class="with-hint date-h" title="hr" maxlength="2">';
 		echo ':';
-		echo '<input name="', esc_attr( $key ),'_i" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $minute ), '" class="with-hint date-i" title="mn" maxlength="2" />';
+		echo '<input name="', esc_attr( $key ),'_i" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $minute ), '" class="with-hint date-i" title="mn" maxlength="2">';
 		
 		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
+	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
+			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
+			<td><input name="', esc_attr( $key ),'" type="text" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '"></td>
+			<td><span class="description">', $description, '</span></td>
+			</tr>';
+	}
+	
+	private function hide_input( $depends_on ) {
+		if ( is_bool( $depends_on ) ) {
+			$hide = $depends_on;
+		} elseif ( is_array( $depends_on ) ) {
+			$hide = true;
+			foreach ( $depends_on as $key => $val ) {
+				$hide &= (int)self::get_value( $key ) == $val;
+			}
+		} else {
+			$hide = ( $depends_on != '' && (int)self::get_value( $depends_on ) == 0 );
+		}
+		
+		return $hide;
+	}
+	
+	// accepts a date in Y-m-d H:i format and changes it to UTC
+	public function gmt_from_date( $date_string ) {
+		return Football_Pool_Utils::gmt_from_date( $date_string );
+	}
+	
+	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
+	public function date_from_gmt( $date_string ) {
+		return Football_Pool_Utils::date_from_gmt( $date_string );
+	}
+	
 	public function show_option( $option ) {
 		switch ( $option[0] ) {
+			case 'radiolist':
+				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5] );
+				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
 				break;
 			case 'datetime':
-				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
+				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
 				break;
 			case 'integer':
 			case 'string':
@@ -233,7 +279,7 @@ class Football_Pool_Admin {
 				self::no_input( $option[1], $option[3], $option[4] );
 				break;
 			case 'radiolist':
-				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], $option[5] );
+				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], $option[3], $option[4] );
@@ -244,12 +290,15 @@ class Football_Pool_Admin {
 			case 'image':
 				self::image_input( $option[1], $option[2], $option[3], $option[4] );
 				break;
-			case 'integer':
 			case 'date':
+			case 'datetime':
+				self::datetime_input( $option[1], $option[2], $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
+				break;
+			case 'integer':
 			case 'string':
 			case 'text':
 			default:
-				self::text_input( $option[1], $option[2], $option[3], $option[4] );
+				self::text_input( $option[1], $option[2], $option[3], $option[4], ( isset( $option[5] ) ? $option[5] : 'regular-text' ), ( isset( $option[6] ) ? $option[6] : '' ) );
 				break;
 		}
 	}
@@ -259,7 +308,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function help( $id, $title, $content ) {
-		// why won't this work???
+		//@todo: why won't this work???
 		get_current_screen()->add_help_tab( array(
 												'id'		=> $id,
 												'title'		=> $title,
@@ -272,7 +321,7 @@ class Football_Pool_Admin {
 		echo '<h3>', $title, '</h3>';
 	}
 	
-	public function admin_header( $title, $subtitle = '', $addnew = '' ) {
+	public function admin_header( $title, $subtitle = '', $addnew = '', $extra = '' ) {
 		$page = Football_Pool_Utils::get_string( 'page' );
 		if ( $addnew == 'add new' ) {
 			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
@@ -283,6 +332,8 @@ class Football_Pool_Admin {
 			$subtitle = sprintf( '<span class="subtitle">%s</span>', $subtitle );
 		}
 		printf( '<h2>%s%s%s</h2>', $title, $subtitle, $addnew );
+
+		echo $extra;
 		echo '<form action="" method="post">';
 		echo '<input type="hidden" name="form_action" id="form_action" value="update" />';
 	}
@@ -293,12 +344,16 @@ class Football_Pool_Admin {
 	
 	public function bulk_actions( $actions, $name = 'action' ) {
 		if ( count($actions) > 0 ) {
-			echo '<div class="tablenav top"><div class="alignleft actions"><select name="', $name, '">';
+			echo '<div class="tablenav top"><div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
 			echo '<option selected="selected" value="-1">Bulk Actions</option>';
 			foreach ( $actions as $action ) {
-				printf( '<option value="%s">%s</option>', $action[0], $action[1] );
+				printf( '<option value="%s" bulk-msg="%s">%s</option>'
+						, $action[0]
+						, ( isset( $action[2] ) ? $action[2] : '' )
+						, $action[1]
+				);
 			}
-			echo '</select><input type="submit" value="Apply" class="button-secondary action" id="do', $name, '" name="" />';
+			echo "</select><input onclick=\"return bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
 			echo '</div><br class="clear"></div>';
 		}
 	}
@@ -362,7 +417,7 @@ class Football_Pool_Admin {
 								</span>';
 						}
 						echo "<span class='delete'>
-									<a onclick=\"if ( confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' ) ) { return true;}return false;\" href='?page={$page}&amp;action=delete&amp;item_id={$rows[$i][$c]}' class='submitdelete'>Delete</a>
+									<a onclick=\"return confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' )\" href='?page={$page}&amp;action=delete&amp;item_id={$rows[$i][$c]}' class='submitdelete'>Delete</a>
 								</span>
 							</div>";
 					}
@@ -530,7 +585,45 @@ class Football_Pool_Admin {
 	}
 	
 	public function cancel_button( $wrap = false ) {
-		submit_button( __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'cancel', $wrap, array( 'onclick' => "jQuery('#action').val('cancel')" ) );
+		submit_button( 
+				__( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				'secondary', 
+				'cancel', 
+				$wrap, 
+				array( "onclick" => "jQuery('#action').val('cancel')" ) 
+		);
 	}
+	
+	public function donate_button( $return_type = 'echo' ) {
+		$str = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="J7YJ9VMSLYTBJ">
+			<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
+			<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1">
+			</form>';
+		if ( $return_type == 'echo' ) {
+			echo $str;
+		} else {
+			return $str;
+		}
+	}
+	
+	/**
+	 * Somewhat hacky way of replacing "Insert into Post" with "Use Image"
+	 *
+	 * @param string $translated_text text that has already been translated (normally passed straight through)
+	 * @param string $source_text text as it is in the code
+	 * @param string $domain domain of the text
+	 * @author Modern Tribe, Inc. (Peter Chester)
+	 */
+	public function replace_text_in_thickbox( $translated_text, $source_text, $domain ) {
+		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
+			if ( 'Insert into Post' == $source_text ) {
+				return __( 'Use Image', FOOTBALLPOOL_TEXT_DOMAIN );
+			}
+		}
+		return $translated_text;
+	}
+
 }
 ?>

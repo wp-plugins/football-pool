@@ -1,13 +1,5 @@
 jQuery( document ).ready( function() {
 	
-	/**
-	 *	Examples of setting the max possible answers for a multiple choice question (checkbox).
-	 *
-	 *	function set_max_answers( <question ID>, <max number of answers> )
-	 */
-	//set_max_answers( 1, 2 ); // question ID 1 has a max of 2
-	//set_max_answers( 5, 4 ); // question ID 5 has a max of 4
-	
 	// set some default Highchart options
 	Highcharts.setOptions( {
 		// no link to highcharts.com

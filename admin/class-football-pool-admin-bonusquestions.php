@@ -135,6 +135,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						'answer'			=> '',
 						'type'				=> 1,
 						'options'			=> '',
+						'max_answers'		=> '',
 						'image'				=> '',
 					);
 		
@@ -157,8 +158,37 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'radiolist', __( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 'type', $values['type'], $types, '' ),
-					array( 'text', __( 'multiple choice options', FOOTBALLPOOL_TEXT_DOMAIN ), 'options', $values['options'], __( 'A semicolon separated list of answer possibilities. Only applicable for multiple choice questions.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 
+						'radiolist', 
+						__( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 
+						'type', 
+						$values['type'], 
+						$types, 
+						'',
+						array(
+							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
+							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
+							'onclick="toggle_linked_radio_options( [ \'#r-options\', \'#r-max_answers\' ], null )"',
+						),
+					),
+					array( 
+						'text', 
+						__( 'multiple choice options', FOOTBALLPOOL_TEXT_DOMAIN ), 
+						'options', 
+						$values['options'], 
+						__( 'A semicolon separated list of answer possibilities. Only applicable for multiple choice questions.', FOOTBALLPOOL_TEXT_DOMAIN ),
+						null,
+						( (int) $values['type'] === 1 )
+					),
+					array( 
+						'integer', 
+						__( 'max answers for multiple choice', FOOTBALLPOOL_TEXT_DOMAIN ), 
+						'max_answers', 
+						( $values['max_answers'] == 0 ? '' : $values['max_answers'] ), 
+						__( 'Optional: The maximum number of options a user may select (empty = unlimited). Only applicable for multiple choice questions with one or more answers.', FOOTBALLPOOL_TEXT_DOMAIN ),
+						null,
+						( (int) $values['type'] !== 3 )
+					),
 					array( 'image', __( 'photo question', FOOTBALLPOOL_TEXT_DOMAIN ), 'image', $values['image'], __( 'Add a URL to a photo for a photo question, or choose one from the media library (optional).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
@@ -190,14 +220,14 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$rows[] = array(
 						$question['question'], 
 						$question['points'], 
-						$question['answerBeforeDate'], 
-						$question['scoreDate'], 
+						self::date_from_gmt( $question['answerBeforeDate'] ), 
+						self::date_from_gmt( $question['scoreDate'] ), 
 						$question['answer'],
 						$question['id']
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete' ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more bonus questions.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? \'OK\' to delete, \'Cancel\' to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$rowactions[] = array( 'user-answers', __( 'User Answers', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
@@ -208,11 +238,12 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'question' ),
 						Football_Pool_Utils::post_string( 'answer' ),
 						Football_Pool_Utils::post_int( 'points' ),
-						Football_Pool_Utils::post_string( 'lastdate' ),
-						Football_Pool_Utils::post_string( 'scoredate' ),
+						self::gmt_from_date( self::make_date_from_input( 'lastdate' ) ),
+						self::gmt_from_date( self::make_date_from_input( 'scoredate' ) ),
 						Football_Pool_Utils::post_int( 'type', 1 ),
 						Football_Pool_Utils::post_string( 'options' ),
 						Football_Pool_Utils::post_string( 'image' ),
+						Football_Pool_Utils::post_int( 'max_answers', 0 ),
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -258,6 +289,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$type = $input[6];
 		$options = $input[7];
 		$image = $input[8];
+		$max_answers = $input[9];
 		$matchNr = 0;
 		
 		if ( $id == 0 ) {
@@ -270,9 +302,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$id = $wpdb->insert_id;
 			
 			if ( $id ) {
-				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type ( question_id, type, options, image )
-										VALUES ( %d, %d, %s, %s )"
-										, $id, $type, $options, $image
+				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type 
+											( question_id, type, options, image, max_answers )
+										VALUES ( %d, %d, %s, %s, %d )"
+										, $id, $type, $options, $image, $max_answers
 								);
 				$wpdb->query( $sql );
 			}
@@ -290,9 +323,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						);
 			$wpdb->query( $sql );
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_type 
-									SET type = %d, options = %s, image = %s 
+									SET type = %d, options = %s, image = %s, max_answers = %d 
 									WHERE question_id = %d"
-									, $type, $options, $image, $id );
+									, $type, $options, $image, $max_answers, $id );
 			$wpdb->query( $sql );
 		}
 		
