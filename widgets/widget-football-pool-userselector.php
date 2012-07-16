@@ -85,10 +85,10 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 	public function widget( $args, $instance ) {
 		$page_id = @get_the_ID(); // on a 404 error-page this was causing troubles
 		$view = Football_Pool_Utils::get_string( 'view' );
-		$stats_id = get_option( 'footballpool_page_id_statistics' );
+		$stats_id = Football_Pool_Utils::get_wp_option( 'footballpool_page_id_statistics' );
 		
 		// this widget is for the statistics page only, so return in all other cases
-		if ( $page_id != get_option( 'footballpool_page_id_statistics' ) ) {
+		if ( $page_id != $stats_id ) {
 			return;
 		} else {
 			if ( $view == 'matchpredictions' || $view == 'bonusquestion' || $view == 'user' ) {  

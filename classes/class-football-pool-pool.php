@@ -9,7 +9,7 @@ class Football_Pool_Pool {
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
-		$this->has_leagues = ( get_option('footballpool_use_leagues') == '1' ) && ( count( $this->leagues ) > 1 );
+		$this->has_leagues = ( Football_Pool_Utils::get_wp_option( 'footballpool_use_leagues' ) == '1' ) && ( count( $this->leagues ) > 1 );
 		
 		$this->lock_datestring = Football_Pool_Utils::get_wp_option( 'footballpool_bonus_question_locktime', '' );
 		$this->force_lock_time = 

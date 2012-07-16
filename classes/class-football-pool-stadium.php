@@ -24,12 +24,12 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 		if ( strpos( $this->photo, 'http://' ) !== 0 && strpos( $this->photo, 'https://' ) !== 0 ) {
 			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/stadiums/';
 		}
-		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />',
-						$path,
-						$this->photo,
-						htmlentities( $this->name ),
-						htmlentities( $this->name )
-						);
+		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />'
+						, $path
+						, $this->photo
+						, htmlentities( $this->name )
+						, htmlentities( $this->name )
+					);
 	}
 	
 	public function get_plays() {

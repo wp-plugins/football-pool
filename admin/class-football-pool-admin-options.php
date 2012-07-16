@@ -90,10 +90,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Use favicon', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_favicon', __( "Switch off if you don't want to use the icons in the plugin.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_touchicon' =>
 							array( 'checkbox', __( 'Use Apple touch icon', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_touchicon', __( "Switch off if you don't want to use the icons in the plugin.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'show_team_link' =>
+							array( 'checkbox', __( 'Show team names as links', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_team_link', __( "Switch off if you don't want to link the team names to a team info page.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'show_venues_on_team_page' =>
+							array( 'checkbox', __( 'Show venues on team page', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_venues_on_team_page', __( "Switch off if you don't want to show all venues a team plays in during a season or tournament (in national competitions the venue list is a bit useless).", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = '<div class="donate">' 
-				. __( 'Please consider donating', FOOTBALLPOOL_TEXT_DOMAIN )
+				. __( 'If you want, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
 				. self::donate_button( 'return' ) . '</div>';
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
@@ -147,12 +151,20 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
 		echo '</p>';
 		
-		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['shoutbox_max_chars'],
 									$options['use_favicon'],
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		
+		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['show_team_link'],
+									$options['show_venues_on_team_page'],
+									$options['shoutbox_max_chars'],
 									$options['dashboard_image'], 
 								) 
 							);

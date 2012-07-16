@@ -9,11 +9,32 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<h2>Index</h2>
 		<p>
 			<ol>
+				<li><a href="#time">Time</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
 			</ol>
+		</p>
+		
+		<h2 id="times">Time</h2>
+		<h3>Stop Time</h3>
+		<p>
+		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kick-off, or a single date/time for all matches. The default is 900 seconds (or 15 minutes) before the start of a match.<br>
+		Bonus questions each have an 'answer before' date and time. But you may override these individual values with a single stop time for all bonus questions. The default is to allow for a 'answer before' time per question.
+		</p>
+		<p>
+		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in UTC.)
+		</p>
+		</p>
+		<h3>Matches</h3>
+		<p>
+		<strong>Matches have to be entered or imported with UTC times</strong> for the kick-off. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>).
+		</p>
+		<p>
+		<strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 
+		<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
+		your bonus questions and one of your matches and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.
 		</p>
 		
 		<h2 id="shortcodes">Shortcodes</h2>
@@ -26,7 +47,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr class="">
 				<td class="row-title">id</td>
 				<td>The numeric id for the group</td>
-				<td>1..4 (integer)</td>
+				<td>1..8 (integer)</td>
 				<td>1</td>
 			</tr>
 		</table>

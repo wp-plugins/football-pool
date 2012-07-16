@@ -51,20 +51,29 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		$rows = $matches->get_last_games( $num_games );
 		if ( count( $rows ) > 0 ) {
 			echo '<table class="gamesbox">';
+			
+			$url_home = $url_away = '';
+			$team_str = '%s%s';
+			
 			foreach ( $rows as $row ) {
-				$url_home = esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teampage ) );
-				$url_away = esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teampage ) );
+				if ( $teams->show_team_links ) {
+					$url_home = esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teampage ) );
+					$url_away = esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teampage ) );
+					$team_str = '<a href="%s">%s</a>';
+				}
 				$url_stats = esc_url( add_query_arg( 
 											array( 'view' => 'matchpredictions', 'match' => $row['nr'] ),
 											$statisticspage 
 											) 
 									);
 				
-				echo '<tr><td><a href="', $url_home, '">', 
-					$teams->team_names[ (integer) $row['homeTeamId'] ], '</a>',
-					'</td><td>-</td>', 
-					'<td><a href="', $url_away, '">', 
-					$teams->team_names[ (integer) $row['awayTeamId'] ], '</a></td>';
+				printf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
+						, $url_home
+						, $teams->team_names[ (int) $row['homeTeamId'] ]
+						, $url_away
+						, $teams->team_names[ (int) $row['awayTeamId'] ]
+					);
+				
 				echo '<td class="score"><a href="', $url_stats, '" title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
 					$row['homeScore'], ' - ', $row['awayScore'], '</a></td></tr>';
 			}

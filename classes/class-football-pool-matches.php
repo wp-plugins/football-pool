@@ -238,15 +238,22 @@ class Football_Pool_Matches {
 									$matchdate->format( 'l' ), $date_title );
 			}
 			
+			if ( $teams->show_team_links ) {
+				$team_name = sprintf( '<a href="%s">%s</a>'
+										, esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teamspage ) )
+										, $teams->team_names[ (int) $row['homeTeamId'] ]
+								);
+			} else {
+				$team_name = $teams->team_names[ (int) $row['homeTeamId'] ];
+			}
 			$output .= sprintf( '<tr title="%s %s">
-								<td class="time">%s</td>
-								<td class="home"><a href="%s">%s</a></td>
-								<td class="flag">%s</td>',
+									<td class="time">%s</td>
+									<td class="home">%s</td>
+									<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
 							$matchdate->format( 'H:i' ),
-							esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teamspage ) ),
-							$teams->team_names[ (integer) $row['homeTeamId'] ],
+							$team_name,
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
 			$output .= sprintf( '<td class="score"><a href="%s">%s - %s</a></td>',
@@ -259,12 +266,19 @@ class Football_Pool_Matches {
 							$row['homeScore'],
 							$row['awayScore']
 						);
+			if ( $teams->show_team_links ) {
+				$team_name = sprintf( '<a href="%s">%s</a>'
+										, esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teamspage ) )
+										, $teams->team_names[ (int) $row['awayTeamId'] ]
+								);
+			} else {
+				$team_name = $teams->team_names[ (int) $row['awayTeamId'] ];
+			}
 			$output .= sprintf( '<td class="flag">%s</td>
-								<td class="away"><a href="%s">%s</a></td>
+								<td class="away">%s</td>
 								</tr>',
 							$teams->flag_image( (integer) $row['awayTeamId'] ),
-							esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teamspage ) ),
-							$teams->team_names[ (integer) $row['awayTeamId'] ]
+							$team_name
 						);
 		}
 		$output .= '</table>';

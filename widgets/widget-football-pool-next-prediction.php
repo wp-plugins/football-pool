@@ -38,7 +38,6 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		extract( $args );
 		
 		$teams = new Football_Pool_Teams;
-		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $match['nr'];
 		
@@ -76,11 +75,21 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
 				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
 				</script>";
-		$url_home = esc_url( add_query_arg( array( 'team' => $match['homeTeamId'] ), $teampage ) );
-		$url_away = esc_url( add_query_arg( array( 'team' => $match['awayTeamId'] ), $teampage ) );
-		echo '<p><a href="', $url_home, '">', $teams->team_names[ (integer) $match['homeTeamId'] ], '</a>',
-			' - ', 
-			'<a href="', $url_away, '">', $teams->team_names[ (integer) $match['awayTeamId'] ], '</a></p>';
+		if ( $teams->show_team_links ) {
+			$teampage = Football_Pool::get_page_link( 'teams' );
+			$url_home = esc_url( add_query_arg( array( 'team' => $match['homeTeamId'] ), $teampage ) );
+			$url_away = esc_url( add_query_arg( array( 'team' => $match['awayTeamId'] ), $teampage ) );
+			$team_str = '<a href="%s">%s</a>';
+		} else {
+			$url_home = $url_away = '';
+			$team_str = '%s%s';
+		}
+		printf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
+				, $url_home
+				, $teams->team_names[ (int) $match['homeTeamId'] ]
+				, $url_away
+				, $teams->team_names[ (int) $match['awayTeamId'] ]
+			);
 	}
 	
 	public function __construct() {

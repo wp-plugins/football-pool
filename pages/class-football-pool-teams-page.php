@@ -28,26 +28,29 @@ class Football_Pool_Teams_Page {
 								), 
 								$team->group_name
 						);
-
-			$stadiums = $team->get_stadiums();
-			if ( is_array( $stadiums ) && count( $stadiums ) > 0 ) {
-				$output .= sprintf( '<tr>
-									<th>%s:</th>
-									<td><ol class="stadiumlist">',
-									__( 'venues', FOOTBALLPOOL_TEXT_DOMAIN )
-							);
-				$stadium_page = Football_Pool::get_page_link( 'stadiums' );
-				while ( $stadium = array_shift( $stadiums ) ) {
-					$output .= sprintf( '<li><a href="%s">%s</a></li>'
-										, esc_url( 
-											add_query_arg( array( 'stadium' => $stadium->id ), $stadium_page )
-										)
-										, $stadium->name 
+						
+			// show venues?
+			if ( Football_Pool_Utils::get_wp_option( 'footballpool_show_venues_on_team_page', true ) ) {
+				$stadiums = $team->get_stadiums();
+				if ( is_array( $stadiums ) && count( $stadiums ) > 0 ) {
+					$output .= sprintf( '<tr>
+										<th>%s:</th>
+										<td><ol class="stadiumlist">',
+										__( 'venues', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
+					$stadium_page = Football_Pool::get_page_link( 'stadiums' );
+					while ( $stadium = array_shift( $stadiums ) ) {
+						$output .= sprintf( '<li><a href="%s">%s</a></li>'
+											, esc_url( 
+												add_query_arg( array( 'stadium' => $stadium->id ), $stadium_page )
+											)
+											, $stadium->name 
+									);
+					}
+					$output .= '</ol></td></tr>';
 				}
-				$output .= '</ol></td></tr>';
 			}
-
+			
 			$output .= sprintf( '<tr><th valign="top">%s:</th>', __( 'photo', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$output .= sprintf( '<td>%s</td></tr>', $team->HTML_thumb() );
 			$output .= '</table>';

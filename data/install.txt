@@ -109,14 +109,14 @@ CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
 CREATE TABLE IF NOT EXISTS `{$prefix}stadiums` (
   `id` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL DEFAULT '',
-  `photo` varchar(55) NOT NULL DEFAULT '',
+  `photo` text NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
   `id` tinyint(3) NOT NULL DEFAULT '0',
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `photo` varchar(35) NOT NULL DEFAULT '',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `photo` text NOT NULL DEFAULT '',
   `flag` varchar(35) NOT NULL DEFAULT '',
   `link` varchar(200) NOT NULL DEFAULT '',
   `groupId` tinyint(4) NOT NULL DEFAULT '0',

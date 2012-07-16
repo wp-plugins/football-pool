@@ -3,12 +3,15 @@ class Football_Pool_Teams {
 	private $extra_teams;
 	public $team_names;
 	public $team_flags;
+	public $show_team_links;
 
 	public function __construct() {
 		// get the team_names
 		$this->team_names = $this->get_team_names();
 		// get the flags
 		$this->team_flags = $this->get_team_flags();
+		// show links?
+		$this->show_team_links = Football_Pool_Utils::get_wp_option( 'footballpool_show_team_link', true );
 	}
 	
 	public function get_team_by_ID( $id ) {
@@ -73,10 +76,10 @@ class Football_Pool_Teams {
 		}
 	}
 	
-	/* return IMG tag for national flag */
+	/* return IMG tag for team flag or logo */
 	public function flag_image( $id ) {
 		if ( is_array( $this->team_flags ) && isset( $this->team_flags[$id] ) ) {
-			return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $this->team_flags[$id] . '" title="' . $this->team_names[$id] . '" alt="' . __( 'national flag for', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->team_names[$id] . '" class="flag" />';
+			return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $this->team_flags[$id] . '" title="' . $this->team_names[$id] . '" alt="' . $this->team_names[$id] . '" class="flag" />';
 		} else {
 			return '';
 		}

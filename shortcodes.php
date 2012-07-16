@@ -184,7 +184,7 @@ class Football_Pool_Shortcodes {
 	public function shortcode_link( $atts ) {
 		$link = '';
 		if ( isset( $atts['slug'] ) ) {
-			$id = get_option( 'footballpool_page_id_' . $atts['slug'] );
+			$id = Football_Pool_Utils::get_wp_option( 'footballpool_page_id_' . $atts['slug'] );
 			if ( $id ) {
 				$link = get_page_link( $id );
 			}
@@ -194,22 +194,22 @@ class Football_Pool_Shortcodes {
 	
 	//[webmaster]
 	public function shortcode_webmaster( $atts ) {
-		return get_option( 'footballpool_webmaster' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_webmaster' );
 	}
 
 	//[bank]
 	public function shortcode_bank( $atts ) {
-		return get_option( 'footballpool_bank' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_bank' );
 	}
 
 	//[money]
 	public function shortcode_money( $atts ) {
-		return get_option( 'footballpool_money' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_money' );
 	}
 
 	//[start]
 	public function shortcode_start( $atts ) {
-		return get_option( 'footballpool_start' );
+		return Football_Pool_Utils::get_wp_option( 'footballpool_start' );
 	}
 
 	//[totopoints]

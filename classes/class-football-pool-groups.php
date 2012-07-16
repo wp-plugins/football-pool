@@ -236,11 +236,12 @@ class Football_Pool_Groups {
 		$ranking = $groups->get_ranking_array();
 
 		if ( $layout == 'wide' ) {
-			$wdl = '<th class="wins"><span title="wins">w</span></th><th class="draws"><span title="draws">d</span></th><th class="losses"><span title="losses">l</span></th>';
+			$wdl = '<th class="wins"><span title="wins">w</span></th><th class="draws">'
+				 . '<span title="draws">d</span></th><th class="losses"><span title="losses">l</span></th>';
 			$th1 = '';
 			$th2 = '';
 			$format = '<tr>
-							<td class="team"><a href="%s">%s</a></td>
+							<td class="team">%s</td>
 							<td class="plays">%d</td>
 							<td class="wins">%d</td>
 							<td class="draws">%d</td>
@@ -253,7 +254,7 @@ class Football_Pool_Groups {
 			$th1 = '<span title="matches">m</span>';
 			$th2 = '<span title="points">p</span>';
 			$format = '<tr>
-							<td class="team"><a href="%s">%s</a></td>
+							<td class="team">%s</td>
 							<td class="plays">%d</td>
 							<td class="points">%d</td>
 							<td class="goals">(%d-%d)</td>
@@ -277,15 +278,23 @@ class Football_Pool_Groups {
 								</thead>
 								<tbody>';
 				foreach ( $rank as $teamranking ) {
+					if ( $teams->show_team_links ) {
+						$team_name = sprintf( '<a href="%s">%s</a>'
+												, esc_url( 
+														add_query_arg( 
+															array( 'team' => $teamranking['team'] ), 
+															$teampage 
+														) 
+													)
+												, $team_names[$teamranking['team']]
+											);
+					} else {
+						$team_name = $team_names[$teamranking['team']];
+					}
+					
 					if ( $layout == 'wide' ) { 
 						$args_array = array(
-											esc_url( 
-												add_query_arg( 
-													array( 'team' => $teamranking['team'] ), 
-													$teampage 
-												) 
-											),
-											$team_names[$teamranking['team']],
+											$team_name,
 											$teamranking['plays'],
 											$teamranking['wins'],
 											$teamranking['draws'],
@@ -296,13 +305,7 @@ class Football_Pool_Groups {
 										);
 					} else {
 						$args_array = array(
-											esc_url( 
-												add_query_arg( 
-													array( 'team' => $teamranking['team'] ), 
-													$teampage 
-												)
-											),
-											$team_names[$teamranking['team']],
+											$team_name,
 											$teamranking['plays'],
 											$teamranking['points'],
 											$teamranking['for'],
