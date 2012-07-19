@@ -405,7 +405,7 @@ class Football_Pool_Pool {
 		
 		if ( $type == 'select' ) {
 			// dropdown
-			// @todo
+			// @todo: bonus question select/dropdown
 			$output .= '<select name=""></select>';
 		} else {
 			// radio or checkbox

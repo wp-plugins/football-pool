@@ -111,7 +111,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more venues.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? \'OK\' to delete, \'Cancel\' to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more venues.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	

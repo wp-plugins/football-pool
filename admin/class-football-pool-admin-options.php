@@ -40,7 +40,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'text', 
 								__( 'Dynamic stop threshold (in seconds) for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								'maxperiod', 
-								__( 'A user may change his/her predictions untill this amount of time before game kick-off. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'A user may change his/her predictions untill this amount of time before game kickoff. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								array( 'stop_time_method_matches' => 1 ) 
 							),
 						'matches_locktime' => 

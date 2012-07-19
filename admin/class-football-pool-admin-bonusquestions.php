@@ -227,7 +227,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					);
 		}
 		
-		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more bonus questions.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? \'OK\' to delete, \'Cancel\' to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more bonus questions.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$rowactions[] = array( 'user-answers', __( 'User Answers', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
