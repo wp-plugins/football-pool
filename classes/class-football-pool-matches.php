@@ -6,7 +6,7 @@ class Football_Pool_Matches {
 	public $joker_value;
 	private $force_lock_time = false;
 	private $lock;
-	private $matches;
+	public $matches;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -69,9 +69,13 @@ class Football_Pool_Matches {
 	
 	private function matches_query( $where_clause = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		return "SELECT UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
-							m.homeScore, m.awayScore, m.playDate,
-							s.name AS stadiumName, t.name AS matchtype, t.id AS typeId, m.nr 
+		return "SELECT 
+					m.nr, 
+					UNIX_TIMESTAMP(m.playDate) AS match_timestamp, m.playDate,
+					m.homeTeamId, m.awayTeamId, 
+					m.homeScore, m.awayScore, 
+					s.name AS stadiumName, s.id AS stadiumId,
+					t.name AS matchtype, t.id AS typeId 
 				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id {$where_clause}
 				ORDER BY m.playDate ASC, nr ASC";
@@ -108,15 +112,22 @@ class Football_Pool_Matches {
 				$match_info[$i] = array();
 				$matchdate = new DateTime( $row['playDate'] );
 				
-				$match_info[$i]['matchDateTime'] = $matchdate->format( 'd M Y H:i' );
+				$match_info[$i]['match_datetime'] = $matchdate->format( 'd M Y H:i' );
+				$match_info[$i]['match_timestamp'] = $row['match_timestamp'];
 				$match_info[$i]['playDate'] = $row['playDate'];
-				$match_info[$i]['matchHomeScore'] = $row['homeScore'];
-				$match_info[$i]['matchAwayScore'] = $row['awayScore'];
-				$match_info[$i]['teamHome'] = $teams->team_names[(integer) $row['homeTeamId'] ];
-				$match_info[$i]['teamAway'] = $teams->team_names[(integer) $row['awayTeamId'] ];
-				$match_info[$i]['matchTimestamp'] = $row['matchTimestamp'];
-				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $row['matchTimestamp'] );
+				$match_info[$i]['date'] = $row['playDate'];
+				$match_info[$i]['home_score'] = $row['homeScore'];
+				$match_info[$i]['away_score'] = $row['awayScore'];
+				$match_info[$i]['home_team'] = $teams->team_names[(integer) $row['homeTeamId'] ];
+				$match_info[$i]['away_team'] = $teams->team_names[(integer) $row['awayTeamId'] ];
+				$match_info[$i]['home_team_id'] = $row['homeTeamId'];
+				$match_info[$i]['away_team_id'] = $row['awayTeamId'];
+				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $row['match_timestamp'] );
 				$match_info[$i]['nr'] = $row['nr'];
+				$match_info[$i]['stadium_id'] = $row['stadiumId'];
+				$match_info[$i]['stadium_name'] = $row['stadiumName'];
+				$match_info[$i]['match_type_id'] = $row['typeId'];
+				$match_info[$i]['match_type'] = $row['matchtype'];
 			}
 			
 			wp_cache_set( $cache_key, $match_info );
@@ -136,7 +147,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT 
-									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
+									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
 									p.homeScore, 
@@ -328,20 +339,28 @@ class Football_Pool_Matches {
 							$matchdate->format( 'H:i' ),
 							$teams->team_names[ (integer) $row['homeTeamId'] ],
 							$teams->flag_image( (integer) $row['homeTeamId'] ),
-							$this->show_pool_input( '_home_' . $row['nr'], $row['homeScore'], $row['matchTimestamp'] ),
-							$this->show_pool_input( '_away_' . $row['nr'], $row['awayScore'], $row['matchTimestamp'] ),
+							$this->show_pool_input( '_home_' . $row['nr'], $row['homeScore'], $row['match_timestamp'] ),
+							$this->show_pool_input( '_away_' . $row['nr'], $row['awayScore'], $row['match_timestamp'] ),
 							$teams->flag_image( (integer) $row['awayTeamId'] ),
 							$teams->team_names[ (integer) $row['awayTeamId'] ],
-							$this->show_pool_joker( $joker, (integer) $row['nr'], $row['matchTimestamp'] ),
+							$this->show_pool_joker( $joker, (integer) $row['nr'], $row['match_timestamp'] ),
 							__( 'score', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$this->show_score( $info['matchHomeScore'], $info['matchAwayScore'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $row['matchTimestamp'] ),
-							$this->show_users_link( $row['nr'], $row['matchTimestamp'] )
+							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $row['match_timestamp'] ),
+							$this->show_users_link( $row['nr'], $row['match_timestamp'] )
 						);
 		}
 		$output .= '</table>';
 		
 		$this->joker_value = $joker;
 		return $output;
+	}
+	
+	public function get_match_types() {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes ORDER BY id ASC" );
+		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {

@@ -9,11 +9,15 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		$action  = Football_Pool_Utils::request_string( 'form_action' );
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
-		Football_Pool_Utils::debug($action);
+		
 		switch ( $action ) {
+			case 'schedule':
+				self::view_schedules();
+				break;
 			case 'edit':
 			case 'update':
 			case 'update_single_match':
+			case 'update_single_match_close':
 				self::edit_handler( $item_id, $action );
 				break;
 			case 'delete':
@@ -23,7 +27,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				else
 					self::notice( __( 'Error performing the requested action.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 				$action = 'view';
-				break;
 			case 'view':
 			default:
 				self::view();
@@ -32,16 +35,19 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
+	private function view_schedules() {
+		echo '<h2>hier komt de import voor wedstrijddata</h2>';
+	}
+	
 	private function view() {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->get_info();
 		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );
-		submit_button( __( 'Change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'schedule', false );
+		self::secondary_button( __( 'Change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'schedule', false );
 		echo '</p>';
 		self::print_matches( $rows );
-		self::hidden_input( 'action', 'update' );
 		submit_button();
 	}
 	
@@ -54,6 +60,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				$success = self::update();
 				break;
 			case 'update_single_match':
+			case 'update_single_match_close':
 				$success = self::update_single_match( $item_id );
 				break;
 		}
@@ -98,11 +105,79 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function edit( $item_id ) {
-		//@todo: edit single match
+		$values = array(
+						'date' => '',
+						'home_team_id' => '',
+						'away_team_id' => '',
+						'home_score' => '',
+						'away_score' => '',
+						'stadium_id' => 0,
+						'match_type_id' => 0
+						);
+		
+		$matches = new Football_Pool_Matches;
+		$match = isset( $matches->matches[$item_id] ) ? $matches->matches[$item_id] : false;
+		if ( $match && $item_id > 0 ) {
+			$values = $match;
+		}
+		
+		$types = $matches->get_match_types();
+		$options = array();
+		foreach ( $types as $type ) {
+			$options[] = array( 'value' => $type['id'], 'text' => $type['name'] );
+		}
+		$types = $options;
+		
+		$venues = Football_Pool_Stadiums::get_stadiums();
+		$options = array();
+		foreach ( $venues as $venue ) {
+			$options[] = array( 'value' => $venue->id, 'text' => $venue->name );
+		}
+		$venues = $options;
+		
+		$teams = new Football_Pool_Teams;
+		$teams = $teams->team_names;
+		$options = array();
+		foreach( $teams as $id => $name ) {
+			$options[] = array( 'value' => $id, 'text' => $name );
+		}
+		$teams = $options;
+		
+		$matchdate = new DateTime( $values['date'] );
+		$matchdate_local = self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) );
+		$cols = array(
+					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'date', $values['date'], sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ),
+					array( 'dropdown', __( 'home team', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_team_id', $values['home_team_id'], $teams, '' ),
+					array( 'dropdown', __( 'away team', FOOTBALLPOOL_TEXT_DOMAIN ), 'away_team_id', $values['away_team_id'], $teams, '' ),
+					array( 'text', __( 'home score', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_score', $values['home_score'], '' ),
+					array( 'text', __( 'away score', FOOTBALLPOOL_TEXT_DOMAIN ), 'away_score', $values['away_score'], '' ),
+					array( 'dropdown', __( 'stadium', FOOTBALLPOOL_TEXT_DOMAIN ), 'stadium_id', $values['stadium_id'], $venues, '' ),
+					array( 'dropdown', __( 'match type', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_type_id', $values['match_type_id'], $types, '' ),
+					array( 'hidden', '', 'item_id', $item_id ),
+					array( 'hidden', '', 'action', 'save' )
+				);
+		self::value_form( $cols );
+		echo '<p class="submit">';
+		self::primary_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'update_single_match_close' );
+		self::secondary_button( __( 'Save' ), 'update_single_match' );
+		self::cancel_button();
+		echo '</p>';
 	}
 	
 	private function update_single_match( $item_id ) {
-		//@todo: update single match
+		$home_score = Football_Pool_Utils::post_integer( 'home_score', 'NULL' );
+		$away_score = Football_Pool_Utils::post_integer( 'away_score', 'NULL' );
+		$home_team = Football_Pool_Utils::post_integer( 'home_team_id', -1 );
+		$away_team = Football_Pool_Utils::post_integer( 'away_team_id', -1 );
+		$match_date = Football_Pool_Utils::post_string( 'match_date', '0000-00-00 00:00' );
+		$stadium_id = Football_Pool_Utils::post_integer( 'stadium_id', -1 );
+		$match_type_id = Football_Pool_Utils::post_integer( 'match_type_id', -1 );
+		
+		$success = self::update_match( $item_id, $home_team, $away_team, $home_score, $away_score, 
+										$match_date, $stadium_id, $match_type_id );
+		if ( $success ) $success &= self::update_score_history();
+		
+		return $success;
 	}
 	
 	private function update() {
@@ -112,17 +187,19 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		// update scores for all matches
 		foreach( $rows as $row ) {
 			$match = $row['nr'];
-			$homescore = Football_Pool_Utils::post_integer( '_home_score_' . $match, 'NULL' );
-			$awayscore = Football_Pool_Utils::post_integer( '_away_score_' . $match, 'NULL' );
-			$hometeam = Football_Pool_Utils::post_integer( '_home_team_' . $match, -1 );
-			$awayteam = Football_Pool_Utils::post_integer( '_away_team_' . $match, -1 );
-			$matchdate = Football_Pool_Utils::post_string( '_match_date' . $match, '0000-00-00 00:00' );
+			$home_score = Football_Pool_Utils::post_integer( '_home_score_' . $match, 'NULL' );
+			$away_score = Football_Pool_Utils::post_integer( '_away_score_' . $match, 'NULL' );
+			$home_team = Football_Pool_Utils::post_integer( '_home_team_' . $match, -1 );
+			$away_team = Football_Pool_Utils::post_integer( '_away_team_' . $match, -1 );
+			$match_date = Football_Pool_Utils::post_string( '_match_date' . $match, '0000-00-00 00:00' );
 			
-			self::update_match( $match, $hometeam, $awayteam, $homescore, $awayscore, $matchdate );
+			$success = self::update_match( $match, $home_team, $away_team, 
+											$home_score, $away_score, $match_date );
 		}
 		
-		// scorehistory table for statistics
-		return self::update_score_history();
+		if ( $success ) $success &= self::update_score_history();
+		
+		return $success;
 	}
 	
 	private function print_matches( $rows ) {
@@ -195,19 +272,28 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $select;
 	}
 	
-	private function update_match( $match, $home, $away, $homescore, $awayscore, $matchdate ) {
+	private function update_match( $nr, $home_team, $away_team, $home_score, $away_score, $match_date, $stadium_id = null, $match_type_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		if ( ! is_integer( $homescore ) || ! is_integer( $awayscore ) ) {
+		if ( ! is_integer( $stadium_id ) || ! is_integer( $match_type_id ) ) {
+			$matches = new Football_Pool_Matches;
+			$match = $matches->matches[ $nr ];
+			$stadium_id = $match['stadium_id'];
+			$match_type_id = $match['match_type_id'];
+		}
+		
+		if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
 										homeTeamId = %d, 
 										awayTeamId = %d, 
 										homeScore = NULL, 
 										awayScore = NULL,
-										playDate = %s 
+										playDate = %s,
+										stadiumId = %d,
+										matchtypeId = %d
 									WHERE nr = %d",
-								$home, $away, $matchdate, $match
+								$home_team, $away_team, $match_date, $stadium_id, $match_type_id, $nr
 							);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
@@ -215,12 +301,16 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 										awayTeamId = %d, 
 										homeScore = %d, 
 										awayScore = %d, 
-										playDate = %s 
+										playDate = %s, 
+										stadiumId = %d,
+										matchtypeId = %d
 									WHERE nr = %d",
-								$home, $away, $homescore, $awayscore, $matchdate, $match
+								$home_team, $away_team, $home_score, $away_score, 
+								$match_date, $stadium_id, $match_type_id, $nr
 							);
 		}
-		$wpdb->query( $sql );
+		
+		return ( $wpdb->query( $sql ) !== false );
 	}
 
 }

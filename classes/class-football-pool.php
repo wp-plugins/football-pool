@@ -72,7 +72,7 @@ class Football_Pool {
 		
 		$matches = new Football_Pool_Matches();
 		$first_match = $matches->get_first_match_info();
-		$date = date( 'j F', $first_match['matchTimestamp'] );
+		$date = date( 'j F', $first_match['match_timestamp'] );
 		
 		add_option( 'footballpool_webmaster', $current_user->user_email );
 		add_option( 'footballpool_money', '5 euro' );

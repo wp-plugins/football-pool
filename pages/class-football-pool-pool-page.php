@@ -110,7 +110,7 @@ class Football_Pool_Pool_Page {
 		$joker = 0;
 		
 		// only allow setting of joker if it wasn't used before on a played match
-		$sql = $wpdb->prepare( "SELECT UNIX_TIMESTAMP(m.playDate) AS matchTimestamp
+		$sql = $wpdb->prepare( "SELECT UNIX_TIMESTAMP(m.playDate) AS match_timestamp
 								FROM {$prefix}predictions p, {$prefix}matches m 
 								WHERE p.matchNr = m.nr 
 									AND p.hasJoker = 1 AND p.userId = %d" 
@@ -134,7 +134,7 @@ class Football_Pool_Pool_Page {
 			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
 			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
 			
-			if ( $matches->match_is_editable( $row['matchTimestamp'] ) && is_integer( $home ) && is_integer( $away ) ) {
+			if ( $matches->match_is_editable( $row['match_timestamp'] ) && is_integer( $home ) && is_integer( $away ) ) {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
 										SET userId = %d, 
 											matchNr = %d, 

@@ -182,7 +182,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>Please note that for points for bonus questions to be added to the total points for a player an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
 		
 		<h2 id="the-end">Anything else?</h2>
-		<p>It was real fun writing this plugin and I hope you had as much fun using it. If not, please let me know. You can leave a questions, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
+		<p>It was real fun writing this plugin and I hope you had as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
 		Or a little fan mail is also appreciated. ;)</p>
 		<?php self::admin_footer(); ?>

@@ -36,7 +36,7 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT 
-									UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, 
+									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
 									m.awayTeamId, 
 									m.homeScore, 

@@ -121,7 +121,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			self::hidden_input( 'action', 'user-answers-save' );
 			echo '</form>';
 		} else {
-			echo '<p>', __( 'No questions, users or answers found.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			self::notice( __( 'No questions, users or answers found.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 	}
 	

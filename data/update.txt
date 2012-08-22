@@ -32,11 +32,13 @@ ALTER TABLE `{$prefix}shoutbox` CHANGE `shoutText` `shoutText` TINYTEXT CHARACTE
 ALTER TABLE `{$prefix}stadiums` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `{$prefix}stadiums` CHANGE `name` `name` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}stadiums` CHANGE `photo` `photo` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
+ALTER TABLE `{$prefix}stadiums` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `{$prefix}teams` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `{$prefix}teams` CHANGE `name` `name` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}teams` CHANGE `photo` `photo` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}teams` CHANGE `flag` `flag` VARCHAR( 35 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
 ALTER TABLE `{$prefix}teams` CHANGE `link` `link` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';
+ALTER TABLE `{$prefix}teams` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `{$prefix}bonusquestions_type` ADD `max_answers` TINYINT UNSIGNED NOT NULL DEFAULT '0';

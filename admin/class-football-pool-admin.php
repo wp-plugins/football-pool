@@ -90,7 +90,7 @@ class Football_Pool_Admin {
 		if ( $file == plugin_basename( dirname( FOOTBALLPOOL_ERROR_LOG ) . '/football-pool.php' ) ) {
 			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 			$links[] = '<a href="admin.php?page=footballpool-help">' . __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
-			//$links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
+			// $links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 		}
 
 		return $links;
@@ -144,6 +144,22 @@ class Football_Pool_Admin {
 			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), ' ', $extra_attr, '></td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
+	}
+	
+	public function dropdown_input( $label, $key, $value, $options, $description = '', $extra_attr = '' ) {
+		$i = 0;
+		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
+		echo '<td><select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
+		foreach ( $options as $option ) {
+			if ( is_array( $extra_attr ) ) {
+				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
+			} else {
+				$extra = $extra_attr;
+			}
+			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '> ', $option['text'], '</option>';
+			$i++;
+		}
+		echo '</select></td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
 	public function radiolist_input( $label, $key, $value, $options, $description = '', $extra_attr = '' ) {
@@ -277,6 +293,11 @@ class Football_Pool_Admin {
 		switch ( $option[0] ) {
 			case 'no_input':
 				self::no_input( $option[1], $option[3], $option[4] );
+				break;
+			case 'dropdownlist':
+			case 'dropdown':
+			case 'select':
+				self::dropdown_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'radiolist':
 				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
@@ -584,14 +605,28 @@ class Football_Pool_Admin {
 		return $result;
 	}
 	
-	public function cancel_button( $wrap = false ) {
+	public function secondary_button( $text, $action, $wrap = false ) {
 		submit_button( 
-				__( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				$text, 
 				'secondary', 
-				'cancel', 
+				$action, 
 				$wrap, 
-				array( "onclick" => "jQuery('#action').val('cancel')" ) 
+				array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
 		);
+	}
+	
+	public function primary_button( $text, $action, $wrap = false ) {
+		submit_button( 
+				$text, 
+				'primary', 
+				$action, 
+				$wrap, 
+				array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
+		);
+	}
+	
+	public function cancel_button( $wrap = false ) {
+		self::secondary_button( __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 'cancel', $wrap );
 	}
 	
 	public function donate_button( $return_type = 'echo' ) {

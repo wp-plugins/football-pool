@@ -51,12 +51,12 @@ class Football_Pool_Statistics {
 		
 		if ( count( $info ) > 0 ) {
 			if ( $info['match_is_editable'] == true ) {
-				$output .= sprintf('<h1>%s - %s</h1>', $info['teamHome'], $info['teamAway']);
+				$output .= sprintf('<h1>%s - %s</h1>', $info['home_team'], $info['away_team']);
 				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			} else {
-				$output .= sprintf( '<h2>%s - %s', $info['teamHome'], $info['teamAway'] );
-				if ( $info['matchHomeScore'] != '' && $info['matchAwayScore'] != '' ) {
-					$output .= sprintf( ' (%d - %d)', $info['matchHomeScore'], $info['matchAwayScore'] );
+				$output .= sprintf( '<h2>%s - %s', $info['home_team'], $info['away_team'] );
+				if ( $info['home_score'] != '' && $info['away_score'] != '' ) {
+					$output .= sprintf( ' (%d - %d)', $info['home_score'], $info['away_score'] );
 				}
 				$output .= '</h2>';
 				$this->stats_visible = true;
@@ -123,7 +123,7 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		
 		$sql = "SELECT
-					UNIX_TIMESTAMP(m.playDate) AS matchTimestamp, m.homeTeamId, m.awayTeamId, 
+					UNIX_TIMESTAMP(m.playDate) AS match_timestamp, m.homeTeamId, m.awayTeamId, 
 					p.homeScore, p.awayScore, p.hasJoker, u.ID AS userId, ";
 		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
 		$sql .= "	u.display_name AS userName
@@ -166,8 +166,8 @@ class Football_Pool_Statistics {
 				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
 									( $row['hasJoker'] == 1 ? 'joker' : 'nojoker' ) );
 				$score = $pool->calc_score(
-									$match_info['matchHomeScore'], 
-									$match_info['matchAwayScore'], 
+									$match_info['home_score'], 
+									$match_info['away_score'], 
 									$row['homeScore'], 
 									$row['awayScore'], 
 									$row['hasJoker']
