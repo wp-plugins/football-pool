@@ -42,3 +42,11 @@ ALTER TABLE `{$prefix}teams` CHANGE `link` `link` VARCHAR( 200 ) CHARACTER SET u
 ALTER TABLE `{$prefix}teams` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `{$prefix}bonusquestions_type` ADD `max_answers` TINYINT UNSIGNED NOT NULL DEFAULT '0';
+
+ALTER TABLE `{$prefix}matches` CHANGE `nr` `nr` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+CHANGE `stadiumId` `stadiumId` INT UNSIGNED NOT NULL ,
+CHANGE `homeTeamId` `homeTeamId` INT NOT NULL ,
+CHANGE `awayTeamId` `awayTeamId` INT NOT NULL ,
+CHANGE `matchtypeId` `matchtypeId` INT UNSIGNED NOT NULL;
+
+ALTER TABLE `{$prefix}bonusquestions_useranswers` CHANGE `questionId` `questionId` INT UNSIGNED NOT NULL;

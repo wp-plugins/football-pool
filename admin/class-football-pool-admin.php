@@ -356,7 +356,7 @@ class Football_Pool_Admin {
 
 		echo $extra;
 		echo '<form action="" method="post">';
-		echo '<input type="hidden" name="form_action" id="form_action" value="update" />';
+		echo '<input type="hidden" name="action" id="action" value="update" />';
 	}
 	
 	public function admin_footer() {

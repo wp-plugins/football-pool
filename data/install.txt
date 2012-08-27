@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_type` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
-  `questionId` tinyint(3) unsigned NOT NULL,
+  `questionId` int(10) unsigned NOT NULL,
   `userId` int(11) unsigned NOT NULL,
   `answer` text NOT NULL DEFAULT '',
   `correct` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -58,14 +58,14 @@ CREATE TABLE IF NOT EXISTS `{$prefix}league_users` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}matches` (
-  `nr` int(3) unsigned NOT NULL DEFAULT '0',
-  `stadiumId` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `homeTeamId` tinyint(3) NOT NULL DEFAULT '0',
-  `awayTeamId` tinyint(3) NOT NULL DEFAULT '0',
+  `nr` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `stadiumId` int(10) unsigned NOT NULL,
+  `homeTeamId` int(11) NOT NULL,
+  `awayTeamId` int(11) NOT NULL,
   `homeScore` tinyint(3) unsigned DEFAULT NULL,
   `awayScore` tinyint(3) unsigned DEFAULT NULL,
   `playDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `matchtypeId` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `matchtypeId` int(10) unsigned NOT NULL,
   PRIMARY KEY (`nr`),
   KEY `ixAwayTeam` (`awayTeamId`),
   KEY `ixHomeTeam` (`homeTeamId`),

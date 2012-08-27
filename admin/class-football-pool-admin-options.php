@@ -107,7 +107,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			else
 				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-		} elseif ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
+		} elseif ( Football_Pool_Utils::post_string( 'action' ) == 'update' ) {
 			foreach ( $options as $option ) {
 				if ( $option[0] == 'text' ) {
 					$value = Football_Pool_Utils::post_string( $option[2] );

@@ -6,7 +6,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		self::admin_header( __( 'Team Position', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$teams = new Football_Pool_Teams;
-		if ( Football_Pool_Utils::post_string( 'form_action' ) == 'update' ) {
+		if ( Football_Pool_Utils::post_string( 'action' ) == 'update' ) {
 			$teams->update_teams();
 			// reset the teams
 			$teams = new Football_Pool_Teams;
