@@ -4,19 +4,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 1.4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-06-07 20:14:11+00:00\n"
-"PO-Revision-Date: 2012-06-07 22:16+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2012-09-12 12:59:58+00:00\n"
+"PO-Revision-Date: 2012-09-12 15:05+0100\n"
+"Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: C:\\dev\\php\\ek2012\\wp-content\\plugins\\football-pool\n"
+"X-Generator: Poedit 1.5.3\n"
+"X-Poedit-SearchPath-0: C:\\dev\\php\\ek2012\\wp-content\\plugins\\football-"
+"pool\n"
 
 #: admin/class-football-pool-admin-bonusquestions.php:6
 #: pages/class-football-pool-pool-page.php:36
@@ -28,24 +29,44 @@ msgid "Bonusvragen toevoegen, wijzigen of verwijderen."
 msgstr "Add, change or delete bonus questions"
 
 #: admin/class-football-pool-admin-bonusquestions.php:8
-msgid "Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen."
-msgstr "After saving bonus question data the pool ranking is recalculated. If you have a lot of users this may take a while."
+msgid ""
+"Bij het wijzigen van bonusvragen worden ook de totalen van spelers en de "
+"stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in "
+"beslag nemen."
+msgstr ""
+"After saving bonus question data the pool ranking is recalculated. If you "
+"have a lot of users this may take a while."
 
 #: admin/class-football-pool-admin-bonusquestions.php:22
 msgid "Vraag opgeslagen."
 msgstr "Question saved."
 
 #: admin/class-football-pool-admin-bonusquestions.php:41
-msgid "Op deze pagina kan je instellen of een speler een vraag goed heeft beantwoord. Als je bij een vraag het juiste antwoord hebt opgeslagen, dan wordt deze hier getoond ter referentie."
-msgstr "On this page you can edit if a user answered the question correctly. If you entered the correct answer with the question, it is displayed on this page as a reference."
+msgid ""
+"Op deze pagina kan je instellen of een speler een vraag goed heeft "
+"beantwoord. Als je bij een vraag het juiste antwoord hebt opgeslagen, dan "
+"wordt deze hier getoond ter referentie."
+msgstr ""
+"On this page you can edit if a user answered the question correctly. If you "
+"entered the correct answer with the question, it is displayed on this page "
+"as a reference."
 
 #: admin/class-football-pool-admin-bonusquestions.php:42
-msgid "<strong>Let op:</strong> De punten voor het juist beantwoorden van een vraag worden pas bij het totaal geteld als je dit scherm hebt opgeslagen!"
-msgstr "<strong>Important:</strong> The points for getting a correct answer are only awarded once you saved this admin page."
+msgid ""
+"<strong>Let op:</strong> De punten voor het juist beantwoorden van een vraag "
+"worden pas bij het totaal geteld als je dit scherm hebt opgeslagen!"
+msgstr ""
+"<strong>Important:</strong> The points for getting a correct answer are only "
+"awarded once you saved this admin page."
 
 #: admin/class-football-pool-admin-bonusquestions.php:43
-msgid "Je hebt de mogelijkheid om een speler meer of minder punten te geven dan het ingestelde aantal bij de vraag. Vul hiervoor een waarde in in het punten veld; laat het veld leeg als je geen afwijkend aantal wil geven."
-msgstr "You can give a user more points (or less) for a question. Use the field 'points' for this; leave the field empty for standard points."
+msgid ""
+"Je hebt de mogelijkheid om een speler meer of minder punten te geven dan het "
+"ingestelde aantal bij de vraag. Vul hiervoor een waarde in in het punten "
+"veld; laat het veld leeg als je geen afwijkend aantal wil geven."
+msgstr ""
+"You can give a user more points (or less) for a question. Use the field "
+"'points' for this; leave the field empty for standard points."
 
 #: admin/class-football-pool-admin-bonusquestions.php:49
 msgid "Vraag id:%s verwijderd."
@@ -56,8 +77,12 @@ msgid "%s vragen verwijderd."
 msgstr "%s questions deleted."
 
 #: admin/class-football-pool-admin-bonusquestions.php:56
-msgid "Gebruik de \"Antwoorden Spelers\" link om te controleren of vragen juist zijn beantwoord door de spelers."
-msgstr "Use the \"User Answers\" link to check if users answered the questions correctly."
+msgid ""
+"Gebruik de \"Antwoorden Spelers\" link om te controleren of vragen juist "
+"zijn beantwoord door de spelers."
+msgstr ""
+"Use the \"User Answers\" link to check if users answered the questions "
+"correctly."
 
 #: admin/class-football-pool-admin-bonusquestions.php:73
 #: admin/class-football-pool-admin-bonusquestions.php:154
@@ -71,8 +96,8 @@ msgstr "question"
 #: admin/class-football-pool-admin-bonusquestions.php:182
 #: classes/class-football-pool-pool.php:496
 #: classes/class-football-pool-pool.php:540
-#: classes/class-football-pool-statistics.php:83
-#: classes/class-football-pool-statistics.php:103
+#: classes/class-football-pool-statistics.php:86
+#: classes/class-football-pool-statistics.php:106
 msgid "antwoord"
 msgstr "answer"
 
@@ -93,13 +118,13 @@ msgid "beantwoorden vóór"
 msgstr "answer before"
 
 #: admin/class-football-pool-admin-bonusquestions.php:82
-#: classes/class-football-pool-statistics.php:103
+#: classes/class-football-pool-statistics.php:106
 msgid "speler"
 msgstr "user"
 
 #: admin/class-football-pool-admin-bonusquestions.php:84
-#: classes/class-football-pool-statistics.php:103
 #: classes/class-football-pool-statistics.php:106
+#: classes/class-football-pool-statistics.php:109
 msgid "goed"
 msgstr "correct"
 
@@ -109,16 +134,17 @@ msgstr "false"
 
 #: admin/class-football-pool-admin-bonusquestions.php:86
 #: admin/class-football-pool-admin-bonusquestions.php:105
-msgid "Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler."
+msgid ""
+"Laat leeg als je geen afwijkend aantal punten wil geven voor deze speler."
 msgstr "Leave empty if you don't want to give extra or less points."
 
 #: admin/class-football-pool-admin-bonusquestions.php:86
 #: admin/class-football-pool-admin-bonusquestions.php:155
 #: admin/class-football-pool-admin-bonusquestions.php:179
-#: classes/class-football-pool-chart.php:177
+#: classes/class-football-pool-chart.php:184
 #: classes/class-football-pool-pool.php:512
 #: classes/class-football-pool-pool.php:531
-#: classes/class-football-pool-statistics.php:85
+#: classes/class-football-pool-statistics.php:88
 msgid "punten"
 msgstr "points"
 
@@ -143,8 +169,10 @@ msgid "meerkeuze (meer antwoorden mogelijk)"
 msgstr "multiple choice (one or more answers)"
 
 #: admin/class-football-pool-admin-bonusquestions.php:155
-msgid "Aantal punten dat een speler krijgt voor het juist beantwoorden van de vraag."
-msgstr "The points a user gets as an award for answering the question correctly."
+msgid ""
+"Aantal punten dat een speler krijgt voor het juist beantwoorden van de vraag."
+msgstr ""
+"The points a user gets as an award for answering the question correctly."
 
 #: admin/class-football-pool-admin-bonusquestions.php:156
 msgid "Een speler mag deze vraag beantwoorden tot deze datum en tijd."
@@ -156,8 +184,13 @@ msgid "scoredatum"
 msgstr "score date"
 
 #: admin/class-football-pool-admin-bonusquestions.php:157
-msgid "De punten voor de vraag worden bij het totaal aantal punten opgeteld vanaf deze datum/tijd (voor de statistieken). Als deze datum niet is ingevuld, dan worden de punten niet geteld."
-msgstr "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added."
+msgid ""
+"De punten voor de vraag worden bij het totaal aantal punten opgeteld vanaf "
+"deze datum/tijd (voor de statistieken). Als deze datum niet is ingevuld, dan "
+"worden de punten niet geteld."
+msgstr ""
+"The points awarded will be added to the total points for a user after this "
+"date (for the charts). If not supplied, the points won't be added."
 
 #: admin/class-football-pool-admin-bonusquestions.php:158
 msgid "Het juiste antwoord (geldt als referentiewaarde)."
@@ -172,8 +205,12 @@ msgid "meerkeuze opties"
 msgstr "multiple choice options"
 
 #: admin/class-football-pool-admin-bonusquestions.php:160
-msgid "Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing bij meerkeuzevragen."
-msgstr "A semicolon separated list of answer possibilities. Only applicable for multiple choice questions."
+msgid ""
+"Een punt-komma-gescheiden lijst met antwoordopties. Alleen van toepassing "
+"bij meerkeuzevragen."
+msgstr ""
+"A semicolon separated list of answer possibilities. Only applicable for "
+"multiple choice questions."
 
 #: admin/class-football-pool-admin-bonusquestions.php:161
 #: classes/class-football-pool-pool.php:477
@@ -181,8 +218,12 @@ msgid "fotovraag"
 msgstr "photo question"
 
 #: admin/class-football-pool-admin-bonusquestions.php:161
-msgid "Geef een URL naar een afbeelding voor de fotovraag, of kies een afbeelding uit de media-bibliotheek (optioneel)."
-msgstr "Add an URL to a photo for a photo question, or choose one from the media library (optional)."
+msgid ""
+"Geef een URL naar een afbeelding voor de fotovraag, of kies een afbeelding "
+"uit de media-bibliotheek (optioneel)."
+msgstr ""
+"Add an URL to a photo for a photo question, or choose one from the media "
+"library (optional)."
 
 #: admin/class-football-pool-admin-bonusquestions.php:180
 #: admin/class-football-pool-admin-bonusquestions.php:181
@@ -205,8 +246,13 @@ msgid "Wedstrijden"
 msgstr "Matches"
 
 #: admin/class-football-pool-admin-games.php:13
-msgid "Bij het wijzigen van wedstrijduitslagen worden ook de totalen van spelers en de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in beslag nemen."
-msgstr "After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while."
+msgid ""
+"Bij het wijzigen van wedstrijduitslagen worden ook de totalen van spelers en "
+"de stand in de pool bijgewerkt. Bij veel deelnemers kan dit enige tijd in "
+"beslag nemen."
+msgstr ""
+"After saving the match data the pool ranking is recalculated. If you have a "
+"lot of users this may take a while."
 
 #: admin/class-football-pool-admin-games.php:71
 msgid "speeldatum wijzigen"
@@ -217,17 +263,33 @@ msgid "Team Positie"
 msgstr "Team Position"
 
 #: admin/class-football-pool-admin-groups.php:13
-#: admin/class-football-pool-admin-options.php:53
+#: admin/class-football-pool-admin-options.php:54
 #: admin/class-football-pool-admin-users.php:30
 msgid "Wijzigingen opgeslagen."
 msgstr "Changes saved."
 
 #: admin/class-football-pool-admin-groups.php:16
-msgid "De eerste kolom bevat een waarde die kan worden gebruikt voor het sorteren van teams in een poule. Normaalgesproken is het niet nodig om deze waarde aan te passen. De plugin berekent de positie automatisch op basis van de resultaten in het toernooi. Als teams gelijk eindigen na het meewegen van alle resultaten in het toernooi, dan stellen de regels van de UEFA/FIFA dat de resultaten uit de kwalificatie moeten worden meegewogen. Omdat deze gegevens niet bekend zijn voor de plugin, is het op dat moment soms nodig om de sortering handmatig aan te passen."
-msgstr "The first column contains a value that can be used for the ranking of teams in a group (Group Stage). In most cases the plugin will calculate this position automatically based on the results in the tournament. If two teams end up on the same position, even after considering all the tournament, then extra data is needed. Data this plugin doesn't have. You can manually tweak the last sort parameter here."
+msgid ""
+"De eerste kolom bevat een waarde die kan worden gebruikt voor het sorteren "
+"van teams in een poule. Normaalgesproken is het niet nodig om deze waarde "
+"aan te passen. De plugin berekent de positie automatisch op basis van de "
+"resultaten in het toernooi. Als teams gelijk eindigen na het meewegen van "
+"alle resultaten in het toernooi, dan stellen de regels van de UEFA/FIFA dat "
+"de resultaten uit de kwalificatie moeten worden meegewogen. Omdat deze "
+"gegevens niet bekend zijn voor de plugin, is het op dat moment soms nodig om "
+"de sortering handmatig aan te passen."
+msgstr ""
+"The first column contains a value that can be used for the ranking of teams "
+"in a group (Group Stage). In most cases the plugin will calculate this "
+"position automatically based on the results in the tournament. If two teams "
+"end up on the same position, even after considering all the tournament, then "
+"extra data is needed. Data this plugin doesn't have. You can manually tweak "
+"the last sort parameter here."
 
 #: admin/class-football-pool-admin-groups.php:17
-msgid "De startwaarde is de uitgangspositie bij de start van het toernooi. De sortering wordt alleen gebruikt op de poule-pagina"
+msgid ""
+"De startwaarde is de uitgangspositie bij de start van het toernooi. De "
+"sortering wordt alleen gebruikt op de poule-pagina"
 msgstr "The start value is the position at the start of the tournament."
 
 #: admin/class-football-pool-admin-help.php:7
@@ -273,8 +335,15 @@ msgid "Afbeeldingen moeten worden geplaatst in \"plugin-folder/assets\"."
 msgstr "Images must be saved in the \"plugin-folder/assets\" folder."
 
 #: admin/class-football-pool-admin-leagues.php:99
-msgid "<strong>Let op:</strong> op dit moment maak je nog geen gebruik van pools. Dit komt omdat je nog geen pools hebt aangemaakt, of omdat deze optie niet aan staat in de <a href=\"?page=footballpool-options\">plugin opties</a>."
-msgstr "<strong>Important:</strong> at this moment you are not using leagues. This may be caused by the fact that you didn't add any leagues in the admin, or because you changed this setting in the <a href=\"?page=footballpool-options\">plugin options</a>."
+msgid ""
+"<strong>Let op:</strong> op dit moment maak je nog geen gebruik van pools. "
+"Dit komt omdat je nog geen pools hebt aangemaakt, of omdat deze optie niet "
+"aan staat in de <a href=\"?page=footballpool-options\">plugin opties</a>."
+msgstr ""
+"<strong>Important:</strong> at this moment you are not using leagues. This "
+"may be caused by the fact that you didn't add any leagues in the admin, or "
+"because you changed this setting in the <a href=\"?page=footballpool-options"
+"\">plugin options</a>."
 
 #: admin/class-football-pool-admin-leagues.php:107
 msgid "pool nr"
@@ -293,56 +362,97 @@ msgid "Inleg"
 msgstr "Money"
 
 #: admin/class-football-pool-admin-options.php:11
-msgid "Als je voor geld speelt, dan is dit het bedrag dat spelers moeten betalen. De shortcode [money] geeft deze waarde weer in de content."
-msgstr "If you play for money, then this is the sum users have to pay. The shortcode [money] adds this value in the content."
+msgid ""
+"Als je voor geld speelt, dan is dit het bedrag dat spelers moeten betalen. "
+"De shortcode [money] geeft deze waarde weer in de content."
+msgstr ""
+"If you play for money, then this is the sum users have to pay. The shortcode "
+"[money] adds this value in the content."
 
 #: admin/class-football-pool-admin-options.php:12
 msgid "Bank"
 msgstr "Bank"
 
 #: admin/class-football-pool-admin-options.php:12
-msgid "Als je voor geld speelt, dan is dit de persoon waar het geld moet worden betaald. De shortcode [bank] geeft deze waarde weer in de content."
-msgstr "If you play for money, then this is the person you have to give the money. The shortcode [bank] adds this value in the content."
+msgid ""
+"Als je voor geld speelt, dan is dit de persoon waar het geld moet worden "
+"betaald. De shortcode [bank] geeft deze waarde weer in de content."
+msgstr ""
+"If you play for money, then this is the person you have to give the money. "
+"The shortcode [bank] adds this value in the content."
 
 #: admin/class-football-pool-admin-options.php:13
 msgid "Startdatum"
 msgstr "Start date"
 
 #: admin/class-football-pool-admin-options.php:13
-msgid "De startdatum van het toernooi. De shortcode [start] geeft deze waarde weer in de content."
-msgstr "The start date of the tournament or pool. The shortcode [start] adds this value in the content."
+msgid ""
+"De startdatum van het toernooi. De shortcode [start] geeft deze waarde weer "
+"in de content."
+msgstr ""
+"The start date of the tournament or pool. The shortcode [start] adds this "
+"value in the content."
 
 #: admin/class-football-pool-admin-options.php:14
 msgid "Volle Score *"
 msgstr "Full score *"
 
 #: admin/class-football-pool-admin-options.php:14
-msgid "Aantal punten dat een speler krijgt wanneer de exacte uitkomst van een wedstrijd is voorspeld. De shortcode [fullpoints] geeft deze waarde weer in de content. De waarde wordt ook gebruikt in de berekeningen voor het totaal aantal punten van een speler."
-msgstr "The points a user gets for getting the exact outcome of a match. The shortcode [fullpoints] adds this value in the content. This value is also used for the calculations in the pool."
+msgid ""
+"Aantal punten dat een speler krijgt wanneer de exacte uitkomst van een "
+"wedstrijd is voorspeld. De shortcode [fullpoints] geeft deze waarde weer in "
+"de content. De waarde wordt ook gebruikt in de berekeningen voor het totaal "
+"aantal punten van een speler."
+msgstr ""
+"The points a user gets for getting the exact outcome of a match. The "
+"shortcode [fullpoints] adds this value in the content. This value is also "
+"used for the calculations in the pool."
 
 #: admin/class-football-pool-admin-options.php:15
 msgid "Toto Score *"
 msgstr "Toto score *"
 
 #: admin/class-football-pool-admin-options.php:15
-msgid "Aantal punten dat een speler krijgt wanneer de uitkomst van een wedstrijd (winnaar, verliezer, gelijkspel) goed is voorspeld, zonder de exacte uitkomst goed te hebben. De shortcode [totopoints] geeft deze waarde weer in de content. De waarde wordt ook gebruikt in de berekeningen voor het totaal aantal punten van een speler."
-msgstr "The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [totopoints] adds this value in the content. This value is also used in the calculations in the pool."
+msgid ""
+"Aantal punten dat een speler krijgt wanneer de uitkomst van een wedstrijd "
+"(winnaar, verliezer, gelijkspel) goed is voorspeld, zonder de exacte "
+"uitkomst goed te hebben. De shortcode [totopoints] geeft deze waarde weer in "
+"de content. De waarde wordt ook gebruikt in de berekeningen voor het totaal "
+"aantal punten van een speler."
+msgstr ""
+"The points a user gets for guessing the outcome of a match (win, loss or "
+"draw) without also getting the exact amount of goals. The shortcode "
+"[totopoints] adds this value in the content. This value is also used in the "
+"calculations in the pool."
 
 #: admin/class-football-pool-admin-options.php:16
 msgid "Voorspellingsstop (in seconden) *"
 msgstr "Prediction stop (in seconds) *"
 
 #: admin/class-football-pool-admin-options.php:16
-msgid "Een speler kan zijn/haar voorspellingen aanpassen tot aan deze tijd vóór de start van een wedstrijd. De tijd is in seconden, bv. vul voor 15 minuten de waarde 900 in."
-msgstr "A user may change his/her predictions untill this amount of time before game kick-off. The time is in seconds, e.g. 15 minutes is 900 seconds."
+msgid ""
+"Een speler kan zijn/haar voorspellingen aanpassen tot aan deze tijd vóór de "
+"start van een wedstrijd. De tijd is in seconden, bv. vul voor 15 minuten de "
+"waarde 900 in."
+msgstr ""
+"A user may change his/her predictions untill this amount of time before game "
+"kick-off. The time is in seconds, e.g. 15 minutes is 900 seconds."
 
 #: admin/class-football-pool-admin-options.php:17
 msgid "Eén stoptijd *"
 msgstr "One prediction lock *"
 
 #: admin/class-football-pool-admin-options.php:17
-msgid "Wanneer hier een geldige datum en tijd wordt ingevuld [Y-m-d H:s], dan is de tijd waarvoor een wedstrijdvoorspelling of bonusvraag moet zijn ingevoerd, vastgezet op deze datum en tijd en is deze niet meer dynamisch afhankelijk van de starttijd van een wedstrijd of de tijd die bij een bonusvraag is ingesteld. (lokale tijd:"
-msgstr "If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions have to be entered by users. (local time is:"
+msgid ""
+"Wanneer hier een geldige datum en tijd wordt ingevuld [Y-m-d H:s], dan is de "
+"tijd waarvoor een wedstrijdvoorspelling of bonusvraag moet zijn ingevoerd, "
+"vastgezet op deze datum en tijd en is deze niet meer dynamisch afhankelijk "
+"van de starttijd van een wedstrijd of de tijd die bij een bonusvraag is "
+"ingesteld. (lokale tijd:"
+msgstr ""
+"If a valid date and time [Y-m-d H:i] is given here, then this date/time will "
+"be used as a single value before all predictions have to be entered by "
+"users. (local time is:"
 
 #: admin/class-football-pool-admin-options.php:18
 msgid "Maximum lengte shoutboxbericht *"
@@ -350,23 +460,39 @@ msgstr "Maximum length for a shoutbox message *"
 
 #: admin/class-football-pool-admin-options.php:18
 msgid "De maximale lengte (aantal karakters) van een bericht in de shoutbox."
-msgstr "Maximum length (number of characters) a message in the shoutbox may have."
+msgstr ""
+"Maximum length (number of characters) a message in the shoutbox may have."
 
 #: admin/class-football-pool-admin-options.php:19
 msgid "Gebruik Pools"
 msgstr "Use Leagues"
 
 #: admin/class-football-pool-admin-options.php:19
-msgid "Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik bv. voor betalende spelers en niet betalende spelers, of voor verschillende afdelingen. Let op: als je deze waarde wijzigt en er zijn al punten toegekend, dan wordt de standentabel niet automatisch bijgewerkt met de (eventueel) gewijzigde spelers in de pool. Gebruik hiervoor de knop op deze pagina."
-msgstr "Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are allready points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that."
+msgid ""
+"Stel in of de plugin Pools moet gebruiken om de spelers in te delen. Gebruik "
+"bv. voor betalende spelers en niet betalende spelers, of voor verschillende "
+"afdelingen. Let op: als je deze waarde wijzigt en er zijn al punten "
+"toegekend, dan wordt de standentabel niet automatisch bijgewerkt met de "
+"(eventueel) gewijzigde spelers in de pool. Gebruik hiervoor de knop op deze "
+"pagina."
+msgstr ""
+"Set this if you want to use leagues in your pool. You can use this (e.g.) "
+"for paying and non-paying users, or different departments. Important: if you "
+"change this value when there are allready points given, then the scoretable "
+"will not be automatically recalculated. Use the recalculate button on this "
+"page for that."
 
 #: admin/class-football-pool-admin-options.php:20
 msgid "Standaardpool voor nieuwe gebruikers"
 msgstr "Standard league for new users."
 
 #: admin/class-football-pool-admin-options.php:20
-msgid "De standaardpool (<a href=\"?page=footballpool-leagues\">ID van de pool</a>) waar nieuwe spelers in worden geplaatst nadat ze zich hebben geregistreerd."
-msgstr "The standard league (<a href=\"?page=footballpool-leagues\">fill in the league ID</a>) a new user will be placed after registration."
+msgid ""
+"De standaardpool (<a href=\"?page=footballpool-leagues\">ID van de pool</a>) "
+"waar nieuwe spelers in worden geplaatst nadat ze zich hebben geregistreerd."
+msgstr ""
+"The standard league (<a href=\"?page=footballpool-leagues\">fill in the "
+"league ID</a>) a new user will be placed after registration."
 
 #: admin/class-football-pool-admin-options.php:21
 msgid "Afbeelding voor Dashboard Widget"
@@ -377,8 +503,14 @@ msgid "Admin Bar verbergen voor subscribers"
 msgstr "Hide Admin Bar for subscribers"
 
 #: admin/class-football-pool-admin-options.php:22
-msgid "Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm krijgen (instelbaar per user). Hier kan je instellen of de plugin deze waarde moet negeren en de Admin Bar altijd moet weglaten."
-msgstr "After logging in a subscriber may see an Admin Bar on top of your blog (a user option). With this plugin option you can override this user option and never show the Admin Bar."
+msgid ""
+"Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm "
+"krijgen (instelbaar per user). Hier kan je instellen of de plugin deze "
+"waarde moet negeren en de Admin Bar altijd moet weglaten."
+msgstr ""
+"After logging in a subscriber may see an Admin Bar on top of your blog (a "
+"user option). With this plugin option you can override this user option and "
+"never show the Admin Bar."
 
 #: admin/class-football-pool-admin-options.php:23
 msgid "Favicon gebruiken"
@@ -393,18 +525,38 @@ msgstr "Switch off if you don't want to use the icons in the plugin."
 msgid "Apple touch icon gebruiken"
 msgstr "Use Apple touch icon"
 
-#: admin/class-football-pool-admin-options.php:27
+#: admin/class-football-pool-admin-options.php:25
+msgid "Use charts"
+msgstr "Use charts"
+
+#: admin/class-football-pool-admin-options.php:25
+msgid ""
+"Om charts te kunnen gebruiken, moet de <%s>Highcharts API zijn geïnstalleerd<"
+"%s>."
+msgstr ""
+"To use the charts feature the <%s>Highcharts API must be installed<%s>."
+
+#: admin/class-football-pool-admin-options.php:28
 msgid "Plugin Instelllingen"
 msgstr "Plugin Options"
 
-#: admin/class-football-pool-admin-options.php:31
+#: admin/class-football-pool-admin-options.php:32
 #: admin/class-football-pool-admin-users.php:64
 msgid "Scores zijn opnieuw berekend."
 msgstr "Scores recalculated."
 
-#: admin/class-football-pool-admin-options.php:57
-msgid "Als waarden in de velden die gemarkeerd zijn met een asterisk, worden leeggelaten, dan zal de plugin terugvallen op de waarden zoals die bij installatie van de plugin zijn ingesteld."
-msgstr "If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values."
+#: admin/class-football-pool-admin-options.php:59
+msgid "Charts are enabled but Highcharts API was not found!"
+msgstr "Charts are enabled but Highcharts API was not found!"
+
+#: admin/class-football-pool-admin-options.php:62
+msgid ""
+"Als waarden in de velden die gemarkeerd zijn met een asterisk, worden "
+"leeggelaten, dan zal de plugin terugvallen op de waarden zoals die bij "
+"installatie van de plugin zijn ingesteld."
+msgstr ""
+"If values in the fields marked with an asterisk are left empty, then the "
+"plugin will default to the initial values."
 
 #: admin/class-football-pool-admin-shoutbox.php:6
 #: admin/class-football-pool-admin.php:62
@@ -434,7 +586,7 @@ msgstr "now"
 #: admin/class-football-pool-admin-shoutbox.php:58
 #: admin/class-football-pool-admin-shoutbox.php:81
 #: admin/class-football-pool-admin-users.php:118
-#: classes/class-football-pool-statistics.php:149
+#: classes/class-football-pool-statistics.php:152
 msgid "naam"
 msgstr "name"
 
@@ -458,11 +610,17 @@ msgid "Spelers in de voetbalpool beheren."
 msgstr "Change users in the football pool."
 
 #: admin/class-football-pool-admin-users.php:11
-msgid "Je maakt gebruik van pools. Om deelnemers uit te sluiten van deelname kan je ze uit een pool halen."
-msgstr "You are using leagues. To exclude users from the pool you have to take them out of any league."
+msgid ""
+"Je maakt gebruik van pools. Om deelnemers uit te sluiten van deelname kan je "
+"ze uit een pool halen."
+msgstr ""
+"You are using leagues. To exclude users from the pool you have to take them "
+"out of any league."
 
 #: admin/class-football-pool-admin-users.php:13
-msgid "Om deelnemers uit te sluiten van deelname zet je een vinkje in de betreffende kolom."
+msgid ""
+"Om deelnemers uit te sluiten van deelname zet je een vinkje in de "
+"betreffende kolom."
 msgstr "To exclude users tick the appropiate column"
 
 #: admin/class-football-pool-admin-users.php:23
@@ -486,7 +644,7 @@ msgid "%s spelers toegevoegd als deelnemer."
 msgstr "%s users added as user."
 
 #: admin/class-football-pool-admin-users.php:93
-#: classes/class-football-pool.php:361
+#: classes/class-football-pool.php:364
 msgid "onbekend"
 msgstr "unknown"
 
@@ -598,24 +756,28 @@ msgid "wedstrijd"
 msgstr "match"
 
 #: classes/class-football-pool-chart-data.php:269
-#: pages/class-football-pool-statistics-page.php:135
+#: pages/class-football-pool-statistics-page.php:137
 msgid "bonusvraag"
 msgstr "bonus question"
 
-#: classes/class-football-pool-chart.php:188
+#: classes/class-football-pool-chart.php:29
+msgid "Charts are not enabled"
+msgstr "Charts are not enabled"
+
+#: classes/class-football-pool-chart.php:195
 msgid "wedstrijdverloop"
 msgstr "matches and questions"
 
-#: classes/class-football-pool-chart.php:194
+#: classes/class-football-pool-chart.php:201
 msgid "Klik en sleep in de grafiek om in te zoomen"
 msgstr "Click and drag in the plot area to zoom in"
 
-#: classes/class-football-pool-chart.php:195
+#: classes/class-football-pool-chart.php:202
 msgid "Sleep je vinger over de grafiek om in te zoomen"
 msgstr "Drag your finger over the plot to zoom in"
 
 #: classes/class-football-pool-matches.php:317
-#: classes/class-football-pool-statistics.php:151
+#: classes/class-football-pool-statistics.php:154
 msgid "score"
 msgstr "score"
 
@@ -645,7 +807,8 @@ msgstr "answer this question before this date"
 
 #: classes/class-football-pool-pool.php:503
 msgid "je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen"
-msgstr "it's is no longer possible to answer this question, or change your answer"
+msgstr ""
+"it's is no longer possible to answer this question, or change your answer"
 
 #: classes/class-football-pool-pool.php:504
 msgid "gesloten op"
@@ -656,22 +819,22 @@ msgstr "closed on"
 msgid "bekijk antwoorden van andere spelers"
 msgstr "view other users answers"
 
-#: classes/class-football-pool-statistics.php:42
+#: classes/class-football-pool-statistics.php:45
 msgid "Speler onbekend."
 msgstr "User unknown."
 
-#: classes/class-football-pool-statistics.php:56
-#: classes/class-football-pool-statistics.php:66
-#: classes/class-football-pool-statistics.php:79
-#: classes/class-football-pool-statistics.php:91
+#: classes/class-football-pool-statistics.php:59
+#: classes/class-football-pool-statistics.php:69
+#: classes/class-football-pool-statistics.php:82
+#: classes/class-football-pool-statistics.php:94
 msgid "Deze gegevens zijn nog niet beschikbaar. Nog even geduld."
 msgstr "This data is not (yet) available."
 
-#: classes/class-football-pool-statistics.php:106
+#: classes/class-football-pool-statistics.php:109
 msgid "antwoord is goed"
 msgstr "answer correct"
 
-#: classes/class-football-pool-statistics.php:150
+#: classes/class-football-pool-statistics.php:153
 msgid "voorspelling"
 msgstr "prediction"
 
@@ -760,78 +923,87 @@ msgstr "for money"
 msgid "voor nop"
 msgstr "for free"
 
-#: classes/class-football-pool.php:310
-#: classes/class-football-pool.php:350
+#: classes/class-football-pool.php:313 classes/class-football-pool.php:353
 msgid "Speel mee in de pool"
 msgstr "Play in league"
 
-#: classes/class-football-pool.php:324
+#: classes/class-football-pool.php:327
 msgid "<strong>ERROR:</strong> Je moet een pool kiezen waar je in gaat spelen!"
 msgstr "<strong>ERROR:</strong> You must choose a league to play in!"
 
-#: classes/class-football-pool.php:353
-msgid "<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool bijwerken op de plugin admin pagina"
-msgstr "<strong>Important:</strong> An administrator can change users in the plugin's admin page for"
+#: classes/class-football-pool.php:356
+msgid ""
+"<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool "
+"bijwerken op de plugin admin pagina"
+msgstr ""
+"<strong>Important:</strong> An administrator can change users in the "
+"plugin's admin page for"
 
-#: classes/class-football-pool.php:364
+#: classes/class-football-pool.php:367
 msgid "De webmaster heeft je ingedeeld in"
 msgstr "The webmaster put you in this league"
 
-#: classes/class-football-pool.php:367
-msgid "als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de webmaster je inschrijving nog niet aangepast."
-msgstr "if this value is different from the one you entered on registration, then the webmaster did not approve it yet."
+#: classes/class-football-pool.php:370
+msgid ""
+"als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de "
+"webmaster je inschrijving nog niet aangepast."
+msgstr ""
+"if this value is different from the one you entered on registration, then "
+"the webmaster did not approve it yet."
 
-#: classes/class-football-pool.php:392
+#: classes/class-football-pool.php:395
 msgid "seconde"
 msgstr "second"
 
-#: classes/class-football-pool.php:393
+#: classes/class-football-pool.php:396
 msgid "seconden"
 msgstr "seconds"
 
-#: classes/class-football-pool.php:394
+#: classes/class-football-pool.php:397
 msgid "dag"
 msgstr "day"
 
-#: classes/class-football-pool.php:395
+#: classes/class-football-pool.php:398
 msgid "dagen"
 msgstr "days"
 
-#: classes/class-football-pool.php:396
-#: classes/class-football-pool.php:397
+#: classes/class-football-pool.php:399 classes/class-football-pool.php:400
 msgid "uur"
 msgstr "hour"
 
-#: classes/class-football-pool.php:398
+#: classes/class-football-pool.php:401
 msgid "minuut"
 msgstr "minute"
 
-#: classes/class-football-pool.php:399
+#: classes/class-football-pool.php:402
 msgid "minuten"
 msgstr "minutes"
 
-#: classes/class-football-pool.php:401
+#: classes/class-football-pool.php:404
 #: widgets/widget-football-pool-next-prediction.php:65
 msgid "Nog "
 msgstr "Wait"
 
-#: classes/class-football-pool.php:402
+#: classes/class-football-pool.php:405
 msgid " voor het feest start!!"
 msgstr "before the tournament starts"
 
-#: classes/class-football-pool.php:404
+#: classes/class-football-pool.php:407
 msgid " geleden zijn we los gegaan."
 msgstr "ago the tournament started."
 
-#: classes/class-football-pool.php:428
-msgid "Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te voeren. Veel succes!"
-msgstr "Click below to go to the football pool and predict your scores. Good luck!"
+#: classes/class-football-pool.php:431
+msgid ""
+"Klik hieronder om naar de voetbalpool te gaan en je voorspellingen in te "
+"voeren. Veel succes!"
+msgstr ""
+"Click below to go to the football pool and predict your scores. Good luck!"
 
-#: classes/class-football-pool.php:429
+#: classes/class-football-pool.php:432
 msgid "Voer je voorspellingen in."
 msgstr "Fill in your predictions."
 
-#: classes/class-football-pool.php:435
+#: classes/class-football-pool.php:438
 msgid "Vul direct je voorspellingen in"
 msgstr "Start immediately with your predictions"
 
@@ -848,8 +1020,13 @@ msgid "Wijzigingen zijn opgeslagen."
 msgstr "Changes saved."
 
 #: pages/class-football-pool-pool-page.php:21
-msgid "Er is iets foutgegaan bij het opslaan van de wijzigingen. Controleer of je nog steeds ingelogd bent. Als de problemen aanhouden, neem dan contact op met de webmaster."
-msgstr "Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster."
+msgid ""
+"Er is iets foutgegaan bij het opslaan van de wijzigingen. Controleer of je "
+"nog steeds ingelogd bent. Als de problemen aanhouden, neem dan contact op "
+"met de webmaster."
+msgstr ""
+"Something went wrong during the save. Check if you are still logged in. If "
+"the problems persist, then contact your webmaster."
 
 #: pages/class-football-pool-pool-page.php:38
 msgid "Wedstrijdvoorspellingen"
@@ -862,13 +1039,17 @@ msgid "wedstrijden"
 msgstr "matches"
 
 #: pages/class-football-pool-pool-page.php:52
-#: pages/class-football-pool-user-page.php:36
+#: pages/class-football-pool-user-page.php:38
 msgid "bonusvragen"
 msgstr "bonus questions"
 
 #: pages/class-football-pool-pool-page.php:63
-msgid "Je moet ingeschreven en <a href=\"%s\">ingelogd</a> zijn om mee te spelen in de pool."
-msgstr "You have to be a registered user and <a href=\"%s\">logged in</a> to play in this pool."
+msgid ""
+"Je moet ingeschreven en <a href=\"%s\">ingelogd</a> zijn om mee te spelen in "
+"de pool."
+msgstr ""
+"You have to be a registered user and <a href=\"%s\">logged in</a> to play in "
+"this pool."
 
 #: pages/class-football-pool-pool-page.php:76
 msgid "Opslaan"
@@ -887,83 +1068,88 @@ msgid "Statistieken nog niet beschikbaar"
 msgstr "Statistics not yet available"
 
 #: pages/class-football-pool-statistics-page.php:22
-msgid "Na de eerste wedstrijd kan je hier de scores van jezelf en de andere spelers zien."
-msgstr "After the first match you can view your scores and those of other users here."
+msgid ""
+"Na de eerste wedstrijd kan je hier de scores van jezelf en de andere spelers "
+"zien."
+msgstr ""
+"After the first match you can view your scores and those of other users here."
 
-#: pages/class-football-pool-statistics-page.php:34
+#: pages/class-football-pool-statistics-page.php:35
 msgid "wat hebben de spelers gescoord?"
 msgstr "what dit other users score?"
 
-#: pages/class-football-pool-statistics-page.php:51
+#: pages/class-football-pool-statistics-page.php:53
 msgid "scoreverdeling alle spelers"
 msgstr "other users scores"
 
-#: pages/class-football-pool-statistics-page.php:63
+#: pages/class-football-pool-statistics-page.php:65
 msgid "Vergelijk de scores van %s met andere spelers."
 msgstr "Compare the scores of %s with other users."
 
-#: pages/class-football-pool-statistics-page.php:73
+#: pages/class-football-pool-statistics-page.php:75
 msgid "scoreverdeling wedstrijden"
 msgstr "scores in matches"
 
-#: pages/class-football-pool-statistics-page.php:83
+#: pages/class-football-pool-statistics-page.php:85
 msgid "scoreverdeling bonusvragen"
 msgstr "scores in bonus questions"
 
-#: pages/class-football-pool-statistics-page.php:93
+#: pages/class-football-pool-statistics-page.php:95
 msgid "% van maximaal te halen punten"
 msgstr "% of the max points"
 
-#: pages/class-football-pool-statistics-page.php:94
+#: pages/class-football-pool-statistics-page.php:96
 msgid "met inzet van joker"
 msgstr "with the joker used"
 
-#: pages/class-football-pool-statistics-page.php:106
+#: pages/class-football-pool-statistics-page.php:108
 msgid "Geen speler(s) geselecteerd :'("
 msgstr "No users selected :'("
 
-#: pages/class-football-pool-statistics-page.php:107
-msgid "Tja, dan is hier niets te zien.<br />Je kan andere spelers selecteren aan de linkerzijde."
+#: pages/class-football-pool-statistics-page.php:109
+msgid ""
+"Tja, dan is hier niets te zien.<br />Je kan andere spelers selecteren aan de "
+"linkerzijde."
 msgstr "You can select other users on the left side."
 
-#: pages/class-football-pool-statistics-page.php:109
+#: pages/class-football-pool-statistics-page.php:111
 msgid "Je kan andere spelers selecteren aan de linkerzijde."
 msgstr "You can select other users on the left side."
 
-#: pages/class-football-pool-statistics-page.php:118
+#: pages/class-football-pool-statistics-page.php:120
 msgid "scoreverdeling"
 msgstr "scores"
 
-#: pages/class-football-pool-statistics-page.php:120
+#: pages/class-football-pool-statistics-page.php:122
 msgid "volle score"
 msgstr "full score"
 
-#: pages/class-football-pool-statistics-page.php:120
+#: pages/class-football-pool-statistics-page.php:122
 msgid "toto score"
 msgstr "toto score"
 
-#: pages/class-football-pool-statistics-page.php:120
+#: pages/class-football-pool-statistics-page.php:122
 msgid "geen score"
 msgstr "no score"
 
-#: pages/class-football-pool-statistics-page.php:137
+#: pages/class-football-pool-statistics-page.php:139
 msgid "antwoord goed"
 msgstr "correct answer"
 
-#: pages/class-football-pool-statistics-page.php:137
+#: pages/class-football-pool-statistics-page.php:139
 msgid "antwoord fout"
 msgstr "false answer"
 
-#: pages/class-football-pool-statistics-page.php:159
+#: pages/class-football-pool-statistics-page.php:161
 msgid "puntenopbouw"
 msgstr "points scored"
 
-#: pages/class-football-pool-statistics-page.php:182
-#: pages/class-football-pool-statistics-page.php:195
+#: pages/class-football-pool-statistics-page.php:184
+#: pages/class-football-pool-statistics-page.php:197
 msgid "positie in de pool"
 msgstr "position in the pool"
 
-#: pages/class-football-pool-statistics-page.php:190
+#: pages/class-football-pool-statistics-page.php:192
 msgid "e in de pool"
 msgstr "position in the pool"
 
@@ -987,24 +1173,26 @@ msgstr "photo"
 msgid "bekijk alle teams"
 msgstr "view all teams"
 
-#: pages/class-football-pool-user-page.php:10
-msgid "bekijk alle statistieken van deze spelers"
-msgstr "view all statistics for these users"
+#: pages/class-football-pool-user-page.php:12
+msgid "bekijk alle statistieken van deze speler"
+msgstr "view all statistics for this user"
 
-#: pages/class-football-pool-user-page.php:11
-#: pages/class-football-pool-user-page.php:15
+#: pages/class-football-pool-user-page.php:13
+#: pages/class-football-pool-user-page.php:17
 msgid "Statistieken"
 msgstr "Statistics"
 
-#: pages/class-football-pool-user-page.php:20
+#: pages/class-football-pool-user-page.php:22
 msgid "Hieronder staan de voorspellingen van"
 msgstr "Below are all the predictions for"
 
-#: pages/class-football-pool-user-page.php:24
-msgid "Alleen voorspellingen en antwoorden die niet meer kunnen worden aangepast, worden getoond."
+#: pages/class-football-pool-user-page.php:26
+msgid ""
+"Alleen voorspellingen en antwoorden die niet meer kunnen worden aangepast, "
+"worden getoond."
 msgstr "Only matches and bonus questions that can't be changed are shown here."
 
-#: pages/class-football-pool-user-page.php:40
+#: pages/class-football-pool-user-page.php:42
 msgid "Geen speler geselecteerd."
 msgstr "No user selected."
 
@@ -1012,8 +1200,7 @@ msgstr "No user selected."
 msgid "inschrijven"
 msgstr "register"
 
-#: shortcodes.php:111
-#: widgets/widget-football-pool-lastgames.php:66
+#: shortcodes.php:111 widgets/widget-football-pool-lastgames.php:66
 #: widgets/widget-football-pool-ranking.php:73
 msgid "Geen wedstrijdgegevens beschikbaar."
 msgstr "No match data available."
@@ -1096,8 +1283,32 @@ msgid "http://wordpress.org/extend/plugins/football-pool/"
 msgstr "http://wordpress.org/extend/plugins/football-pool/"
 
 #. Description of the plugin/theme
-msgid "This plugin adds a football pool for the 2012 European Champioship to your blog. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. View scores and charts of the pool contenders. Use your own theme (or use the skin for Simply Works Core that is included in the assets folder) and add the widgets that come with this plugin. The plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the data/data.txt file for this). <strong>Please note that deactivating this plugin also destroys all your pool data</strong> (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database."
-msgstr "This plugin adds a football pool for the 2012 European Champioship to your blog. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. View scores and charts of the pool contenders. Use your own theme (or use the skin for Simply Works Core that is included in the assets folder) and add the widgets that come with this plugin. The plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships (change the data/data.txt file for this). <strong>Please note that deactivating this plugin also destroys all your pool data</strong> (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database."
+msgid ""
+"This plugin adds a football pool for the 2012 European Champioship to your "
+"blog. Logged in users of your blog can predict outcomes of matches and earn "
+"extra points with bonus questions. View scores and charts of the pool "
+"contenders. Use your own theme (or use the skin for Simply Works Core that "
+"is included in the assets folder) and add the widgets that come with this "
+"plugin. The plugin installs some custom tables in the database with match "
+"information for the 2012 UEFA championship, but can be easily manipulated "
+"with the match info for other championships (change the data/data.txt file "
+"for this). <strong>Please note that deactivating this plugin also destroys "
+"all your pool data</strong> (predictions, scores and comments on pages that "
+"this plugin created). So if you want to keep those, make sure you have a "
+"back-up of the database."
+msgstr ""
+"This plugin adds a football pool for the 2012 European Champioship to your "
+"blog. Logged in users of your blog can predict outcomes of matches and earn "
+"extra points with bonus questions. View scores and charts of the pool "
+"contenders. Use your own theme (or use the skin for Simply Works Core that "
+"is included in the assets folder) and add the widgets that come with this "
+"plugin. The plugin installs some custom tables in the database with match "
+"information for the 2012 UEFA championship, but can be easily manipulated "
+"with the match info for other championships (change the data/data.txt file "
+"for this). <strong>Please note that deactivating this plugin also destroys "
+"all your pool data</strong> (predictions, scores and comments on pages that "
+"this plugin created). So if you want to keep those, make sure you have a "
+"back-up of the database."
 
 #. Author of the plugin/theme
 msgid "Antoine Hurkmans"
@@ -1108,8 +1319,12 @@ msgid "mailto:wordpressfootballpool@gmail.com"
 msgstr "mailto:wordpressfootballpool@gmail.com"
 
 #. Tags of the plugin/theme
-msgid "football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship"
-msgstr "football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship"
+msgid ""
+"football, pool, poule, voetbal, game, prediction, competition, euro2012, "
+"uefa2012, fifa worldcup, uefa championship"
+msgstr ""
+"football, pool, poule, voetbal, game, prediction, competition, euro2012, "
+"uefa2012, fifa worldcup, uefa championship"
 
 #. data.txt translation keys
 msgid "Polen"
