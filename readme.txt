@@ -129,7 +129,6 @@ The Football Pool plugin is available in the following languages:
 * Multiple choice questions with more than one answer (checkboxes) can now have a max number of answers a user may give.
 * Bug fixed: prediction page for a user did not show the right points for a bonus question. (thanks Maly77)
 * Bug fixed: User Selector Widget caused a notice on 404 pages.
-* New version of the Highcharts javascript library (2.2.5).
 
 = 1.4.4 =
 * New: list of email adresses of players in your pool available in the plugin User Admin screen. You can copy and paste it in an email to quickly mail your users (without the need of installing a mail plugin).
