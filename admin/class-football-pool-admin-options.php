@@ -22,6 +22,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						array( 'checkbox', __( 'Admin Bar verbergen voor subscribers', FOOTBALLPOOL_TEXT_DOMAIN ), 'hide_admin_bar', __( 'Subscribers kunnen na inloggen de WordPress Admin Bar bovenin het scherm krijgen (instelbaar per user). Hier kan je instellen of de plugin deze waarde moet negeren en de Admin Bar altijd moet weglaten.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'checkbox', __( 'Favicon gebruiken', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_favicon', __( 'Zet uit om niet de icons van de plugin te gebruiken.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						array( 'checkbox', __( 'Apple touch icon gebruiken', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_touchicon', __( 'Zet uit om niet de icons van de plugin te gebruiken.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						array( 'checkbox', __( 'Use charts', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_charts', sprintf( __( 'Om charts te kunnen gebruiken, moet de <%s>Highcharts API zijn geïnstalleerd<%s>.', FOOTBALLPOOL_TEXT_DOMAIN ), 'a href="?page=footballpool-help#charts"', '/a' ) ),
 					);
 		
 		self::admin_header( __( 'Plugin Instelllingen', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -52,7 +53,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			}
 			self::notice( __( 'Wijzigingen opgeslagen.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
-
+		
+		$chart = new Football_Pool_Chart;
+		if ( $chart->stats_enabled && ! $chart->API_loaded ) {
+			self::notice( __( 'Charts are enabled but Highcharts API was not found!', FOOTBALLPOOL_TEXT_DOMAIN ) , 'important' );
+		}
 		
 		self::intro( __( 'Als waarden in de velden die gemarkeerd zijn met een asterisk, worden leeggelaten, dan zal de plugin terugvallen op de waarden zoals die bij installatie van de plugin zijn ingesteld.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		

@@ -27,13 +27,15 @@ class Football_Pool_Statistics_Page {
 				case 'bonusquestion': 
 					$questionInfo = $stats->show_bonus_question_info( $question );
 					if ( $stats->stats_visible ) {
-						// chart 1: pie, what did the players score on this bonus question?
-						$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
-						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
-						$chart->data = $chart_data->bonus_question_pie_series_one_question( $raw_data );
-						$chart->title = __( 'wat hebben de spelers gescoord?', FOOTBALLPOOL_TEXT_DOMAIN );
-						$chart->custom_css = 'right';
-						$output .= $chart->draw();
+						if ( $stats->stats_enabled ) {
+							// chart 1: pie, what did the players score on this bonus question?
+							$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
+							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
+							$chart->data = $chart_data->bonus_question_pie_series_one_question( $raw_data );
+							$chart->title = __( 'wat hebben de spelers gescoord?', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->custom_css = 'right';
+							$output .= $chart->draw();
+						}
 						
 						$output .= $stats->show_answers_for_bonus_question( $question );
 					}
@@ -43,7 +45,7 @@ class Football_Pool_Statistics_Page {
 					$match_info = $m->get_match_info( $match );
 					$output .= $stats->show_match_info( $match_info );
 					if ( $stats->stats_visible ) {
-						if ($stats->data_available_for_match( $match ) ) {
+						if ( $stats->stats_enabled && $stats->data_available_for_match( $match ) ) {
 							// chart 1: pie, wat hebben de deelnemers gescoord bij deze wedstrijd?
 							$raw_data = $chart_data->predictions_pie_chart_data( $match );
 							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );

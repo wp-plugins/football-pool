@@ -12,15 +12,22 @@ class Football_Pool_Chart {
 	public $custom_css = '';
 	public $css_class = 'chart';
 	public $x_axis_step = 1;
+	public $API_loaded = false;
 	
 	public function __construct( $id = 'chart1', $type = 'line', $width = 600, $height = 400 ) {
 		$this->ID = $id;
 		$this->width = $width;
 		$this->height = $height;
 		$this->type = $type;
+
+		$this->stats_enabled = ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 );
+		$this->API_loaded = $this->stats_enabled 
+							&& file_exists( FOOTBALLPOOL_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API );
 	}
 		
 	public function draw() {
+		if ( ! $this->stats_enabled ) return '<p class="error">' . __( 'Charts are not enabled', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+		
 		$output = '';
 		
 		if ( $this->custom_css != '' ) 

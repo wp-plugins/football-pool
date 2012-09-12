@@ -2,9 +2,13 @@
 class Football_Pool_Statistics {
 	public $data_available = false;
 	public $stats_visible = false;
+	public $stats_enabled = false;
 	
 	public function __construct() {
 		$this->data_available = $this->check_data();
+		
+		$chart = new Football_Pool_Chart;
+		$this->stats_enabled = $chart->stats_enabled;
 	}
 	
 	public function page_content() {
@@ -16,8 +20,7 @@ class Football_Pool_Statistics {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "
-								SELECT COUNT(*) FROM {$prefix}scorehistory 
+		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
 								WHERE (" . ( $match > 0 ? '' : '1=1 OR ' ) . "(type=0 AND scoreOrder=%d))", 
 								$match
 							);

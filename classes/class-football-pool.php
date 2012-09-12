@@ -91,6 +91,7 @@ class Football_Pool {
 		// add_option( 'footballpool_remove_data_on_uninstall', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_favicon', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_touchicon', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_use_charts', 0 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -142,6 +143,7 @@ class Football_Pool {
 		// delete_option( 'footballpool_remove_data_on_uninstall' );
 		delete_option( 'footballpool_use_favicon' );
 		delete_option( 'footballpool_use_touchicon' );
+		delete_option( 'footballpool_use_charts' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -187,9 +189,10 @@ class Football_Pool {
 		}
 		
 		if ( !is_admin() ) {
-			//highcharts
-			self::include_js( 'assets/highcharts/highcharts.js', 'js-highcharts' );
-			
+			if ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 ) {
+				//highcharts
+				self::include_js( FOOTBALLPOOL_HIGHCHARTS_API, 'js-highcharts' );
+			}
 			//fancybox
 			self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
 			self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );

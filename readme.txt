@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 
 This plugin adds a football pool for the 2012 European Championship to your blog. 
 
@@ -25,7 +25,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Use different leagues for your users (optional).
 * Automatic calculation of the pool ranking.
 * Automatic calculation of championship standing.
-* Users have charts where their scores are plotted. And they can compare themselves to other players.
+* Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
 * Shortcodes: add the ranking in a post, show a group standing, countdown to the first match of the tournament, easy integration of some configuration options in your content (e.g. points).
 * Extra info pages with all the venues and teams.
@@ -36,7 +36,7 @@ At the moment the plugin is available in Dutch (default), Polish and English. If
 
 **Other things**
 
-This plugin requires PHP 5.2 or higher.
+This plugin requires PHP 5.2 or higher. If you want to use the charts feature please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
 If you find bugs, please contact me via the support forum, or at wordpressfootballpool [at] gmail [dot] com.
 
 == Installation ==
@@ -52,11 +52,17 @@ If you find bugs, please contact me via the support forum, or at wordpressfootba
 7. Optional: add bonus questions
 8. Optional: 'upgrade' existing users in your blog to pool-users
 
+If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory:
+`/wp-content/plugins/football-pool/assets/highcharts`
+
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
 For easier/front-end user registration you may consider using an extra plugin and widget. E.g. <a href="http://wordpress.org/extend/plugins/custom-user-registration-lite/">Custom User Registration Lite</a>. Just don't forget the extra user meta that this plugin needs. But you can also use the Login/logout button Widget that is included with this plugin; the plugin adds the needed extra inputs to the WordPress register screen.
 
 == Frequently Asked Questions ==
+
+= The charts are gone! What happened? =
+I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
 
 = Do I need the "Voorspellingen" page? =
 Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
@@ -112,6 +118,9 @@ The Football Pool plugin is available in the following languages:
 5. Using the ranking shortcode in a post
 
 == Changelog ==
+
+= 1.4.5 =
+* Removed Highcharts library from the package on request from WordPress. The Highcharts library has a non-GPL-compatible license which violates WordPress plugin rules. If you want to keep using the charts you have to download the library yourself and enable the charts feature in the plugin option screen.
 
 = 1.4.4 =
 * New: list of email adresses of players in your pool available in the plugin User Admin screen. You can copy and paste it in an email to quickly mail your users (without the need of installing a mail plugin).
