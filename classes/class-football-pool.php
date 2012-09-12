@@ -95,6 +95,7 @@ class Football_Pool {
 		add_option( 'footballpool_stop_time_method_questions', 0 ); // 0: dynamic, 1: one stop date
 		add_option( 'footballpool_show_team_link', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_show_venues_on_team_page', 1 ); // 1: yes, 0: no
+		add_option( 'footballpool_use_charts', 0 ); // 1: yes, 0: no
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -163,10 +164,11 @@ class Football_Pool {
 		delete_option( 'footballpool_stop_time_method_questions' );
 		delete_option( 'footballpool_show_team_link' );
 		delete_option( 'footballpool_show_venues_on_team_page' );
+		delete_option( 'footballpool_use_charts' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
-			wp_delete_post( Football_Pool_Utils::get_wp_option( 'footballpool_page_id_' . $page['slug'] ), true );
+			wp_delete_post( Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ), true );
 			delete_option( 'footballpool_page_id_' . $page['slug'] );
 		}
 		
@@ -208,12 +210,16 @@ class Football_Pool {
 		}
 		
 		if ( !is_admin() ) {
-			//highcharts
-			self::include_js( 'assets/highcharts/highcharts.js', 'js-highcharts' );
+			if ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 ) {
+				//highcharts
+				self::include_js( FOOTBALLPOOL_HIGHCHARTS_API, 'js-highcharts' );
+			}
 			
 			//fancybox
-			self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
-			self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
+			// self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
+			// self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
+			self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
+			self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
 			
 			//pool js
 			self::include_js( 'assets/pool.js', 'js-pool' );
@@ -246,35 +252,35 @@ class Football_Pool {
 		if ( is_page() ) {
 			$page_ID = get_the_ID();
 			switch ( $page_ID ) {
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_ranking' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
 					$page = new Football_Pool_Ranking_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_teams' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_teams' ):
 					$page = new Football_Pool_Teams_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_stadiums' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_stadiums' ):
 					$page = new Football_Pool_Stadiums_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_groups' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_groups' ):
 					$page = new Football_Pool_Groups_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_statistics' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_statistics' ):
 					$page = new Football_Pool_Statistics_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_tournament' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_tournament' ):
 					$page = new Football_Pool_Tournament_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_user' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_user' ):
 					$page = new Football_Pool_User_Page();
 					$content .= $page->page_content();
 					break;
-				case Football_Pool_Utils::get_wp_option( 'footballpool_page_id_pool' ):
+				case Football_Pool_Utils::get_fp_option( 'page_id_pool' ):
 					$page = new Football_Pool_Pool_Page();
 					$content .= $page->page_content();
 					break;
@@ -287,7 +293,7 @@ class Football_Pool {
 	}
 	
 	public function get_page_link( $slug ) {
-		$id = Football_Pool_Utils::get_wp_option( 'footballpool_page_id_' . $slug );
+		$id = Football_Pool_Utils::get_fp_option( 'page_id_' . $slug );
 		return $id ? get_page_link( $id ) : '';
 	}
 	
@@ -479,11 +485,11 @@ class Football_Pool {
 	public function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
 		
-		if ( Football_Pool_Utils::get_wp_option( 'footballpool_use_favicon' ) == 1 ) {
+		if ( Football_Pool_Utils::get_fp_option( 'use_favicon' ) == 1 ) {
 			echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
 		}
 		
-		if ( Football_Pool_Utils::get_wp_option( 'footballpool_use_touchicon' ) == 1 ) {
+		if ( Football_Pool_Utils::get_fp_option( 'use_touchicon' ) == 1 ) {
 			echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
 			echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
 			echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
@@ -518,7 +524,7 @@ class Football_Pool {
 	}
 	
 	private function create_page( $page, $menuOrder = null ) {
-		if ( ! Football_Pool_Utils::get_wp_option( 'footballpool_page_id_' . $page['slug'] ) ) {
+		if ( ! Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ) ) {
 			global $current_user;
 			
 			$newpage = array();
@@ -532,7 +538,7 @@ class Football_Pool {
 				$newpage['menu_order'] = $menuOrder;
 			}
 			if ( isset( $page['parent'] ) ) {
-				$parent_ID = (int) Football_Pool_Utils::get_wp_option('footballpool_page_id_' . $page['parent'] );
+				$parent_ID = (int) Football_Pool_Utils::get_fp_option('page_id_' . $page['parent'] );
 				if ( $parent_ID ) {
 					$newpage['post_parent'] = $parent_ID;
 				}

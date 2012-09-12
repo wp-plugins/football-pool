@@ -30,7 +30,7 @@ class Football_Pool_Teams_Page {
 						);
 						
 			// show venues?
-			if ( Football_Pool_Utils::get_wp_option( 'footballpool_show_venues_on_team_page', true ) ) {
+			if ( Football_Pool_Utils::get_fp_option( 'show_venues_on_team_page', true ) ) {
 				$stadiums = $team->get_stadiums();
 				if ( is_array( $stadiums ) && count( $stadiums ) > 0 ) {
 					$output .= sprintf( '<tr>

@@ -7,18 +7,21 @@ class Football_Pool_User_Page {
 		$output = '';
 		
 		if ( $user ) {
-			$output .= sprintf( '<div class="statistics" title="%s">', __( 'view all statistics for these users', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			$output .= sprintf( '<h5>%s</h5>', __( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			$output .= sprintf( '<p><a class="statistics" href="%s">%s</a></p>',
-								esc_url(
-									add_query_arg(
-										array( 'view' => 'user', 'user' => $user->ID ),
-										Football_Pool::get_page_link( 'statistics' )
-									)
-								),
-								__( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN )
-						);
-			$output .= '</div>';
+			$stats = new Football_Pool_Statistics;
+			if ( $stats->stats_enabled ) {
+				$output .= sprintf( '<div class="statistics" title="%s">', __( 'view all statistics for this user', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<h5>%s</h5>', __( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<p><a class="statistics" href="%s">%s</a></p>',
+									esc_url(
+										add_query_arg(
+											array( 'view' => 'user', 'user' => $user->ID ),
+											Football_Pool::get_page_link( 'statistics' )
+										)
+									),
+									__( 'Statistics', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+				$output .= '</div>';
+			}
 
 			$output .= sprintf( '<p>%s <span class="username">%s</span>.</p>',
 								__( 'Below are all the predictions for', FOOTBALLPOOL_TEXT_DOMAIN ),

@@ -22,14 +22,11 @@ jQuery( document ).ready( function() {
 	// user selection on the statistics page
 	footballpool_line_chart_control();
 	
-	// fancybox
-	jQuery( ".fp-fancybox" ).fancybox( {
-		openEffect	: 'elastic',
-		closeEffect	: 'elastic',
-		openSpeed	: 600, 
-		closeSpeed	: 200 
+	// colorbox
+	jQuery( ".fp-lightbox" ).colorbox( {
+		transition		: 'elastic',
+		speed			: 400
 	} );
-
 });
 
 function footballpool_line_chart_control() {

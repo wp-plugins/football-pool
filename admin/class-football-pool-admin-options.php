@@ -94,10 +94,12 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Show team names as links', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_team_link', __( "Switch off if you don't want to link the team names to a team info page.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'show_venues_on_team_page' =>
 							array( 'checkbox', __( 'Show venues on team page', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_venues_on_team_page', __( "Switch off if you don't want to show all venues a team plays in during a season or tournament (in national competitions the venue list is a bit useless).", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'use_charts' =>
+							array( 'checkbox', __( 'Use charts', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_charts', sprintf( __( 'The Highcharts API is needed for this feature. See the <%s>Help page<%s> for information on installing this library.', FOOTBALLPOOL_TEXT_DOMAIN ), 'a href="?page=footballpool-help#charts"', '/a' ) ),
 					);
 		
 		$donate = '<div class="donate">' 
-				. __( 'If you want, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
+				. __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
 				. self::donate_button( 'return' ) . '</div>';
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
@@ -122,6 +124,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
+		$chart = new Football_Pool_Chart;
+		if ( $chart->stats_enabled && ! $chart->API_loaded ) {
+			self::notice( __( 'Charts are enabled but Highcharts API was not found!', FOOTBALLPOOL_TEXT_DOMAIN ) , 'important' );
+		}
+
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -162,6 +169,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['use_charts'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],
 									$options['shoutbox_max_chars'],

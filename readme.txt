@@ -135,6 +135,7 @@ The Football Pool plugin is available in the following languages:
 * Multiple choice questions with more than one answer (checkboxes) can now have a max number of answers a user may give.
 * Bug fixed: prediction page for a user did not show the right points for a bonus question. (thanks Maly77)
 * Bug fixed: User Selector Widget caused a notice on 404 pages.
+* Added colorbox instead of fancybox for lightbox. Fancybox does not have a GPL-compatible license.
 
 = 1.4.5 =
 * Removed Highcharts library from the package on request from WordPress. The Highcharts library has a non-GPL-compatible license which violates WordPress plugin rules. If you want to keep using the charts you have to download the library yourself and enable the charts feature in the plugin option screen.
