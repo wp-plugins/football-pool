@@ -14,6 +14,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
+				<li><a href="#charts">Using charts</a></li>
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
 		</p>
@@ -180,6 +181,18 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-2.png" alt="screenshot" />
 		</p>
 		<p>Please note that for points for bonus questions to be added to the total points for a player an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
+		
+		<h2 id="charts">Using charts</h2>
+		<p>
+		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
+		<p>For now you have to follow these steps:
+		<ol>
+			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
+			<li>Place the files in the directory <span class="code">/wp-content/plugins/football-pool/assets/highcharts/</span>.</li>
+			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
+		</ol><br>
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-chart.png" alt="screenshot" />
+		</p>
 		
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
