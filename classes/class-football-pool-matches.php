@@ -360,7 +360,15 @@ class Football_Pool_Matches {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes ORDER BY id ASC" );
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return $wpdb->get_results( $sql );
+	}
+	
+	public function get_match_type_by_id( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes WHERE id = %d", $id );
+		return $wpdb->get_row( $sql );
 	}
 	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {

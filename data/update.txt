@@ -50,3 +50,5 @@ CHANGE `awayTeamId` `awayTeamId` INT NOT NULL ,
 CHANGE `matchtypeId` `matchtypeId` INT UNSIGNED NOT NULL;
 
 ALTER TABLE `{$prefix}bonusquestions_useranswers` CHANGE `questionId` `questionId` INT UNSIGNED NOT NULL;
+
+ALTER TABLE `{$prefix}matchtypes` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT;

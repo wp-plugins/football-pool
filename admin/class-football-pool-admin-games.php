@@ -133,7 +133,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$types = $matches->get_match_types();
 		$options = array();
 		foreach ( $types as $type ) {
-			$options[] = array( 'value' => $type['id'], 'text' => $type['name'] );
+			$options[] = array( 'value' => $type->id, 'text' => $type->name );
 		}
 		$types = $options;
 		

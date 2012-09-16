@@ -15,6 +15,15 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
+			__( 'Football Pool Options', FOOTBALLPOOL_TEXT_DOMAIN ),
+			__( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ),
+			'administrator',
+			'footballpool-options',
+			array( 'Football_Pool_Admin_Options', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
 			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
@@ -74,6 +83,15 @@ class Football_Pool_Admin {
 			'administrator', 
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
+			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'administrator', 
+			'footballpool-matchtypes',
+			array( 'Football_Pool_Admin_Match_Types', 'admin' )
 		);
 		
 		add_submenu_page(
