@@ -31,7 +31,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<h3>Matches</h3>
 		<p>
-		<strong>Matches have to be entered or imported with UTC times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
+		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
 		<p>
 		<strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 

@@ -11,6 +11,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		
 		switch ( $action ) {
+			case 'download':
+				self::download_schedule();
+				break;
 			case 'schedule':
 				self::view_schedules();
 				break;
@@ -35,6 +38,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
+	private function download_schedule() {
+		echo '<h2>download wedstrijddata</h2>';
+	}
+	
 	private function view_schedules() {
 		echo '<h2>hier komt de import voor wedstrijddata</h2>';
 	}
@@ -45,8 +52,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );
-		self::secondary_button( __( 'Change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'schedule', false );
-		echo '</p>';
+		echo '<span style="float: right;">';
+		self::secondary_button( __( 'Bulk change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'schedule', false );
+		self::secondary_button( __( 'Download game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'download', false );
+		echo '</span></p>';
 		self::print_matches( $rows );
 		submit_button();
 	}
@@ -224,7 +233,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			if ( $datetitle != $matchdate->format( 'd M Y' ) ) {
 				$datetitle = $matchdate->format( 'd M Y' );
 				echo '<tr><td class="sidebar-name" colspan="7">', $datetitle, '</td>',
-						'<td class="sidebar-name">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
+						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name" colspan="2"></td>',
 						'</tr>';

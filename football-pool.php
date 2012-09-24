@@ -1,7 +1,7 @@
 <?php 
 /*
  Plugin Name: Football pool
- Plugin URI: http://wordpress.org/extend/plugins/football-pool/
+ Plugin URI: http://wordpressfootballpool.wordpress.com/
  Description: This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches to a national competition. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool players.
  Version: 2.0.0
  Author: Antoine Hurkmans

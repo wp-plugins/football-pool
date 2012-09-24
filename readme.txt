@@ -31,7 +31,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in Dutch, Polish and English. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+At the moment the plugin is available in English, Dutch and Polish. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
 
@@ -74,10 +74,10 @@ If you're not using leagues, then make sure the users are not removed from the p
 = I want to use the plugin for a national competition. Is that possible? =
 
 Yes. There are two ways to do this: 
-1. Edit the data/data.txt file with data from your competition. And delete unnecessary groups and match types from the database. The main advantage is that you can easily reinstall the match info, but it requires some SQL knowledge.
+1. Upload a game schedule in the admin. Make sure you understand the required format; you can download the current schedule as an example.
 2. Use the admin screens to edit the teams, groups, match types and matches.
 
-And choose a theme or make one yourself that fits your competition or blog.
+And, of course, choose a theme or make one yourself that fits your competition or blog. If have a competition it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
 
 = Is there a translation available? =
 
@@ -88,6 +88,8 @@ If you've made your own translation and mail it to me, I'll add it to the plugin
 You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
+
+If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
 
 = I installed the plugin, but there are no matches. What happened? =
 
@@ -123,6 +125,9 @@ The Football Pool plugin is available in the following languages:
 
 = 2.0.0 =
 * Please notice that the default language is now English. If you were using Dutch as the language for the plugin you have to change de `WPLANG` constant in the `wp-config.php` file to `nl_NL`.
+
+= 1.4.5 =
+* Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
 
