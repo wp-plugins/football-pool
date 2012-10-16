@@ -3,17 +3,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
+		$action  = Football_Pool_Utils::request_string( 'action' );
+		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
+		
 		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		$action  = Football_Pool_Utils::request_string( 'action' );
-		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
-		
 		switch ( $action ) {
-			case 'download':
-				self::download_schedule();
-				break;
 			case 'schedule':
 				self::view_schedules();
 				break;
@@ -38,12 +35,15 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function download_schedule() {
-		echo '<h2>download wedstrijddata</h2>';
-	}
-	
 	private function view_schedules() {
-		echo '<h2>hier komt de import voor wedstrijddata</h2>';
+		echo '<h3>', __( 'Upload new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
+		// link to help/data explanation and explain the extra data that is needed for teams etc (e.g. photo)
+		// option to just upload, add or overwrite
+		// upload file
+		// show log -> new teams added, new stadiums added, new matches added, etc
+		echo '<h3>', __( 'Choose a new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
+		// option to add or overwrite
+		// show log
 	}
 	
 	private function view() {
@@ -54,7 +54,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		submit_button( null, 'primary', 'submit', false );
 		echo '<span style="float: right;">';
 		self::secondary_button( __( 'Bulk change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'schedule', false );
-		self::secondary_button( __( 'Download game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'download', false );
+		self::secondary_button( 
+			__( 'Download game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php', 
+			false, 
+			'link' 
+		);
 		echo '</span></p>';
 		self::print_matches( $rows );
 		submit_button();
@@ -288,7 +293,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $select;
 	}
 	
-	private function update_match( $nr, $home_team, $away_team, $home_score, $away_score, $match_date, $stadium_id = null, $match_type_id = null ) {
+	private function update_match( $nr, $home_team, $away_team, $home_score, $away_score, 
+									$match_date, $stadium_id = null, $match_type_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

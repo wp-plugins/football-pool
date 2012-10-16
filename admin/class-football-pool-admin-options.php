@@ -81,7 +81,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'use_leagues' => 
 							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are allready points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
 						'default_league_new_user' => 
-							array( 'text', __( 'Standard league for new users.', FOOTBALLPOOL_TEXT_DOMAIN ), 'default_league_new_user', __( 'The standard league (<a href="?page=footballpool-leagues">fill in the league ID</a>) a new user will be placed after registration.', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues' ),
+							array( 'text', __( 'Standard league for new users', FOOTBALLPOOL_TEXT_DOMAIN ), 'default_league_new_user', __( 'The standard league (<a href="?page=footballpool-leagues">fill in the league ID</a>) a new user will be placed after registration.', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues' ),
 						'dashboard_image' =>
 							array( 'text', __( 'Image for Dashboard Widget', FOOTBALLPOOL_TEXT_DOMAIN ), 'dashboard_image', '<a href="' . get_admin_url() . '">Dashboard</a>' ),
 						'hide_admin_bar' => 
@@ -158,22 +158,16 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
 		echo '</p>';
 		
-		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::options_form( array( 
-									$options['use_favicon'],
-									$options['use_touchicon'], 
-									$options['hide_admin_bar'], 
-								) 
-							);
-		submit_button( null, 'primary', null, true );
-		
-		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Pool Layout &amp; Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['use_charts'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],
 									$options['shoutbox_max_chars'],
 									$options['dashboard_image'], 
+									$options['use_favicon'],
+									$options['use_touchicon'], 
+									$options['hide_admin_bar'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );

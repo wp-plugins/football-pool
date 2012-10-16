@@ -623,14 +623,22 @@ class Football_Pool_Admin {
 		return $result;
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false ) {
-		submit_button( 
-				$text, 
-				'secondary', 
-				$action, 
-				$wrap, 
-				array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
-		);
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button' ) {
+		if ( $type == 'button' ) {
+			submit_button( 
+					$text, 
+					'secondary', 
+					$action, 
+					$wrap, 
+					array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
+			);
+		} elseif ( $type == 'link' ) {
+			$button = '<a class="button-secondary fp-link-button" href="' . $action . '">' . $text . '</a>';
+			if ( $wrap ) {
+				$button = '<p class="submit">' . $button . '</p>';
+			}
+			echo $button;
+		}
 	}
 	
 	public function primary_button( $text, $action, $wrap = false ) {
