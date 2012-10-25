@@ -64,6 +64,10 @@ class Football_Pool {
 			*/
 			$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
 			self::db_actions( $update_sql );
+			if ( self::is_version( '2.0.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.0.0.txt' ) );
+				self::db_actions( $update_sql );
+			}
 		}
 		
 		// define default plugin options
@@ -116,7 +120,7 @@ class Football_Pool {
 	// checks if plugin is at least a certain version (makes sure it has sufficient comparison decimals)
 	// based on http://wikiduh.com/1611/php-function-to-check-if-wordpress-is-at-least-version-x-y-z
 	private function is_version( $is_ver ) {
-		$plugin_ver = explode( '.', get_site_option( 'footballpool_db_version' ) );
+		$plugin_ver = explode( '.', Football_Pool_Utils::get_fp_option( 'db_version' ) );
 		$is_ver = explode( '.', $is_ver );
 		for ( $i = 0; $i <= count( $is_ver ); $i++ )
 			if( ! isset( $plugin_ver[$i] ) ) array_push( $plugin_ver, 0 );
@@ -179,7 +183,7 @@ class Football_Pool {
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
 		$no_show = current_user_can( 'subscriber' ) 
-					&& Football_Pool_Utils::get_wp_option( 'footballpool_hide_admin_bar', 1 ) == 1;
+					&& Football_Pool_Utils::get_fp_option( 'hide_admin_bar', 1 ) == 1;
 		
 		return $no_show ? false : $content;
 	}
@@ -192,7 +196,7 @@ class Football_Pool {
 	
 	public function init() {
 		// i18n support:
-		// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
+		//   http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 		
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
@@ -215,7 +219,7 @@ class Football_Pool {
 				self::include_js( FOOTBALLPOOL_HIGHCHARTS_API, 'js-highcharts' );
 			}
 			
-			//fancybox
+			//fancybox -> replaced with colorbox because of license problem
 			// self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
 			// self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
 			self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
@@ -223,7 +227,6 @@ class Football_Pool {
 			
 			//pool js
 			self::include_js( 'assets/pool.js', 'js-pool' );
-			
 			//pool css
 			self::include_css( 'assets/pool.css', 'css-pool' );
 			
@@ -302,7 +305,7 @@ class Football_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// add extra meta fields
-		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
+		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 		$league = Football_Pool_Utils::post_int( 'league', $default_league );
 		
 		update_user_meta( $user_id, 'footballpool_league', $default_league );
@@ -450,7 +453,7 @@ class Football_Pool {
 	
 	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
 	public function dashboard_widget() {
-		$img = Football_Pool_Utils::get_wp_option( 'footballpool_dashboard_image' );
+		$img = Football_Pool_Utils::get_fp_option( 'dashboard_image' );
 		
 		echo '<p>', __( 'Click below to go to the football pool and predict your scores. Good luck!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $img, '" alt="', __( 'Fill in your predictions.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';

@@ -17,8 +17,8 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 			case 'save':
 				// new or updated venue
 				$match_type_id = self::update( $match_type_id );
-				self::notice( __("match type saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str('submit') == 'Save & Close' ) {
+				self::notice( __( 'Match type saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
 					self::view();
 					break;
 				}
@@ -28,7 +28,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 			case 'delete':
 				if ( $match_type_id > 0 ) {
 					self::delete( $match_type_id );
-					self::notice( sprintf( __("Match type id:%s deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), $match_type_id ) );
+					self::notice( sprintf( __( 'Match type id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $match_type_id ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::delete( $bulk_ids );

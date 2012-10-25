@@ -21,11 +21,11 @@ class Football_Pool_Utils {
 		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
 	}
 	
-	public function get_fp_option( $key, $default, $type = 'text' ) {
+	public function get_fp_option( $key, $default = '', $type = 'text' ) {
 		return self::get_wp_option( 'footballpool_' . $key, $default, $type = 'text' );
 	}
 	
-	public function get_wp_option( $key, $default = false, $type = 'text' ) {
+	public function get_wp_option( $key, $default = '', $type = 'text' ) {
 		$value = get_option( $key, $default );
 		if ( $type == 'int' || $type == 'integer' ) {
 			if ( ! is_numeric( $value ) ) $value = $default;

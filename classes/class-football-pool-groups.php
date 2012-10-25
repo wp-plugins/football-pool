@@ -1,9 +1,26 @@
 <?php
 class Football_Pool_Groups {
+	public function get_groups() {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = "SELECT id, name FROM {$prefix}groups ORDER BY name ASC";
+		return $wpdb->get_results( $sql );
+	}
+	
+	public function get_group_by_id( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}groups WHERE id = %d", $id );
+		return $wpdb->get_row( $sql );
+	}
+	
 	public function get_group_names() {
+		//@todo: remove auto translation of group name??
 		$group_names = array();
 		
-		$rows = $this->get_groups();
+		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
 			$group_names[ (integer) $row['id'] ] = htmlentities( __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
@@ -15,7 +32,7 @@ class Football_Pool_Groups {
 		$ranking = $this->get_standings();
 		$group_ranking = array();
 		
-		$rows = $this->get_groups();
+		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
 			$group_ranking[ $row['id'] ][ (integer) $row['teamId'] ] = $this->get_standing_for_team( $ranking, $row['teamId'] );
 		}
@@ -124,11 +141,12 @@ class Football_Pool_Groups {
 									t.name AS matchtype, 
 									m.nr,
 									m.playDate
-								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t, {$prefix}teams tm 
+								FROM {$prefix}matches m, {$prefix}stadiums s, 
+									{$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
 									AND t.id = 1 -- only round 1
-									AND (m.homeTeamId = tm.id OR m.awayTeamId = tm.id)
+									AND ( m.homeTeamId = tm.id OR m.awayTeamId = tm.id )
 									AND tm.groupId = %d
 								ORDER BY m.playDate ASC, m.nr ASC",
 							$group
@@ -205,16 +223,17 @@ class Football_Pool_Groups {
 		return $arr;
 	}
 	
-	private function get_groups() {
-		$cache_key = 'fp_get_groups';
+	private function get_group_composition() {
+		$cache_key = 'fp_get_group_composition';
 		$rows = wp_cache_get( $cache_key );
 		
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
+//@todo: extra testing
 			$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
 					FROM {$prefix}teams t, {$prefix}groups g 
-					WHERE t.groupId = g.id AND t.id > 0
+					WHERE t.groupId = g.id AND t.is_real = 1 AND t.is_active = 1
 					ORDER BY g.name ASC, t.groupOrder ASC, t.id ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			wp_cache_set( $cache_key, $rows );

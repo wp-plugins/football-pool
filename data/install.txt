@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}groups` (
-  `id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
@@ -115,12 +115,14 @@ CREATE TABLE IF NOT EXISTS `{$prefix}stadiums` (
 
 CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `photo` varchar(35) NOT NULL DEFAULT '',
-  `flag` varchar(35) NOT NULL DEFAULT '',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `photo` text NOT NULL,
+  `flag` text NOT NULL,
   `link` varchar(200) NOT NULL DEFAULT '',
   `groupId` tinyint(4) NOT NULL DEFAULT '0',
   `groupOrder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `is_real` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `is_active` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `ixGroup` (`groupId`),
   KEY `ixGroupOrder` (`groupOrder`)

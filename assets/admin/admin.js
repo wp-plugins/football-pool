@@ -3,7 +3,8 @@ function bulk_action_warning( id ) {
 	var msg;
 	if ( bulk_select && bulk_select.prop( 'selectedIndex' ) != 0 ) {
 		msg = jQuery( '#' + id + ' option').filter( ':selected' ).attr( 'bulk-msg' );
-		if ( msg != '' && msg != 'undefined' ) {
+		// console.log(msg);
+		if ( msg != '' && msg != undefined ) {
 			return( confirm( msg ) );
 		} else {
 			return true;

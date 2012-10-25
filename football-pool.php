@@ -89,14 +89,15 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-options.php';
 	require_once 'admin/class-football-pool-admin-games.php';
 	require_once 'admin/class-football-pool-admin-bonusquestions.php';
-	require_once 'admin/class-football-pool-admin-groups.php';
+	require_once 'admin/class-football-pool-admin-teams.php';
 	require_once 'admin/class-football-pool-admin-leagues.php';
 	require_once 'admin/class-football-pool-admin-shoutbox.php';
 	require_once 'admin/class-football-pool-admin-help.php';
 	require_once 'admin/class-football-pool-admin-users.php';
 	require_once 'admin/class-football-pool-admin-stadiums.php';
 	require_once 'admin/class-football-pool-admin-matchtypes.php';
-
+	require_once 'admin/class-football-pool-admin-groups.php';
+	
 	add_action( 'delete_user', array( 'Football_Pool', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );
 	add_action( 'edit_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );

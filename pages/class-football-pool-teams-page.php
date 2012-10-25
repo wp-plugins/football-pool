@@ -22,7 +22,7 @@ class Football_Pool_Teams_Page {
 								__( 'plays in', FOOTBALLPOOL_TEXT_DOMAIN ),
 								esc_url( 
 									add_query_arg( 
-										array( 'group' => $team->group_ID ),
+										array( 'group' => $team->group_id ),
 										Football_Pool::get_page_link('groups')
 									)
 								), 

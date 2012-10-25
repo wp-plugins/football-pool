@@ -371,6 +371,27 @@ class Football_Pool_Matches {
 		return $wpdb->get_row( $sql );
 	}
 	
+	public function get_match_type_by_name( $name, $addnew = 'no' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes WHERE name = %s", $name );
+		$result = $wpdb->get_row( $sql );
+		
+		if ( $addnew == 'addnew' && $result == null ) {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}matchtypes ( name ) VALUES ( %s )", $name );
+			$wpdb->query( $sql );
+			$id = $wpdb->insert_id;
+			$result = (object) array( 
+									'id' => $id, 
+									'name' => $name, 
+									'inserted' => true 
+									);
+		}
+		
+		return $result;
+	}
+	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {
 		if ( ! $this->match_is_editable( $ts ) ) {
 			$pool = new Football_Pool_Pool;

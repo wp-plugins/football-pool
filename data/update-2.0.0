@@ -1,0 +1,10 @@
+ALTER TABLE `{$prefix}matchtypes` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `{$prefix}bonusquestions_type` ADD `max_answers` TINYINT UNSIGNED NOT NULL DEFAULT '0';
+
+ALTER TABLE `{$prefix}teams` ADD `is_real` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+UPDATE `{$prefix}teams` SET `is_real` = 0 WHERE id < 0;
+
+ALTER TABLE `{$prefix}teams` ADD `is_active` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+
+ALTER TABLE `{$prefix}groups` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT;

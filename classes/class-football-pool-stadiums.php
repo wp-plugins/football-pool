@@ -24,7 +24,7 @@ class Football_Pool_Stadiums {
 		return $output;
 	}
 	
-	public function get_stadium_by_ID( $id ) {
+	public function get_stadium_by_id( $id ) {
 		if ( ! is_numeric( $id ) ) return 0;
 		
 		global $wpdb;
@@ -33,6 +33,40 @@ class Football_Pool_Stadiums {
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
 		return ( $row ) ? new Football_Pool_Stadium( $row ) : null;
+	}
+	
+	// returns object
+	public function get_stadium_by_name( $name, $addnew = 'no', $extra_data = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name, photo
+								FROM {$prefix}stadiums WHERE name = %s", $name );
+		$result = $wpdb->get_row( $sql );
+		
+		if ( $addnew == 'addnew' && $result == null ) {
+			$photo = '';
+			
+			if ( is_array( $extra_data ) ) {
+				$photo = $extra_data['photo'];
+			}
+			
+			$sql = $wpdb->prepare( 
+							"INSERT INTO {$prefix}stadiums ( name, photo ) 
+							 VALUES ( %s, %s )"
+							, $name, $photo
+					);
+			$wpdb->query( $sql );
+			$id = $wpdb->insert_id;
+			$result = (object) array( 
+									'id'       => $id, 
+									'name'     => $name,
+									'photo'    => $photo,
+									'inserted' => true
+									);
+		}
+		
+		return $result;
 	}
 }
 ?>

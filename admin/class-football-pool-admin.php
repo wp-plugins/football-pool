@@ -60,12 +60,21 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
-			__( 'Edit team position', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
-			'footballpool-groups',
-			array( 'Football_Pool_Admin_Groups', 'admin' )
+			'footballpool-teams',
+			array( 'Football_Pool_Admin_Teams', 'admin' )
 		);
+		
+		// add_submenu_page(
+			// $slug,
+			// __( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			// __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			// 'administrator', 
+			// 'footballpool-teams-position',
+			// array( 'Football_Pool_Admin_Teams_Position', 'admin' )
+		// );
 		
 		add_submenu_page(
 			$slug,
@@ -92,6 +101,15 @@ class Football_Pool_Admin {
 			'administrator', 
 			'footballpool-matchtypes',
 			array( 'Football_Pool_Admin_Match_Types', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
+			__( 'Edit groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'administrator', 
+			'footballpool-groups',
+			array( 'Football_Pool_Admin_Groups', 'admin' )
 		);
 		
 		add_submenu_page(
@@ -485,6 +503,34 @@ class Football_Pool_Admin {
 		echo '</table>';
 	}
 	
+	public function empty_table( $table_name = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $table_name == '' ) return false;
+		
+		$cache_key = 'fp_delete_method';
+		$delete_method = wp_cache_get( $cache_key );
+		
+		if ( $delete_method === false ) {
+			$delete_method = 'TRUNCATE TABLE';
+			wp_cache_set( $cache_key, $delete_method );
+		}
+		
+		$sql  = "{$delete_method} {$prefix}{$table_name}";
+		$check = $wpdb->query( $sql );
+		// fix if user has no TRUNCATE rights
+		if ( $check === false ) {
+			$delete_method = 'DELETE FROM';
+			wp_cache_set( $cache_key, $delete_method );
+			
+			$sql  = "{$delete_method} {$prefix}{$table_name}";
+			$check = $wpdb->query( $sql );
+		}
+		
+		return $check;
+	}
+	
 	public function update_score_history() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -492,13 +538,7 @@ class Football_Pool_Admin {
 		$pool = new Football_Pool_Pool;
 		
 		// 1. empty table
-		$sql  = "TRUNCATE TABLE {$prefix}scorehistory";
-		$check = $wpdb->query( $sql );
-		// fix if user has no TRUNCATE rights
-		if ( $check === false ) {
-			$sql  = "DELETE FROM {$prefix}scorehistory";
-			$check = $wpdb->query( $sql );
-		}
+		$check = self::empty_table( 'scorehistory' );
 		$result = $check;
 		if ( $check !== false ) {
 			// 2. check predictions with actual match result (score type = 0)
@@ -539,7 +579,8 @@ class Football_Pool_Admin {
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
 			// 4. add bonusquestion scores (score type = 1)
-			//    make sure to take the userpoints into account (we can set an alternate score for an individual user in the admin)
+			//    make sure to take the userpoints into account
+			//    (we can set an alternate score for an individual user in the admin)
 			$sql = "INSERT INTO {$prefix}scorehistory 
 						( type, scoreDate, scoreOrder, userId, score, full, toto, ranking ) 
 					SELECT 
@@ -624,16 +665,36 @@ class Football_Pool_Admin {
 	}
 	
 	public function secondary_button( $text, $action, $wrap = false, $type = 'button' ) {
+		$onclick_val = '';
+		
+		if ( is_array( $action ) ) {
+			$action_val = array_shift( $action );
+			if ( count( $action ) > 0 ) {
+				foreach ( $action as $val ) {
+					$onclick_val .= "{$val};";
+				}
+			}
+		} else {
+			$action_val = $action;
+		}
+		
 		if ( $type == 'button' ) {
+			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
+			
 			submit_button( 
 					$text, 
 					'secondary', 
-					$action, 
+					$action_val, 
 					$wrap, 
-					array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
+					array( "onclick" => $onclick_val ) 
 			);
 		} elseif ( $type == 'link' ) {
-			$button = '<a class="button-secondary fp-link-button" href="' . $action . '">' . $text . '</a>';
+			$onclick = ( $onclick_val != '' ) ? 'onclick="' . $onclick_val . '"' : '';
+			$button = sprintf( '<a %s class="button-secondary fp-link-button" href="%s">%s</a>'
+								, $onclick
+								, $action_val
+								, $text 
+						);
 			if ( $wrap ) {
 				$button = '<p class="submit">' . $button . '</p>';
 			}
@@ -642,12 +703,27 @@ class Football_Pool_Admin {
 	}
 	
 	public function primary_button( $text, $action, $wrap = false ) {
+		$onclick_val = '';
+		
+		if ( is_array( $action ) ) {
+			$action_val = array_shift( $action );
+			if ( count( $action ) > 0 ) {
+				foreach ( $action as $val ) {
+					$onclick_val .= "{$val};";
+				}
+			}
+		} else {
+			$action_val = $action;
+		}
+		
+		$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
+		
 		submit_button( 
 				$text, 
 				'primary', 
-				$action, 
+				$action_val, 
 				$wrap, 
-				array( "onclick" => "jQuery('#action, #form_action').val('{$action}')" ) 
+				array( "onclick" => $onclick_val ) 
 		);
 	}
 	

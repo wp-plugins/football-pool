@@ -37,7 +37,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::remove( $bulk_ids );
-					self::notice( sprintf( __( '%s users removed as user.', FOOTBALLPOOL_TEXT_DOMAIN )
+					self::notice( sprintf( __( '%d users removed as user.', FOOTBALLPOOL_TEXT_DOMAIN )
 											, count( $bulk_ids )
 										)
 								);
@@ -51,7 +51,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::add( $bulk_ids );
-					self::notice( sprintf( __( '%s users added as user.', FOOTBALLPOOL_TEXT_DOMAIN )
+					self::notice( sprintf( __( '%d users added as user.', FOOTBALLPOOL_TEXT_DOMAIN )
 											, count( $bulk_ids )
 										)
 								);
@@ -188,7 +188,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		$pool = new Football_Pool_Pool();
 		$has_leagues = $pool->has_leagues;
-		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT );
+		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
 		
 		$users = get_users();
 		foreach ( $users as $user ) {

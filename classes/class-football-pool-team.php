@@ -5,20 +5,27 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	public $photo = '';
 	public $flag = '';
 	public $link = '';
-	public $group_ID = 0;
+	public $group_id = 0;
 	public $group_name = '';
-
+	public $group_order;
+	public $is_real = 1;
+	public $is_active = 1;
+	
 	public function __construct( $team = 0 ) {
+		//@todo: remove translation of team name and group name??
 		if ( is_int( $team ) && $team != 0 ) {
-			$t = $this->get_team_by_ID( $team );
+			$t = $this->get_team_by_id( $team );
 			if ( is_object( $t ) ) {
 				$this->id = $t->id;
 				$this->name = __( $t->name, FOOTBALLPOOL_TEXT_DOMAIN );
 				$this->photo = $t->photo;
 				$this->flag = $t->flag;
 				$this->link = $t->link;
-				$this->group_ID = $t->group_ID;
+				$this->group_id = $t->group_id;
 				$this->group_name = __( $t->group_name, FOOTBALLPOOL_TEXT_DOMAIN );
+				$this->group_order = $t->group_order;
+				$this->is_real = $t->is_real;
+				$this->is_active = $t->is_active;
 			}
 		} elseif ( is_array( $team ) ) {
 			$this->id = $team['id'];
@@ -26,22 +33,30 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			$this->photo = $team['photo'];
 			$this->flag = $team['flag'];
 			$this->link = $team['link'];
-			$this->group_ID = $team['groupId'];
+			$this->group_id = $team['groupId'];
 			$this->group_name = __( $team['groupName'], FOOTBALLPOOL_TEXT_DOMAIN );
+			$this->group_order = $team['group_order'];
+			$this->is_real = $team['is_real'];
+			$this->is_active = $team['is_active'];
 		}
 	}
 	
 	function HTML_thumb() {
-		$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
-		return sprintf( '<a class="thumb fp-lightbox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
-								class="teamphotothumb" /></a>',
-						$img_url,
-						$img_url,
-						__( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ),
-						$this->name,
-						__( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ),
-						$this->name
-						);
+		if ( $this->photo != '' ) {
+			$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
+			$thumb = sprintf( '<a class="thumb fp-lightbox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
+									class="teamphotothumb" /></a>',
+							$img_url,
+							$img_url,
+							__( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ),
+							$this->name,
+							__( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ),
+							$this->name
+							);
+		} else {
+			$thumb = '';
+		}
+		return $thumb;
 	}
 	
 	function HTML_image() {

@@ -9,11 +9,11 @@ class Football_Pool_Pool {
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
-		$this->has_leagues = ( Football_Pool_Utils::get_wp_option( 'footballpool_use_leagues' ) == '1' ) && ( count( $this->leagues ) > 1 );
+		$this->has_leagues = ( Football_Pool_Utils::get_fp_option( 'use_leagues' ) == '1' ) && ( count( $this->leagues ) > 1 );
 		
-		$this->lock_datestring = Football_Pool_Utils::get_wp_option( 'footballpool_bonus_question_locktime', '' );
+		$this->lock_datestring = Football_Pool_Utils::get_fp_option( 'bonus_question_locktime', '' );
 		$this->force_lock_time = 
-			( Football_Pool_Utils::get_wp_option( 'footballpool_stop_time_method_questions', 0, 'int' ) == 1 )
+			( Football_Pool_Utils::get_fp_option( 'stop_time_method_questions', 0, 'int' ) == 1 )
 			&& ( $this->lock_datestring != '' );
 		if ( $this->force_lock_time ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->lock_datestring );
@@ -45,9 +45,9 @@ class Football_Pool_Pool {
 		if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
 			// check for exact match
 			if ( $home == $user_home && $away == $user_away ) {
-				$score = (int) Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+				$score = (int) Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 			} else {
-				$score = (int) Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+				$score = (int) Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			}
 		}
 		

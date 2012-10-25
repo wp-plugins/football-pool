@@ -10,9 +10,23 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
+		// Football_Pool_Utils::debug( $action );
+		
+		$log = '';
+		$file = '';
+		
 		switch ( $action ) {
+			case 'upload_csv':
+				$uploaded_file = self::upload_csv();
+				if ( Football_Pool_Utils::post_int( 'csv_import' ) == 1 ) {
+					$file = $uploaded_file;
+					$upload = true;
+				}
+			case 'import_csv':
+			case 'import_csv_overwrite':
+				$log = self::import_csv( $action, $file );
 			case 'schedule':
-				self::view_schedules();
+				self::view_schedules( $log );
 				break;
 			case 'edit':
 			case 'update':
@@ -35,15 +49,210 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function view_schedules() {
-		echo '<h3>', __( 'Upload new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
-		// link to help/data explanation and explain the extra data that is needed for teams etc (e.g. photo)
-		// option to just upload, add or overwrite
-		// upload file
-		// show log -> new teams added, new stadiums added, new matches added, etc
-		echo '<h3>', __( 'Choose a new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
-		// option to add or overwrite
-		// show log
+	private function upload_csv() {
+		$err = false;
+		if ( is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) {
+			$new_file = FOOTBALLPOOL_CSV_UPLOAD_DIR . $_FILES['csv_file']['name'];
+			if ( move_uploaded_file( $_FILES['csv_file']['tmp_name'], $new_file ) === false ) {
+				$err = true;
+			}
+		} else {
+			$err = true;
+		}
+		
+		if ( $err ) {
+			self::notice( __( 'Upload of csv file failed.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			return '';
+		} else {
+			self::notice( __( 'Upload of csv file successful.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			return $_FILES['csv_file']['name'];
+		}
+	}
+	
+	private function import_csv( $action = 'import_csv', $file = '' ) {
+		$msg = $err = array();
+		
+		if ( $action == 'upload_csv' && $file == '' ) return array( $err, $msg );
+		
+		if ( $file == '' ) {
+			$file = Football_Pool_Utils::post_string( 'csv_file' );
+		}
+		
+		if ( $file != '' && ( $fp = @fopen( FOOTBALLPOOL_CSV_UPLOAD_DIR . $file, 'r' ) ) !== false ) {
+			if ( $action == 'import_csv_overwrite' ) {
+				// remove all match data except matchtypes
+				self::empty_table( 'scorehistory' );
+				self::empty_table( 'predictions' );
+				self::empty_table( 'stadiums' );
+				self::empty_table( 'matches' );
+				self::empty_table( 'teams' );
+			}
+			
+			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
+			// check the columns
+			$column_names = explode( 
+								FOOTBALLPOOL_CSV_DELIMITER, 
+								'play_date;home_team;away_team;stadium;match_type' 
+							);
+			
+			if ( count( $header ) == count( $column_names ) ) {
+				for ( $i = 0; $i < count( $header ); $i++ ) {
+					if ( $header[$i] != $column_names[$i] )
+						$err[] = sprintf( 
+										__( 'Column %d header should be "%s" &rArr; not "%s"', FOOTBALLPOOL_TEXT_DOMAIN )
+										, ( $i + 1 )
+										, $column_names[$i]
+										, $header[$i]
+								);
+				}
+				if ( count( $err ) == 0 ) {
+					// import the data
+					// csv data = play_date;home_team;away_team;stadium;match_type
+					while ( ( $data = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false ) {
+						$play_date  = $data[0];
+						// home
+						$home_team  = Football_Pool_Teams::get_team_by_name( $data[1], 'addnew' );
+						$home_team_id = $home_team->id;
+						if ( isset( $home_team->inserted ) && $home_team->inserted == true ) {
+							$msg[] = sprintf(
+										__( 'Team %d added: %s', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $home_team->id, $home_team->name
+									);
+						}
+						// away
+						$away_team  = Football_Pool_Teams::get_team_by_name( $data[2], 'addnew' );
+						$away_team_id = $away_team->id;
+						if ( isset( $away_team->inserted ) && $away_team->inserted == true ) {
+							$msg[] = sprintf(
+										__( 'Team %d added: %s', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $away_team->id, $away_team->name
+									);
+						}
+						// stadium
+						$stadium    = Football_Pool_Stadiums::get_stadium_by_name( $data[3], 'addnew' );
+						$stadium_id = $stadium->id;
+						if ( isset( $stadium->inserted ) && $stadium->inserted == true ) {
+							$msg[] = sprintf(
+										__( 'Stadium %d added: %s', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $stadium->id, $stadium->name
+									);
+						}
+						// match type
+						$match_type = Football_Pool_Matches::get_match_type_by_name( $data[4], 'addnew' );
+						$match_type_id = $match_type->id;
+						if ( isset( $match_type->inserted ) && $match_type->inserted == true ) {
+							$msg[] = sprintf(
+										__( 'Match Type %d added: %s', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $match_type->id, $match_type->name
+									);
+						}
+						
+						// add the match
+						$nr = self::update_match( 
+													0, $home_team_id, $away_team_id, null, null, 
+													$play_date, $stadium_id, $match_type_id
+												);
+						$msg[] = sprintf( 
+										__( 'Match %d imported: %s - %s for date "%s"', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $nr, $home_team->name, $away_team->name, $play_date
+								);
+					}
+				}
+			} else {
+				$err[] = sprintf( __( 'Imported csv file should contain %i columns. See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $column_names ) );
+			}
+		} else {
+			if ( $file == '' ) 
+				$err[] = __( 'No csv file selected.', FOOTBALLPOOL_TEXT_DOMAIN );
+			else
+				$err[] = __( 'Please check if the csv file exists and is readable.', FOOTBALLPOOL_TEXT_DOMAIN );
+		}
+		
+		if ( isset( $fp ) ) @fclose( $fp );
+		
+		// log is an array containing error messages and/or import messages
+		$log = array( $err, $msg );
+		return $log;
+	}
+	
+	private function view_schedules( $log = '' ) {
+		if ( is_array( $log ) ) {
+			$errors = $log[0];
+			$import_log = $log[1];
+			if ( count( $errors ) > 0 ) self::notice( implode( '<br>', $errors ), 'important' );
+			if ( count( $import_log ) > 0 ) self::notice( implode( '<br>', $import_log ) );
+		}
+		
+		// check if upload dir exists and is writable
+		$upload_is_readable = is_readable( FOOTBALLPOOL_CSV_UPLOAD_DIR );
+		$upload_is_writable = is_writable( FOOTBALLPOOL_CSV_UPLOAD_DIR );
+		
+		if ( ! $upload_is_readable ) {
+			self::notice( __( "Please make sure that the directory 'upload' exists in the plugin directory and that it is readable!", FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			return;
+		} elseif ( ! $upload_is_writable ) {
+			self::notice( __( "Uploading of new csv files is not possible at the moment. Directory 'upload' is not writable.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+		}
+		
+		if ( $upload_is_readable ) {
+			echo '<h3>', __( 'Choose a new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
+			echo '<p>', __( 'Import any of the following files. Overwrite the existing game schedule or add to the existing schedule.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			
+			$handle = opendir( FOOTBALLPOOL_CSV_UPLOAD_DIR );
+			$i = 0;
+			echo '<div class="fp-radio-list">';
+			while ( false !== ( $entry = readdir( $handle ) ) ) {
+				if ( $entry != '.' && $entry != '..' ) {
+					$i++;
+					echo '<label for="csv-', $i, '">';
+					echo '<input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"> ';
+					echo $entry, '</label>';
+				}
+			}
+			echo '</div>';
+			
+			if ( $i > 0 ) {
+				echo '<p class="submit">';
+				self::primary_button( 
+					__( 'Import CSV', FOOTBALLPOOL_TEXT_DOMAIN ), 
+					array(
+						'import_csv',
+						'return confirm(\'' . __( 'Are you sure you want to add these matches to the existing schedule?', FOOTBALLPOOL_TEXT_DOMAIN ) . '\')' 
+					), 
+					false 
+				);
+				self::secondary_button( 
+					__( 'Import CSV & Overwrite', FOOTBALLPOOL_TEXT_DOMAIN ), 
+					array( 
+						'import_csv_overwrite', 
+						'return confirm(\'' . __( 'Are you sure you want to overwrite the game schedule with this schedule?\nAll predictions and scores will also be overwritten!', FOOTBALLPOOL_TEXT_DOMAIN ) . '\')' 
+					), 
+					false 
+				);
+				self::cancel_button();
+				echo '</p>';
+			} else {
+				self::notice( __( "No csv files found in 'upload' directory.", FOOTBALLPOOL_TEXT_DOMAIN ) );
+			}
+		}
+	
+		if ( $upload_is_writable ) {
+			// set the right the enctype for the upload
+			echo '</form><form method="post" enctype="multipart/form-data" action="">';
+			echo '<input type="hidden" name="action" value="upload_csv">';
+			echo '<h3>', __( 'Upload new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
+			// link to help/data explanation and explain the extra data that is needed for teams etc (e.g. photo)
+			// option to just upload, add or overwrite
+			// upload file
+			echo '<div>';
+			echo '<input type="file" name="csv_file">';
+			self::secondary_button( 
+				__( 'Upload CSV', FOOTBALLPOOL_TEXT_DOMAIN ), 
+				'upload_csv',
+				false
+			);
+			echo '</div>';
+		}
 	}
 	
 	private function view() {

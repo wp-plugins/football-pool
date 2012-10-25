@@ -1,17 +1,17 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football
 Requires at least: 3.1
-Tested up to: 3.3.1
+Tested up to: 3.4.2
 Stable tag: 1.4.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
-This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches to a national competition.
+This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches, e.g. to a national competition.
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships. Change the "data/data.txt"-file for this, or use the admin screens to edit the matches and teams. **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships. **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
@@ -19,7 +19,8 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 * Users can predict match outcomes.
 * You can add bonus questions for extra fun (single answer and multiple choice).
-* Add your own teams and match info to use the plugin for a national competition.
+* Add your own teams and match info to use the plugin for another (national) competition.
+* Import or export the game schedule.
 * Configurable scoring options.
 * Use different leagues for your users (optional).
 * Automatic calculation of the pool ranking.
@@ -31,15 +32,15 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch and Polish. If someone wants to help translate the plugin in another language, or make my English translation better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+At the moment the plugin is available in English, Dutch and Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
 
-This plugin requires PHP 5.2 or higher. If you want to use the charts feature please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
+This plugin requires PHP 5.2 or higher. If you want to use the charts feature, please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
 If you find bugs, please contact me via the support forum, or at wordpressfootballpool [at] gmail [dot] com.
 
 == Installation ==
-**Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG. To use use your own custom translation see FAQ for more information on translating the plugin.
+**Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG. To use your own custom translation see FAQ for more information on translating the plugin.
 
 1. Upload `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the `Plugins` panel in WordPress
@@ -49,9 +50,9 @@ If you find bugs, please contact me via the support forum, or at wordpressfootba
    (User Selector Widget is needed for the stats page)
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool-users
+8. Optional: make the `upload` directory in the plugin folder writable (if you wanna use the import function)
 
-If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory:
-`/wp-content/plugins/football-pool/assets/highcharts`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/football-pool/assets/highcharts`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -75,9 +76,9 @@ If you're not using leagues, then make sure the users are not removed from the p
 
 Yes. There are two ways to do this: 
 1. Upload a game schedule in the admin. Make sure you understand the required format; you can download the current schedule as an example.
-2. Use the admin screens to edit the teams, groups, match types and matches.
+2. Use the admin screens to edit the teams, groups, match types, matches, etc.
 
-And, of course, choose a theme or make one yourself that fits your competition or blog. If have a competition it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
+And, of course, choose a theme or make one yourself that fits your competition or blog. If you have a custom game schedule that other users can also use, it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
 
 = Is there a translation available? =
 

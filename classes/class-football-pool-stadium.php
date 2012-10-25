@@ -6,7 +6,7 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 	
 	public function __construct( $stadium = 0 ) {
 		if ( is_int( $stadium ) && $stadium != 0 ) {
-			$s = $this->get_stadium_by_ID( $stadium );
+			$s = $this->get_stadium_by_id( $stadium );
 			if ( is_object( $s ) ) {
 				$this->id = $s->id;
 				$this->name = $s->name;

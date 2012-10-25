@@ -17,8 +17,8 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 			case 'save':
 				// new or updated venue
 				$venue_id = self::update( $venue_id );
-				self::notice( __("Venue saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str('submit') == 'Save & Close' ) {
+				self::notice( __( 'Venue saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				if ( Football_Pool_Utils::post_str( 'submit') == 'Save & Close' ) {
 					self::view();
 					break;
 				}
@@ -28,7 +28,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 			case 'delete':
 				if ( $venue_id > 0 ) {
 					self::delete( $venue_id );
-					self::notice( sprintf( __("Venue id:%s deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), $venue_id ) );
+					self::notice( sprintf( __( 'Venue id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $venue_id ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::delete( $bulk_ids );

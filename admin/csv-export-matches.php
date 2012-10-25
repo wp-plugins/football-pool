@@ -28,10 +28,10 @@ $header_added = false;
 $fp = @fopen( 'php://output', 'w' );
 foreach ( $matches as $match ) {
 	if ( ! $header_added ) {
-		fputcsv( $fp, array_keys( $match ), ";" );
+		fputcsv( $fp, array_keys( $match ), FOOTBALLPOOL_CSV_DELIMITER );
 		$header_added = true;
 	}
-	fputcsv( $fp, $match, ";" );
+	fputcsv( $fp, $match, FOOTBALLPOOL_CSV_DELIMITER );
 }
 fclose( $fp );
 exit;

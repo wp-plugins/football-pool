@@ -4,29 +4,92 @@ class Football_Pool_Teams {
 	public $team_names;
 	public $team_flags;
 	public $show_team_links;
-
+	
+	const CACHE_KEY_TEAMS = 'fp_get_teams';
+	const CACHE_KEY_EXTRA_TEAMS = 'fp_get_extra_teams';
+	
 	public function __construct() {
 		// get the team_names
 		$this->team_names = $this->get_team_names();
 		// get the flags
 		$this->team_flags = $this->get_team_flags();
 		// show links?
-		$this->show_team_links = Football_Pool_Utils::get_wp_option( 'footballpool_show_team_link', true );
+		$this->show_team_links = Football_Pool_Utils::get_fp_option( 'show_team_link', true );
 	}
 	
-	public function get_team_by_ID( $id ) {
+	// returns array
+	public function get_team_by_id( $id ) {
 		if ( ! is_numeric( $id ) ) return 0;
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name AS groupName 
-								FROM {$prefix}teams t, {$prefix}groups g 
-								WHERE t.groupId = g.id AND t.id = %d",
+//@todo: extra testing
+		$sql = $wpdb->prepare( "SELECT 
+									t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, 
+									g.name AS groupName, t.groupOrder AS group_order, 
+									t.is_real, t.is_active
+								FROM {$prefix}teams t
+								LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id
+								WHERE t.id = %d",
 								$id
 							);
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
 		return ( $row ) ? new Football_Pool_Team( $row ) : null;
+	}
+	
+	// returns object
+	public function get_team_by_name( $name, $addnew = 'no', $extra_data = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT 
+									id, name, photo, flag, link, groupId AS group_id, 
+									groupOrder AS group_order, is_real, is_active
+								FROM {$prefix}teams WHERE name = %s", $name );
+		$result = $wpdb->get_row( $sql );
+		
+		if ( $addnew == 'addnew' && $result == null ) {
+			$photo = $flag = $link = '';
+			$group_id = $group_order = 0;
+			$is_active = $is_real = 1;
+			
+			if ( is_array( $extra_data ) ) {
+				$photo       = $extra_data['photo'];
+				$flag        = $extra_data['flag'];
+				$link        = $extra_data['link'];
+				$group_id    = $extra_data['group_id'];
+				$group_order = $extra_data['group_order'];
+				$is_real     = $extra_data['is_real'];
+				$is_active   = $extra_data['is_active'];
+			}
+			
+			$sql = $wpdb->prepare( 
+							"INSERT INTO {$prefix}teams 
+								( name, photo, flag, link, groupId, groupOrder, is_real, is_active ) 
+							 VALUES 
+								( %s, %s, %s, %s, %d, %d, %d, %d )"
+							, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active
+					);
+			$wpdb->query( $sql );
+			$id = $wpdb->insert_id;
+			$result = (object) array( 
+									'id'          => $id, 
+									'name'        => $name,
+									'photo'       => $photo,
+									'flag'        => $flag,
+									'link'        => $link,
+									'group_id'    => $group_id,
+									'group_order' => $group_order,
+									'is_real'     => $is_real,
+									'is_active'   => $is_active,
+									'inserted'    => true
+									);
+			// clear the cache
+			wp_cache_delete( self::CACHE_KEY_TEAMS );
+		}
+		
+		return $result;
 	}
 	
 	public function get_group_order( $team ) {
@@ -78,26 +141,34 @@ class Football_Pool_Teams {
 	
 	/* return IMG tag for team flag or logo */
 	public function flag_image( $id ) {
-		if ( is_array( $this->team_flags ) && isset( $this->team_flags[$id] ) ) {
-			return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $this->team_flags[$id] . '" title="' . $this->team_names[$id] . '" alt="' . $this->team_names[$id] . '" class="flag" />';
+		if ( is_array( $this->team_flags ) && isset( $this->team_flags[$id] ) && $this->team_flags[$id] != '' ) {
+			$flag = $this->team_flags[$id];
+			$team_name = esc_attr( $this->team_names[$id] );
+			
+			if ( stripos( $flag, 'http://' ) === false && stripos( $flag, 'https://' ) === false ) {
+				$flag = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $flag;
+			}
+			
+			return sprintf( '<img src="%s" title="%s" alt="%s" class="flag" />'
+							, $flag, $team_name, $team_name
+					);
 		} else {
 			return '';
 		}
 	}
 	
 	public function get_extra_teams() {
-		$cache_key = 'fp_get_extra_teams';
-		$rows = wp_cache_get( $cache_key );
+		$rows = wp_cache_get( self::CACHE_KEY_EXTRA_TEAMS );
 		
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			$sql = "SELECT id, name 
 					FROM {$prefix}teams
-					WHERE id < 0
+					WHERE is_real = 0
 					ORDER BY id DESC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( $cache_key, $rows );
+			wp_cache_set( self::CACHE_KEY_EXTRA_TEAMS, $rows );
 		}
 		
 		$teams = array();
@@ -107,18 +178,25 @@ class Football_Pool_Teams {
 		return $teams;
 	}
 	
-	public function get_teams() {
-		$rows = wp_cache_get( 'fp_get_teams' );
+	public function get_teams( $for = 'site' ) {
+		$rows = wp_cache_get( self::CACHE_KEY_TEAMS );
 		
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			$sql = "SELECT t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder 
-					FROM {$prefix}teams t, {$prefix}groups g
-					WHERE t.groupId = g.id AND t.id > 0
-					ORDER BY t.name ASC";
+			
+			$where_clause = ( $for == 'site' ) ? 'WHERE t.is_real = 1 AND t.is_active = 1' : '';
+			
+			$sql = sprintf( 
+					"SELECT 
+						t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder,
+						t.is_real, t.is_active
+					FROM {$prefix}teams t
+					LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id 
+					%s
+					ORDER BY t.name ASC", $where_clause );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( 'fp_get_teams', $rows );
+			wp_cache_set( self::CACHE_KEY_TEAMS, $rows );
 		}
 		
 		$teams = array();

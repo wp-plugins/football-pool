@@ -6,7 +6,7 @@ class Football_Pool_Stadiums_Page {
 
 		$stadium_id = Football_Pool_Utils::get_string( 'stadium' );
 
-		$stadium = $stadiums->get_stadium_by_ID( $stadium_id );
+		$stadium = $stadiums->get_stadium_by_id( $stadium_id );
 		if ( is_object( $stadium ) ) {
 			// show details for stadium
 			$output .= sprintf( '<h1>%s</h1>', htmlentities( $stadium->name ) );
