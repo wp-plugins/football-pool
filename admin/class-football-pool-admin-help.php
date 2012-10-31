@@ -14,6 +14,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
+				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
 				<li><a href="#charts">Using charts</a></li>
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
@@ -28,7 +29,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in UTC.)
 		</p>
-		</p>
+		
 		<h3>Matches</h3>
 		<p>
 		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
@@ -39,6 +40,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.
 		</p>
 		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="shortcodes">Shortcodes</h2>
 		<h3>[fp-groups]</h3>
 		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
@@ -153,14 +155,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>See <a href="?page=footballpool-options">Football Pool plugin settings</a> for some basic shortcodes that  will display the value for a plugin setting.</p>
 		<p>
 
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="leagues">Leagues</h2>
 		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done in the <a href="users.php">User</a> section of the WordPress admin, or the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
 
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="players">Players</h2>
 		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
 		If not playing with leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="bonusquestions">Bonus questions</h2>
 		<h3>Types</h3>
 		<p>There are 3 types of bonus questions: 
@@ -182,6 +187,160 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>Please note that for points for bonus questions to be added to the total points for a player an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
 		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		<h2 id="teams-groups-and-matches">Teams, groups and matches</h2>
+		<p>
+		In the pool your blog users can predict the outcome of matches in a competition. A competition consists of multiple teams that play each other in matches. The game schedule can be entered on the <a href="?page=footballpool-games">Matches</a> admin page. On that page the matches may be entered manually or uploaded via a csv file. See information below about the format of the csv file, or export an existing game schedule for an example. The format of the export (full data or minimal data) can be set on the options page of the plugin.
+		</p>
+		<p>
+		Teams may be grouped in groups. For example Group A, Group B, etc. for a tournament. Or in one group in the case of a national competition.
+		</p>
+		
+		<h3>csv file import</h3>
+		<p>
+		The csv file can be uploaded in one of the following formats:
+		<ol>
+			<li>minimal data (only the basic information about teams);</li>
+			<li>full data (all information).</li>
+		</ol>
+		If you choose the minimal data, extra information about stadiums and teams may be entered on the individual admin pages. If a team, stadium, group or match type in the csv file does not already exist, it will be added to the database.<br>
+		For the full data all information about teams, venues, etc. must be given. If a team, venue, etc. already exists, it won't be updated. If a team does not exist, the information (e.g. photo) in the first row where that item appears, will be added in the database.
+		</p>
+		<h4>Minimal data</h4>
+		<!--p>
+		<em>csv file header: </em>play_date;home_team;away_team;stadium;match_type
+		</p-->
+		<p>
+		<table class="widefat help" caption="Minimal data">
+			<tr><th>column</th><th>description</th><th>example</th></tr>
+			<tr class="">
+				<td class="row-title">play_date</td>
+				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
+				<td>2012-10-28 18:00</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">home_team</td>
+				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
+				<td>The Netherlands</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">away_team</td>
+				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
+				<td>England</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">stadium</td>
+				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
+				<td>Olympic Stadium</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">match_type</td>
+				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
+				<td>Quarter final</td>
+			</tr>
+		</table>
+		</p>
+		<h4>Full data</h4>
+		<!--p>
+		<em>csv file header: </em>play_date;home_team;away_team;stadium;match_type
+		</p-->
+		<p>
+		<table class="widefat help" caption="Full data">
+			<tr><th>column</th><th>description</th><th>example</th></tr>
+			<tr class="">
+				<td class="row-title">play_date</td>
+				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
+				<td>2012-10-28 18:00</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">home_team</td>
+				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
+				<td>The Netherlands</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">away_team</td>
+				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
+				<td>England</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">stadium</td>
+				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
+				<td>Olympic Stadium</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">match_type</td>
+				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
+				<td>Quarter final</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">home_team_photo</td>
+				<td>Team photo for the home team. Full URL or path relative to "assets/images/teams/".</td>
+				<td>netherlands.jpg</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">home_team_flag</td>
+				<td>Flag image for the home team. Full URL or path relative to "assets/images/flags/".</td>
+				<td>netherlands.png</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">home_team_link</td>
+				<td>Link to a page or website with information about the home team.</td>
+				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">home_team_group</td>
+				<td>The group in which the home team is placed.</td>
+				<td>Group A</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">home_team_group_order</td>
+				<td>The order in a group in case multiple teams have the same scores.</td>
+				<td>1</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">home_team_is_real</td>
+				<td>Is the home team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
+				<td>1</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">away_team_photo</td>
+				<td>Team photo for the away team. Full URL or path relative to "assets/images/teams/".</td>
+				<td>netherlands.jpg</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">away_team_flag</td>
+				<td>Flag image for the away team. Full URL or path relative to "assets/images/flags/".</td>
+				<td>netherlands.png</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">away_team_link</td>
+				<td>Link to a page or website with information about the away team.</td>
+				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">away_team_group</td>
+				<td>The group in which the away team is placed.</td>
+				<td>Group A</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">away_team_group_order</td>
+				<td>The order in a group in case multiple teams have the same scores.</td>
+				<td>1</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">away_team_is_real</td>
+				<td>Is the away team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
+				<td>1</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">stadium_photo</td>
+				<td>Photo of the stadium where the match is played. Full URL or path relative to "assets/images/stadiums/".</td>
+				<td>olympic-stadium.jpg</td>
+			</tr>
+		</table>
+		</p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="charts">Using charts</h2>
 		<p>
 		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
@@ -194,10 +353,11 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-chart.png" alt="screenshot" />
 		</p>
 		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
-		Or a little fan mail is also appreciated. ;)</p>
+		Or a little fan mail is also appreciated. :)</p>
 		<?php self::admin_footer(); ?>
 		<p>
 		<?php self::donate_button(); ?>

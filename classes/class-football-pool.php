@@ -100,6 +100,7 @@ class Football_Pool {
 		add_option( 'footballpool_show_team_link', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_show_venues_on_team_page', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_charts', 0 ); // 1: yes, 0: no
+		add_option( 'footballpool_export_format', 0 ); // 0: full, 1: minimal
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -169,6 +170,7 @@ class Football_Pool {
 		delete_option( 'footballpool_show_team_link' );
 		delete_option( 'footballpool_show_venues_on_team_page' );
 		delete_option( 'footballpool_use_charts' );
+		delete_option( 'footballpool_export_format' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {

@@ -85,13 +85,8 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	}
 	
 	private function update( $item_id ) {
-		$item = array(
-						$item_id,
-						Football_Pool_Utils::post_string( 'name' ),
-					);
-		
-		$id = self::update_item( $item );
-		return $id;
+		$name = Football_Pool_Utils::post_string( 'name' );
+		return Football_Pool_Groups::add( $item_id, $name );
 	}
 	
 	private function delete( $item_id ) {
@@ -112,32 +107,6 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_item( $input ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		list( $id, $name ) = $input;
-		
-		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}groups 
-										( name )
-									VALUES 
-										( %s )",
-									$name
-								);
-		} else {
-			$sql = $wpdb->prepare( "UPDATE {$prefix}groups SET
-										name = %s
-									WHERE id = %d",
-									$name, $id
-								);
-		}
-		
-		$wpdb->query( $sql );
-		
-		return ( $id == 0 ) ? $wpdb->insert_id : $id;
-	}
-
 	private function get_items() {
 		$groups = Football_Pool_Groups::get_groups();
 		$output = array();

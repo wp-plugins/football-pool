@@ -150,23 +150,30 @@ class Football_Pool_Admin {
 		$key = esc_attr( $key );
 		echo '<script type="text/javascript">
 			jQuery( document ).ready( function() {
+				window.send_to_editor_restore = window.send_to_editor;
+				
 				jQuery( "#', $key, '_button" ).click( function() {
 					post_id = jQuery( "#post_ID" ).val();
 					tb_show( "", "media-upload.php?football_pool_admin=footballpool-bonus&amp;post_id=0&amp;type=image&amp;TB_iframe=true" );
+					
+					window.send_to_editor = window.send_to_editor_', $key, ';
+					
 					return false;
 				});
 				 
-				window.send_to_editor = function( html ) {
+				window.send_to_editor_', $key, ' = function( html ) {
 					imgurl = jQuery( "img", html ).attr( "src" );
 					if ( imgurl == "" && jQuery( "#src" ) ) imgurl = jQuery( "#src" ).val();
 					
 					jQuery( "#', $key, '" ).val( imgurl );
 					tb_remove();
+					
+					window.send_to_editor = window.send_to_editor_restore;
 				}
 			});
 			</script>';
 		
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
+		echo '<tr id="r-', $key, '" valign="top">
 			<th scope="row"><label for="', $key, '">', $label, '</label></th>
 			<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" title="', esc_attr( $value ), '" class="', esc_attr( $type ), '">
 			<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '"></td>

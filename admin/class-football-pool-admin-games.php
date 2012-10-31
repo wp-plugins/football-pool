@@ -40,7 +40,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					self::notice( sprintf( __( 'Game %d deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
 				else
 					self::notice( __( 'Error performing the requested action.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-				$action = 'view';
 			case 'view':
 			default:
 				self::view();
@@ -90,28 +89,50 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
 			// check the columns
-			$column_names = explode( 
-								FOOTBALLPOOL_CSV_DELIMITER, 
-								'play_date;home_team;away_team;stadium;match_type' 
-							);
+			$full_data = ( count( $header ) != 5 ) ? true : false;
+			if ( $full_data ) {
+				$column_names = explode(
+									FOOTBALLPOOL_CSV_DELIMITER,	'play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo'
+								);
+			} else {
+				$column_names = explode(
+									FOOTBALLPOOL_CSV_DELIMITER, 
+									'play_date;home_team;away_team;stadium;match_type' 
+								);
+			}
 			
 			if ( count( $header ) == count( $column_names ) ) {
 				for ( $i = 0; $i < count( $header ); $i++ ) {
-					if ( $header[$i] != $column_names[$i] )
+					if ( $header[$i] != $column_names[$i] ) {
 						$err[] = sprintf( 
 										__( 'Column %d header should be "%s" &rArr; not "%s"', FOOTBALLPOOL_TEXT_DOMAIN )
 										, ( $i + 1 )
 										, $column_names[$i]
 										, $header[$i]
 								);
+					}
 				}
 				if ( count( $err ) == 0 ) {
-					// import the data
-					// csv data = play_date;home_team;away_team;stadium;match_type
+					// import the data (note: teams are always imported as active)
 					while ( ( $data = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false ) {
-						$play_date  = $data[0];
+						$play_date = $data[0];
 						// home
-						$home_team  = Football_Pool_Teams::get_team_by_name( $data[1], 'addnew' );
+						$extra_data = '';
+						if ( $full_data ) {
+							$group = Football_Pool_Groups::get_group_by_name( $data[8], 'addnew' );
+							$group_id = $group->id;
+							
+							$extra_data = array(
+												'photo' => $data[5],
+												'flag' => $data[6],
+												'link' => $data[7],
+												'group_id' => $group_id,
+												'group_order' => $data[9],
+												'is_real' => $data[10],
+												'is_active' => 1,
+												);
+						}
+						$home_team = Football_Pool_Teams::get_team_by_name( $data[1], 'addnew', $extra_data );
 						$home_team_id = $home_team->id;
 						if ( isset( $home_team->inserted ) && $home_team->inserted == true ) {
 							$msg[] = sprintf(
@@ -120,7 +141,22 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 									);
 						}
 						// away
-						$away_team  = Football_Pool_Teams::get_team_by_name( $data[2], 'addnew' );
+						$extra_data = '';
+						if ( $full_data ) {
+							$group = Football_Pool_Groups::get_group_by_name( $data[14], 'addnew' );
+							$group_id = $group->id;
+							
+							$extra_data = array(
+												'photo' => $data[11],
+												'flag' => $data[12],
+												'link' => $data[13],
+												'group_id' => $group_id,
+												'group_order' => $data[15],
+												'is_real' => $data[16],
+												'is_active' => 1,
+												);
+						}
+						$away_team = Football_Pool_Teams::get_team_by_name( $data[2], 'addnew', $extra_data );
 						$away_team_id = $away_team->id;
 						if ( isset( $away_team->inserted ) && $away_team->inserted == true ) {
 							$msg[] = sprintf(
@@ -129,7 +165,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 									);
 						}
 						// stadium
-						$stadium    = Football_Pool_Stadiums::get_stadium_by_name( $data[3], 'addnew' );
+						$extra_data = '';
+						if ( $full_data ) {
+							$extra_data = array( 'photo' => $data[17] );
+						}
+						$stadium = Football_Pool_Stadiums::get_stadium_by_name( $data[3], 'addnew', $extra_data );
 						$stadium_id = $stadium->id;
 						if ( isset( $stadium->inserted ) && $stadium->inserted == true ) {
 							$msg[] = sprintf(
@@ -182,6 +222,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			if ( count( $errors ) > 0 ) self::notice( implode( '<br>', $errors ), 'important' );
 			if ( count( $import_log ) > 0 ) self::notice( implode( '<br>', $import_log ) );
 		}
+		
+		self::intro( sprintf( __( 'More information about the csv file import can be found in the <a href="%s">help file</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), '?page=footballpool-help#teams-groups-and-matches' ) );
 		
 		// check if upload dir exists and is writable
 		$upload_is_readable = is_readable( FOOTBALLPOOL_CSV_UPLOAD_DIR );
@@ -259,13 +301,17 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->get_info();
 		
+		$full_data = ( Football_Pool_Utils::get_fp_option( 'export_format', 0, 'int' ) == 0 );
+		$download_url = FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php';
+		if ( ! $full_data ) $download_url .= '?format=minimal';
+		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );
 		echo '<span style="float: right;">';
 		self::secondary_button( __( 'Bulk change game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 'schedule', false );
 		self::secondary_button( 
 			__( 'Download game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php', 
+			$download_url, 
 			false, 
 			'link' 
 		);

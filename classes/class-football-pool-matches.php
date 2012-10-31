@@ -372,6 +372,8 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_match_type_by_name( $name, $addnew = 'no' ) {
+		if ( $name == '' ) return 0;
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

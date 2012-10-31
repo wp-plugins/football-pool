@@ -37,6 +37,8 @@ class Football_Pool_Stadiums {
 	
 	// returns object
 	public function get_stadium_by_name( $name, $addnew = 'no', $extra_data = '' ) {
+		if ( $name == '' ) return 0;
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

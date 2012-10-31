@@ -40,6 +40,8 @@ class Football_Pool_Teams {
 	
 	// returns object
 	public function get_team_by_name( $name, $addnew = 'no', $extra_data = '' ) {
+		if ( $name == '' ) return 0;
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

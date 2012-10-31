@@ -79,7 +79,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'shoutbox_max_chars' =>
 							array( 'text', __( 'Maximum length for a shoutbox message *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_leagues' => 
-							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are allready points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
+							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are already points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
 						'default_league_new_user' => 
 							array( 'text', __( 'Standard league for new users', FOOTBALLPOOL_TEXT_DOMAIN ), 'default_league_new_user', __( 'The standard league (<a href="?page=footballpool-leagues">fill in the league ID</a>) a new user will be placed after registration.', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues' ),
 						'dashboard_image' =>
@@ -96,6 +96,17 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Show venues on team page', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_venues_on_team_page', __( "Switch off if you don't want to show all venues a team plays in during a season or tournament (in national competitions the venue list is a bit useless).", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_charts' =>
 							array( 'checkbox', __( 'Use charts', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_charts', sprintf( __( 'The Highcharts API is needed for this feature. See the <%s>Help page<%s> for information on installing this library.', FOOTBALLPOOL_TEXT_DOMAIN ), 'a href="?page=footballpool-help#charts"', '/a' ) ),
+						'export_format' =>
+							array( 
+								'radiolist', 
+								__( 'Format for the csv export (match schedule)', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'export_format', 
+								array( 
+									array( 'value' => 0, 'text' => __( 'Full data', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 1, 'text' => __( 'Minimal data', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+								),
+								__( 'Select the format of the csv export. See help file for more information.', FOOTBALLPOOL_TEXT_DOMAIN ),
+							),
 					);
 		
 		$donate = '<div class="donate">' 
@@ -160,6 +171,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Pool Layout &amp; Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['export_format'],
 									$options['use_charts'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],

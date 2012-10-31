@@ -1,5 +1,34 @@
 <?php
 class Football_Pool_Groups {
+	public function add( $name ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sql = $wpdb->prepare( "INSERT INTO {$prefix}groups ( name )
+								VALUES ( %s )",
+								$name
+							);
+		$wpdb->query( $sql );
+		return $wpdb->insert_id;
+	}
+	
+	public function update( $id, $name ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $id == 0 ) {
+			$id = $this->add( $name );
+		} else {
+			$sql = $wpdb->prepare( "UPDATE {$prefix}groups SET
+										name = %s
+									WHERE id = %d",
+									$name, $id
+								);
+			$wpdb->query( $sql );
+		}
+		
+		return $id;
+	}
+	
 	public function get_groups() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -14,6 +43,27 @@ class Football_Pool_Groups {
 		
 		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}groups WHERE id = %d", $id );
 		return $wpdb->get_row( $sql );
+	}
+	
+	public function get_group_by_name( $name, $addnew = '' ) {
+		if ( $name == '' ) return 0;
+		
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}groups WHERE name = %s", $name );
+		$result = $wpdb->get_row( $sql );
+		
+		if ( $addnew == 'addnew' && $result == null ) {
+			$id = self::add( $name );
+			$result = (object) array( 
+									'id'          => $id, 
+									'name'        => $name,
+									'inserted'    => true
+									);
+		}
+		
+		return $result;
 	}
 	
 	public function get_group_names() {
