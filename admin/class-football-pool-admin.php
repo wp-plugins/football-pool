@@ -133,7 +133,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function get_value( $key, $default = '' ) {
-		return Football_Pool_Utils::get_wp_option( 'footballpool_' . $key, $default );
+		return Football_Pool_Utils::get_fp_option( $key, $default );
 	}
 	
 	public function set_value( $key, $value, $type = 'text' ) {
@@ -189,9 +189,13 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function dropdown_input( $label, $key, $value, $options, $description = '', $extra_attr = '' ) {
+	public function dropdown_input( $label, $key, $value, $options, $description = '', 
+									$extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
 		$i = 0;
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
+		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
 		echo '<td><select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
@@ -199,13 +203,16 @@ class Football_Pool_Admin {
 			} else {
 				$extra = $extra_attr;
 			}
-			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '> ', $option['text'], '</option>';
+			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '>', $option['text'], '</option>';
 			$i++;
 		}
 		echo '</select></td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
-	public function radiolist_input( $label, $key, $value, $options, $description = '', $extra_attr = '' ) {
+	public function radiolist_input( $label, $key, $value, $options, $description = '', 
+									$extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
 		$i = 0;
 		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_0">', $label, '</label></th><td>';
 		foreach ( $options as $option ) {
@@ -293,10 +300,10 @@ class Football_Pool_Admin {
 		} elseif ( is_array( $depends_on ) ) {
 			$hide = true;
 			foreach ( $depends_on as $key => $val ) {
-				$hide &= (int)self::get_value( $key ) == $val;
+				$hide &= (string)self::get_value( $key ) == (string)$val;
 			}
 		} else {
-			$hide = ( $depends_on != '' && (int)self::get_value( $depends_on ) == 0 );
+			$hide = ( $depends_on != '' && (string)self::get_value( $depends_on ) == '0' );
 		}
 		
 		return $hide;
@@ -313,9 +320,21 @@ class Football_Pool_Admin {
 	}
 	
 	public function show_option( $option ) {
-		switch ( $option[0] ) {
+		if ( is_array( $option[0] ) ) {
+			$type = $option[0][0];
+		} else {
+			$type = $option[0];
+		}
+		
+		switch ( $type ) {
+			case 'dropdownlist':
+			case 'dropdown':
+			case 'select':
+			case 'selectbox':
+				self::dropdown_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
+				break;
 			case 'radiolist':
-				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5] );
+				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
 				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
@@ -333,13 +352,20 @@ class Football_Pool_Admin {
 	}
 	
 	public function show_value( $option ) {
-		switch ( $option[0] ) {
+		if ( is_array( $option[0] ) ) {
+			$type = $option[0][0];
+		} else {
+			$type = $option[0];
+		}
+		
+		switch ( $type ) {
 			case 'no_input':
 				self::no_input( $option[1], $option[3], $option[4] );
 				break;
 			case 'dropdownlist':
 			case 'dropdown':
 			case 'select':
+			case 'selectbox':
 				self::dropdown_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'radiolist':

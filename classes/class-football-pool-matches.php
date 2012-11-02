@@ -12,16 +12,16 @@ class Football_Pool_Matches {
 		$this->joker_blocked = false;
 		$this->enable_edits();
 		
-		$datetime = Football_Pool_Utils::get_wp_option( 'footballpool_matches_locktime', '' );
+		$datetime = Football_Pool_Utils::get_fp_option( 'matches_locktime', '' );
 		$this->force_lock_time = 
-			( Football_Pool_Utils::get_wp_option( 'footballpool_stop_time_method_matches', 0, 'int' ) == 1 )
+			( Football_Pool_Utils::get_fp_option( 'stop_time_method_matches', 0, 'int' ) == 1 )
 			&& ( $datetime != '' );
 		if ( $this->force_lock_time ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $datetime );
 			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime ) );
 			$this->lock = $date->getTimestamp();
 		} else {
-			$this->lock = Football_Pool_Utils::get_wp_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
+			$this->lock = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 		}
 		
 		// cache match info
@@ -52,7 +52,7 @@ class Football_Pool_Matches {
 		return $match; // null if no match is found
 	}
 	
-	public function get_last_matches ( $num_games ) {
+	public function get_last_matches ( $num_games = 4 ) {
 		return $this->get_last_games( $num_games );
 	}
 	public function get_last_games( $num_games = 4 ) {
@@ -175,7 +175,7 @@ class Football_Pool_Matches {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT m.nr FROM {$prefix}matches m 
 								LEFT OUTER JOIN {$prefix}predictions p 
-									ON (p.matchNr = m.nr AND p.userId = %d)
+									ON ( p.matchNr = m.nr AND p.userId = %d )
 								WHERE p.userId IS NULL
 								ORDER BY m.playDate ASC, nr ASC LIMIT 1",
 								$user
@@ -190,8 +190,8 @@ class Football_Pool_Matches {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT homeTeamId, awayTeamId, homeScore, awayScore 
 								FROM {$prefix}matches 
-								WHERE (homeTeamId = %d AND awayTeamId = %d) 
-									OR (homeTeamId = %d AND awayTeamId = %d)",
+								WHERE ( homeTeamId = %d AND awayTeamId = %d ) 
+									OR ( homeTeamId = %d AND awayTeamId = %d )",
 								$a, $b,
 								$b, $a
 							);
@@ -263,7 +263,7 @@ class Football_Pool_Matches {
 									<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
-							$matchdate->format( 'H:i' ),
+							$this->format_match_time( $matchdate ),
 							$team_name,
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
@@ -336,7 +336,7 @@ class Football_Pool_Matches {
 								<td>%s</td>
 								</tr>',
 							$row['nr'],
-							$matchdate->format( 'H:i' ),
+							$this->format_match_time( $matchdate ),
 							$teams->team_names[ (integer) $row['homeTeamId'] ],
 							$teams->flag_image( (integer) $row['homeTeamId'] ),
 							$this->show_pool_input( '_home_' . $row['nr'], $row['homeScore'], $row['match_timestamp'] ),
@@ -353,6 +353,19 @@ class Football_Pool_Matches {
 		
 		$this->joker_value = $joker;
 		return $output;
+	}
+	
+	private function format_match_time( $datetime ) {
+		$display = Football_Pool_Utils::get_fp_option( 'match_time_display' );
+		if ( $display == 0 ) { // WordPress setting
+			$datetime = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime->format( 'Y-m-d H:i' ) ) );
+		} elseif ( $display == 2 ) { // custom setting
+			$offset = Football_Pool_Utils::get_fp_option( 'match_time_offset' );
+			if ( (float)$offset >= 0 ) $offset = '+' . $offset;
+			$datetime->modify( $offset . ' hour' );
+		} // else UTC
+		
+		return $datetime->format( 'H:i' );
 	}
 	
 	public function get_match_types() {

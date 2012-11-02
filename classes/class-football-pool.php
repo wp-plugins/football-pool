@@ -101,6 +101,8 @@ class Football_Pool {
 		add_option( 'footballpool_show_venues_on_team_page', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_use_charts', 0 ); // 1: yes, 0: no
 		add_option( 'footballpool_export_format', 0 ); // 0: full, 1: minimal
+		add_option( 'footballpool_match_time_display', 0 ); // 0: WP setting, 1: UTC, 2: custom
+		add_option( 'footballpool_match_time_offset', 0 ); // time in seconds to add to the start time in the database (negative value for substraction)
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -171,6 +173,8 @@ class Football_Pool {
 		delete_option( 'footballpool_show_venues_on_team_page' );
 		delete_option( 'footballpool_use_charts' );
 		delete_option( 'footballpool_export_format' );
+		delete_option( 'footballpool_match_time_display' );
+		delete_option( 'footballpool_match_time_offset' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
