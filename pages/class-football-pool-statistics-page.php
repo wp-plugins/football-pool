@@ -77,7 +77,7 @@ class Football_Pool_Statistics_Page {
 						$output .= "<div>";
 						
 						$pool = new Football_Pool_Pool;
-						$pool->get_bonus_questions( $user );
+						$pool->get_bonus_questions_for_user( $user );
 						// chart 1: pie, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( array( $user ) );
 						$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 300 );

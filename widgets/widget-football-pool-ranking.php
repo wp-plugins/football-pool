@@ -21,7 +21,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
-				'std' => 'stand'
+				'std' => 'standing'
 			),
 			array(
 				'name' => 'Number of users to show',

@@ -21,7 +21,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 							'desc' => '',
 							'id' => 'title',
 							'type' => 'text',
-							'std' => 'spelers'
+							'std' => 'players'
 						),
 						array(
 							'name' => 'height (px)',

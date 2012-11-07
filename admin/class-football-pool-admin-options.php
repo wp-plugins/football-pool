@@ -1,9 +1,10 @@
 <?php
-//@todo: add options for leaving out links to teampages, links to venuepages, icons/flags for teams 
 class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	public function __construct() {}
 	
 	public function admin() {
+		$action = Football_Pool_Utils::post_string( 'action' );
+		
 		$date = date_i18n( 'Y-m-d H:i' );
 		
 		$match_time_offsets = array();
@@ -24,6 +25,15 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			$offset_text = 'UTC' . $offset_text;
 
 			$match_time_offsets[] = array( 'value' => $offset, 'text' => $offset_text );
+		}
+		// check if offset-dropdowns must be shown
+		
+		if ( $action == 'update' ) {
+			// in case of a save action
+			$offset_switch = ( Football_Pool_Utils::post_int( 'match_time_display' ) !== 2 );			
+		} else {
+			// normal situation
+			$offset_switch = ( (int)Football_Pool_Utils::get_fp_option( 'match_time_display', 0, 'int' ) !== 2 );
 		}
 		
 		$options = array(
@@ -152,8 +162,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								$match_time_offsets,
 								__( 'The offset in hours to add to (or extract from) the UTC start time of a match. Only used for display of the time.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								'',
-								//@todo: this causes a small bug because data is saved later on.
-								( (int)Football_Pool_Utils::get_fp_option( 'match_time_display', 0, 'int' ) !== 2 ),
+								$offset_switch,
 							),
 					);
 		
@@ -169,7 +178,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			else
 				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-		} elseif ( Football_Pool_Utils::post_string( 'action' ) == 'update' ) {
+		} elseif ( $action == 'update' ) {
 			foreach ( $options as $option ) {
 				if ( is_array( $option[0] ) ) {
 					$value_type = $option[0][1];

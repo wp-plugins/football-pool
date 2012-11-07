@@ -21,13 +21,13 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<h2 id="times">Time</h2>
-		<h3>Stop Time</h3>
+		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
-		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff, or a single date/time for all matches. The default is 900 seconds (or 15 minutes) before the start of a match.<br>
+		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff of the match (dynamic time), or a single date/time for all matches. The default is a dynamic time setting of 900 seconds (= 15 minutes) before the start of a match.<br>
 		Bonus questions each have an 'answer before' date and time. But you may override these individual values with a single stop time for all bonus questions. The default is to allow for a 'answer before' time per question.
 		</p>
 		<p>
-		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in UTC.)
+		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in the database in UTC.)
 		</p>
 		
 		<h3>Matches</h3>

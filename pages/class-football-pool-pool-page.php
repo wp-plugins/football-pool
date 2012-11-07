@@ -25,7 +25,7 @@ class Football_Pool_Pool_Page {
 		$output .= $msg;
 		
 		if ( $current_user->ID != 0 && $user_is_player ) {
-			$questions = $pool->get_bonus_questions( $current_user->ID );
+			$questions = $pool->get_bonus_questions_for_user( $current_user->ID );
 			
 			$matches = new Football_Pool_Matches;
 			$result = $matches->get_match_info_for_user( $current_user->ID );
@@ -84,7 +84,7 @@ class Football_Pool_Pool_Page {
 		$pool = new Football_Pool_Pool();
 		
 		foreach ( $questions as $question ) {
-			if ( $pool->bonus_is_editable( $question['questionDate'] ) && $answers[ $question['id'] ] != '') {
+			if ( $pool->bonus_is_editable( $question['question_date'] ) && $answers[ $question['id'] ] != '') {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
 										SET userId = %d,
 											questionId = %d,
@@ -110,14 +110,16 @@ class Football_Pool_Pool_Page {
 		$joker = 0;
 		
 		// only allow setting of joker if it wasn't used before on a played match
-		$sql = $wpdb->prepare( "SELECT UNIX_TIMESTAMP(m.playDate) AS match_timestamp
+		$sql = $wpdb->prepare( "SELECT m.playDate AS match_timestamp
 								FROM {$prefix}predictions p, {$prefix}matches m 
 								WHERE p.matchNr = m.nr 
 									AND p.hasJoker = 1 AND p.userId = %d" 
 								, $user
 							);
-		$ts = $wpdb->get_var( $sql );
-		if ( $ts ) {
+		$play_date = $wpdb->get_var( $sql );
+		if ( $play_date ) {
+			$play_date = new DateTime( $play_date );
+			$ts = $play_date->format( 'U' );
 			if ( $matches->match_is_editable( $ts ) ) {
 				$joker = $this->get_joker();
 			}

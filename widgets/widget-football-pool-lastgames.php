@@ -21,7 +21,7 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
-				'std' => 'laatste wedstrijden'
+				'std' => 'last matches'
 			),
 			array(
 				'name' => 'Number of games to show',

@@ -21,7 +21,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
-				'std' => 'stand'
+				'std' => 'standing'
 			),
 			array(
 				'name'    => 'Show this group',

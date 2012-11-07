@@ -67,7 +67,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '<form action="" method="post">';
 			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
-			$questiondate = new DateTime( $question['answerBeforeDate'] );
+			$questiondate = new DateTime( $question['answer_before_date'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
 			echo '<h3>', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
@@ -128,15 +128,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	private function edit( $id ) {
 		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 		$values = array(
-						'question'			=> '',
-						'points'			=> '',
-						'answerBeforeDate'	=> $exampledate,
-						'scoreDate'			=> '',
-						'answer'			=> '',
-						'type'				=> 1,
-						'options'			=> '',
-						'max_answers'		=> '',
-						'image'				=> '',
+						'question'				=> '',
+						'points'				=> '',
+						'answer_before_date'	=> $exampledate,
+						'score_date'			=> '',
+						'answer'				=> '',
+						'type'					=> 1,
+						'options'				=> '',
+						'max_answers'			=> '',
+						'image'					=> '',
 					);
 		
 		$pool = new Football_Pool_Pool();
@@ -155,8 +155,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answerBeforeDate'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['scoreDate'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
 						'radiolist', 
@@ -198,7 +198,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		submit_button( __( 'Save & Close' ), 'primary', 'submit', false );
 		submit_button( null, 'secondary', 'save', false );
 		self::cancel_button();
-		submit_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'edit-user-answers', false, array( 'onclick' => "jQuery('#action').val('user-answers')" ) );
+		self::secondary_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'user-answers', false );
 		echo '</p>';
 	}
 	
@@ -220,8 +220,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$rows[] = array(
 						$question['question'], 
 						$question['points'], 
-						self::date_from_gmt( $question['answerBeforeDate'] ), 
-						self::date_from_gmt( $question['scoreDate'] ), 
+						self::date_from_gmt( $question['answer_before_date'] ), 
+						self::date_from_gmt( $question['score_date'] ), 
 						$question['answer'],
 						$question['id']
 					);

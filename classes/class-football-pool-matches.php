@@ -43,13 +43,15 @@ class Football_Pool_Matches {
 		
 		if ( $ts == -1 ) $ts = time();
 		
-		$sql = "SELECT nr, homeTeamId, awayTeamId, UNIX_TIMESTAMP( playDate ) AS ts, playDate
-				FROM {$prefix}matches
-				WHERE UNIX_TIMESTAMP( playDate ) > {$ts}
-				ORDER BY playDate ASC
-				LIMIT 1";
-		$match = $wpdb->get_row( $sql, ARRAY_A );
-		return $match; // null if no match is found
+		$next_match = null;
+		foreach ( $this->matches as $match ) {
+			if ( $match['match_timestamp'] > $ts ) {
+				$next_match = $match;
+				break;
+			}
+		}
+		
+		return $next_match; // null if no match is found
 	}
 	
 	public function get_last_matches ( $num_games = 4 ) {
@@ -109,11 +111,13 @@ class Football_Pool_Matches {
 			$rows = $wpdb->get_results( $this->matches_query(), ARRAY_A );
 			foreach ( $rows as $row ) {
 				$i = $row['nr'];
-				$match_info[$i] = array();
 				$matchdate = new DateTime( $row['playDate'] );
+				$ts = $matchdate->format( 'U' );
 				
+				$match_info[$i] = array();
 				$match_info[$i]['match_datetime'] = $matchdate->format( 'd M Y H:i' );
-				$match_info[$i]['match_timestamp'] = $row['match_timestamp'];
+				// $match_info[$i]['match_timestamp'] = $row['match_timestamp'];
+				$match_info[$i]['match_timestamp'] = $ts;
 				$match_info[$i]['playDate'] = $row['playDate'];
 				$match_info[$i]['date'] = $row['playDate'];
 				$match_info[$i]['home_score'] = $row['homeScore'];
@@ -122,7 +126,7 @@ class Football_Pool_Matches {
 				$match_info[$i]['away_team'] = $teams->team_names[(integer) $row['awayTeamId'] ];
 				$match_info[$i]['home_team_id'] = $row['homeTeamId'];
 				$match_info[$i]['away_team_id'] = $row['awayTeamId'];
-				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $row['match_timestamp'] );
+				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $ts );
 				$match_info[$i]['nr'] = $row['nr'];
 				$match_info[$i]['stadium_id'] = $row['stadiumId'];
 				$match_info[$i]['stadium_name'] = $row['stadiumName'];
@@ -335,18 +339,18 @@ class Football_Pool_Matches {
 								<td title="%s" class="numeric">%s</td>
 								<td>%s</td>
 								</tr>',
-							$row['nr'],
+							$info['nr'],
 							$this->format_match_time( $matchdate ),
-							$teams->team_names[ (integer) $row['homeTeamId'] ],
-							$teams->flag_image( (integer) $row['homeTeamId'] ),
-							$this->show_pool_input( '_home_' . $row['nr'], $row['homeScore'], $row['match_timestamp'] ),
-							$this->show_pool_input( '_away_' . $row['nr'], $row['awayScore'], $row['match_timestamp'] ),
-							$teams->flag_image( (integer) $row['awayTeamId'] ),
-							$teams->team_names[ (integer) $row['awayTeamId'] ],
-							$this->show_pool_joker( $joker, (integer) $row['nr'], $row['match_timestamp'] ),
+							$teams->team_names[ (integer) $info['home_team_id'] ],
+							$teams->flag_image( (integer) $info['home_team_id'] ),
+							$this->show_pool_input( '_home_' . $info['nr'], $info['home_score'], $info['match_timestamp'] ),
+							$this->show_pool_input( '_away_' . $info['nr'], $info['away_score'], $info['match_timestamp'] ),
+							$teams->flag_image( (integer) $info['away_team_id'] ),
+							$teams->team_names[ (integer) $info['away_team_id'] ],
+							$this->show_pool_joker( $joker, (integer) $info['nr'], $info['match_timestamp'] ),
 							__( 'score', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $row['match_timestamp'] ),
-							$this->show_users_link( $row['nr'], $row['match_timestamp'] )
+							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $info['match_timestamp'] ),
+							$this->show_users_link( $info['nr'], $info['match_timestamp'] )
 						);
 		}
 		$output .= '</table>';
@@ -360,9 +364,9 @@ class Football_Pool_Matches {
 		if ( $display == 0 ) { // WordPress setting
 			$datetime = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime->format( 'Y-m-d H:i' ) ) );
 		} elseif ( $display == 2 ) { // custom setting
-			$offset = Football_Pool_Utils::get_fp_option( 'match_time_offset' );
-			if ( (float)$offset >= 0 ) $offset = '+' . $offset;
-			$datetime->modify( $offset . ' hour' );
+			$offset = 60 * 60 * (float)Football_Pool_Utils::get_fp_option( 'match_time_offset' );
+			if ( $offset >= 0 ) $offset = '+' . $offset;
+			$datetime->modify( $offset . ' seconds' );
 		} // else UTC
 		
 		return $datetime->format( 'H:i' );

@@ -67,12 +67,11 @@ class Football_Pool_Groups {
 	}
 	
 	public function get_group_names() {
-		//@todo: remove auto translation of group name??
 		$group_names = array();
 		
 		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
-			$group_names[ (integer) $row['id'] ] = htmlentities( __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'] );
 		}
 		
 		return $group_names;

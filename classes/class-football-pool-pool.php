@@ -18,7 +18,7 @@ class Football_Pool_Pool {
 		if ( $this->force_lock_time ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->lock_datestring );
 			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->lock_datestring ) );
-			$this->lock_timestamp = $date->getTimestamp();
+			$this->lock_timestamp = $date->format( 'U' );
 		} else {
 			$this->lock_timestamp = 0; // bonus questions have no time threshold
 		}
@@ -314,69 +314,106 @@ class Football_Pool_Pool {
 		$wpdb->query( $sql );
 	}
 	
-	public function get_bonus_questions( $user = 0 ) {
+	public function get_bonus_questions_for_user( $user_id = 0 ) {
+		if ( $user_id == 0 ) return false;
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		// also include user answers
+		$sql = $wpdb->prepare( "SELECT 
+									q.id, q.question, a.answer, 
+									q.points, a.points AS userPoints, 
+									q.answerBeforeDate AS questionDate, 
+									DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
+									DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
+									q.matchNr, a.correct,
+									qt.type, qt.options, qt.image, qt.max_answers
+								FROM {$prefix}bonusquestions q 
+								INNER JOIN {$prefix}bonusquestions_type qt
+									ON ( q.id = qt.question_id )
+								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
+									ON ( a.questionId = q.id AND a.userId = %d )
+								ORDER BY q.answerBeforeDate ASC",
+							$user_id
+						);
 		
-		if ( $user == 0 ) {
-			// just the questions
-			$sql = "SELECT q.id, q.question, q.answer, q.points, UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
-					DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
-					DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
-					qt.type, qt.options, qt.image, qt.max_answers
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		$questions = array();
+		
+		if ( count( $rows ) > 0 ) {
+			$this->has_bonus_questions = true;
+			$i = 0;
+			foreach ( $rows as $row ) {
+				$questions[$i] = $row;
+				$ts = new DateTime( $row['questionDate'] );
+				$ts = $ts->format( 'U' );
+				$questions[$i]['question_date'] = $ts;
+				$i++;
+			}
+		}
+		
+		return $questions;
+	}
+	
+	// returns array of questions
+	public function get_bonus_questions() {
+		$cache_key = 'fp_bonus_question_info';
+		$question_info = wp_cache_get( $cache_key );
+		
+		if ( $question_info === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+			$sql = "SELECT 
+						q.id, q.question, q.answer, q.points, q.answerBeforeDate AS questionDate, 
+						DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
+						DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
+						qt.type, qt.options, qt.image, qt.max_answers
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
 						ON ( q.id = qt.question_id )
 					ORDER BY q.answerBeforeDate ASC";
-		} else {
-			// also user answers
-			$sql = $wpdb->prepare( "SELECT 
-										q.id, q.question, a.answer, 
-										q.points, a.points AS userPoints, 
-										UNIX_TIMESTAMP(q.answerBeforeDate) AS questionDate, 
-										DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
-										DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
-										q.matchNr, a.correct,
-										qt.type, qt.options, qt.image, qt.max_answers
-									FROM {$prefix}bonusquestions q 
-									INNER JOIN {$prefix}bonusquestions_type qt
-										ON ( q.id = qt.question_id )
-									LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
-										ON ( a.questionId = q.id AND a.userId = %d )
-									ORDER BY q.answerBeforeDate ASC",
-								$user
-							);
+		
+			$rows = $wpdb->get_results( $sql );
+			if ( count( $rows ) > 0 ) $this->has_bonus_questions = true;
+			
+			foreach ( $rows as $row ) {
+				$i = $row->id;
+				$question_date = new DateTime( $row->questionDate );
+				$ts = $question_date->format( 'U' );
+				
+				$question_info[$i] = array();
+				$question_info[$i]['id'] = $i;
+				$question_info[$i]['question'] = $row->question;
+				$question_info[$i]['answer'] = $row->answer;
+				$question_info[$i]['points'] = $row->points;
+				$question_info[$i]['question_date'] = $ts;
+				$question_info[$i]['score_date'] = $row->scoreDate;
+				$question_info[$i]['answer_before_date'] = $row->answerBeforeDate;
+				$question_info[$i]['match_nr'] = $row->matchNr;
+				$question_info[$i]['type'] = $row->type;
+				$question_info[$i]['options'] = $row->options;
+				$question_info[$i]['image'] = $row->image;
+				$question_info[$i]['max_answers'] = $row->max_answers;
+			}
+			
+			wp_cache_set( $cache_key, $question_info );
 		}
 		
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-		if ( count( $rows ) > 0 ) $this->has_bonus_questions = true;
-		return $rows;
+		return $question_info;
 	}
 	
-	public function get_bonus_question( $id = 0 ) {
-		if ( $id == 0 ) return false;
-		
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$sql = $wpdb->prepare( "SElECT q.id, q.question, q.answer, q.points, 
-									DATE_FORMAT(q.answerBeforeDate, '%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
-									DATE_FORMAT(q.scoreDate, '%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
-									q.matchNr, 
-									UNIX_TIMESTAMP(q.answerBeforeDate) as questionDate,
-									qt.type, qt.options, qt.image, qt.max_answers
-								FROM {$prefix}bonusquestions q
-								INNER JOIN {$prefix}bonusquestions_type qt
-									ON ( q.id = qt.question_id )
-								WHERE q.id = %d", 
-							$id
-							);
-		return $wpdb->get_row( $sql, ARRAY_A );
+	public function get_bonus_question( $id ) {
+		return $this->get_bonus_question_info( $id );
 	}
 	
 	public function get_bonus_question_info( $id ) {
-		$info = $this->get_bonus_question( $id );
-		if ( $info ) $info['bonus_is_editable'] = $this->bonus_is_editable( $info['questionDate'] );
+		$info = false;
+		$questions = $this->get_bonus_questions();
+		if ( array_key_exists( $id, $questions ) ) {
+			$info = $questions[$id];
+			$info['bonus_is_editable'] = $this->bonus_is_editable( $info['question_date'] );
+		}
 		return $info;
 	}
 	
@@ -494,7 +531,7 @@ class Football_Pool_Pool {
 		// to local time
 		$lock_time = Football_Pool_Utils::date_from_gmt( $lock_time );
 		
-		if ( $this->bonus_is_editable( $question['questionDate'] ) ) {
+		if ( $this->bonus_is_editable( $question['question_date'] ) ) {
 			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
 			
 			$output .= '<p>';
@@ -540,7 +577,7 @@ class Football_Pool_Pool {
 		$statspage = Football_Pool::get_page_link( 'statistics' );
 		
 		foreach ( $questions as $question ) {
-			if ( ! $this->bonus_is_editable( $question['questionDate'] ) ) {
+			if ( ! $this->bonus_is_editable( $question['question_date'] ) ) {
 				$output .= '<div class="bonus userview">';
 				$output .= sprintf( '<p class="question"><span class="nr">%d.</span> %s</p>'
 									, $nr++

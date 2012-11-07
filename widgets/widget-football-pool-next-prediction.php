@@ -23,7 +23,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				'desc' => '',
 				'id' => 'title',
 				'type' => 'text',
-				'std' => 'aftellen'
+				'std' => 'countdown'
 			),
 			array(
 				'name' => 'Also show when not logged in?',
@@ -45,7 +45,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		
-		$countdown_date = new DateTime( $match['playDate'] );
+		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match['playDate'] ) );
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
 		$day   = $countdown_date->format( 'd' );
@@ -77,8 +77,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				</script>";
 		if ( $teams->show_team_links ) {
 			$teampage = Football_Pool::get_page_link( 'teams' );
-			$url_home = esc_url( add_query_arg( array( 'team' => $match['homeTeamId'] ), $teampage ) );
-			$url_away = esc_url( add_query_arg( array( 'team' => $match['awayTeamId'] ), $teampage ) );
+			$url_home = esc_url( add_query_arg( array( 'team' => $match['home_team_id'] ), $teampage ) );
+			$url_away = esc_url( add_query_arg( array( 'team' => $match['away_team_id'] ), $teampage ) );
 			$team_str = '<a href="%s">%s</a>';
 		} else {
 			$url_home = $url_away = '';
@@ -86,9 +86,9 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		printf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
 				, $url_home
-				, $teams->team_names[ (int) $match['homeTeamId'] ]
+				, $teams->team_names[ (int) $match['home_team_id'] ]
 				, $url_away
-				, $teams->team_names[ (int) $match['awayTeamId'] ]
+				, $teams->team_names[ (int) $match['away_team_id'] ]
 			);
 	}
 	

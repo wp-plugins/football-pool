@@ -12,17 +12,16 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	public $is_active = 1;
 	
 	public function __construct( $team = 0 ) {
-		//@todo: remove translation of team name and group name??
 		if ( is_int( $team ) && $team != 0 ) {
 			$t = $this->get_team_by_id( $team );
 			if ( is_object( $t ) ) {
 				$this->id = $t->id;
-				$this->name = __( $t->name, FOOTBALLPOOL_TEXT_DOMAIN );
+				$this->name = $t->name;
 				$this->photo = $t->photo;
 				$this->flag = $t->flag;
 				$this->link = $t->link;
 				$this->group_id = $t->group_id;
-				$this->group_name = __( $t->group_name, FOOTBALLPOOL_TEXT_DOMAIN );
+				$this->group_name = $t->group_name;
 				$this->group_order = $t->group_order;
 				$this->is_real = $t->is_real;
 				$this->is_active = $t->is_active;
