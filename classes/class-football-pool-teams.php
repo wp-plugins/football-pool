@@ -7,7 +7,6 @@ class Football_Pool_Teams {
 	public $show_team_links;
 	
 	const CACHE_KEY_TEAMS = 'fp_get_teams';
-	const CACHE_KEY_EXTRA_TEAMS = 'fp_get_extra_teams';
 	
 	public function __construct() {
 		// get the team_names
@@ -164,27 +163,6 @@ class Football_Pool_Teams {
 		}
 	}
 	
-	public function get_extra_teams() {
-		$rows = wp_cache_get( self::CACHE_KEY_EXTRA_TEAMS );
-		
-		if ( $rows === false ) {
-			global $wpdb;
-			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			$sql = "SELECT id, name 
-					FROM {$prefix}teams
-					WHERE is_real = 0
-					ORDER BY id DESC";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( self::CACHE_KEY_EXTRA_TEAMS, $rows );
-		}
-		
-		$teams = array();
-		foreach ( $rows as $row ) {
-			$teams[ $row['id'] ] = __( $row['name'], FOOTBALLPOOL_TEXT_DOMAIN );
-		}
-		return $teams;
-	}
-	
 	public function get_teams() {
 		$rows = wp_cache_get( self::CACHE_KEY_TEAMS );
 		
@@ -226,8 +204,7 @@ class Football_Pool_Teams {
 		while ( $team = array_shift( $teams ) ) {
 			$team_names[$team->id] = $team->name;
 		}
-		// don't use array_merge, because we want to preserve the keys
-		return $team_names;// + $this->get_extra_teams();
+		return $team_names;
 	}
 	
 	/* get an array with all the team_flags (for real and active teams) */
