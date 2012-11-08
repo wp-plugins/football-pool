@@ -95,8 +95,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 									$pool->leagues[$league_id]['leagueName'] : 
 									__( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 			
-			$is_no_player = in_array( $user->ID, $excluded_players ) ? 1 : 0;
 			$plays_in_league = array_key_exists( $user->ID, $league_users ) ? $league_users[$user->ID] : 0;
+			$is_no_player = in_array( $user->ID, $excluded_players ) ? 1 : 0;
+			if ( $pool->has_leagues ) {
+				$is_no_player = ( $is_no_player || $plays_in_league == 0 ) ? 1 : 0; 
+			}
 			
 			$output[] = array(
 							'id'					=> $user->ID,

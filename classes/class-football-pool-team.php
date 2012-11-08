@@ -33,7 +33,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			$this->flag = $team['flag'];
 			$this->link = $team['link'];
 			$this->group_id = $team['groupId'];
-			$this->group_name = __( $team['groupName'], FOOTBALLPOOL_TEXT_DOMAIN );
+			$this->group_name = $team['groupName'];
 			$this->group_order = $team['group_order'];
 			$this->is_real = $team['is_real'];
 			$this->is_active = $team['is_active'];
@@ -66,16 +66,11 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT 
-									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
-									m.homeTeamId, 
-									m.awayTeamId, 
-									m.homeScore, 
-									m.awayScore, 
-									s.id, 
-									s.name, 
+									m.homeTeamId, m.awayTeamId, 
+									m.homeScore, m.awayScore, 
+									s.id, s.name, 
 									t.name AS matchtype, 
-									m.nr,
-									m.playDate 
+									m.nr, m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 

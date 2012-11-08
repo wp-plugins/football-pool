@@ -1,6 +1,7 @@
 <?php
 class Football_Pool_Teams {
 	private $extra_teams;
+	public $team_types;
 	public $team_names;
 	public $team_flags;
 	public $show_team_links;
@@ -9,6 +10,8 @@ class Football_Pool_Teams {
 	const CACHE_KEY_EXTRA_TEAMS = 'fp_get_extra_teams';
 	
 	public function __construct() {
+		// get the team_names
+		$this->team_types = $this->get_team_types();
 		// get the team_names
 		$this->team_names = $this->get_team_names();
 		// get the flags
@@ -114,10 +117,12 @@ class Football_Pool_Teams {
 	public function print_lines( $teams ) {
 		$output = '';
 		while ( $team = array_shift( $teams ) ) {
-			$output .= sprintf( '<li><a href="%s">%s</a></li>'
-								, add_query_arg( array( 'team' => $team->id ) )
-								, $team->name 
-						);
+			if ( $team->is_real == 1 && $team->is_active == 1 ) {
+				$output .= sprintf( '<li><a href="%s">%s</a></li>'
+									, add_query_arg( array( 'team' => $team->id ) )
+									, $team->name
+							);
+			}
 		}
 		return $output;
 	}
@@ -180,23 +185,19 @@ class Football_Pool_Teams {
 		return $teams;
 	}
 	
-	public function get_teams( $for = 'site' ) {
+	public function get_teams() {
 		$rows = wp_cache_get( self::CACHE_KEY_TEAMS );
 		
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
-			$where_clause = ( $for == 'site' ) ? 'WHERE t.is_real = 1 AND t.is_active = 1' : '';
-			
-			$sql = sprintf( 
-					"SELECT 
+			$sql = "SELECT 
 						t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder,
-						t.is_real, t.is_active
+						t.is_real, t.is_active, t.groupOrder AS group_order
 					FROM {$prefix}teams t
 					LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id 
-					%s
-					ORDER BY t.name ASC", $where_clause );
+					ORDER BY t.name ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			wp_cache_set( self::CACHE_KEY_TEAMS, $rows );
 		}
@@ -208,7 +209,17 @@ class Football_Pool_Teams {
 		return $teams;
 	}
 
-	/* get an array containing all the team names */
+	/* get an array containing all the team types (real or not) */
+	private function get_team_types() {
+		$teams = $this->get_teams();
+		$team_types = array();
+		while ( $team = array_shift( $teams ) ) {
+			$team_types[$team->id] = ( $team->is_real == 1 );
+		}
+		return $team_types;
+	}
+	
+	/* get an array containing all the team names (those that are real and active) */
 	private function get_team_names() {
 		$teams = $this->get_teams();
 		$team_names = array();
@@ -216,10 +227,10 @@ class Football_Pool_Teams {
 			$team_names[$team->id] = $team->name;
 		}
 		// don't use array_merge, because we want to preserve the keys
-		return $team_names + $this->get_extra_teams();
+		return $team_names;// + $this->get_extra_teams();
 	}
 	
-	/* get an array with all the team_flags */
+	/* get an array with all the team_flags (for real and active teams) */
 	private function get_team_flags() {
 		$teams = $this->get_teams();
 		$flags = array();

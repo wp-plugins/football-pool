@@ -86,9 +86,11 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		printf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
 				, $url_home
-				, $teams->team_names[ (int) $match['home_team_id'] ]
+				, ( isset( $teams->team_names[ (int) $match['home_team_id'] ] ) ?
+							$teams->team_names[ (int) $match['home_team_id'] ] : '' )
 				, $url_away
-				, $teams->team_names[ (int) $match['away_team_id'] ]
+				, ( isset( $teams->team_names[ (int) $match['away_team_id'] ] ) ?
+							$teams->team_names[ (int) $match['away_team_id'] ] : '' )
 			);
 	}
 	

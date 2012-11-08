@@ -7,7 +7,7 @@ class Football_Pool_Teams_Page {
 		$team = new Football_Pool_Team( $team_ID );
 		
 		// show details for team or show links for all teams
-		if ( $team->id != 0 ) {
+		if ( $team->id != 0 && $team->is_real == 1 && $team->is_active == 1 ) {
 			// team details
 			$output .= sprintf( '<h3><a href="%s" title="%s">%s</a></h3>', 
 								$team->link, 

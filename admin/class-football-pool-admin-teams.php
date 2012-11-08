@@ -209,7 +209,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 	}
 
 	private function get_teams() {
-		$teams = Football_Pool_Teams::get_teams( 'admin' );
+		$teams = Football_Pool_Teams::get_teams();
 		$output = array();
 		foreach ( $teams as $team ) {
 			$output[] = array(

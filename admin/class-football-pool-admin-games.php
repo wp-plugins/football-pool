@@ -525,12 +525,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function teamname_input( $team, $type, $input_name ) {
-		if ( ! is_integer( $team ) ) return '';
+		$teams = new Football_Pool_Teams;
+		if ( ! is_integer( $team ) || ! isset( $teams->team_names[$team] ) ) return '';
 		
-		if ( $type > 1 ) {
+		// for matches beyond the group phase and for non-real teams
+		if ( $type > 1 || ! $teams->team_types[$team] ) {
 			return self::team_select( $team, $input_name );
 		} else {
-			$teams = new Football_Pool_Teams;
 			return $teams->team_names[$team] . '<input type="hidden" name="' . $input_name . '" id="' . $input_name . '" value="' . $team . '" />';
 		}
 	}
