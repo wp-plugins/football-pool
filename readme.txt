@@ -93,7 +93,7 @@ If your language is not shipped with the plugin, you might try the <a href="http
 
 = I installed the plugin, but there are no matches. What happened? =
 
-Version 2.0.0 does not add the matches on install. But it does contain the match schedule. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
+Version 2.0.0 does not add the matches on install. But it does contain a match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 

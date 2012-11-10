@@ -480,6 +480,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$datetitle = '';
 		$matchtype = '';
 		
+		if ( ! is_array( $rows ) || count( $rows ) == 0 ) {
+			echo '<div style="text-align:right;"><img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/images/matches-import-here.png" alt="import a new schedule here" title="import a new schedule here"></div>';
+		}
+		
 		echo '<table id="matchinfo" class="widefat matchinfo">';
 		foreach( $rows as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
