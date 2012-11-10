@@ -125,7 +125,15 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'show_venues_on_team_page' =>
 							array( 'checkbox', __( 'Show venues on team page', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_venues_on_team_page', __( "Switch off if you don't want to show all venues a team plays in during a season or tournament (in national competitions the venue list is a bit useless).", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_charts' =>
-							array( 'checkbox', __( 'Use charts', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_charts', sprintf( __( 'The Highcharts API is needed for this feature. See the <%s>Help page<%s> for information on installing this library.', FOOTBALLPOOL_TEXT_DOMAIN ), 'a href="?page=footballpool-help#charts"', '/a' ) ),
+							array( 
+								'checkbox', 
+								__( 'Use charts', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'use_charts', 
+								sprintf( 
+									__( 'The Highcharts API is needed for this feature. See the <%s>Help page<%s> for information on installing this library.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+									'a href="?page=footballpool-help#charts"', '/a' 
+								)
+							),
 						'export_format' =>
 							array( 
 								'radiolist', 

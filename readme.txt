@@ -1,12 +1,12 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
 Requires at least: 3.1
 Tested up to: 3.4.2
 Stable tag: 1.4.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
-This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches, e.g. to a national competition.
+This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship, but you can change the teams and matches, e.g. to a national competition.
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
@@ -32,7 +32,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch and Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+At the moment the plugin is available in English, Dutch and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
 
@@ -111,7 +111,7 @@ That's correct. The plugin has some basic styling, but it will not change your e
 
 The Football Pool plugin is available in the following languages:
 
-* Polish (`pl_PL`) by Łukasz Ciastoń.
+* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.0.0).
 * Dutch (`nl_NL`) by me.
 * English (default) by me.
 

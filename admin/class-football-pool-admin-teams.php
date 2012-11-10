@@ -95,8 +95,8 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', $values['name'], '' ),
-					array( 'image', __( 'photo', FOOTBALLPOOL_TEXT_DOMAIN ), 'photo', $values['photo'], __( 'Image path must be a full URL to the image. Or a path relative to /assets/images/teams/ in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'image', __( 'flag', FOOTBALLPOOL_TEXT_DOMAIN ), 'flag', $values['flag'], __( 'Image path must be a full URL to the image. Or a path relative to /assets/images/flags/ in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'image', __( 'photo', FOOTBALLPOOL_TEXT_DOMAIN ), 'photo', $values['photo'], sprintf( __( 'Image path must be a full URL to the image. Or a path relative to %s in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ), '/assets/images/teams/' ) ),
+					array( 'image', __( 'flag', FOOTBALLPOOL_TEXT_DOMAIN ), 'flag', $values['flag'], sprintf( __( 'Image path must be a full URL to the image. Or a path relative to %s in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ), '/assets/images/flags/' ) ),
 					array( 'text', __( 'link', FOOTBALLPOOL_TEXT_DOMAIN ), 'link', $values['link'], __( 'A link to a website with information about the team. Used on the team page in de plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'dropdown', __( 'group', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_id', $values['group_id'], $groups, '' ),
 					array( 'integer', __( 'group order', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_order', $values['group_order'], __( 'If teams are placed in a group and the default ordering does not work (when teams have the same points) you can fix the ordering with this number.', FOOTBALLPOOL_TEXT_DOMAIN ) ),

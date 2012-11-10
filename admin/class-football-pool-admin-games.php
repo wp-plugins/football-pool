@@ -197,7 +197,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					}
 				}
 			} else {
-				$err[] = sprintf( __( 'Imported csv file should contain %i columns. See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $column_names ) );
+				$err[] = sprintf( __( 'Imported csv file should contain %d columns. See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $column_names ) );
 			}
 		} else {
 			if ( $file == '' ) 

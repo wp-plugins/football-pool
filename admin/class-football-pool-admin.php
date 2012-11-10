@@ -334,7 +334,7 @@ class Football_Pool_Admin {
 				self::dropdown_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
 				break;
 			case 'radiolist':
-				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
+				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], isset( $option[5] ) ? $option[5] : '', isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
@@ -369,7 +369,7 @@ class Football_Pool_Admin {
 				self::dropdown_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'radiolist':
-				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], $option[5], isset( $option[6] ) ? $option[6] : '' );
+				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], isset( $option[5] ) ? $option[5] : '', isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], $option[3], $option[4] );
