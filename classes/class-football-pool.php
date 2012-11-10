@@ -25,46 +25,19 @@ class Football_Pool {
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
-			$data_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/data.txt' ) );
-			self::db_actions( $data_sql );
-			
-			// insert data in custom tables
-			$sql = "INSERT INTO `{$prefix}groups` (`id`, `name`) VALUES
-					(1, '" . __( 'group A', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(2, '" . __( 'group B', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(3, '" . __( 'group C', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(4, '" . __( 'group D', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(5, '" . __( 'group E', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(6, '" . __( 'group F', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(7, '" . __( 'group G', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(8, '" . __( 'group H', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
-			$wpdb->query( $sql );
-			
-			$sql = "INSERT INTO `{$prefix}matchtypes` (`id`, `name`) VALUES
-					(1, '" . __( 'Group stage', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(2, '" . __( 'Round of 16', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(3, '" . __( 'Quarter finals', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(4, '" . __( 'Semi finals', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(5, '" . __( 'For third position', FOOTBALLPOOL_TEXT_DOMAIN ) . "'),
-					(6, '" . __( 'Final', FOOTBALLPOOL_TEXT_DOMAIN ) . "');";
-			$wpdb->query( $sql );
-
 			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
 					('" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
 					('" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
 					('" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
-			delete_option( 'footballpool_show_admin_bar' );
-			delete_option( 'footballpool_force_locktime' );
-			/*
-			database changes, see data/update.txt for details:
-				- fix question type for bonusquestions defined before v1.3
-				- alter bonusquestions and answers to text fields
-			*/
-			$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
-			self::db_actions( $update_sql );
 			if ( ! self::is_at_least_version( '2.0.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
+				self::db_actions( $update_sql );
+				
+				delete_option( 'footballpool_show_admin_bar' );
+				delete_option( 'footballpool_force_locktime' );
+				
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.0.0.txt' ) );
 				self::db_actions( $update_sql );
 			}

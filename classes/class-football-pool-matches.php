@@ -84,9 +84,7 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_first_match_info() {
-		global $wpdb;
-		$sql = $this->matches_query();
-		return $wpdb->get_row( $sql, ARRAY_A );
+		return array_shift( $this->matches );
 	}
 	
 	public function get_info( $type = -1 ) {

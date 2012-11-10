@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
 Requires at least: 3.1
 Tested up to: 3.4.2
-Stable tag: 1.4.5
+Stable tag: 2.0.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship, but you can change the teams and matches, e.g. to a national competition.
@@ -93,6 +93,8 @@ Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is
 If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
 
 = I installed the plugin, but there are no matches. What happened? =
+
+Version 2.0.0 does not add the matches on install. But it does contain the match schedule. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
