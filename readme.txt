@@ -6,7 +6,7 @@ Tested up to: 3.4.2
 Stable tag: 2.0.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
-This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship, but you can change the teams and matches, e.g. to a national competition.
+This plugin adds a fantasy football pool to your blog. Predict outcomes of matches and earn points.
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
@@ -51,7 +51,6 @@ If you find bugs, please contact me via the support forum, or at wordpressfootba
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool-users
 8. Optional: make the `upload` directory in the plugin folder writable (if you wanna use the import function)
-
 9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/football-pool/assets/highcharts`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
@@ -67,7 +66,7 @@ I had to remove the required library because of WordPress plugin license policie
 Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
 Some themes or WordPress configurations automatically put all top level pages in the navigation. See information from the theme maker on how to make a custom menu or how to exclude pages from the menu.
 
-= I don't see my blog users as players of the pool. ==
+= I don't see my blog users as players of the pool. =
 
 Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
