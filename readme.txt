@@ -6,7 +6,7 @@ Tested up to: 3.4.2
 Stable tag: 2.0.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
-This plugin adds a fantasy football pool to your blog. Predict outcomes of matches and earn points.
+This plugin adds a fantasy football pool to your blog. Play against other users, predict outcomes of matches and earn points.
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
