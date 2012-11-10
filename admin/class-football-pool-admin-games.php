@@ -118,7 +118,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						$extra_data = '';
 						if ( $full_data ) {
 							$group = Football_Pool_Groups::get_group_by_name( $data[8], 'addnew' );
-							$group_id = $group->id;
+							$group_id = ( is_object( $group ) ? $group->id : 0 );
 							
 							$extra_data = array(
 												'photo' => $data[5],
@@ -142,7 +142,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						$extra_data = '';
 						if ( $full_data ) {
 							$group = Football_Pool_Groups::get_group_by_name( $data[14], 'addnew' );
-							$group_id = $group->id;
+							$group_id = ( is_object( $group ) ? $group->id : 0 );
 							
 							$extra_data = array(
 												'photo' => $data[11],
