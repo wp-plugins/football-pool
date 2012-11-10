@@ -48,7 +48,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		
 		$groups = new Football_Pool_Groups;
 		$group = $groups->get_group_by_id( $id );
-		if ( $group->id != 0 && $id > 0 ) {
+		if ( $id > 0 && is_object( $group ) && $group->id != 0 ) {
 			$values = (array) $group;
 		}
 		
@@ -86,7 +86,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	
 	private function update( $item_id ) {
 		$name = Football_Pool_Utils::post_string( 'name' );
-		return Football_Pool_Groups::add( $item_id, $name );
+		return Football_Pool_Groups::update( $item_id, $name );
 	}
 	
 	private function delete( $item_id ) {

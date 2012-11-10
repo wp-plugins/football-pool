@@ -16,7 +16,7 @@ class Football_Pool_Groups {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( $id == 0 ) {
-			$id = $this->add( $name );
+			$id = self::add( $name );
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}groups SET
 										name = %s

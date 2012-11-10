@@ -82,7 +82,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$teams = new Football_Pool_Teams;
 		$team = $teams->get_team_by_id( $id );
-		if ( $team->id != 0 && $id > 0 ) {
+		if ( $id > 0 && is_object( $team ) && $team->id != 0 ) {
 			$values = (array) $team;
 		}
 		
@@ -169,8 +169,8 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		// delete all teams, matches for that team and predictions made for those matches
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions 
 								WHERE matchNr IN 
-									( SELECT nr FROM {$prefix}teams WHERE homeTeamId = %d OR awayTeamId = %d)"
-								, $id );
+									( SELECT nr FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d )"
+								, $id, $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d"
 								, $id, $id );

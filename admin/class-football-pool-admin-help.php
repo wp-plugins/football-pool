@@ -48,7 +48,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">id</td>
 				<td>The numeric id for the group</td>
 				<td>1..8 (integer)</td>
@@ -66,19 +66,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">num</td>
 				<td>The number of rows in the ranking (top N)</td>
 				<td>1..n (integer)</td>
 				<td>5</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">league</td>
 				<td>Show ranking for this league.<br />If the pool does not use leagues, then this parameter is ignored.</td>
 				<td><a href="?page=footballpool-leagues">league id</a> (integer)</td>
 				<td>all users</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">date</td>
 				<td>Calculate the ranking untill this date.</td>
 				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
@@ -96,13 +96,13 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">title</td>
 				<td>Title parameter for the &lt;a href&gt;</td>
 				<td>string</td>
 				<td>empty; don't display a tooltip</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">new</td>
 				<td>Open link in a new window/tab.</td>
 				<td>integer: 0 (no) or 1 (yes)</td>
@@ -116,26 +116,26 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">date</td>
 				<td>The date and time to count down to.</td>
 				<td>Y-m-d H:i</td>
 				<td>empty</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">match</td>
 				<td>Number of the match to count down to.</td>
 				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
 				<td>empty</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">texts</td>
 				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
 				If value is "none" then no texts are added.</td>
 				<td><ul><li>- string;string;string;string</li><li>- none</li></ul></td>
 				<td>empty; default texts are used.</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">display</td>
 				<td>Display counter inline or as a separate block.</td>
 				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
@@ -213,27 +213,27 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help" caption="Minimal data">
 			<tr><th>column</th><th>description</th><th>example</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">play_date</td>
 				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
 				<td>2012-10-28 18:00</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">home_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>The Netherlands</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">away_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>England</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">stadium</td>
 				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
 				<td>Olympic Stadium</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">match_type</td>
 				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
 				<td>Quarter final</td>
@@ -247,92 +247,92 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help" caption="Full data">
 			<tr><th>column</th><th>description</th><th>example</th></tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">play_date</td>
 				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
 				<td>2012-10-28 18:00</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">home_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>The Netherlands</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">away_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>England</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">stadium</td>
 				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
 				<td>Olympic Stadium</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">match_type</td>
 				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
 				<td>Quarter final</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">home_team_photo</td>
 				<td>Team photo for the home team. Full URL or path relative to "assets/images/teams/".</td>
 				<td>netherlands.jpg</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">home_team_flag</td>
 				<td>Flag image for the home team. Full URL or path relative to "assets/images/flags/".</td>
 				<td>netherlands.png</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">home_team_link</td>
 				<td>Link to a page or website with information about the home team.</td>
 				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">home_team_group</td>
 				<td>The group in which the home team is placed.</td>
 				<td>Group A</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">home_team_group_order</td>
 				<td>The order in a group in case multiple teams have the same scores.</td>
 				<td>1</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">home_team_is_real</td>
 				<td>Is the home team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
 				<td>1</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">away_team_photo</td>
 				<td>Team photo for the away team. Full URL or path relative to "assets/images/teams/".</td>
 				<td>netherlands.jpg</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">away_team_flag</td>
 				<td>Flag image for the away team. Full URL or path relative to "assets/images/flags/".</td>
 				<td>netherlands.png</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">away_team_link</td>
 				<td>Link to a page or website with information about the away team.</td>
 				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">away_team_group</td>
 				<td>The group in which the away team is placed.</td>
 				<td>Group A</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">away_team_group_order</td>
 				<td>The order in a group in case multiple teams have the same scores.</td>
 				<td>1</td>
 			</tr>
-			<tr class="">
+			<tr class="alternate">
 				<td class="row-title">away_team_is_real</td>
 				<td>Is the away team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
 				<td>1</td>
 			</tr>
-			<tr class="alternate">
+			<tr class="">
 				<td class="row-title">stadium_photo</td>
 				<td>Photo of the stadium where the match is played. Full URL or path relative to "assets/images/stadiums/".</td>
 				<td>olympic-stadium.jpg</td>

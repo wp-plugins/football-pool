@@ -64,7 +64,7 @@ class Football_Pool {
 			*/
 			$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
 			self::db_actions( $update_sql );
-			if ( self::is_version( '2.0.0' ) ) {
+			if ( ! self::is_at_least_version( '2.0.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.0.0.txt' ) );
 				self::db_actions( $update_sql );
 			}
@@ -122,14 +122,14 @@ class Football_Pool {
 	
 	// checks if plugin is at least a certain version (makes sure it has sufficient comparison decimals)
 	// based on http://wikiduh.com/1611/php-function-to-check-if-wordpress-is-at-least-version-x-y-z
-	private function is_version( $is_ver ) {
+	private function is_at_least_version( $is_ver ) {
 		$plugin_ver = explode( '.', Football_Pool_Utils::get_fp_option( 'db_version' ) );
 		$is_ver = explode( '.', $is_ver );
 		for ( $i = 0; $i <= count( $is_ver ); $i++ )
 			if( ! isset( $plugin_ver[$i] ) ) array_push( $plugin_ver, 0 );
 	 
 		foreach ( $is_ver as $i => $is_val )
-			if ( $plugin_ver[$i] < $is_val ) return false;
+			if ( (int) $plugin_ver[$i] < (int) $is_val ) return false;
 		
 		return true;
 	}
