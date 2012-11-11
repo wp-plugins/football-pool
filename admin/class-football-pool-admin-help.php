@@ -206,9 +206,11 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		If you choose the minimal data, extra information about stadiums and teams may be entered on the individual admin pages. If a team, stadium, group or match type in the csv file does not already exist, it will be added to the database.<br>
 		For the full data all information about teams, venues, etc. must be given. If a team, venue, etc. already exists, it won't be updated. If a team does not exist, the information (e.g. photo) in the first row where that item appears, will be added in the database.
 		</p>
+		<p>If a culture code is included in the filename, e.g. <span class="code">uefa2012-en_US.txt</span>, then the plugin can filter the files according to the culture that is set as the locale for the blog.
+		</p>
 		<h4>Minimal data</h4>
 		<!--p>
-		<em>csv file header: </em>play_date;home_team;away_team;stadium;match_type
+		<em>csv file header:</em> play_date;home_team;away_team;stadium;match_type
 		</p-->
 		<p>
 		<table class="widefat help" caption="Minimal data">
@@ -242,7 +244,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<h4>Full data</h4>
 		<!--p>
-		<em>csv file header: </em>play_date;home_team;away_team;stadium;match_type
+		<em>csv file header:</em> play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo
 		</p-->
 		<p>
 		<table class="widefat help" caption="Full data">
@@ -305,17 +307,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr class="">
 				<td class="row-title">away_team_photo</td>
 				<td>Team photo for the away team. Full URL or path relative to "assets/images/teams/".</td>
-				<td>netherlands.jpg</td>
+				<td>england.jpg</td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">away_team_flag</td>
 				<td>Flag image for the away team. Full URL or path relative to "assets/images/flags/".</td>
-				<td>netherlands.png</td>
+				<td>england.png</td>
 			</tr>
 			<tr class="">
 				<td class="row-title">away_team_link</td>
 				<td>Link to a page or website with information about the away team.</td>
-				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
+				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=39/index.html</td>
 			</tr>
 			<tr class="alternate">
 				<td class="row-title">away_team_group</td>

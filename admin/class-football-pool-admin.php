@@ -189,14 +189,9 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function dropdown_input( $label, $key, $value, $options, $description = '', 
-									$extra_attr = '', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
+	public function dropdown( $key, $value, $options, $extra_attr = '' ) {
 		$i = 0;
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
-		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
-		echo '<td><select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
+		echo '<select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
@@ -206,7 +201,18 @@ class Football_Pool_Admin {
 			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '>', $option['text'], '</option>';
 			$i++;
 		}
-		echo '</select></td><td><span class="description">', $description, '</span></td></tr>';
+		echo '</select>';
+	}
+	
+	public function dropdown_input( $label, $key, $value, $options, $description = '', 
+									$extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
+		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
+		echo '<td>';
+		self::dropdown( $key, $value, $options, $extra_attr );
+		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
 	public function radiolist_input( $label, $key, $value, $options, $description = '', 

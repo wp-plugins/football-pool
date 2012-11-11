@@ -76,6 +76,7 @@ class Football_Pool {
 		add_option( 'footballpool_export_format', 0 ); // 0: full, 1: minimal
 		add_option( 'footballpool_match_time_display', 0 ); // 0: WP setting, 1: UTC, 2: custom
 		add_option( 'footballpool_match_time_offset', 0 ); // time in seconds to add to the start time in the database (negative value for substraction)
+		add_option( 'footballpool_csv_file_filter', '*' ); // defaults to 'all files'
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -148,6 +149,7 @@ class Football_Pool {
 		delete_option( 'footballpool_export_format' );
 		delete_option( 'footballpool_match_time_display' );
 		delete_option( 'footballpool_match_time_offset' );
+		delete_option( 'footballpool_csv_file_filter' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {
@@ -167,7 +169,7 @@ class Football_Pool {
 		return $no_show ? false : $content;
 	}
 	
-	private function get_locale() {
+	public function get_locale() {
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		return $locale;

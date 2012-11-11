@@ -133,8 +133,12 @@ The Football Pool plugin is available in the following languages:
 
 == Changelog ==
 
+= 2.0.2 =
+* Added culture selection to csv filelist (on import screen).
+* Bug fixed: matches that have an empty venue caused a notice in the import.
+
 = 2.0.1 =
-* Bug fixed: teams that are not in a group caused a notice in import.
+* Bug fixed: teams that are not in a group caused a notice in the import.
 * Hint added on the matches admin screen.
 
 = 2.0.0 =

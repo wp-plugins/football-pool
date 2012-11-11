@@ -23,6 +23,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			case 'import_csv':
 			case 'import_csv_overwrite':
 				$log = self::import_csv( $action, $file );
+			case 'change-culture':
 			case 'schedule':
 				self::view_schedules( $log );
 				break;
@@ -168,7 +169,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 							$extra_data = array( 'photo' => $data[17] );
 						}
 						$stadium = Football_Pool_Stadiums::get_stadium_by_name( $data[3], 'addnew', $extra_data );
-						$stadium_id = $stadium->id;
+						$stadium_id = ( is_object( $stadium ) ? $stadium->id : 0 );
 						if ( isset( $stadium->inserted ) && $stadium->inserted == true ) {
 							$msg[] = sprintf(
 										__( 'Stadium %d added: %s', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -238,11 +239,26 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			echo '<h3>', __( 'Choose a new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
 			echo '<p>', __( 'Import any of the following files. Overwrite the existing game schedule or add to the existing schedule.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 			
+			$locale = Football_Pool::get_locale();
+			$locale_filter = Football_Pool_Utils::post_string( 'culture', Football_Pool_Utils::get_fp_option( 'csv_file_filter', '*' ) );
+			self::set_value( 'csv_file_filter', $locale_filter );
+			
+			$options = array(
+							array( 'value' => '*', 'text' => __( 'all files', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'value' => $locale, 'text' => sprintf( __( 'only \'%s\' files', FOOTBALLPOOL_TEXT_DOMAIN ), $locale ) ),
+						);
+			
+			echo '<div class="import culture-select">';
+			self::dropdown( 'culture', $locale_filter, $options );
+			self::secondary_button( __( 'change', FOOTBALLPOOL_TEXT_DOMAIN ), 'change-culture' );
+			echo '</div>';
+			
 			$handle = opendir( FOOTBALLPOOL_CSV_UPLOAD_DIR );
 			$i = 0;
 			echo '<div class="fp-radio-list">';
 			while ( false !== ( $entry = readdir( $handle ) ) ) {
-				if ( $entry != '.' && $entry != '..' ) {
+				$locale_check = ( $locale_filter == '*' || strpos( $entry, $locale_filter ) !== false );
+				if ( $entry != '.' && $entry != '..' && $locale_check ) {
 					$i++;
 					echo '<label for="csv-', $i, '">';
 					echo '<input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"> ';
