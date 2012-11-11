@@ -127,6 +127,7 @@ The Football Pool plugin is available in the following languages:
 
 = 2.0.0 =
 * Please notice that the default language is now English. If you were using Dutch as the language for the plugin you have to change de `WPLANG` constant in the `wp-config.php` file to `nl_NL`.
+* If you're upgrading from a version prior to version 1.3 you get a database warning stating that the column `max_answers` already exists. You may ignore this warning, the plugin will work and you won't get the warning again. I promise :) 
 
 = 1.4.5 =
 * Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
@@ -135,7 +136,9 @@ The Football Pool plugin is available in the following languages:
 
 = 2.0.2 =
 * Added culture selection to csv filelist (on import screen).
+* Bug fixed: teams that are 'real' were accidently shown in a dropdown on the Matches admin screen.
 * Bug fixed: matches that have an empty venue caused a notice in the import.
+* bug fixed: countdown shortcode was not fixed for the new UTC match times.
 
 = 2.0.1 =
 * Bug fixed: teams that are not in a group caused a notice in the import.

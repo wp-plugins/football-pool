@@ -141,7 +141,22 @@ class Football_Pool_Utils {
 	}
 	
 	// print information about a variable in a human readable way
-	public function debug( $var, $type='echo' ) {
+	public function debug( $var, $type = 'echo' ) {
+		if ( $type == 'just once' || ( is_array( $type ) && $type[0] == 'just_once' ) ) {
+			$type = isset( $type[1] ) ? $type[1] : 'echo';
+			
+			$cache_key = 'fp_debug';
+			$i = wp_cache_get( $cache_key );
+			if ( false === $i ) {
+				$i = 1;
+				wp_cache_set( $cache_key, $i );
+			} else {
+				$i++;
+			}
+			
+			if ( $i > 1 ) return;
+		}
+		
 		$pre  = "<pre style='border: 1px solid;'>";
 		$pre .= "<div style='padding:2px;color:#fff;background-color:#000;'>debug</div><div style='padding:2px;'>";
 		$post = "</div></pre>";

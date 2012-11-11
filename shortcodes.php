@@ -137,7 +137,7 @@ class Football_Pool_Shortcodes {
 		if ( (int) $match > 0 ) {
 			$match_info = $matches->get_match_info( (int) $match );
 			if ( array_key_exists( 'playDate', $match_info ) )
-				$countdown_date = new DateTime( $match_info['playDate'] );
+				$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match_info['playDate'] ) );
 		}
 		
 		if ( ! is_object( $countdown_date ) ) {
@@ -145,7 +145,7 @@ class Football_Pool_Shortcodes {
 			$countdown_date = date_create( $date );
 			if ( $date == '' || $countdown_date === false ) {
 				$firstMatch = $matches->get_first_match_info();
-				$countdown_date = new DateTime( $firstMatch['playDate'] );
+				$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $firstMatch['playDate'] ) );
 			}
 		}
 		

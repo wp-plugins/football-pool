@@ -504,7 +504,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		foreach( $rows as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
-				echo '<tr><td class="sidebar-name" colspan="11"><h3>', __( $matchtype, FOOTBALLPOOL_TEXT_DOMAIN ), '</h3></td></tr>';
+				echo '<tr><td class="sidebar-name" colspan="11"><h3>', $matchtype, '</h3></td></tr>';
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );
@@ -525,11 +525,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			echo '<tr>',
 					'<td class="time">', $row['nr'], '</td>',
 					'<td class="time">', $matchdate->format( 'H:i' ), '</td>',
-					'<td class="home">', self::teamname_input( (integer) $row['homeTeamId'], (integer) $row['typeId'], '_home_team_'.$row['nr'] ), '</td>',
+					'<td class="home">', self::teamname_input( (int) $row['homeTeamId'], '_home_team_'.$row['nr'] ), '</td>',
 					'<td class="score">', self::show_input( '_home_score_' . $row['nr'], $row['homeScore'] ), '</td>',
 					'<td>-</td>',
 					'<td class="score">', self::show_input( '_away_score_' . $row['nr'], $row['awayScore'] ), '</td>',
-					'<td class="away">', self::teamname_input( (integer) $row['awayTeamId'], (integer) $row['typeId'], '_away_team_' . $row['nr'] ), '</td>',
+					'<td class="away">', self::teamname_input( (int) $row['awayTeamId'], '_away_team_' . $row['nr'] ), '</td>',
 					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
 					'<td class="time local">', self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ), '</td>',
 					'<td><a href="', $page, '&amp;action=edit">', __( 'edit' ), '</a></td>',
@@ -544,12 +544,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						$name, $value, $max_length, $class );
 	}
 	
-	private function teamname_input( $team, $type, $input_name ) {
+	private function teamname_input( $team, $input_name ) {
 		$teams = new Football_Pool_Teams;
 		if ( ! is_integer( $team ) || ! isset( $teams->team_names[$team] ) ) return '';
 		
-		// for matches beyond the group phase and for non-real teams
-		if ( $type > 1 || ! $teams->team_types[$team] ) {
+		if ( ! $teams->team_types[$team] ) {
+			// for matches beyond the group phase and for non-real teams a dropdown
 			return self::team_select( $team, $input_name );
 		} else {
 			return $teams->team_names[$team] . '<input type="hidden" name="' . $input_name . '" id="' . $input_name . '" value="' . $team . '" />';
