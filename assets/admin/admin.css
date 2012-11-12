@@ -65,8 +65,13 @@ div.donate form { margin-left: 2em; }
 
 /* fix the link-button height */
 a.button-secondary.fp-link-button { padding-top: 4px; padding-bottom: 5px; }
-.fp-radio-list label { padding: 5px 4px; display: block; }
-.fp-radio-list label:hover { background-color: #eaf2fa; }
+
+table.fp-radio-list { border-collapse: collapse; }
+.fp-radio-list label { display: block; padding-right: 5em; }
+.fp-radio-list td { padding: 5px 4px; vertical-align: top; }
+.fp-radio-list tr:hover { background-color: #eaf2fa; }
 .fp-radio-list input[type=radio] { margin-right: 1.5em; }
+.fp-radio-list td.file {  }
+.fp-radio-list th { text-align: left; font-weight: normal; font-style: italic; }
 
 div.import.culture-select { text-align: right; }

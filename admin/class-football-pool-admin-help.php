@@ -208,6 +208,15 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>If a culture code is included in the filename, e.g. <span class="code">uefa2012-en_US.txt</span>, then the plugin can filter the files according to the culture that is set as the locale for the blog.
 		</p>
+		<p>
+		The header of the file may contain optional meta information about the author of the import and/or the location of the assets for the teams and venues. If meta information exists in the csv file, the information is added on the file select list. Example:
+		</p>
+		<pre class="code">
+		/*
+		 Contributor: Antoine Hurkmans
+		 Assets URI: https://dl.dropbox.com/u/397845/wordpressfootballpool/uefa-european-championship-2012.zip
+		*/
+		</pre>
 		<h4>Minimal data</h4>
 		<!--p>
 		<em>csv file header:</em> play_date;home_team;away_team;stadium;match_type

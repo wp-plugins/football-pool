@@ -86,7 +86,17 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				self::empty_table( 'teams' );
 			}
 			
+			// check if metadata is set in the csv, if not it should contain the csv column definition
 			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
+			if ( $header[0] == '/*' ) {
+				while ( ( $header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false
+						&& str_replace( array( " ", "\t" ), array( "", "" ), $header[0] ) != '*/' ) {
+					// keep reading
+				}
+				// with meta gone, next line should contain the csv column definition
+				$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
+			}
+			
 			// check the columns
 			$full_data = ( count( $header ) != 5 ) ? true : false;
 			if ( $full_data ) {
@@ -214,6 +224,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $log;
 	}
 	
+	private function get_meta_from_csv( $file ) {
+		$all_headers = array(
+							'contributor'	=> 'Contributor',
+							'assets'		=> 'Assets URI',
+						);
+		return get_file_data( $file, $all_headers );
+	}
+	
 	private function view_schedules( $log = '' ) {
 		if ( is_array( $log ) ) {
 			$errors = $log[0];
@@ -255,17 +273,32 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			$handle = opendir( FOOTBALLPOOL_CSV_UPLOAD_DIR );
 			$i = 0;
-			echo '<div class="fp-radio-list">';
+			echo '<table class="fp-radio-list">';
+			echo '<tr>
+					<th></th>
+					<th>', __( 'File', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th>', __( 'Contributor', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+					<th>', __( 'Assets', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
+				</tr>';
 			while ( false !== ( $entry = readdir( $handle ) ) ) {
 				$locale_check = ( $locale_filter == '*' || strpos( $entry, $locale_filter ) !== false );
 				if ( $entry != '.' && $entry != '..' && $locale_check ) {
 					$i++;
-					echo '<label for="csv-', $i, '">';
-					echo '<input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"> ';
-					echo $entry, '</label>';
+					$meta = self::get_meta_from_csv( FOOTBALLPOOL_CSV_UPLOAD_DIR . $entry );
+					echo '<tr><td><input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"></td>';
+					echo '<td><label for="csv-', $i, '">', $entry, '</label></td>';
+					echo '<td>', $meta['contributor'], '</td>';
+					echo '<td>';
+					if ( $meta['assets'] != '' ) {
+						echo '<a title="', __( 'Upload these files to your assets folder in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ), '" href="', $meta['assets'], '">', __( 'download files', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
+					} else {
+						echo '';
+					}
+					echo '</td>';
+					echo '</tr>';
 				}
 			}
-			echo '</div>';
+			echo '</table>';
 			
 			if ( $i > 0 ) {
 				echo '<p class="submit">';

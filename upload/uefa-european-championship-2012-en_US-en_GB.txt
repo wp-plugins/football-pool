@@ -1,3 +1,7 @@
+/*
+ Contributor: Antoine Hurkmans
+ Assets URI: https://dl.dropbox.com/u/397845/wordpressfootballpool/uefa-european-championship-2012.zip
+*/
 play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo
 "2012-06-08 18:00:00";Poland;Greece;"National Stadium Warsaw";Group Stage;pol.jpg;pol.png;http://www.uefa.com/uefaeuro/season=2012/teams/team=109/index.html;"Group A";1;1;gre.jpg;gre.png;http://www.uefa.com/uefaeuro/season=2012/teams/team=49/index.html;"Group A";2;1;national-stadium-warsaw.jpg
 "2012-06-08 20:45:00";Russia;Czech Republic;"Municipal Stadium Wroclaw";Group Stage;rus.jpg;rus.png;http://www.uefa.com/uefaeuro/season=2012/teams/team=57451/index.html;"Group A";3;1;cze.jpg;cze.png;http://www.uefa.com/uefaeuro/season=2012/teams/team=58837/index.html;"Group A";4;1;municipal-stadium-wroclaw.jpg
