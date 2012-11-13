@@ -1,15 +1,26 @@
 <?php 
+// dummy var for translation files
+$fp_translate_this = __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'teams', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'groups', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'venues', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'rules', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'prediction', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'ranking', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'charts', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN );
+
 class Football_Pool {
 	private static $pages = array(
-						array( 'slug' => 'tournament', 'title' => 'wedstrijden', 'comment' => 'closed' ),
+						array( 'slug' => 'tournament', 'title' => 'matches', 'comment' => 'closed' ),
 							array( 'slug' => 'teams', 'title' => 'teams', 'parent' => 'tournament', 'comment' => 'closed' ),
-							array( 'slug' => 'groups', 'title' => 'poules', 'parent' => 'tournament', 'comment' => 'closed' ),
-							array( 'slug' => 'stadiums', 'title' => 'stadions', 'parent' => 'tournament', 'comment' => 'closed' ),
-						'rules' => array( 'slug' => 'rules', 'title' => 'spelregels', 'text' => '' ),
-						array( 'slug' => 'pool', 'title' => 'voorspelling', 'comment' => 'closed' ),
-						array( 'slug' => 'ranking', 'title' => 'stand', 'comment' => 'closed' ),
-						array( 'slug' => 'statistics', 'title' => 'statistieken', 'comment' => 'closed' ),
-						array( 'slug' => 'user', 'title' => 'voorspellingen', 'comment' => 'closed' )
+							array( 'slug' => 'groups', 'title' => 'groups', 'parent' => 'tournament', 'comment' => 'closed' ),
+							array( 'slug' => 'stadiums', 'title' => 'venues', 'parent' => 'tournament', 'comment' => 'closed' ),
+						'rules' => array( 'slug' => 'rules', 'title' => 'rules', 'text' => '' ),
+						array( 'slug' => 'pool', 'title' => 'prediction', 'comment' => 'closed' ),
+						array( 'slug' => 'ranking', 'title' => 'ranking', 'comment' => 'closed' ),
+						array( 'slug' => 'statistics', 'title' => 'charts', 'comment' => 'closed' ),
+						array( 'slug' => 'user', 'title' => 'predictions', 'comment' => 'closed' )
 					);
 	
 	public function __construct() {}

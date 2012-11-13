@@ -135,7 +135,7 @@ The Football Pool plugin is available in the following languages:
 == Changelog ==
 
 = 2.0.2 =
-* Added culture selection to csv filelist (on import screen).
+* Added culture selection to csv file list (on import screen) and support for meta information in the csv file.
 * Bug fixed: teams that are 'real' were accidently shown in a dropdown on the Matches admin screen.
 * Bug fixed: matches that have an empty venue caused a notice in the import.
 * bug fixed: countdown shortcode was not fixed for the new UTC match times.

@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_Last_Games_Widget" );' ) );
 
 // dummy var for translation files
-$fp_dummy_var = __( 'last matches', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'last matches', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 	protected $widget = array(
