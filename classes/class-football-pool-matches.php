@@ -79,7 +79,7 @@ class Football_Pool_Matches {
 					s.name AS stadiumName, s.id AS stadiumId,
 					t.name AS matchtype, t.id AS typeId
 				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id {$where_clause}
+				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id AND t.visibility = 1 {$where_clause}
 				ORDER BY m.playDate ASC, nr ASC";
 	}
 	
@@ -165,7 +165,8 @@ class Football_Pool_Matches {
 								JOIN {$prefix}matchtypes t 
 									ON ( m.matchtypeId = t.id )
 								LEFT OUTER JOIN {$prefix}predictions p 
-									ON ( p.matchNr = m.nr AND p.userId = %d ) 
+									ON ( p.matchNr = m.nr AND p.userId = %d )
+								WHERE t.visibility = 1
 								ORDER BY m.playDate ASC, nr ASC",
 								$user
 							);
@@ -383,7 +384,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes ORDER BY id ASC" );
+		$sql = $wpdb->prepare( "SELECT id, name, visibility FROM {$prefix}matchtypes ORDER BY id ASC" );
 		return $wpdb->get_results( $sql );
 	}
 	
@@ -391,7 +392,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes WHERE id = %d", $id );
+		$sql = $wpdb->prepare( "SELECT id, name, visibility FROM {$prefix}matchtypes WHERE id = %d", $id );
 		return $wpdb->get_row( $sql );
 	}
 	
@@ -401,7 +402,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT id, name FROM {$prefix}matchtypes WHERE name = %s", $name );
+		$sql = $wpdb->prepare( "SELECT id, name, visibility FROM {$prefix}matchtypes WHERE name = %s", $name );
 		$result = $wpdb->get_row( $sql );
 		
 		if ( $addnew == 'addnew' && $result == null ) {
@@ -411,6 +412,7 @@ class Football_Pool_Matches {
 			$result = (object) array( 
 									'id' => $id, 
 									'name' => $name, 
+									'visibility' => 1, 
 									'inserted' => true 
 									);
 		}

@@ -29,7 +29,7 @@ class Football_Pool_Teams {
 		$sql = $wpdb->prepare( "SELECT 
 									t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, 
 									g.name AS groupName, t.groupOrder AS group_order, 
-									t.is_real, t.is_active
+									t.is_real, t.is_active, t.comments
 								FROM {$prefix}teams t
 								LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id
 								WHERE t.id = %d",
@@ -49,7 +49,7 @@ class Football_Pool_Teams {
 		
 		$sql = $wpdb->prepare( "SELECT 
 									id, name, photo, flag, link, groupId AS group_id, 
-									groupOrder AS group_order, is_real, is_active
+									groupOrder AS group_order, is_real, is_active, comments
 								FROM {$prefix}teams WHERE name = %s", $name );
 		$result = $wpdb->get_row( $sql );
 		
@@ -66,14 +66,15 @@ class Football_Pool_Teams {
 				$group_order = $extra_data['group_order'];
 				$is_real     = $extra_data['is_real'];
 				$is_active   = $extra_data['is_active'];
+				$comments    = '';
 			}
 			
 			$sql = $wpdb->prepare( 
 							"INSERT INTO {$prefix}teams 
-								( name, photo, flag, link, groupId, groupOrder, is_real, is_active ) 
+								( name, photo, flag, link, groupId, groupOrder, is_real, is_active, comments ) 
 							 VALUES 
-								( %s, %s, %s, %s, %d, %d, %d, %d )"
-							, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active
+								( %s, %s, %s, %s, %d, %d, %d, %d, %s )"
+							, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments
 					);
 			$wpdb->query( $sql );
 			$id = $wpdb->insert_id;
@@ -87,6 +88,7 @@ class Football_Pool_Teams {
 									'group_order' => $group_order,
 									'is_real'     => $is_real,
 									'is_active'   => $is_active,
+									'comments'    => $comments,
 									'inserted'    => true
 									);
 			// clear the cache
@@ -172,7 +174,7 @@ class Football_Pool_Teams {
 			
 			$sql = "SELECT 
 						t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder,
-						t.is_real, t.is_active, t.groupOrder AS group_order
+						t.is_real, t.is_active, t.groupOrder AS group_order, t.comments
 					FROM {$prefix}teams t
 					LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id 
 					ORDER BY t.name ASC";

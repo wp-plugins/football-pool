@@ -11,11 +11,13 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 				$this->id = $s->id;
 				$this->name = $s->name;
 				$this->photo = $s->photo;
+				$this->comments = $s->comments;
 			}
 		} elseif ( is_array( $stadium ) ) {
 			$this->id = $stadium['id'];
 			$this->name = $stadium['name'];
 			$this->photo = $stadium['photo'];
+			$this->comments = $stadium['comments'];
 		}
 	}
 	
@@ -47,9 +49,8 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 									m.nr,
 									m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-								WHERE m.stadiumId = s.id 
-									AND m.matchtypeId = t.id 
-									AND s.id = %d", 
+								WHERE m.stadiumId = s.id  AND s.id = %d
+									AND m.matchtypeId = t.id AND t.visibility = 1", 
 							$this->id
 						);
 		

@@ -157,7 +157,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="leagues">Leagues</h2>
-		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done in the <a href="users.php">User</a> section of the WordPress admin, or the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
+		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done on the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>

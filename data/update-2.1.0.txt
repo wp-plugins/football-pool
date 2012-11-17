@@ -1,0 +1,3 @@
+ALTER TABLE `{$prefix}matchtypes` ADD `visibility` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+ALTER TABLE `{$prefix}teams` ADD `comments` TEXT NULL;
+ALTER TABLE `{$prefix}stadiums` ADD `comments` TEXT NULL;

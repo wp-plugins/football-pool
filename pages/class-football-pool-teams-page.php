@@ -14,6 +14,11 @@ class Football_Pool_Teams_Page {
 								__( 'go to the team site', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								$team->name
 						);
+			
+			if ( $team->comments != '' ) {
+				$output .= sprintf( '<p class="team bio">%s</p>', nl2br( $team->comments ) );
+			}
+			
 			$output .= sprintf( '<table class="teaminfo">
 								<tr>
 									<th>%s:</th>
@@ -56,11 +61,13 @@ class Football_Pool_Teams_Page {
 			$output .= '</table>';
 			
 			// the games for this team
-			$output .= sprintf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$plays = $team->get_plays();
-			$matches = new Football_Pool_Matches;
-			$output .= $matches->print_matches( $plays );
-
+			if ( count( $plays ) > 0 ) {
+				$matches = new Football_Pool_Matches;
+				$output .= sprintf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= $matches->print_matches( $plays );
+			}
+			
 			$output .= sprintf( '<p><a href="%s">%s</a></p>'
 								, get_page_link()
 								, __( 'view all teams', FOOTBALLPOOL_TEXT_DOMAIN ) 

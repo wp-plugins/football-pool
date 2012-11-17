@@ -1,50 +1,53 @@
-<h3>Voor de pot of voor nop?</h3>
-Je kan op 2 manieren meespelen: voor de pot of voor nop. Ben je niet zeker van je zaak, maar vind je het wel leuk om mee te doen? Schrijf je dan gewoon in en geef aan dat je voor nop meespeelt. Als je voor de pot speelt, moet het inschrijfgeld betaald zijn voor de start van het toernooi. Op z'n laatst 1 dag voor de start van de eerste wedstrijd en dat is op <strong>[start]</strong>. Is het geld niet ontvangen, dan speel je gewoon mee voor nop. Het inschrijfgeld is <strong>[money]</strong> en kan worden afgegeven bij <strong>[bank]</strong>.
-Let op: pas wanneer het geld is betaald, word je overgezet naar de pool voor de pot! Tot die tijd sta je dus in het andere lijstje; ook al heb je aangegeven voor de pot mee te willen spelen.
+<h3>Rules page</h3>
+On this page you may add some information on how to play as a contender in the pool. The plugin supports several shortcodes that you can put in this text. See the help page in the admin for more information about the shortcodes.
 
-Bij de inschrijving hoef je alleen een inlognaam op te geven waaronder je mee wil spelen en een geldig e-mailadres. Via dit adres zullen we je op de hoogte stellen van een eventuele prijs, zorg er dus voor dat het een geldig adres is. Wanneer je je wachtwoord kwijt bent, kan je te allen tijde een nieuw wachtwoord opvragen bij de <a title="stuur maar een mailtje :-)" href="mailto:[webmaster]">webmaster</a>, of zelf een nieuwe genereren. Je persoonlijke gegevens worden na afloop van het toernooi vernietigd en worden op geen enkele wijze voor andere doeleinden dan voor deze pool gebruikt en worden ook niet ter beschikking gesteld aan derden. Je kan zo vaak mee spelen als je wil.
-<h3>De voorspellingen</h3>
-Voorspel de eindstand van alle wedstrijden die tijdens het toernooi worden gespeeld. Dit kan tot 1 kwartier voor de start van de wedstrijd. Zo heb je dus de mogelijkheid om tijdens het toernooi je voorspellingen bij te sturen als je merkt dat je sommige teams toch verkeerd had ingeschat, of bijvoorbeeld omdat de gedoodverfde winnaar het ineens zonder hun wereldspits moet doen.
-De tijd op de server is bindend. Hierover is geen discussie mogelijk, wees er dus op tijd bij als je je scores nog wil wijzigen.
+<h3>Subscription</h3>
+Subscription for the pool is easy. All you have to do is think of a login name and a valid email address. If you lost your password, you can generate a new one. Or ask the <a href="mailto:[webmaster]">webmaster</a>
 
-Zoals je hebt gezien, zijn de wedstrijden in de tweede fase nog niet ingevuld. Wanneer de teams bekend zijn, worden ze op de site gezet. En ook voor deze wedstrijden geldt dat je tot 15 minuten voor aanvang van de wedstrijd je score kan bijwerken. Maar als je een grote gok wil wagen, dan mag je ze natuurlijk ook meteen bij de start van het toernooi invoeren. Je kan de standen altijd nog wijzigen.
-<h3>De bonusvragen</h3>
-Tijdens het toernooi zijn extra punten te verdienen via de bonusvragen. Dit zijn open vragen die je voor een bepaalde datum moet hebben beantwoord. Bij de vraag staat de datum vermeld en het aantal punten dat je kan verdienen. Bij gokvragen (bv. "in de welke minuut valt het eerste doelpunt?") krijgt de deelnemer die het dichtst bij het antwoord zit, de punten.
-<h3>De puntentelling</h3>
-Bij de bepaling van de puntentelling wordt in de voorrondes gekeken naar de uitslag na afloop van de wedstrijd. Voor de finale wedstrijden wordt ook een eventuele verlenging meegenomen. Doelpunten in een strafschoppenserie worden niet meegenomen bij de bepaling van de puntentelling.
-Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt dat het een gelijkspel wordt. Dit wordt de toto uitslag genoemd. Als je ook de exacte eindstand weet te raden, krijg je extra punten.
+<h3>Predicting the matches</h3>
+Predict the end score of all the matches in the tournament/competition. You have until 15 minutes before the start of a match to add or change your prediction.
+The server time is used. No discussion about that, so be on time if you want to fill in your scores.
+
+As you may have noticed the matches in the next stages are not yet filled at the beginning of the tournament. Once the teams are through to the next round, I will add them. These games can also be changes until 15 minutes before the game starts. Or, if you're feeling lucky, you can predict them now.
+
+<h3>The bonus questions</h3>
+You can earn extra points during the tournament with the bonus questions. These questions must be answered before a given date and time. Each questions shows the points you can earn.
+
+<h3>The scoring</h3>
+In the group phase the scores at the end of the game are used for the calculation of the scores. For final rounds the score at the end of the game including extra time is used. Goals in a penalty shoot-out are not taken into consideration.
+
+You get points for predicting the correct winner of the match or prediction of a draw. We call this the toto score. In case you also predict the exact amount of goals scored, you get extra points. We call this the full score.
 <table>
 <thead>
 <tr>
 <th></th>
-<th>punten</th>
+<th>points</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>juiste toto uitslag</td>
+<td>toto score</td>
 <td>[totopoints]</td>
 </tr>
 <tr>
-<td>juiste uitslag</td>
+<td>full score</td>
 <td>[fullpoints]</td>
 </tr>
 <tr>
-<td>bonusvraag</td>
-<td>per vraag anders</td>
+<td>bonus question</td>
+<td>may be different for every question</td>
 </tr>
 </tbody>
 </table>
-Aan de linkerzijde van het scherm zie je de top 5 van spelers die meespelen voor de pot. Als je de complete stand wil zien, of als je wil zien wie er op de eerste plek staat in de <em>voor nop</em> pool, moet je naar de menu optie <a href="[link slug='ranking']">stand</a> gaan en daar de juiste groep kiezen. Als je bent ingelogd, dan wordt standaard de pool waarvoor je je hebt ingeschreven voor je gekozen.
-<h3>De joker</h3>
-Elke speler heeft tijdens het toernooi de beschikking over 1 joker. Met deze joker kan je het aantal punten voor een zelfgekozen wedstrijd verdubbelen. Je kan de joker inzetten voor elke wedstrijd die je wil, zolang je voor deze wedstrijd nog de mogelijkheid hebt om de score bij te werken. De joker wordt actief als de voorspellingstermijn voor de wedstrijd is verlopen, een geactiveerde joker kan niet meer worden verplaatst of opnieuw worden ingezet. Een joker kan niet bij een bonusvraag worden ingezet.
-<h3>Gelijke stand?</h3>
-Wanneer meerdere spelers een gelijk aantal punten hebben, dan bepalen onderstaande zaken de volgorde in de stand (belangrijkste bovenaan):
+If you want to view the ranking, then go to the <a href="[link slug='ranking']">ranking page</a> and pick the correct league. If you're logged in, then the league for which you subscribed, is automatically picked.
+
+<h3>The golden ball</h3>
+Each player has one golden ball. If you place this ball next to a match the score for that match is doubled. You may place the golden ball next to every match, as long this match is still changeable. The golden ball is activated after a match had become unchangeable. Once activated the golden ball cannot be moved.
+
+<h3>Same ranking?</h3>
+When multiple players have the exact same amount of points, then the following rules are applied on the sorting (most important one at the top):
 <ol>
-	<li>aantal keren juiste uitslag;</li>
-	<li>aantal keren juiste toto uitslag;</li>
-	<li>aantal bonusvragen juist beantwoord.</li>
+	<li>amount of full scores;</li>
+	<li>amount of toto scores;</li>
+	<li>amount of correct bonus questions.</li>
 </ol>
-Is de stand dan nog steeds gelijk en eindigen deze spelers bij de winnaars voor de pot, dan beslist de webmaster hoe de pot wordt verdeeld.
-<h3>Overige zaken</h3>
-Bij zaken waarin dit reglement niet voorziet, beslist de webmaster.

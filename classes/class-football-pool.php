@@ -1,4 +1,4 @@
-<?php 
+<?php
 // dummy var for translation files
 $fp_translate_this = __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'teams', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -349,67 +349,6 @@ class Football_Pool {
 		return $errors;
 	}
 	
-	public function update_user_options( $user_id ) {
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return false;
-		}
-		$league = Football_Pool_Utils::post_int( 'league', FOOTBALLPOOL_LEAGUE_DEFAULT );
-		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
-	}
-	
-	public function add_extra_profile_fields( $user ) {
-		// add extra profile fields to user edit page
-		$pool = new Football_Pool_Pool();
-				
-		if ( $pool->has_leagues ) {
-			echo '<h3>', FOOTBALLPOOL_PLUGIN_NAME, '</h3>';
-			echo '<table class="form-table">';
-			
-			global $current_user;
-			get_currentuserinfo();
-			
-			$league = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
-			echo'<tr><th><label for="league">', __( 'Play in league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td>', $pool->league_select( $league, 'league' ); 
-			if ( current_user_can( 'administrator' ) ) {
-				echo '<span class="description">', __( "<strong>Important:</strong> An administrator can change users in the plugin's admin page for", FOOTBALLPOOL_TEXT_DOMAIN ), ' <a href="admin.php?page=footballpool-users">', __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>.</span>';
-			}
-			echo '</td></tr>';
-			
-			$league = get_the_author_meta( 'footballpool_league', $user->ID );
-			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
-				$league = $pool->leagues[$league]['leagueName'];
-			} else {
-				$league = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
-			}
-				
-			echo '<tr><th>', __( 'The webmaster put you in this league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td>', $league, 
-				' <span class="description">(', 
-				__( 'if this value is different from the one you entered on registration, then the webmaster did not approve it yet.', FOOTBALLPOOL_TEXT_DOMAIN ), 
-				')</span></td></tr>';
-			
-			echo '</table>';
-		}
-	}
-	
-	public function delete_user_from_pool( $user_id ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user_id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d", $user_id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE userId = %d", $user_id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
-		$wpdb->query( $sql );
-		// also recalculate scorehistory
-		$score = new Football_Pool_Admin();
-		$success = $score->update_score_history();
-	}
-	
 	public function countdown_texts() {
 		$text_second = __( 'second', FOOTBALLPOOL_TEXT_DOMAIN );
 		$text_seconds = __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -490,6 +429,31 @@ class Football_Pool {
 			echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
 			echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
 		}
+	}
+	
+	// display a user's name including an optional label
+	public function user_name( $id, $return = 'all' ) {
+		$name = get_the_author_meta( 'display_name', $id );
+		$label = get_the_author_meta( 'footballpool_user_label', $id );
+		$wrap = sprintf( '<span class="user-label"> (%s)</span>', $label );
+		
+		$output = '';
+		switch ( $return ) {
+			case 'label':
+				if ( $label != '' ) $output = $wrap;
+				break;
+			case 'label-only':
+				$output = $label;
+				break;
+			case 'name':
+				$output = $name;
+				break;
+			case 'all':
+				$output = $name;
+				if ( $label != '' ) $output .= $wrap;
+		}
+		
+		return $output;
 	}
 	
 //=============================================================================================================//

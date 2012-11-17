@@ -193,14 +193,15 @@ class Football_Pool_Pool {
 		if ( count( $ranking ) > 0 ) {
 			$userpage = Football_Pool::get_page_link( 'user' );
 			$i = 1;
-			$output .= '<table style="width:300px;" class="poolranking">';
+			
+			$output .= '<table class="pool-ranking ranking-page">';
 			foreach ( $ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
 				$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
 				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
 				if ( $row['userId'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
-									<td><a href="%s">%s</a></td>
+									<td><a href="%s">%s</a>%s</td>
 									<td>%d</td>
 									%s
 									</tr>',
@@ -208,6 +209,7 @@ class Football_Pool_Pool {
 								$i++,
 								esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
 								$row['userName'],
+								Football_Pool::user_name( $row['userId'], 'label' ),
 								$row['points'],
 								( $all_user_view ? $this->league_image( $row['leagueId'] ) : '' )
 							);

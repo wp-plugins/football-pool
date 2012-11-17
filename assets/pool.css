@@ -79,17 +79,18 @@ li.widget div.ranking th { font-size: 80%; }
 /* group ranking as shortcode */
 div.entry div.ranking.shortcode { float: none; }
 
-table.poolranking { border-collapse: collapse; font-size: 75%; }
-table.poolranking td { padding-left: .5em; }
-table.poolranking tr.currentuser { background-color: #e1dfdf; } 
-#rankingsbox table.poolranking tr.currentuser { background-color: #transparent; } 
-table.poolranking tr.currentuser td, 
-table.poolranking tr.currentuser td a, 
-table.poolranking tr.currentuser td a:visited { color: #330039; font-weight: bolder; }
+table.pool-ranking.ranking-page { width: 500px; }
+table.pool-ranking { border-collapse: collapse; font-size: 75%; }
+table.pool-ranking td { padding-left: .5em; }
+table.pool-ranking tr.currentuser { background-color: #e1dfdf; } 
+#rankingsbox table.pool-ranking tr.currentuser { background-color: #transparent; } 
+table.pool-ranking tr.currentuser td, 
+table.pool-ranking tr.currentuser td a, 
+table.pool-ranking tr.currentuser td a:visited { color: #330039; font-weight: bolder; }
 
-table.poolranking td.score  { text-align:right; padding-right: 1em; }
+table.pool-ranking td.score  { text-align:right; padding-right: 1em; }
 
-.entry table.poolranking { font-size: 100%; width: 300px; }
+.entry table.pool-ranking { font-size: 100%; width: 300px; }
 
 table.gamesbox td { padding: 1px 2px; font-size: 75%; }
 table.gamesbox td.score { white-space: nowrap; }
@@ -97,6 +98,7 @@ table.gamesbox td.score { white-space: nowrap; }
 .widget .recentcomments { font-size: 75%; }
 .widget li { font-size: 75%; }
 
+table.teaminfo { margin-top: 10px; }
 table.teaminfo, table.teaminfo td, table.teaminfo tr { border: none; }
 table.teaminfo tr th { vertical-align: top; text-align: left; padding: 0 2em 1em 0; }
 table.teaminfo tr td { padding: 0 0 1em 0; }
@@ -161,7 +163,7 @@ div.bonus ul.multi-select label.user-input span { width: 530px; }
 */
 
 #sidebar .widget_footballpoollastgameswidget p,
-#sidebar .widget_footballpoolrankingwidget p { padding: 2px 3px; margin: 0; font-size: 75%; }
+#sidebar .widget_footballpool-rankingwidget p { padding: 2px 3px; margin: 0; font-size: 75%; }
 
 #sidebar ol.userselector { margin: 0; padding: 0; display: block; overflow: auto; width: 100%; border: none; list-style: none; }
 #sidebar ol.userselector li.selected { background-color: #e1dfdf; }
@@ -206,3 +208,5 @@ div.bonus ul.multi-select label.user-input span { width: 530px; }
 #sidebar ul li.widget_footballpoolnextpredictionwidget a {
 	display: inline;
 }
+
+.user-label { font-size: 70%; font-style: italic; }

@@ -3,7 +3,7 @@ class Football_Pool_Stadiums {
 	public function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT id, name, photo FROM {$prefix}stadiums ORDER BY name ASC";
+		$sql = "SELECT id, name, photo, comments FROM {$prefix}stadiums ORDER BY name ASC";
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		
 		$stadiums = array();
@@ -29,7 +29,7 @@ class Football_Pool_Stadiums {
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "SELECT id, name, photo FROM {$prefix}stadiums WHERE id = %d", $id );
+		$sql = $wpdb->prepare( "SELECT id, name, photo, comments FROM {$prefix}stadiums WHERE id = %d", $id );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
 		return ( $row ) ? new Football_Pool_Stadium( $row ) : null;
@@ -42,7 +42,7 @@ class Football_Pool_Stadiums {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT id, name, photo
+		$sql = $wpdb->prepare( "SELECT id, name, photo, comments
 								FROM {$prefix}stadiums WHERE name = %s", $name );
 		$result = $wpdb->get_row( $sql );
 		
@@ -51,12 +51,13 @@ class Football_Pool_Stadiums {
 			
 			if ( is_array( $extra_data ) ) {
 				$photo = $extra_data['photo'];
+				$comments = $extra_data['comments'];
 			}
 			
 			$sql = $wpdb->prepare( 
-							"INSERT INTO {$prefix}stadiums ( name, photo ) 
-							 VALUES ( %s, %s )"
-							, $name, $photo
+							"INSERT INTO {$prefix}stadiums ( name, photo, comments ) 
+							 VALUES ( %s, %s, %s )"
+							, $name, $photo, $comments
 					);
 			$wpdb->query( $sql );
 			$id = $wpdb->insert_id;
@@ -64,8 +65,9 @@ class Football_Pool_Stadiums {
 									'id'       => $id, 
 									'name'     => $name,
 									'photo'    => $photo,
+									'comments'    => $comments,
 									'inserted' => true
-									);
+								);
 		}
 		
 		return $result;

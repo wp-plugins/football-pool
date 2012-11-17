@@ -25,6 +25,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 				$this->group_order = $t->group_order;
 				$this->is_real = $t->is_real;
 				$this->is_active = $t->is_active;
+				$this->comments = $t->comments;
 			}
 		} elseif ( is_array( $team ) ) {
 			$this->id = $team['id'];
@@ -37,6 +38,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			$this->group_order = $team['group_order'];
 			$this->is_real = $team['is_real'];
 			$this->is_active = $team['is_active'];
+			$this->comments = $team['comments'];
 		}
 	}
 	
@@ -73,7 +75,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 									m.nr, m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
-									AND m.matchtypeId = t.id 
+									AND m.matchtypeId = t.id AND t.visibility = 1
 									AND (m.homeTeamId = %d OR m.awayTeamId = %d)",
 								$this->id,
 								$this->id
@@ -88,7 +90,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo
 								FROM {$prefix}stadiums s, {$prefix}matches m 
 								WHERE s.id = m.stadiumId 
-								AND (m.homeTeamId = %d OR awayTeamId = %d)
+								AND ( m.homeTeamId = %d OR awayTeamId = %d )
 								ORDER BY s.name ASC",
 								$this->id,
 								$this->id

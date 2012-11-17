@@ -142,7 +142,9 @@ class Football_Pool_Utils {
 	
 	// print information about a variable in a human readable way
 	public function debug( $var, $type = 'echo' ) {
-		if ( $type == 'just once' || ( is_array( $type ) && $type[0] == 'just_once' ) ) {
+		$type = str_replace( array( 'only', 'just', ' ', '-' ), array( '', '', '', '' ), $type );
+		
+		if ( $type == 'once' || ( is_array( $type ) && $type[0] == 'once' ) ) {
 			$type = isset( $type[1] ) ? $type[1] : 'echo';
 			
 			$cache_key = 'fp_debug';

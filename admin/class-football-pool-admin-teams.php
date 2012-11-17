@@ -20,23 +20,23 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 				if ( $item_id > 0 ) {
 					self::activate( $user_id, $action );
 					if ( $action == 'activate' )
-						$notice = 'Team %d activated.';
+						$notice = __( 'Team %d activated.', FOOTBALLPOOL_TEXT_DOMAIN );
 					else
-						$notice = 'Team %d deactivated.';
+						$notice = __( 'Team %d deactivated.', FOOTBALLPOOL_TEXT_DOMAIN );
 					
 					$nr = $item_id;
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::activate( $bulk_ids, $action );
 					if ( $action == 'activate' )
-						$notice = '%d teams activated.';
+						$notice = __( '%d teams activated.', FOOTBALLPOOL_TEXT_DOMAIN );
 					else
-						$notice = '%d teams deactivated.';
+						$notice = __( '%d teams deactivated.', FOOTBALLPOOL_TEXT_DOMAIN );
 					
 					$nr = count( $bulk_ids );
 				}
 				
-				if ( $notice != '' ) self::notice( sprintf( __( $notice, FOOTBALLPOOL_TEXT_DOMAIN ), $nr ) );
+				if ( $notice != '' ) self::notice( sprintf( $notice, $nr ) );
 				self::view();
 				break;
 			case 'save':
@@ -78,6 +78,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 						'group_order' => 0,
 						'is_real' => 1,
 						'is_active' => 1,
+						'comments' => '',
 						);
 		
 		$teams = new Football_Pool_Teams;
@@ -98,6 +99,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 					array( 'image', __( 'photo', FOOTBALLPOOL_TEXT_DOMAIN ), 'photo', $values['photo'], sprintf( __( 'Image path must be a full URL to the image. Or a path relative to %s in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ), '/assets/images/teams/' ) ),
 					array( 'image', __( 'flag', FOOTBALLPOOL_TEXT_DOMAIN ), 'flag', $values['flag'], sprintf( __( 'Image path must be a full URL to the image. Or a path relative to %s in the plugin directory', FOOTBALLPOOL_TEXT_DOMAIN ), '/assets/images/flags/' ) ),
 					array( 'text', __( 'link', FOOTBALLPOOL_TEXT_DOMAIN ), 'link', $values['link'], __( 'A link to a website with information about the team. Used on the team page in de plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'multiline', __( 'comments', FOOTBALLPOOL_TEXT_DOMAIN ), 'comments', $values['comments'], __( 'An optional text with extra information about the team that is displayed on the team\'s page.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'dropdown', __( 'group', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_id', $values['group_id'], $groups, '' ),
 					array( 'integer', __( 'group order', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_order', $values['group_order'], __( 'If teams are placed in a group and the default ordering does not work (when teams have the same points) you can fix the ordering with this number.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'checkbox', __( 'team is not a temporary team name', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_real', $values['is_real'], __( 'Set to false if the team name is not a real team, e.g. "Winner match 30".', FOOTBALLPOOL_TEXT_DOMAIN ) ),
@@ -118,7 +120,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'team', FOOTBALLPOOL_TEXT_DOMAIN ), 'team', '' ),
-					array( 'text', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_active', '' ),
+					array( 'boolean', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_active', '' ),
 				);
 		
 		$rows = array();
@@ -147,6 +149,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 						Football_Pool_Utils::post_int( 'group_order' ),
 						Football_Pool_Utils::post_int( 'is_real' ),
 						Football_Pool_Utils::post_int( 'is_active' ),
+						Football_Pool_Utils::post_string( 'comments' ),
 					);
 		
 		$id = self::update_item( $item );
@@ -183,22 +186,22 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		list( $id, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active ) = $input;
+		list( $id, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments ) = $input;
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}teams 
-										( name, photo, flag, link, groupId, groupOrder, is_real, is_active )
+										( name, photo, flag, link, groupId, groupOrder, is_real, is_active, comments )
 									VALUES 
-										( %s, %s, %s, %s, %d, %d, %d, %d )",
-									$name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active
+										( %s, %s, %s, %s, %d, %d, %d, %d, %s )",
+									$name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET
-										name = %s, photo = %s, flag = %s, link = %s, 
-										groupId = %d, groupOrder = %d, is_real = %d, is_active = %d
+										name = %s, photo = %s, flag = %s, link = %s, groupId = %d, 
+										groupOrder = %d, is_real = %d, is_active = %d, comments = %s
 									WHERE id = %d",
-									$name, $photo, $flag, $link, 
-									$group_id, $group_order, $is_real, $is_active, 
+									$name, $photo, $flag, $link, $group_id, 
+									$group_order, $is_real, $is_active, $comments,
 									$id
 								);
 		}

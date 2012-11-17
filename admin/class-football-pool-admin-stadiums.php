@@ -44,8 +44,9 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 	private function edit( $id ) {
 		$values = array(
 						'name' => '',
-						'photo' => ''
-						);
+						'photo' => '',
+						'comments' => '',
+					);
 		
 		$venue = self::get_venue( $id );
 		if ( $venue && $id > 0 ) {
@@ -54,6 +55,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', $values['name'], '' ),
 					array( 'image', __( 'photo', FOOTBALLPOOL_TEXT_DOMAIN ), 'photo', $values['photo'], '' ),
+					array( 'multiline', __( 'comments', FOOTBALLPOOL_TEXT_DOMAIN ), 'comments', $values['comments'], __( 'An optional text with extra information about the venue that is displayed on the venue\'s page.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -70,8 +72,9 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		if ( is_object( $venue ) ) {
 			$output = array(
 							'name' => $venue->name,
-							'photo' => $venue->photo
-							);
+							'photo' => $venue->photo,
+							'comments' => $venue->comments,
+						);
 		} else {
 			$output = null;
 		}
@@ -86,7 +89,8 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 			$output[] = array(
 							'id' => $venue->id, 
 							'name' => $venue->name, 
-							'photo' => $venue->photo
+							'photo' => $venue->photo,
+							'comments' => $venue->comments,
 						);
 		}
 		return $output;
@@ -119,7 +123,8 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
-						Football_Pool_Utils::post_string( 'photo' )
+						Football_Pool_Utils::post_string( 'photo' ),
+						Football_Pool_Utils::post_string( 'comments' ),
 					);
 		
 		$id = self::update_item( $item );
@@ -146,21 +151,20 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$id = $input[0];
-		$name = $input[1];
-		$photo = $input[2];
+		list ( $id, $name, $photo, $comments ) = $input;
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}stadiums (name, photo)
-									VALUES (%s, %s)",
-									$name, $photo
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}stadiums ( name, photo, comments )
+									VALUES ( %s, %s, %s )",
+									$name, $photo, $comments
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}stadiums SET
 										name = %s,
-										photo = %s
+										photo = %s,
+										comments = %s
 									WHERE id = %d",
-									$name, $photo, $id
+									$name, $photo, $comments, $id
 								);
 		}
 		

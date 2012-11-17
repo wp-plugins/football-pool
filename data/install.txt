@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}matches` (
 CREATE TABLE IF NOT EXISTS `{$prefix}matchtypes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL DEFAULT '',
+  `visibility` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -110,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}stadiums` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `photo` text NOT NULL DEFAULT '',
+  `comments` text,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -123,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
   `groupOrder` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `is_real` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `is_active` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `comments` text,
   PRIMARY KEY (`id`),
   KEY `ixGroup` (`groupId`),
   KEY `ixGroupOrder` (`groupOrder`)

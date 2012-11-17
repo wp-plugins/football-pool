@@ -3,13 +3,13 @@
  Plugin Name: Football pool
  Plugin URI: http://wordpressfootballpool.wordpress.com/
  Description: This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches to a national competition. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool players.
- Version: 2.0.2
+ Version: 2.1.0
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
  Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '2.0.2' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.1.0' );
 
 /*
  This program is free software; you can redistribute it and/or modify
@@ -98,11 +98,11 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-matchtypes.php';
 	require_once 'admin/class-football-pool-admin-groups.php';
 	
-	add_action( 'delete_user', array( 'Football_Pool', 'delete_user_from_pool' ) );
-	add_action( 'show_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );
-	add_action( 'edit_user_profile', array( 'Football_Pool', 'add_extra_profile_fields' ) );
-	add_action( 'personal_options_update', array( 'Football_Pool', 'update_user_options' ) );
-	add_action( 'edit_user_profile_update', array( 'Football_Pool', 'update_user_options' ) );
+	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
+	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
+	add_action( 'edit_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
+	add_action( 'personal_options_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
+	add_action( 'edit_user_profile_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
 	add_action( 'admin_menu', array( 'Football_Pool_Admin', 'init' ) );
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
 	add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );

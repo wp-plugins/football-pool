@@ -285,7 +285,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				if ( $entry != '.' && $entry != '..' && $locale_check ) {
 					$i++;
 					$meta = self::get_meta_from_csv( FOOTBALLPOOL_CSV_UPLOAD_DIR . $entry );
-					echo '<tr><td><input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"></td>';
+					echo '<tr class="csv-file"><td><input id="csv-', $i, '" name="csv_file" type="radio" value="', esc_attr( $entry ), '"></td>';
 					echo '<td><label for="csv-', $i, '">', $entry, '</label></td>';
 					echo '<td>', $meta['contributor'], '</td>';
 					echo '<td>';

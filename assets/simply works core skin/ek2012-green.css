@@ -337,12 +337,12 @@ th.wins, td.wins, th.draws, td.draws, th.losses, td.losses { background-color: #
 th.plays, td.plays, th.points, td.points { background-color: #193F18; color: #ddd; }
 th.team, td.team, th.goals, td.goals { background-color: #ADC347; }
 
-table.poolranking tr.currentuser td, table.poolranking tr.currentuser td a, table.poolranking tr.currentuser td a:visited {
+table.pool-ranking tr.currentuser td, table.pool-ranking tr.currentuser td a, table.pool-ranking tr.currentuser td a:visited {
     color: #193F18;
     font-weight: bolder;
 }
 
-table.poolranking tr.currentuser {
+table.pool-ranking tr.currentuser {
     background-color: #ADC347;
 }
 

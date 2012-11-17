@@ -290,12 +290,38 @@ class Football_Pool_Admin {
 		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
+	public function textarea_field( $key, $value, $type = '' ) {
+		return sprintf( '<textarea name="%s" class="%s" cols="50" rows="5">%s</textarea>'
+							, esc_attr( $key ), $type, $value
+					);
+	}
+	
+	public function textarea_input( $label, $key, $value, $description = '', $type = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
+			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
+			<td>', self::textarea_field( $key, $value, $type ), '</td>
+			<td><span class="description">', $description, '</span></td>
+			</tr>';
+	}
+	
+	public function text_input_field( $key, $value, $type = 'regular-text', $capability = '' ) {
+		if ( $capability == '' || ( $capability != '' && current_user_can( $capability ) ) ) {
+			$output = '<input name="' . esc_attr( $key ) . '" type="text" id="' . esc_attr( $key ) 
+					. '" value="' . esc_attr( $value ) . '" class="' . esc_attr( $type ) . '" />';
+		} else {
+			$output = $value;
+		}
+		return $output;
+	}
+	
 	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text', $depends_on = '' ) {
 		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
 		
 		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
 			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td><input name="', esc_attr( $key ),'" type="text" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '" class="', esc_attr( $type ), '"></td>
+			<td>', self::text_input_field( $key, $value, $type ), '</td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
 	}
@@ -348,6 +374,10 @@ class Football_Pool_Admin {
 			case 'datetime':
 				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
 				break;
+			case 'textarea':
+			case 'multiline':
+				self::textarea_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], '', ( isset( $option[4] ) ? $option[4] : '' ) );
+				break;
 			case 'integer':
 			case 'string':
 			case 'text':
@@ -389,6 +419,10 @@ class Football_Pool_Admin {
 			case 'date':
 			case 'datetime':
 				self::datetime_input( $option[1], $option[2], $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
+				break;
+			case 'multiline':
+			case 'textarea':
+				self::textarea_input( $option[1], $option[2], $option[3], $option[4], ( isset( $option[5] ) ? $option[5] : '' ), ( isset( $option[6] ) ? $option[6] : '' ) );
 				break;
 			case 'integer':
 			case 'string':
@@ -499,7 +533,18 @@ class Football_Pool_Admin {
 					if ( $j == 0 ) {
 						echo '<strong><a title="Edit “', esc_attr( $rows[$i][$j] ), '”" href="?page=', esc_attr( $page ), '&amp;action=edit&amp;item_id=', esc_attr( $rows[$i][$c] ), '" class="row-title">';
 					}
-					echo $rows[$i][$j];
+					
+					switch ( $cols[$j][0] ) {
+						case 'boolean':
+							$value = $rows[$i][$j] == 1 ? 
+											__( 'yes', FOOTBALLPOOL_TEXT_DOMAIN ) : 
+											__( 'no', FOOTBALLPOOL_TEXT_DOMAIN );
+							break;
+						case 'text':
+						default:
+							$value = $rows[$i][$j];
+					}
+					echo $value;
 					
 					if ( $j == 0 ) {
 						echo '</a></strong><br>
