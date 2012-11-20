@@ -52,6 +52,10 @@ class Football_Pool {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.0.0.txt' ) );
 				self::db_actions( $update_sql );
 			}
+			if ( ! self::is_at_least_version( '2.1.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.1.0.txt' ) );
+				self::db_actions( $update_sql );
+			}
 		}
 		
 		// define default plugin options
@@ -68,6 +72,7 @@ class Football_Pool {
 		add_option( 'footballpool_start', $date );
 		add_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS );
 		add_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS );
+		add_option( 'footballpool_goalpoints', FOOTBALLPOOL_GOALPOINTS );
 		add_option( 'footballpool_maxperiod', FOOTBALLPOOL_MAXPERIOD );
 		add_option( 'footballpool_use_leagues', 1 ); // 1: yes, 0: no
 		add_option( 'footballpool_shoutbox_max_chars', FOOTBALLPOOL_SHOUTBOX_MAXCHARS );
@@ -140,6 +145,7 @@ class Football_Pool {
 		delete_option( 'footballpool_start' );
 		delete_option( 'footballpool_totopoints' );
 		delete_option( 'footballpool_fullpoints' );
+		delete_option( 'footballpool_goalpoints' );
 		delete_option( 'footballpool_maxperiod' );
 		delete_option( 'footballpool_use_leagues' );
 		delete_option( 'footballpool_db_version' );

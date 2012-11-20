@@ -7,6 +7,8 @@ class Football_Pool_Statistics_Page {
 		$question = Football_Pool_Utils::get_integer( 'question' );
 		$user = Football_Pool_Utils::get_integer( 'user' );
 		
+		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
+		
 		global $current_user;
 		get_currentuserinfo();
 		
@@ -46,7 +48,7 @@ class Football_Pool_Statistics_Page {
 					$output .= $stats->show_match_info( $match_info );
 					if ( $stats->stats_visible ) {
 						if ( $stats->stats_enabled && $stats->data_available_for_match( $match ) ) {
-							// chart 1: pie, wat hebben de deelnemers gescoord bij deze wedstrijd?
+							// chart 1: pie, what did the players score with the game predictions for this match?
 							$raw_data = $chart_data->predictions_pie_chart_data( $match );
 							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
 							$chart->data = $chart_data->predictions_pie_series( $raw_data );
@@ -123,13 +125,20 @@ class Football_Pool_Statistics_Page {
 						
 						if ( count( $users ) >= 1 ) {
 							// column charts
-							// chart6: scoreverdeling
+							// chart6: column, what did the players score with the game predictions?
 							$raw_data = $chart_data->score_chart_data( $users );
 							$chart = new Football_Pool_Chart( 'chart6', 'column', 720, 300 );
 							$chart->data = $chart_data->score_chart_series( $raw_data );
 							$chart->title = __( 'scores', FOOTBALLPOOL_TEXT_DOMAIN );
+							$axis = array();
+							$axis[] = __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ); 
+							$axis[] = __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ); 
+							$axis[] = __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN );
+							if ( $goal_bonus ) {
+								$axis[] = __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN );
+							}
 							$chart->options[] = "xAxis: { 
-														categories: [ '" . __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
+														categories: [ '" . implode( "', '", $axis ) . "' ]
 												}";
 							$chart->options[] = "tooltip: {
 													formatter: function() {
@@ -139,7 +148,7 @@ class Football_Pool_Statistics_Page {
 													}
 												}";
 							$output .= $chart->draw();
-							// chart7: bonusvragen
+							// chart7: bonus questions
 							$raw_data = $chart_data->bonus_question_for_users_pie_chart_data( $users );
 							if ( count( $raw_data ) > 0 ) {
 								$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );

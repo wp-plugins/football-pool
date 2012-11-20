@@ -50,6 +50,10 @@ class Football_Pool_Pool {
 				$score = (int) Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			}
 		}
+		// check for goal bonus
+		$goal_bonus = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+		if ( $home == $user_home ) $score += $goal_bonus;
+		if ( $away == $user_away ) $score += $goal_bonus;
 		
 		if ( $joker == 1 ) $score *= 2;
 		

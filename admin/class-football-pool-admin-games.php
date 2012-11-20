@@ -537,34 +537,34 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		foreach( $rows as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
-				echo '<tr><td class="sidebar-name" colspan="11"><h3>', $matchtype, '</h3></td></tr>';
+				echo '<tr><td class="sidebar-name" colspan="10"><h3>', $matchtype, '</h3></td></tr>';
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );
-			if ( $datetitle != $matchdate->format( 'd M Y' ) ) {
-				$datetitle = $matchdate->format( 'd M Y' );
-				echo '<tr><td class="sidebar-name" colspan="7">', $datetitle, '</td>',
-						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
+			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+			if ( $datetitle != $localdate->format( 'd M Y' ) ) {
+				$datetitle = $localdate->format( 'd M Y' );
+				echo '<tr><td class="sidebar-name"></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
-						'<td class="sidebar-name" colspan="2"></td>',
+						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
+						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $localdate->format( 'd M Y, H:i' ), '">', $datetitle, '</span></td>',
 						'</tr>';
 			}
 			
-			$page = '?page=' . esc_attr( Football_Pool_Utils::get_string( 'page' ) ) . '&amp;item_id=' . $row['nr'];
+			$page = '?page=' . Football_Pool_Utils::get_string( 'page' ) . '&amp;item_id=' . $row['nr'];
 			$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
 								, $row['nr'] 
 							);
 			$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
 			echo '<tr>',
 					'<td class="time">', $row['nr'], '</td>',
-					'<td class="time">', $matchdate->format( 'H:i' ), '</td>',
+					'<td class="time local">', $localdate->format( 'Y-m-d H:i' ), '</td>',
+					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
 					'<td class="home">', self::teamname_input( (int) $row['homeTeamId'], '_home_team_'.$row['nr'] ), '</td>',
 					'<td class="score">', self::show_input( '_home_score_' . $row['nr'], $row['homeScore'] ), '</td>',
 					'<td>-</td>',
 					'<td class="score">', self::show_input( '_away_score_' . $row['nr'], $row['awayScore'] ), '</td>',
 					'<td class="away">', self::teamname_input( (int) $row['awayTeamId'], '_away_team_' . $row['nr'] ), '</td>',
-					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
-					'<td class="time local">', self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ), '</td>',
 					'<td><a href="', $page, '&amp;action=edit">', __( 'edit' ), '</a></td>',
 					'<td><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'delete' ), '</a></td>',
 					'</tr>';

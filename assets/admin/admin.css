@@ -75,3 +75,5 @@ table.fp-radio-list { border-collapse: collapse; }
 .fp-radio-list th { text-align: left; font-weight: normal; font-style: italic; }
 
 div.import.culture-select { text-align: right; }
+
+td.date-title { text-align: right; }

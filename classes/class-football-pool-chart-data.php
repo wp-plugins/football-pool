@@ -8,14 +8,17 @@ class Football_Pool_Chart_Data {
 	public function predictions_pie_chart_data( $match ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "
-								SELECT
-									COUNT(IF(`full`=1,1,NULL)) AS `scorefull`, 
-									COUNT(IF(`toto`=1,1,NULL)) AS `scoretoto`, 
-									COUNT(`userId`) AS `scoretotal`
+		$sql = $wpdb->prepare( "SELECT
+									COUNT( IF( full = 1, 1, NULL ) ) AS scorefull, 
+									COUNT( IF( toto = 1, 1, NULL ) ) AS scoretoto, 
+									COUNT( IF( goal_bonus = 1, 
+												IF( toto = 1, NULL, 1 ), 
+												NULL ) 
+									) AS goalbonus, 
+									COUNT( userId ) AS scoretotal
 								FROM {$prefix}scorehistory 
 								WHERE `type` = 0 
-								GROUP BY `scoreOrder` HAVING `scoreOrder` = %d", 
+								GROUP BY scoreOrder HAVING scoreOrder = %d", 
 							$match
 						);
 		return $wpdb->get_row( $sql, ARRAY_A );
@@ -30,19 +33,20 @@ class Football_Pool_Chart_Data {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			$sql = "SELECT 
-					COUNT(IF(s.full=1,1,NULL)) AS scorefull, 
-					COUNT(IF(s.toto=1,1,NULL)) AS scoretoto, 
-					COUNT(s.scoreOrder) AS scoretotal,
-					u.display_name AS username
+						COUNT( IF( s.full = 1, 1, NULL ) ) AS scorefull, 
+						COUNT( IF( s.toto = 1, 1, NULL ) ) AS scoretoto, 
+						COUNT( IF( s.goal_bonus = 1, IF( s.toto = 1, NULL, 1 ), NULL ) ) AS single_goal_bonus, 
+						COUNT( s.scoreOrder ) AS scoretotal, 
+						u.display_name AS username 
 					FROM {$prefix}scorehistory s 
-					INNER JOIN {$wpdb->users} u ON (u.ID=s.userId) ";
+					INNER JOIN {$wpdb->users} u ON ( u.ID = s.userId ) ";
 			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			}
-			$sql .= "WHERE s.type = 0 AND s.userId IN (" . implode(',', $users) . ") ";
+			$sql .= "WHERE s.type = 0 AND s.userId IN ( " . implode( ',', $users ) . " ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 			$sql .= "GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -50,7 +54,8 @@ class Football_Pool_Chart_Data {
 				$data[ $row['username'] ] = array(
 												'scorefull'  => $row['scorefull'],
 												'scoretoto'  => $row['scoretoto'],
-												'scoretotal' => $row['scoretotal']
+												'scoretotal' => $row['scoretotal'],
+												'goalbonus' => $row['single_goal_bonus'],
 												);
 			}
 		}
@@ -142,12 +147,13 @@ class Football_Pool_Chart_Data {
 		$output['totalScore'] = $data['totalScore'];
 		// get the number of matches for which there are results
 		$sql = $wpdb->prepare( "SELECT COUNT(*) AS numMatches FROM {$prefix}scorehistory
-								WHERE type=0 AND userId=%d", $user);
+								WHERE type = 0 AND userId = %d", $user);
 		$data = $wpdb->get_row( $sql, ARRAY_A );
 		
-		$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
+				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
 		$output['maxScore'] = $full * 2; // count first match with joker
-		$output['maxScore'] += ( (int) $data['numMatches'] - 1) * $full; // all other matches
+		$output['maxScore'] += ( (int) $data['numMatches'] - 1 ) * $full; // all other matches
 		// add the bonusquestions
 		$sql = "SELECT SUM(points) AS `maxPoints` FROM {$prefix}bonusquestions WHERE scoreDate IS NOT NULL";
 		$data = $wpdb->get_row( $sql, ARRAY_A );
@@ -193,23 +199,31 @@ class Football_Pool_Chart_Data {
 	Build data arrays for the series option 
 	******************************************/
 	public function score_chart_series( $rows ) {
+		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
 		$data = array();
 		foreach ( $rows as $name => $row ) {
 			$data[$name] = array(
 								array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
 								array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
-								array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
+								array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] - ( $goal_bonus ? $row['goalbonus'] : 0 ) ),
 							);
+			if ( $goal_bonus ) {
+				$data[$name][] = array( __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['goalbonus'] );
+			}
 		}
 		return $data;
 	}
 	
 	public function predictions_pie_series( $row ) {
+		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
 		$data = array(
 					array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
 					array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
-					array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] )
+					array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] - ( $goal_bonus ? $row['goalbonus'] : 0 ) )
 				);
+		if ( $goal_bonus ) {
+			$data[] = array( __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['goalbonus'] );
+		}
 		return $data;
 	}
 	

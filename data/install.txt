@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
   `score` int(10) unsigned NOT NULL,
   `full` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `toto` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `goal_bonus` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `totalScore` int(10) unsigned NOT NULL DEFAULT '0',
   `ranking` int(10) unsigned NOT NULL,
   KEY `scoreDate` (`scoreDate`),

@@ -127,7 +127,7 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		
 		$sql = "SELECT
-					UNIX_TIMESTAMP(m.playDate) AS match_timestamp, m.homeTeamId, m.awayTeamId, 
+					m.homeTeamId, m.awayTeamId, 
 					p.homeScore, p.awayScore, p.hasJoker, u.ID AS userId, ";
 		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
 		$sql .= "	u.display_name AS userName

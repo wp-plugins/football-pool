@@ -87,7 +87,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo
+		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo, s.comments
 								FROM {$prefix}stadiums s, {$prefix}matches m 
 								WHERE s.id = m.stadiumId 
 								AND ( m.homeTeamId = %d OR awayTeamId = %d )

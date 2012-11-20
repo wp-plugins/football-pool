@@ -249,10 +249,11 @@ class Football_Pool_Matches {
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );
-			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
-				$date_title = $matchdate->format( 'd M Y' );
+			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			if ( $date_title != $localdate->format( 'd M Y' ) ) {
+				$date_title = $localdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
-									$matchdate->format( 'l' ), $date_title );
+									$localdate->format( 'l' ), $date_title );
 			}
 			
 			$team_name = ( isset( $teams->team_names[ (int) $row['homeTeamId'] ] ) ?
@@ -269,7 +270,7 @@ class Football_Pool_Matches {
 									<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
-							$this->format_match_time( $matchdate ),
+							$localdate->format( 'H:i' ),
 							$team_name,
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
@@ -317,8 +318,9 @@ class Football_Pool_Matches {
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );
-			if ( $date_title != $matchdate->format( 'd M Y' ) ) {
-				$date_title = $matchdate->format( 'd M Y' );
+			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			if ( $date_title != $localdate->format( 'd M Y' ) ) {
+				$date_title = $localdate->format( 'd M Y' );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="11">%s</td></tr>', $date_title );
 			}
 			
@@ -342,7 +344,7 @@ class Football_Pool_Matches {
 								<td>%s</td>
 								</tr>',
 							$info['nr'],
-							$this->format_match_time( $matchdate ),
+							$localdate->format( 'H:i' ),
 							( isset( $teams->team_names[ (integer) $info['home_team_id'] ] ) ?
 									$teams->team_names[ (integer) $info['home_team_id'] ] :
 									''
@@ -367,7 +369,7 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	private function format_match_time( $datetime ) {
+	private function format_match_time( $datetime, $format = 'H:i' ) {
 		$display = Football_Pool_Utils::get_fp_option( 'match_time_display' );
 		if ( $display == 0 ) { // WordPress setting
 			$datetime = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime->format( 'Y-m-d H:i' ) ) );
@@ -377,7 +379,7 @@ class Football_Pool_Matches {
 			$datetime->modify( $offset . ' seconds' );
 		} // else UTC
 		
-		return $datetime->format( 'H:i' );
+		return $datetime->format( $format );
 	}
 	
 	public function get_match_types() {

@@ -245,6 +245,16 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
+	// accepts a date in Y-m-d H:i format and changes it to UTC
+	public function gmt_from_date( $date_string ) {
+		return Football_Pool_Utils::gmt_from_date( $date_string );
+	}
+	
+	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
+	public function date_from_gmt( $date_string ) {
+		return Football_Pool_Utils::date_from_gmt( $date_string );
+	}
+	
 	// helper function for the date_time input. 
 	// returns the combined date(time) string from the individual inputs
 	public function make_date_from_input( $input_name, $type = 'datetime' ) {
@@ -339,16 +349,6 @@ class Football_Pool_Admin {
 		}
 		
 		return $hide;
-	}
-	
-	// accepts a date in Y-m-d H:i format and changes it to UTC
-	public function gmt_from_date( $date_string ) {
-		return Football_Pool_Utils::gmt_from_date( $date_string );
-	}
-	
-	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
-	public function date_from_gmt( $date_string ) {
-		return Football_Pool_Utils::date_from_gmt( $date_string );
 	}
 	
 	public function show_option( $option ) {
@@ -627,19 +627,25 @@ class Football_Pool_Admin {
 		if ( $check !== false ) {
 			// 2. check predictions with actual match result (score type = 0)
 			$sql = "INSERT INTO {$prefix}scorehistory
-						(type, scoreDate, scoreOrder, userId, score, full, toto, ranking) 
-					SELECT 0, m.playDate, m.nr, u.ID, 
-									IF (p.hasJoker = 1, 2, 1) AS score,
-									IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL) AS full,
-									IF (m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
-										IF (
-													IF (m.homeScore > m.awayScore, 1, IF (m.homeScore = m.awayScore, 3, 2) )
-													=
-													IF (p.homeScore > p.awayScore, 1, IF (p.homeScore = p.awayScore, 3, 2) )
-											, IF (p.homeScore IS NULL OR p.awayScore IS NULL, NULL, 1)
-											, NULL)
-									) AS toto,
-									0
+						( type, scoreDate, scoreOrder, userId, score, full, toto, goal_bonus, ranking ) 
+					SELECT 
+						0, m.playDate, m.nr, u.ID, 
+						IF ( p.hasJoker = 1, 2, 1 ) AS score,
+						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL ) AS full,
+						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
+							IF (
+								IF ( m.homeScore > m.awayScore, 1, IF ( m.homeScore = m.awayScore, 3, 2 ) )
+								=
+								IF ( p.homeScore > p.awayScore, 1, IF (p.homeScore = p.awayScore, 3, 2) )
+								, IF ( p.homeScore IS NULL OR p.awayScore IS NULL, NULL, 1 )
+								, NULL 
+								)
+						) AS toto,
+						IF ( m.homeScore = p.homeScore, 
+								IF ( m.awayScore = p.awayScore, 2, 1 ),
+								IF ( m.awayScore = p.awayScore, 1, NULL )
+						) AS goal_bonus,
+						0
 					FROM {$wpdb->users} u ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
@@ -655,10 +661,11 @@ class Football_Pool_Admin {
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
 			// 3. update score for matches
-			$full = Football_Pool_Utils::get_wp_option( 'footballpool_fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-			$toto = Football_Pool_Utils::get_wp_option( 'footballpool_totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+			$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+			$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+			$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			$sql = "UPDATE {$prefix}scorehistory 
-					SET score = score * ( full * " . $full . " + toto * " . $toto . " ) 
+					SET score = score * ( ( full * {$full} ) + ( toto * {$toto} ) + ( goal_bonus * {$goal} ) ) 
 					WHERE type = 0";
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
@@ -666,9 +673,11 @@ class Football_Pool_Admin {
 			//    make sure to take the userpoints into account
 			//    (we can set an alternate score for an individual user in the admin)
 			$sql = "INSERT INTO {$prefix}scorehistory 
-						( type, scoreDate, scoreOrder, userId, score, full, toto, ranking ) 
+						( type, scoreDate, scoreOrder, userId, 
+						  score, full, toto, goal_bonus, ranking ) 
 					SELECT 
-						1, q.scoreDate, q.id, u.ID, ( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, 0 
+						1, q.scoreDate, q.id, u.ID, 
+						( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, NULL, 0 
 					FROM {$wpdb->users} u ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
@@ -713,10 +722,13 @@ class Football_Pool_Admin {
 				foreach ( $rows as $row ) {
 					$score += $row['score'];
 					$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
-												( type, scoreDate, scoreOrder, userId, score, full, toto, totalScore, ranking ) 
-											VALUES ( %d, %s, %d, %d, %d, %d, %d, %d, 0 )",
+												( type, scoreDate, scoreOrder, userId, 
+												  score, full, toto, goal_bonus, totalScore, ranking ) 
+											VALUES 
+												( %d, %s, %d, %d, 
+												  %d, %d, %d, %d, %d, 0 )",
 											$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
-											$row['score'], $row['full'], $row['toto'], $score
+											$row['score'], $row['full'], $row['toto'], $row['goal_bonus'], $score
 									);
 					$check = $wpdb->query( $sql );
 					$result &= ( $check !== false );

@@ -4,12 +4,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 	
 	public function admin() {
 		$img_dir = FOOTBALLPOOL_ASSETS_URL . 'admin/images/';
+		$totopoints = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		$fullpoints = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$goalpoints = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
 		<h2>Index</h2>
 		<p>
 			<ol>
 				<li><a href="#time">Time</a></li>
+				<li><a href="#points">Points</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
@@ -39,6 +44,56 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
 		your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.
 		</p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		<h2 id="points">Points</h2>
+		<p>The plugin uses 3 different scores that are rewarded to players for the match predictions they do. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
+		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points. The goal bonus is rewarded if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
+		
+		<table class="widefat help">
+		<tr>
+			<th>match result</th>
+			<th>user predicted</th>
+			<th>points scored</th>
+		</tr>
+		<tr class="alternate">
+			<td>2-1</td>
+			<td>1-0</td>
+			<td>
+				toto points.<br>
+				total = <?php echo $totopoints; ?>
+			</td>
+		</tr>
+		<tr>
+			<td>2-1</td>
+			<td>2-0</td>
+			<td>
+				toto points plus goal bonus for the correct amount of goals for the home team.<br>
+				total = <?php echo $totopoints; ?> + <?php echo $goalpoints; ?> = <?php echo $totopoints + $goalpoints; ?>
+			</td>
+		</tr>
+		<tr class="alternate">
+			<td>2-1</td>
+			<td>2-1</td>
+			<td>
+				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
+				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2* $goalpoints ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td>2-1</td>
+			<td>1-1</td>
+			<td>
+				goal bonus for the correct amount of goals for the away team.<br>
+				total = <?php echo $goalpoints; ?>
+			</td>
+		</tr>
+		<tr class="alternate">
+			<td>2-1</td>
+			<td>0-0</td>
+			<td>no points</td>
+		</tr>
+		</table>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="shortcodes">Shortcodes</h2>
