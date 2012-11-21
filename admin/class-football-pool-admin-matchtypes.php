@@ -94,7 +94,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		if ( is_object( $match_type ) ) {
 			$output = array(
 							'name' => $match_type->name,
-							'visible' => $match_type->visible,
+							'visible' => $match_type->visibility,
 							);
 		} else {
 			$output = null;
