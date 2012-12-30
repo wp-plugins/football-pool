@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Football pool package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Football pool 2.1.0\n"
+"Project-Id-Version: Football pool 2.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-11-20 23:09:05+00:00\n"
+"POT-Creation-Date: 2012-12-30 20:06:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -679,7 +679,7 @@ msgid "Webmaster"
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:42
-msgid "This value is used for the shortcode [webmaster]."
+msgid "This value is used for the shortcode [fp-webmaster]."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:44
@@ -689,7 +689,7 @@ msgstr ""
 #: admin/class-football-pool-admin-options.php:44
 msgid ""
 "If you play for money, then this is the sum users have to pay. The shortcode "
-"[money] adds this value in the content."
+"[fp-money] adds this value in the content."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:46
@@ -699,7 +699,7 @@ msgstr ""
 #: admin/class-football-pool-admin-options.php:46
 msgid ""
 "If you play for money, then this is the person you have to give the money. "
-"The shortcode [bank] adds this value in the content."
+"The shortcode [fp-bank] adds this value in the content."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:48
@@ -708,7 +708,7 @@ msgstr ""
 
 #: admin/class-football-pool-admin-options.php:48
 msgid ""
-"The start date of the tournament or pool. The shortcode [start] adds this "
+"The start date of the tournament or pool. The shortcode [fp-start] adds this "
 "value in the content."
 msgstr ""
 
@@ -719,7 +719,7 @@ msgstr ""
 #: admin/class-football-pool-admin-options.php:50
 msgid ""
 "The points a user gets for getting the exact outcome of a match. The "
-"shortcode [fullpoints] adds this value in the content. This value is also "
+"shortcode [fp-fullpoints] adds this value in the content. This value is also "
 "used for the calculations in the pool."
 msgstr ""
 
@@ -730,8 +730,8 @@ msgstr ""
 #: admin/class-football-pool-admin-options.php:52
 msgid ""
 "The points a user gets for guessing the outcome of a match (win, loss or "
-"draw) without also getting the exact amount of goals. The shortcode "
-"[totopoints] adds this value in the content. This value is also used in the "
+"draw) without also getting the exact amount of goals. The shortcode [fp-"
+"totopoints] adds this value in the content. This value is also used in the "
 "calculations in the pool."
 msgstr ""
 
@@ -743,7 +743,7 @@ msgstr ""
 msgid ""
 "Extra points a user gets for guessing the goals correct for one of the "
 "teams. These points are added to the toto points or full points. The "
-"shortcode [goalpoints] adds this value in the content. This value is also "
+"shortcode [fp-goalpoints] adds this value in the content. This value is also "
 "used in the calculations in the pool."
 msgstr ""
 
@@ -1442,11 +1442,11 @@ msgstr ""
 msgid "no"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:827
+#: admin/class-football-pool-admin.php:832
 msgid "Cancel"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:855
+#: admin/class-football-pool-admin.php:860
 msgid "Use Image"
 msgstr ""
 
@@ -1496,12 +1496,12 @@ msgstr ""
 msgid "no answer"
 msgstr ""
 
-#: classes/class-football-pool-chart-data.php:283
+#: classes/class-football-pool-chart-data.php:287
 #: classes/class-football-pool-matches.php:271
 msgid "match"
 msgstr ""
 
-#: classes/class-football-pool-chart-data.php:283
+#: classes/class-football-pool-chart-data.php:293
 #: pages/class-football-pool-statistics-page.php:156
 msgid "bonus question"
 msgstr ""
@@ -1807,9 +1807,13 @@ msgid "false answer"
 msgstr ""
 
 #: pages/class-football-pool-statistics-page.php:203
-#: pages/class-football-pool-statistics-page.php:211
-#: pages/class-football-pool-statistics-page.php:216
+#: pages/class-football-pool-statistics-page.php:212
+#: pages/class-football-pool-statistics-page.php:217
 msgid "position in the pool"
+msgstr ""
+
+#: pages/class-football-pool-statistics-page.php:211
+msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
 msgstr ""
 
 #: pages/class-football-pool-teams-page.php:14
@@ -1845,11 +1849,11 @@ msgstr ""
 msgid "No user selected."
 msgstr ""
 
-#: shortcodes.php:29
+#: shortcodes.php:40
 msgid "register"
 msgstr ""
 
-#: shortcodes.php:112 widgets/widget-football-pool-lastgames.php:82
+#: shortcodes.php:123 widgets/widget-football-pool-lastgames.php:82
 #: widgets/widget-football-pool-ranking.php:74
 msgid "No match data available."
 msgstr ""

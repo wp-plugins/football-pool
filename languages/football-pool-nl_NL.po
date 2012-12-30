@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 2.1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-11-20 23:09:05+00:00\n"
-"PO-Revision-Date: 2012-12-05 23:57+0100\n"
+"POT-Creation-Date: 2012-12-30 20:06:19+00:00\n"
+"PO-Revision-Date: 2012-12-30 21:11+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language: nl_NL\n"
@@ -1599,11 +1599,11 @@ msgstr "ja"
 msgid "no"
 msgstr "nee"
 
-#: admin/class-football-pool-admin.php:827
+#: admin/class-football-pool-admin.php:832
 msgid "Cancel"
 msgstr "Annuleer"
 
-#: admin/class-football-pool-admin.php:855
+#: admin/class-football-pool-admin.php:860
 msgid "Use Image"
 msgstr "Gebruik afbeelding"
 
@@ -1653,12 +1653,12 @@ msgstr "nog open"
 msgid "no answer"
 msgstr "geen antwoord"
 
-#: classes/class-football-pool-chart-data.php:283
+#: classes/class-football-pool-chart-data.php:287
 #: classes/class-football-pool-matches.php:271
 msgid "match"
 msgstr "wedstrijd"
 
-#: classes/class-football-pool-chart-data.php:283
+#: classes/class-football-pool-chart-data.php:293
 #: pages/class-football-pool-statistics-page.php:156
 msgid "bonus question"
 msgstr "bonusvraag"
@@ -1974,10 +1974,14 @@ msgid "false answer"
 msgstr "antwoord fout"
 
 #: pages/class-football-pool-statistics-page.php:203
-#: pages/class-football-pool-statistics-page.php:211
-#: pages/class-football-pool-statistics-page.php:216
+#: pages/class-football-pool-statistics-page.php:212
+#: pages/class-football-pool-statistics-page.php:217
 msgid "position in the pool"
 msgstr "positie in de pool"
+
+#: pages/class-football-pool-statistics-page.php:211
+msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
+msgstr "[\"e\", \"e\", \"e\", \"e\", \"e\"]"
 
 #: pages/class-football-pool-teams-page.php:14
 msgid "go to the team site"
@@ -2014,11 +2018,11 @@ msgstr ""
 msgid "No user selected."
 msgstr "Geen speler geselecteerd."
 
-#: shortcodes.php:29
+#: shortcodes.php:40
 msgid "register"
 msgstr "registreren"
 
-#: shortcodes.php:112 widgets/widget-football-pool-lastgames.php:82
+#: shortcodes.php:123 widgets/widget-football-pool-lastgames.php:82
 #: widgets/widget-football-pool-ranking.php:74
 msgid "No match data available."
 msgstr "Geen wedstrijdgegevens beschikbaar."
