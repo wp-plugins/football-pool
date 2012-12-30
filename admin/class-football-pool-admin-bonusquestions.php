@@ -312,8 +312,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$wpdb->query( $sql );
 			}
 		} else {
-			$sql = $wpdb->prepare( "
-									UPDATE {$prefix}bonusquestions SET
+			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET
 										question = %s,
 										points = %d,
 										answerBeforeDate = %s,

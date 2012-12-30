@@ -66,7 +66,7 @@ class Football_Pool_Teams {
 				$group_order = $extra_data['group_order'];
 				$is_real     = $extra_data['is_real'];
 				$is_active   = $extra_data['is_active'];
-				$comments    = '';
+				$comments    = isset( $extra_data['comments'] ) ? $extra_data['comments'] : '';
 			}
 			
 			$sql = $wpdb->prepare( 

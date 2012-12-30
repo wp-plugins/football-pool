@@ -386,7 +386,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT id, name, visibility FROM {$prefix}matchtypes ORDER BY id ASC" );
+		$sql = "SELECT id, name, visibility FROM {$prefix}matchtypes ORDER BY id ASC";
 		return $wpdb->get_results( $sql );
 	}
 	

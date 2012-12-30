@@ -50,8 +50,8 @@ class Football_Pool_Stadiums {
 			$photo = '';
 			
 			if ( is_array( $extra_data ) ) {
-				$photo = $extra_data['photo'];
-				$comments = $extra_data['comments'];
+				$photo    = $extra_data['photo'];
+				$comments = isset( $extra_data['comments'] ) ? $extra_data['comments'] : '';
 			}
 			
 			$sql = $wpdb->prepare( 

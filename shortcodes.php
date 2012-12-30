@@ -1,5 +1,19 @@
 <?php 
 // shortcodes
+add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
+add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
+add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
+add_shortcode( 'fp-money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
+add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
+add_shortcode( 'fp-totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totopoints' ) );
+add_shortcode( 'fp-fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
+add_shortcode( 'fp-goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalpoints' ) );
+add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
+add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
+add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
+add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
+
+// deprecated shortcodes
 add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
 add_shortcode( 'bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
@@ -9,9 +23,6 @@ add_shortcode( 'totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totop
 add_shortcode( 'fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
 add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalpoints' ) );
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
-add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
-add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
-add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
 
 class Football_Pool_Shortcodes {
 	//[fp-register]
@@ -149,7 +160,8 @@ class Football_Pool_Shortcodes {
 			}
 		}
 		
-		if ( $texts == 'none' ) $texts = ';;;';
+		if ( $texts == 'none' ) $texts = ';;;'; // 4 empty strings are added overwriting the default texts
+		
 		$texts = explode( ';', $texts );
 		
 		if ( is_array( $texts ) && count( $texts ) == 4 ) {

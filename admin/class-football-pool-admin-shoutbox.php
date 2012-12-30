@@ -137,8 +137,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		if ( $id == 0 ) {
 			$shoutbox->save_shout( $message, $current_user->ID, 150 );
 		} else {
-			$sql = "UPDATE {$prefix}shoutbox SET shoutText = %s WHERE id = %d";
-			$sql = $wpdb->prepare( $sql, $message, $id );
+			$sql = $wpdb->prepare( "UPDATE {$prefix}shoutbox SET shoutText = %s WHERE id = %d", $message, $id );
 			$wpdb->query( $sql );
 		}
 		

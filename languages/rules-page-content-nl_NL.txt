@@ -1,8 +1,8 @@
 <h3>Voor de pot of voor nop?</h3>
-Je kan op 2 manieren meespelen: voor de pot of voor nop. Ben je niet zeker van je zaak, maar vind je het wel leuk om mee te doen? Schrijf je dan gewoon in en geef aan dat je voor nop meespeelt. Als je voor de pot speelt, moet het inschrijfgeld betaald zijn voor de start van het toernooi. Op z'n laatst 1 dag voor de start van de eerste wedstrijd en dat is op <strong>[start]</strong>. Is het geld niet ontvangen, dan speel je gewoon mee voor nop. Het inschrijfgeld is <strong>[money]</strong> en kan worden afgegeven bij <strong>[bank]</strong>.
+Je kan op 2 manieren meespelen: voor de pot of voor nop. Ben je niet zeker van je zaak, maar vind je het wel leuk om mee te doen? Schrijf je dan gewoon in en geef aan dat je voor nop meespeelt. Als je voor de pot speelt, moet het inschrijfgeld betaald zijn voor de start van het toernooi. Op z'n laatst 1 dag voor de start van de eerste wedstrijd en dat is op <strong>[fp-start]</strong>. Is het geld niet ontvangen, dan speel je gewoon mee voor nop. Het inschrijfgeld is <strong>[fp-money]</strong> en kan worden afgegeven bij <strong>[fp-bank]</strong>.
 Let op: pas wanneer het geld is betaald, word je overgezet naar de pool voor de pot! Tot die tijd sta je dus in het andere lijstje; ook al heb je aangegeven voor de pot mee te willen spelen.
 
-Bij de inschrijving hoef je alleen een inlognaam op te geven waaronder je mee wil spelen en een geldig e-mailadres. Via dit adres zullen we je op de hoogte stellen van een eventuele prijs, zorg er dus voor dat het een geldig adres is. Wanneer je je wachtwoord kwijt bent, kan je te allen tijde een nieuw wachtwoord opvragen bij de <a title="stuur maar een mailtje :-)" href="mailto:[webmaster]">webmaster</a>, of zelf een nieuwe genereren. Je persoonlijke gegevens worden na afloop van het toernooi vernietigd en worden op geen enkele wijze voor andere doeleinden dan voor deze pool gebruikt en worden ook niet ter beschikking gesteld aan derden. Je kan zo vaak mee spelen als je wil.
+Bij de inschrijving hoef je alleen een inlognaam op te geven waaronder je mee wil spelen en een geldig e-mailadres. Via dit adres zullen we je op de hoogte stellen van een eventuele prijs, zorg er dus voor dat het een geldig adres is. Wanneer je je wachtwoord kwijt bent, kan je te allen tijde een nieuw wachtwoord opvragen bij de <a title="stuur maar een mailtje :-)" href="mailto:[fp-webmaster]">webmaster</a>, of zelf een nieuwe genereren. Je persoonlijke gegevens worden na afloop van het toernooi vernietigd en worden op geen enkele wijze voor andere doeleinden dan voor deze pool gebruikt en worden ook niet ter beschikking gesteld aan derden. Je kan zo vaak mee spelen als je wil.
 <h3>De voorspellingen</h3>
 Voorspel de eindstand van alle wedstrijden die tijdens het toernooi worden gespeeld. Dit kan tot 1 kwartier voor de start van de wedstrijd. Zo heb je dus de mogelijkheid om tijdens het toernooi je voorspellingen bij te sturen als je merkt dat je sommige teams toch verkeerd had ingeschat, of bijvoorbeeld omdat de gedoodverfde winnaar het ineens zonder hun wereldspits moet doen.
 De tijd op de server is bindend. Hierover is geen discussie mogelijk, wees er dus op tijd bij als je je scores nog wil wijzigen.
@@ -12,7 +12,7 @@ Zoals je hebt gezien, zijn de wedstrijden in de tweede fase nog niet ingevuld. W
 Tijdens het toernooi zijn extra punten te verdienen via de bonusvragen. Dit zijn open vragen die je voor een bepaalde datum moet hebben beantwoord. Bij de vraag staat de datum vermeld en het aantal punten dat je kan verdienen. Bij gokvragen (bv. "in de welke minuut valt het eerste doelpunt?") krijgt de deelnemer die het dichtst bij het antwoord zit, de punten.
 <h3>De puntentelling</h3>
 Bij de bepaling van de puntentelling wordt in de voorrondes gekeken naar de uitslag na afloop van de wedstrijd. Voor de finale wedstrijden wordt ook een eventuele verlenging meegenomen. Doelpunten in een strafschoppenserie worden niet meegenomen bij de bepaling van de puntentelling.
-Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt dat het een gelijkspel wordt. Dit wordt de toto-uitslag genoemd. Als je ook de exacte eindstand weet te raden, krijg je de punten voor juiste uitslag. Als je het aantal doelpunten van een van beide teams goed hebt, dan krijg je de goalbonus opgeteld bij de punten. Ook wanneer je niet de wedstrijduitslag goed had (bv. wedstrijd eindigt in 1-1 en jij had 0-1 voorspelt, je krijgt dan [goalpoints] punten).
+Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt dat het een gelijkspel wordt. Dit wordt de toto-uitslag genoemd. Als je ook de exacte eindstand weet te raden, krijg je de punten voor juiste uitslag. Als je het aantal doelpunten van een van beide teams goed hebt, dan krijg je de goalbonus opgeteld bij de punten. Ook wanneer je niet de wedstrijduitslag goed had (bv. wedstrijd eindigt in 1-1 en jij had 0-1 voorspelt, je krijgt dan [fp-goalpoints] punten).
 <table>
 <thead>
 <tr>
@@ -23,15 +23,15 @@ Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt
 <tbody>
 <tr>
 <td>juiste toto-uitslag</td>
-<td>[totopoints]</td>
+<td>[fp-totopoints]</td>
 </tr>
 <tr>
 <td>juiste uitslag</td>
-<td>[fullpoints]</td>
+<td>[fp-fullpoints]</td>
 </tr>
 <tr>
 <td>goalbonus</td>
-<td>[goalpoints]</td>
+<td>[fp-goalpoints]</td>
 </tr>
 <tr>
 <td>bonusvraag</td>
@@ -39,7 +39,7 @@ Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt
 </tr>
 </tbody>
 </table>
-Aan de linkerzijde van het scherm zie je de top 5 van spelers die meespelen voor de pot. Als je de complete stand wil zien, of als je wil zien wie er op de eerste plek staat in de <em>voor nop</em> pool, moet je naar de menu optie <a href="[link slug='ranking']">stand</a> gaan en daar de juiste groep kiezen. Als je bent ingelogd, dan wordt standaard de pool waarvoor je je hebt ingeschreven voor je gekozen.
+Aan de linkerzijde van het scherm zie je de top 5 van spelers die meespelen voor de pot. Als je de complete stand wil zien, of als je wil zien wie er op de eerste plek staat in de <em>voor nop</em> pool, moet je naar de menu optie <a href="[fp-link slug='ranking']">stand</a> gaan en daar de juiste groep kiezen. Als je bent ingelogd, dan wordt standaard de pool waarvoor je je hebt ingeschreven voor je gekozen.
 <h3>De joker</h3>
 Elke speler heeft tijdens het toernooi de beschikking over 1 joker. Met deze joker kan je het aantal punten voor een zelfgekozen wedstrijd verdubbelen. Je kan de joker inzetten voor elke wedstrijd die je wil, zolang je voor deze wedstrijd nog de mogelijkheid hebt om de score bij te werken. De joker wordt actief als de voorspellingstermijn voor de wedstrijd is verlopen, een geactiveerde joker kan niet meer worden verplaatst of opnieuw worden ingezet. Een joker kan niet bij een bonusvraag worden ingezet.
 <h3>Gelijke stand?</h3>

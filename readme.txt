@@ -11,24 +11,25 @@ This plugin adds a fantasy football pool to your blog. Play against other users,
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database with match information for the 2012 UEFA championship, but can be easily manipulated with the match info for other championships. **Please note that deactivating this plugin also destroys all your pool data** (predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships. **Please note that deactivating this plugin also destroys all your pool data** (like predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
 **Features**
 
 * Users can predict match outcomes.
+* Automatic calculation of the pool ranking. Or define your own custom ranking for a group of matches.
 * You can add bonus questions for extra fun (single answer and multiple choice).
 * Add your own teams and match info to use the plugin for another (national) competition.
+* Add multiple seasons.
 * Import or export the game schedule.
+* Automatic calculation of championship standing.
 * Configurable scoring options.
 * Use different leagues for your users (optional).
-* Automatic calculation of the pool ranking.
-* Automatic calculation of championship standing.
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
-* Shortcodes: add the ranking in a post, show a group standing, countdown (e.g. to the first match of the tournament), easy integration of some configuration options in your content (e.g. points).
-* Extra info pages with all the venues and teams.
+* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), easy integration of some configuration options in your content (e.g. points).
+* Extra info pages for venues and teams.
 
 **Translations**
 
@@ -36,21 +37,23 @@ At the moment the plugin is available in English, Dutch, Spanish and (partly in)
 
 **Other things**
 
-This plugin requires PHP 5.2 or higher. If you want to use the charts feature, please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
-If you find bugs, please contact me via the support forum, or at wordpressfootballpool [at] gmail [dot] com.
+* This plugin requires PHP 5.2 or higher and jQuery 1.4.3 or higher. 
+* If you want to use the charts feature, please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
+
+If you find bugs, please contact me via the <a href="http://wordpress.org/support/plugin/football-pool">support forum</a>, or at wordpressfootballpool [at] gmail [dot] com. If you like the plugin, please rate it on the <a href="http://wordpress.org/extend/plugins/football-pool/">plugin page</a> on WordPress.org.
 
 == Installation ==
 **Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG. To use your own custom translation see FAQ for more information on translating the plugin.
 
-1. Upload `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
+1. Download `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the `Plugins` panel in WordPress
 3. Edit the plugin configuration via the admin menu
 4. Optional: add the pages for the pool to your menu, or use some other method to link to the pages
 5. Optional: add the "Football pool" widgets to your sidebar
-   (User Selector Widget is needed for the stats page)
+   (Please note: User Selector Widget is needed for the stats page)
 6. Optional: add bonus questions
-7. Optional: 'upgrade' existing users in your blog to pool-users
-8. Optional: make the `upload` directory in the plugin folder writable (if you wanna use the import function)
+7. Optional: 'upgrade' existing users in your blog to pool users
+8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
 9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/football-pool/assets/highcharts`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
@@ -67,12 +70,10 @@ Yes and no. The plugin needs this page to display predictions of users. So don't
 Some themes or WordPress configurations automatically put all top level pages in the navigation. See information from the theme maker on how to make a custom menu or how to exclude pages from the menu.
 
 = I don't see my blog users as players of the pool. =
-
 Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = I want to use the plugin for a national competition. Is that possible? =
-
 Yes. There are two ways to do this: 
 1. Upload a game schedule in the admin. Make sure you understand the required format; you can download the current schedule as an example.
 2. Use the admin screens to edit the teams, groups, match types, matches, etc.
@@ -80,31 +81,28 @@ Yes. There are two ways to do this:
 And, of course, choose a theme or make one yourself that fits your competition or blog. If you have a custom game schedule that other users can also use, it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
 
 = Is there a translation available? =
-
 See the 'Other notes' section for the available languages (and their translators). The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "nl_NL").
 
-If you want to make your own translation, you can use the pot-file that is included in the languages directory or make a copy of one of the football-pool-*locale*.po files in the languages directory and use an editor like POedit (http://www.poedit.net/) to create the mo-file. The default content for the rules page is in the 'rules-page-content-*locale*.txt' file (e.g. rules-page-content-nl_NL.txt). At the moment of writing only a Dutch file is available.
+If you want to make your own translation, you can use the pot-file that is included in the 	`languages` directory or make a copy of one of the `football-pool-*locale*.po` files in the `languages` directory and use an editor like Poedit (http://www.poedit.net/) to create the mo-file. The default content for the rules page is in the `rules-page-content-*locale*.txt` file (e.g. `rules-page-content-nl_NL.txt`).
 If you've made your own translation and mail it to me, I'll add it to the plugin and give you the credits.
-You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the WP_LANG_DIR. I support the fallback mechanism that is described on that site in my plugin.
+You can put your custom translation files in the plugin-dir, but be careful they don't get overwritten with an update of the plugin. So, according to <a href="http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way">this site</a> (and the codex) it's better to put the translation file in a subfolder (named 'football-pool') of the `WP_LANG_DIR`. I support the fallback mechanism that is described on that site in my plugin.
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
 
 If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
 
 = I installed the plugin, but there are no matches. What happened? =
-
 Version 2.0.0 does not add the matches on install. But it does contain a match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
 = I installed the plugin, but it does not look like your screenshots. =
-
 That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
 
 * Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
-* Take the ek2012.css file from the plugin-dir (wp-content/plugins/football-pool/assets/simply works core skin/) and place it in the WordPress theme dir (wp-content/themes/simply-works-core/skins).
+* Take the ek2012.css file from the plugin-dir (`wp-content/plugins/football-pool/assets/simply works core skin/`) and place it in the WordPress theme dir (`wp-content/themes/simply-works-core/skins`).
 * Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
-* Change the background (Appearance &raquo; Background) to the background.jpg file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
+* Change the background (Appearance &raquo; Background) to the `background.jpg` file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
 * Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
 * Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
 
@@ -112,10 +110,10 @@ That's correct. The plugin has some basic styling, but it will not change your e
 
 The Football Pool plugin is available in the following languages:
 
-* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.0.0).
-* Spanish (`es_ES`) by Cristian Carlucci.
 * Dutch (`nl_NL`) by me.
 * English (default) by me.
+* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.0.0).
+* Spanish (`es_ES`) by Cristian Carlucci.
 
 == Screenshots ==
 1. Matches in the tournament
@@ -126,6 +124,9 @@ The Football Pool plugin is available in the following languages:
 
 == Upgrade Notice ==
 
+= 2.1.1 =
+* All shortcodes have a "fp-" prefix in this new version. Old shortcodes are still supported in this version but are deprecated. Next major release will stop supporting these old shortcodes. If you're using the old shortcodes please update your content.
+
 = 2.0.0 =
 * Please notice that the default language is now English. If you were using Dutch as the language for the plugin you have to change de `WPLANG` constant in the `wp-config.php` file to `nl_NL`.
 * If you're upgrading from a version prior to version 1.3 you get a database warning stating that the column `max_answers` already exists. You may ignore this warning, the plugin will work and you won't get the warning again. I promise :) 
@@ -134,6 +135,14 @@ The Football Pool plugin is available in the following languages:
 * Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
+
+= 2.1.1 =
+* Small updates for WordPress 3.5.
+* Prefixed all shortcodes with "fp-" (the ones that didn't have this prefix).
+* Line charts now show team names for a match in the tooltip.
+* Bug fix: ordinal numbers in the 'position in the pool' chart were gone.
+* Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
+* Bug fix: the CSV importer caused an 'unknown index' notice for the new comments field for venues.
 
 = 2.1.0 =
 * Added an extra scoring option: bonus points for guessing one of the goals for home team or away team correct.

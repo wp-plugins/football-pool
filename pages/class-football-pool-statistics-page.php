@@ -208,7 +208,8 @@ class Football_Pool_Statistics_Page {
 													jQuery.each( this.points, function ( i, point ) {
 														s += '<b style=\"color:' + point.series.color + '\">' 
 															+ point.series.name + '</b>: ' 
-															+ point.y + '" . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
+															+ add_ordinal_suffix( point.y, " . __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN ) . " ) 
+															+ ' " . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
 													} );
 													return s;
 												}

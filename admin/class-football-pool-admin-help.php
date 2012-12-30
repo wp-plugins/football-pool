@@ -77,7 +77,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>2-1</td>
 			<td>
 				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
-				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2* $goalpoints ); ?>
+				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
 		<tr>
@@ -142,6 +142,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>example:<br />
+		<span class="code">[fp-ranking num=5 date="postdate"]</span><br />
 		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />
 		</p>
@@ -165,8 +166,12 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</tr>
 		</table>
 		</p>
+		<p>example:<br />
+		<span class="code">Click [fp-register]here[/fp-register] to register for this pool.</span><br />
+		<span class="code">Click [fp-register new=1 title="Go to the registration page"]here[/fp-register] to register for this pool.</span><br />
+		</p>
 		
-		<h3>[countdown]</h3>
+		<h3>[fp-countdown]</h3>
 		<p>Counts down to a date and time. If no date is given, the time of the first match of the tournament is used. If a valid match number is given, it counts down to that match. A textual countdown is added to the post (or page) wich updates automatically.</p>
 		<p>
 		<table class="widefat help">
@@ -186,8 +191,9 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr class="alternate">
 				<td class="row-title">texts</td>
 				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
-				If value is "none" then no texts are added.</td>
-				<td><ul><li>- string;string;string;string</li><li>- none</li></ul></td>
+				If value is "none" then no texts are added.<br />
+				If left empty or ommitted then the default texts are used.</td>
+				<td>One of the following:<ul><li>- string;string;string;string</li><li>- none</li></ul></td>
 				<td>empty; default texts are used.</td>
 			</tr>
 			<tr class="">
@@ -199,11 +205,11 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>examples:<br />
-		<span class="code">[countdown]</span><br />
-		<span class="code">[countdown date="2012-06-22 11:00"]</span><br />
-		<span class="code">[countdown match="3"]</span><br />
-		<span class="code">[countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
-		<span class="code">[countdown display="inline" match="3"]</span><br />
+		<span class="code">[fp-countdown]</span><br />
+		<span class="code">[fp-countdown date="2012-06-22 11:00"]</span><br />
+		<span class="code">[fp-countdown match="3"]</span><br />
+		<span class="code">[fp-countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
+		<span class="code">[fp-countdown display="inline" match="3"]</span><br />
 		</p>
 		
 		<h3>Other shortcodes</h3>
@@ -240,7 +246,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		For each player click the appropiate radiobutton for a right or wrong answer (2). If an answer is considered right you have the possibility to give a different amount of points to that user (3). For example to give extra bonuspoints or to give half the points for an incomplete answer. Leave blank if you want to give the default points for that question.<br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-2.png" alt="screenshot" />
 		</p>
-		<p>Please note that for points for bonus questions to be added to the total points for a player an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
+		<p>Please note that for points for bonus questions to be added to the total points for a player, an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="teams-groups-and-matches">Teams, groups and matches</h2>
@@ -264,7 +270,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>If a culture code is included in the filename, e.g. <span class="code">uefa2012-en_US.txt</span>, then the plugin can filter the files according to the culture that is set as the locale for the blog.
 		</p>
 		<p>
-		The header of the file may contain optional meta information about the author of the import and/or the location of the assets for the teams and venues. If meta information exists in the csv file, the information is added on the file select list. Example:
+		The header of the file may contain optional meta information about the author of the import and/or the location of the assets for the teams and venues. If meta information exists in the csv file, the information is added on the file select list. File header example:
 		</p>
 		<pre class="code">
 		/*
@@ -421,7 +427,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="the-end">Anything else?</h2>
-		<p>It was real fun writing this plugin and I hope you had as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
+		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
 		Or a little fan mail is also appreciated. :)</p>
 		<?php self::admin_footer(); ?>

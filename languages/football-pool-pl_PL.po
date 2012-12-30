@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Football pool 2.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
 "POT-Creation-Date: 2012-11-10 09:08:27+00:00\n"
-"PO-Revision-Date: 2012-11-10 12:16+0100\n"
+"PO-Revision-Date: 2012-12-05 23:57+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Łukasz Ciastoń\n"
 "Language: pl_PL\n"
@@ -651,8 +651,8 @@ msgid "Webmaster"
 msgstr "Webmaster"
 
 #: admin/class-football-pool-admin-options.php:42
-msgid "This value is used for the shortcode [webmaster]."
-msgstr "Ta wartość jest używana w shortcode [webmaster]."
+msgid "This value is used for the shortcode [fp-webmaster]."
+msgstr "Ta wartość jest używana w shortcode [fp-webmaster]."
 
 #: admin/class-football-pool-admin-options.php:44
 msgid "Money"
@@ -661,10 +661,10 @@ msgstr "Pieniądze"
 #: admin/class-football-pool-admin-options.php:44
 msgid ""
 "If you play for money, then this is the sum users have to pay. The shortcode "
-"[money] adds this value in the content."
+"[fp-money] adds this value in the content."
 msgstr ""
 "Jeżeli grasz dla pieniędzy, to jest suma jaką muszą zapłącić gracze. "
-"Shortcode [money] doda tą wartość w zawartości strony."
+"Shortcode [fp-money] doda tą wartość w zawartości strony."
 
 #: admin/class-football-pool-admin-options.php:46
 msgid "Bank"
@@ -673,10 +673,10 @@ msgstr "Bank"
 #: admin/class-football-pool-admin-options.php:46
 msgid ""
 "If you play for money, then this is the person you have to give the money. "
-"The shortcode [bank] adds this value in the content."
+"The shortcode [fp-bank] adds this value in the content."
 msgstr ""
 "Jeżeli grasz dla pieniędzy, to jest osoba, której musisz przekazać "
-"pieniądze. The shortcode [bank] doda tą wartość w zawartości strony."
+"pieniądze. The shortcode [fp-bank] doda tą wartość w zawartości strony."
 
 #: admin/class-football-pool-admin-options.php:48
 msgid "Start date"
@@ -684,10 +684,10 @@ msgstr "Data startu"
 
 #: admin/class-football-pool-admin-options.php:48
 msgid ""
-"The start date of the tournament or pool. The shortcode [start] adds this "
+"The start date of the tournament or pool. The shortcode [fp-start] adds this "
 "value in the content."
 msgstr ""
-"Data startu turnieju lub gry. The shortcode [start] doda tą wartość w "
+"Data startu turnieju lub gry. The shortcode [fp-start] doda tą wartość w "
 "zawartości strony."
 
 #: admin/class-football-pool-admin-options.php:50
@@ -697,12 +697,12 @@ msgstr "Pełne punkty *"
 #: admin/class-football-pool-admin-options.php:50
 msgid ""
 "The points a user gets for getting the exact outcome of a match. The "
-"shortcode [fullpoints] adds this value in the content. This value is also "
+"shortcode [fp-fullpoints] adds this value in the content. This value is also "
 "used for the calculations in the pool."
 msgstr ""
 "Gracze dostaną taką ilość punktów za dokładnie wytypowany wynik meczu. "
-"Shortcode [fullpoints] doda tą wartość w zawartości strony. Ta wartość jest "
-"rówież używana do przeliczania rankingu."
+"Shortcode [fp-fullpoints] doda tą wartość w zawartości strony. Ta wartość "
+"jest rówież używana do przeliczania rankingu."
 
 #: admin/class-football-pool-admin-options.php:52
 msgid "Toto score *"
@@ -711,13 +711,13 @@ msgstr "Toto score *"
 #: admin/class-football-pool-admin-options.php:52
 msgid ""
 "The points a user gets for guessing the outcome of a match (win, loss or "
-"draw) without also getting the exact amount of goals. The shortcode "
-"[totopoints] adds this value in the content. This value is also used in the "
+"draw) without also getting the exact amount of goals. The shortcode [fp-"
+"totopoints] adds this value in the content. This value is also used in the "
 "calculations in the pool."
 msgstr ""
 "Gracze dostaną taką ilość punktów za wytypowany wynik meczu (wygrana, remis) "
-"bez podania dokładnej ilości goli. Shortcode [totopoints] doda tą wartość w "
-"zawartości strony. Ta wartość jest rówież używana do przeliczania rankingu."
+"bez podania dokładnej ilości goli. Shortcode [fp-totopoints] doda tą wartość "
+"w zawartości strony. Ta wartość jest rówież używana do przeliczania rankingu."
 
 #: admin/class-football-pool-admin-options.php:56
 #, fuzzy

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Football pool 2.1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
 "POT-Creation-Date: 2012-11-20 23:09:05+00:00\n"
-"PO-Revision-Date: 2012-11-21 18:35+0100\n"
+"PO-Revision-Date: 2012-12-05 23:57+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Cristian Carlucci\n"
 "Language: es_ES\n"
@@ -733,8 +733,8 @@ msgid "Webmaster"
 msgstr "Webmaster"
 
 #: admin/class-football-pool-admin-options.php:42
-msgid "This value is used for the shortcode [webmaster]."
-msgstr "Este valor es usado para el shortcode [webmaster]"
+msgid "This value is used for the shortcode [fp-webmaster]."
+msgstr "Este valor es usado para el shortcode [fp-webmaster]"
 
 #: admin/class-football-pool-admin-options.php:44
 msgid "Money"
@@ -743,10 +743,10 @@ msgstr "Dinero"
 #: admin/class-football-pool-admin-options.php:44
 msgid ""
 "If you play for money, then this is the sum users have to pay. The shortcode "
-"[money] adds this value in the content."
+"[fp-money] adds this value in the content."
 msgstr ""
 "Si juegas con dinero, este es el monto que debe abonar un jugador para "
-"participar. El shortcode [money] agrega este valor en el contenido"
+"participar. El shortcode [fp-money] agrega este valor en el contenido"
 
 #: admin/class-football-pool-admin-options.php:46
 msgid "Bank"
@@ -755,10 +755,10 @@ msgstr "Banco"
 #: admin/class-football-pool-admin-options.php:46
 msgid ""
 "If you play for money, then this is the person you have to give the money. "
-"The shortcode [bank] adds this value in the content."
+"The shortcode [fp-bank] adds this value in the content."
 msgstr ""
 "Si juegas con dinero, esta es la persona a la que debe abonarse la "
-"inscripcion. El shortcode [bank] agrega este valor al contenido"
+"inscripcion. El shortcode [fp-bank] agrega este valor al contenido"
 
 #: admin/class-football-pool-admin-options.php:48
 msgid "Start date"
@@ -766,11 +766,11 @@ msgstr "Fecha de inicio"
 
 #: admin/class-football-pool-admin-options.php:48
 msgid ""
-"The start date of the tournament or pool. The shortcode [start] adds this "
+"The start date of the tournament or pool. The shortcode [fp-start] adds this "
 "value in the content."
 msgstr ""
-"La fecha de incoo del campeonato. El shortcode [start] agrega este valor al "
-"contenido"
+"La fecha de incoo del campeonato. El shortcode [fp-start] agrega este valor "
+"al contenido"
 
 #: admin/class-football-pool-admin-options.php:50
 msgid "Full score *"
@@ -779,11 +779,11 @@ msgstr "Puntos resultado *"
 #: admin/class-football-pool-admin-options.php:50
 msgid ""
 "The points a user gets for getting the exact outcome of a match. The "
-"shortcode [fullpoints] adds this value in the content. This value is also "
+"shortcode [fp-fullpoints] adds this value in the content. This value is also "
 "used for the calculations in the pool."
 msgstr ""
 "Los puntos que obtiene un usuario por pronosticar el resultado exacto de un "
-"partido. El shortcode [fullpoints] agrega este valor al contenido. Este "
+"partido. El shortcode [fp-fullpoints] agrega este valor al contenido. Este "
 "valor tambien es usado internamente para el calculo de puntos"
 
 #: admin/class-football-pool-admin-options.php:52
@@ -793,13 +793,13 @@ msgstr "Puntos L-V-E *"
 #: admin/class-football-pool-admin-options.php:52
 msgid ""
 "The points a user gets for guessing the outcome of a match (win, loss or "
-"draw) without also getting the exact amount of goals. The shortcode "
-"[totopoints] adds this value in the content. This value is also used in the "
+"draw) without also getting the exact amount of goals. The shortcode [fp-"
+"totopoints] adds this value in the content. This value is also used in the "
 "calculations in the pool."
 msgstr ""
 "Son los puntos que obtiene un usuario por adivinar el ganador del partido "
 "(local o visitante) o empate sin tener en cuenta la cantidad de goles. El "
-"shortcode [totopoints] agrega este valor en el contenido. Este valor es "
+"shortcode [fp-totopoints] agrega este valor en el contenido. Este valor es "
 "usado internamente para calcular los puntos"
 
 #: admin/class-football-pool-admin-options.php:54
@@ -810,12 +810,12 @@ msgstr "Puntaje bonus por gol *"
 msgid ""
 "Extra points a user gets for guessing the goals correct for one of the "
 "teams. These points are added to the toto points or full points. The "
-"shortcode [goalpoints] adds this value in the content. This value is also "
+"shortcode [fp-goalpoints] adds this value in the content. This value is also "
 "used in the calculations in the pool."
 msgstr ""
 "Son los puntos extra que se obtienen por adivinar la cantidad de goles de "
 "uno de los equipos. Estos puntos se suman a los puntos L-V-E o al puntaje "
-"por resultado exacto. El shortcode [goalpoints] agregan este valor al "
+"por resultado exacto. El shortcode [fp-goalpoints] agregan este valor al "
 "contenido. Este valor se usa ademas en los cálculos en el torneo."
 
 #: admin/class-football-pool-admin-options.php:58

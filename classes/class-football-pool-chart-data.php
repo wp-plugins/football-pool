@@ -278,9 +278,20 @@ class Football_Pool_Chart_Data {
 				}
 				// new match or question?
 				if ( $match != $datarow['match'] || $type != $datarow['type'] ) {
-					$match = $datarow['match'];
+					$match = (int) $datarow['match'];
 					$type = $datarow['type'];
-					$categoriesdata[] = ( $type == 0 ? sprintf( '%s ', __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$matchnr : sprintf( '%s ', __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN ) ) . ++$questionnr );
+					if ( $type == 0 ) {
+						// $categoriesdata[] = __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . ++$matchnr;
+						$matchinfo = new Football_Pool_Matches;
+						$matchinfo = $matchinfo->get_match_info( $match );
+						$category_data = __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . ++$matchnr;
+						if ( isset( $matchinfo['home_team'] ) ) {
+							$category_data .= ': ' . $matchinfo['home_team'] . ' - ' . $matchinfo['away_team'];
+						}
+						$categoriesdata[] = $category_data;
+					} else {
+						$categoriesdata[] = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . ++$questionnr;
+					}
 				}
 				$seriesdata[$user]['data'][] = (int) $datarow['value'];
 			}

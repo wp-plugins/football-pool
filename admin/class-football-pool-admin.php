@@ -456,7 +456,7 @@ class Football_Pool_Admin {
 		if ( $addnew == 'add new' ) {
 			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
 		}
-		echo '<div class="wrap">';
+		echo '<div class="wrap fp-admin">';
 		screen_icon();
 		if ( $subtitle != '' ) {
 			$subtitle = sprintf( '<span class="subtitle">%s</span>', $subtitle );
@@ -785,11 +785,16 @@ class Football_Pool_Admin {
 					array( "onclick" => $onclick_val ) 
 			);
 		} elseif ( $type == 'link' ) {
-			$onclick = ( $onclick_val != '' ) ? 'onclick="' . $onclick_val . '"' : '';
-			$button = sprintf( '<a %s class="button-secondary fp-link-button" href="%s">%s</a>'
-								, $onclick
+			// $onclick = ( $onclick_val != '' ) ? 'onclick="' . $onclick_val . '"' : '';
+			// $button = sprintf( '<a %s class="button-secondary fp-link-button" href="%s">%s</a>'
+								// , $onclick
+								// , $action_val
+								// , $text 
+						// );
+			$button = sprintf( '<input type="button" onclick="location.href=\'%s\';%s" class="button-secondary" value="%s" />'
 								, $action_val
-								, $text 
+								, $onclick_val
+								, esc_attr( $text ) 
 						);
 			if ( $wrap ) {
 				$button = '<p class="submit">' . $button . '</p>';
