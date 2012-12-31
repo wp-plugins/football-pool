@@ -2,7 +2,7 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
 Requires at least: 3.1
-Tested up to: 3.4.2
+Tested up to: 3.5
 Stable tag: 2.1.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
@@ -18,10 +18,9 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 **Features**
 
 * Users can predict match outcomes.
-* Automatic calculation of the pool ranking. Or define your own custom ranking for a group of matches.
+* Automatic calculation of the pool ranking.
 * You can add bonus questions for extra fun (single answer and multiple choice).
 * Add your own teams and match info to use the plugin for another (national) competition.
-* Add multiple seasons.
 * Import or export the game schedule.
 * Automatic calculation of championship standing.
 * Configurable scoring options.
@@ -141,7 +140,6 @@ The Football Pool plugin is available in the following languages:
 * Prefixed all shortcodes with "fp-" (the ones that didn't have this prefix).
 * Line charts now show team names for a match in the tooltip.
 * Bug fix: ordinal numbers in the 'position in the pool' chart were gone.
-* Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: the CSV importer caused an 'unknown index' notice for the new comments field for venues.
 
 = 2.1.0 =

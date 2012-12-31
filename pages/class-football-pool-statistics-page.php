@@ -201,6 +201,8 @@ class Football_Pool_Statistics_Page {
 						$chart = new Football_Pool_Chart( 'chart3', 'line', 720, 500 );
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 						$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
+						/// The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
+						/// bla.
 						$chart->options[] = "tooltip: {
 												shared: true, crosshairs: true,
 												formatter: function() {
