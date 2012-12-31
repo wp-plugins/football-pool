@@ -202,7 +202,7 @@ class Football_Pool_Statistics_Page {
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 						$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
 						/// The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
-						/// bla.
+						$ordinal_suffixes = __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
 												shared: true, crosshairs: true,
 												formatter: function() {
@@ -210,7 +210,7 @@ class Football_Pool_Statistics_Page {
 													jQuery.each( this.points, function ( i, point ) {
 														s += '<b style=\"color:' + point.series.color + '\">' 
 															+ point.series.name + '</b>: ' 
-															+ add_ordinal_suffix( point.y, " . __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN ) . " ) 
+															+ add_ordinal_suffix( point.y, {$ordinal_suffixes} ) 
 															+ ' " . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
 													} );
 													return s;
