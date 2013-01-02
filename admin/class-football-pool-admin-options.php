@@ -174,6 +174,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'',
 								$offset_switch,
 							),
+						'no_tinymce' => 
+							array( 'checkbox', __( 'Don\'t use shortcode button in visual editor', FOOTBALLPOOL_TEXT_DOMAIN ), 'no_tinymce', __( 'The plugin can add a button to the visual editor of WordPress. With this option enabled this button will not be included (check if the button is causing problems).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = '<div class="donate">' 
@@ -263,6 +265,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_favicon'],
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
+									$options['no_tinymce'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );

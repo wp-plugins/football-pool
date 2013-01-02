@@ -97,6 +97,7 @@ class Football_Pool {
 		add_option( 'footballpool_match_time_display', 0 ); // 0: WP setting, 1: UTC, 2: custom
 		add_option( 'footballpool_match_time_offset', 0 ); // time in seconds to add to the start time in the database (negative value for substraction)
 		add_option( 'footballpool_csv_file_filter', '*' ); // defaults to 'all files'
+		add_option( 'footballpool_no_tinymce', 0 ); // 1: yes (disabled), 0: no (enable button)
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
 
@@ -171,6 +172,7 @@ class Football_Pool {
 		delete_option( 'footballpool_match_time_display' );
 		delete_option( 'footballpool_match_time_offset' );
 		delete_option( 'footballpool_csv_file_filter' );
+		delete_option( 'footballpool_no_tinymce' );
 		
 		// delete pages
 		foreach ( self::$pages as $page ) {

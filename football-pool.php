@@ -107,6 +107,8 @@ if ( is_admin() ) {
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
 	add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
 	add_action( 'wp_dashboard_setup', array( 'Football_Pool', 'add_dashboard_widgets' ) );
-	add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
+	if ( Football_Pool_Utils::get_fp_option( 'no_tinymce' ) != 1 ) {
+		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
+	}
 }
 ?>
