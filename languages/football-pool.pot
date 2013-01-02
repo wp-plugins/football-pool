@@ -1,14 +1,14 @@
-# Copyright (C) 2012 Football pool
+# Copyright (C) 2013 Football pool
 # This file is distributed under the same license as the Football pool package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 2.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2012-12-31 10:36:02+00:00\n"
+"POT-Creation-Date: 2013-01-02 20:47:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -549,7 +549,7 @@ msgstr ""
 #: admin/class-football-pool-admin-help.php:11
 #: admin/class-football-pool-admin.php:117
 #: admin/class-football-pool-admin.php:118
-#: admin/class-football-pool-admin.php:128
+#: admin/class-football-pool-admin.php:153
 msgid "Help"
 msgstr ""
 
@@ -675,6 +675,7 @@ msgid "You are about to make one or more match types invisible."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:42
+#: assets/admin/tinymce/tinymce-dialog.php:159
 msgid "Webmaster"
 msgstr ""
 
@@ -683,6 +684,7 @@ msgid "This value is used for the shortcode [fp-webmaster]."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:44
+#: assets/admin/tinymce/tinymce-dialog.php:161
 msgid "Money"
 msgstr ""
 
@@ -693,6 +695,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:46
+#: assets/admin/tinymce/tinymce-dialog.php:160
 msgid "Bank"
 msgstr ""
 
@@ -703,6 +706,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:48
+#: assets/admin/tinymce/tinymce-dialog.php:162
 msgid "Start date"
 msgstr ""
 
@@ -1028,6 +1032,7 @@ msgid "%s messages deleted."
 msgstr ""
 
 #: admin/class-football-pool-admin-shoutbox.php:50
+#: assets/admin/tinymce/tinymce-dialog.php:118
 msgid "now"
 msgstr ""
 
@@ -1339,12 +1344,12 @@ msgid "Not a player"
 msgstr ""
 
 #: admin/class-football-pool-admin-users.php:314
-#: admin/class-football-pool-admin.php:522
+#: admin/class-football-pool-admin.php:569
 msgid "no data"
 msgstr ""
 
 #: admin/class-football-pool-admin-users.php:379
-#: classes/class-football-pool.php:338
+#: classes/class-football-pool.php:342
 msgid "Play in league"
 msgstr ""
 
@@ -1422,32 +1427,207 @@ msgstr ""
 msgid "Edit groups"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:127
+#: admin/class-football-pool-admin.php:152
 msgid "Settings"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:179
+#: admin/class-football-pool-admin.php:204
 msgid "Choose Image"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:457
+#: admin/class-football-pool-admin.php:504
 msgid "Add New"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:540
+#: admin/class-football-pool-admin.php:587
 msgid "yes"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:541
+#: admin/class-football-pool-admin.php:588
 msgid "no"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:832
+#: admin/class-football-pool-admin.php:879
+#: assets/admin/tinymce/tinymce-dialog.php:304
 msgid "Cancel"
 msgstr ""
 
-#: admin/class-football-pool-admin.php:860
+#: admin/class-football-pool-admin.php:907
 msgid "Use Image"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:11
+#: assets/admin/tinymce/tinymce-dialog.php:77
+#: assets/admin/tinymce/tinymce-dialog.php:153
+#: assets/admin/tinymce/tinymce-dialog.php:173
+#: assets/admin/tinymce/tinymce-dialog.php:211
+msgid "Select a shortcode"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:61
+msgid "Pool"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:62
+msgid "Options"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:63
+msgid "Links"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:64
+msgid "Other"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:80
+msgid "Ranking"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:81
+msgid "Group"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:87
+msgid "Select a league"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:91
+#: assets/admin/tinymce/tinymce-dialog.php:241
+msgid "default"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:92
+msgid "all players"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:94
+msgid "or choose a league"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:107
+msgid "Number of players"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:115
+#: assets/admin/tinymce/tinymce-dialog.php:229
+msgid "information about PHP's date format"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:115
+#: assets/admin/tinymce/tinymce-dialog.php:224
+#: assets/admin/tinymce/tinymce-dialog.php:229
+msgid "Date"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:119
+msgid "postdate"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:120
+msgid "custom date"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:133
+msgid "Select a group"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:156
+msgid "Full points"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:157
+msgid "Toto points"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:158
+msgid "Goal bonus"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:176
+msgid "Link to page"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:177
+msgid "Link to registration"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:182
+msgid "Select a page"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:196
+msgid "Link title"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:197
+msgid "New window?"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:214
+msgid "Countdown"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:220
+msgid "Countdown to"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:223
+#: assets/admin/tinymce/tinymce-dialog.php:237
+msgid "Match"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:242
+msgid "first match"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:244
+msgid "or choose a match"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:265
+msgid "More information about this on the Help page."
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:265
+msgid "Texts for counter"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:269
+msgid "no texts"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:272
+msgid "before - time not passed"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:272
+#: assets/admin/tinymce/tinymce-dialog.php:273
+#: assets/admin/tinymce/tinymce-dialog.php:276
+#: assets/admin/tinymce/tinymce-dialog.php:277
+msgid ""
+"Leave empty for the default texts. Don't forget spaces between a text and "
+"the timer."
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:273
+msgid "after - time not passed"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:276
+msgid "before - time passed"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:277
+msgid "after - time passed"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:283
+msgid "Display inline"
+msgstr ""
+
+#: assets/admin/tinymce/tinymce-dialog.php:307
+msgid "Insert"
 msgstr ""
 
 #: classes/class-football-pool-chart-data.php:206
@@ -1497,7 +1677,7 @@ msgid "no answer"
 msgstr ""
 
 #: classes/class-football-pool-chart-data.php:287
-#: classes/class-football-pool-matches.php:271
+#: classes/class-football-pool-matches.php:270
 msgid "match"
 msgstr ""
 
@@ -1522,16 +1702,16 @@ msgstr ""
 msgid "Drag your finger over the plot to zoom in"
 msgstr ""
 
-#: classes/class-football-pool-matches.php:361
+#: classes/class-football-pool-matches.php:360
 #: classes/class-football-pool-statistics.php:157
 msgid "score"
 msgstr ""
 
-#: classes/class-football-pool-matches.php:435
+#: classes/class-football-pool-matches.php:434
 msgid "view other users predictions"
 msgstr ""
 
-#: classes/class-football-pool-matches.php:487
+#: classes/class-football-pool-matches.php:486
 msgid "use your joker?"
 msgstr ""
 
@@ -1638,76 +1818,76 @@ msgstr ""
 msgid "predictions"
 msgstr ""
 
-#: classes/class-football-pool.php:40
+#: classes/class-football-pool.php:44
 msgid "all users"
 msgstr ""
 
-#: classes/class-football-pool.php:41
+#: classes/class-football-pool.php:45
 msgid "for money"
 msgstr ""
 
-#: classes/class-football-pool.php:42
+#: classes/class-football-pool.php:46
 msgid "for free"
 msgstr ""
 
-#: classes/class-football-pool.php:352
+#: classes/class-football-pool.php:356
 msgid "<strong>ERROR:</strong> You must choose a league to play in!"
 msgstr ""
 
-#: classes/class-football-pool.php:359
+#: classes/class-football-pool.php:363
 msgid "second"
 msgstr ""
 
-#: classes/class-football-pool.php:360
+#: classes/class-football-pool.php:364
 msgid "seconds"
 msgstr ""
 
-#: classes/class-football-pool.php:361
+#: classes/class-football-pool.php:365
 msgid "day"
 msgstr ""
 
-#: classes/class-football-pool.php:362
+#: classes/class-football-pool.php:366
 msgid "days"
 msgstr ""
 
-#: classes/class-football-pool.php:363
+#: classes/class-football-pool.php:367
 msgid "hour"
 msgstr ""
 
-#: classes/class-football-pool.php:364
+#: classes/class-football-pool.php:368
 msgid "hours"
 msgstr ""
 
-#: classes/class-football-pool.php:365
+#: classes/class-football-pool.php:369
 msgid "minute"
 msgstr ""
 
-#: classes/class-football-pool.php:366
+#: classes/class-football-pool.php:370
 msgid "minutes"
 msgstr ""
 
-#: classes/class-football-pool.php:368
+#: classes/class-football-pool.php:372
 msgid "Wait "
 msgstr ""
 
-#: classes/class-football-pool.php:369
+#: classes/class-football-pool.php:373
 msgid " before the tournament starts"
 msgstr ""
 
-#: classes/class-football-pool.php:371
+#: classes/class-football-pool.php:375
 msgid " ago the tournament started."
 msgstr ""
 
-#: classes/class-football-pool.php:395
+#: classes/class-football-pool.php:399
 msgid ""
 "Click below to go to the football pool and predict your scores. Good luck!"
 msgstr ""
 
-#: classes/class-football-pool.php:396
+#: classes/class-football-pool.php:400
 msgid "Fill in your predictions."
 msgstr ""
 
-#: classes/class-football-pool.php:402
+#: classes/class-football-pool.php:406
 msgid "Start immediately with your predictions"
 msgstr ""
 
@@ -1812,7 +1992,7 @@ msgstr ""
 msgid "position in the pool"
 msgstr ""
 
-#: pages/class-football-pool-statistics-page.php:213
+#: pages/class-football-pool-statistics-page.php:205
 msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
 msgstr ""
 
@@ -1849,13 +2029,13 @@ msgstr ""
 msgid "No user selected."
 msgstr ""
 
-#: shortcodes.php:40
-msgid "register"
-msgstr ""
-
-#: shortcodes.php:123 widgets/widget-football-pool-lastgames.php:82
+#: shortcodes.php:99 widgets/widget-football-pool-lastgames.php:82
 #: widgets/widget-football-pool-ranking.php:74
 msgid "No match data available."
+msgstr ""
+
+#: shortcodes.php:195
+msgid "register"
 msgstr ""
 
 #: widgets/widget-football-pool-group.php:10
