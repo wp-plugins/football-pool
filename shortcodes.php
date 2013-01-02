@@ -1,4 +1,4 @@
-<?php 
+<?php
 // shortcodes
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
@@ -25,30 +25,6 @@ add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalp
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
-	//[fp-register]
-	//		title	: title parameter for the <a href>
-	public function shortcode_register_link( $atts, $content = '' ) {
-		extract( shortcode_atts( array(
-					'title' => '',
-					'new' => '0',
-				), $atts ) );
-		
-		$title = ( $title != '' ) ? sprintf( ' title="%s"', $title ) : '';
-		$site_url = get_site_url();
-		$redirect = get_permalink();
-		$redirect = ( $redirect != false ) ? sprintf( '&amp;redirect_to=%s', $redirect ) : '';
-		$content = ( $content > '' ) ? $content : __( 'register', FOOTBALLPOOL_TEXT_DOMAIN );
-		$target = ( $new == '1' ) ? ' target="_blank"' : '';
-		
-		return sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
-						, $site_url
-						, $redirect
-						, $title
-						, $target
-						, $content
-				);
-	}
-	
 	//[fp-group]
 	//		id	: show the standing for the group with this id, defaults to a non-existing group and thus
 	//			  will not show anything when none is given.
@@ -172,10 +148,10 @@ class Football_Pool_Shortcodes {
 		
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
-		$day   = $countdown_date->format( 'd' );
+		$day	= $countdown_date->format( 'd' );
 		$hour  = $countdown_date->format( 'H' );
-		$min   = $countdown_date->format( 'i' );
-		$sec   = 0;
+		$min	= $countdown_date->format( 'i' );
+		$sec	= 0;
 		
 		$output = '';
 		if ( $display == 'inline' ) {
@@ -202,6 +178,30 @@ class Football_Pool_Shortcodes {
 			}
 		}
 		return $link;
+	}
+	
+	//[fp-register]
+	//		title	: title parameter for the <a href>
+	public function shortcode_register_link( $atts, $content = '' ) {
+		extract( shortcode_atts( array(
+					'title' => '',
+					'new' => '0',
+				), $atts ) );
+		
+		$title = ( $title != '' ) ? sprintf( ' title="%s"', $title ) : '';
+		$site_url = get_site_url();
+		$redirect = get_permalink();
+		$redirect = ( $redirect != false ) ? sprintf( '&amp;redirect_to=%s', $redirect ) : '';
+		$content = ( $content > '' ) ? $content : __( 'register', FOOTBALLPOOL_TEXT_DOMAIN );
+		$target = ( $new == '1' ) ? ' target="_blank"' : '';
+		
+		return sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
+						, $site_url
+						, $redirect
+						, $title
+						, $target
+						, $content
+				);
 	}
 	
 	//[webmaster]

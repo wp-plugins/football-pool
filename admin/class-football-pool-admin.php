@@ -122,8 +122,33 @@ class Football_Pool_Admin {
 		);
 	}
 	
+	// tinymce extension
+	public function tinymce_addbuttons() {
+		// Don't bother doing this stuff if the current user lacks permissions
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) )
+			return;
+	 
+		// Add only in Rich Editor mode
+		if ( get_user_option( 'rich_editing' ) == 'true' ) {
+			add_filter( 'mce_external_plugins', array( 'Football_Pool_Admin', 'add_footballpool_tinymce_plugin' ) );
+			add_filter( 'mce_buttons', array( 'Football_Pool_Admin', 'register_tinymce_footballpool_button' ) );
+		}
+	}
+	
+	public function register_tinymce_footballpool_button( $buttons ) {
+		array_push( $buttons, "|", "footballpool" );
+		return $buttons;
+	}
+	
+	// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
+	public function add_footballpool_tinymce_plugin( $plugin_array ) {
+		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.js';
+		return $plugin_array;
+	}
+	// end tinymce
+	
 	public function add_plugin_settings_link( $links, $file ) {
-		if ( $file == plugin_basename( dirname( FOOTBALLPOOL_ERROR_LOG ) . '/football-pool.php' ) ) {
+		if ( $file == plugin_basename( FOOTBALLPOOL_PLUGIN_DIR . 'football-pool.php' ) ) {
 			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 			$links[] = '<a href="admin.php?page=footballpool-help">' . __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 			// $links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
@@ -452,15 +477,37 @@ class Football_Pool_Admin {
 	}
 	
 	public function admin_header( $title, $subtitle = '', $addnew = '', $extra = '' ) {
+		echo '<div class="wrap fp-admin">';
+		
+		// season greetings
+		$season = '';
+		$month = (int) date( 'm' );
+		$day = (int) date( 'd' );
+		if ( $month == 1 && ( $day >= 1 && $day <= 5 ) ) {
+			$season = 'newyear';
+		} elseif ( $month == 12 && ( $day == 25 || $day == 26 ) ) {
+			$season = 'xmas';
+		} elseif ( $month == 11 && $day == 31 ) {
+			$season = 'halloween';
+		}
+		
+		if ( $season !== '' ) {
+			echo '<style type="text/css"> #icon-footballpool-options.icon32 { background: url(', FOOTBALLPOOL_PLUGIN_URL, 'assets/admin/images/admin-menu-32-', $season, '.png) 0 0 no-repeat; } </style>';
+		}
+		// end season
+		
+		screen_icon();
+		
 		$page = Football_Pool_Utils::get_string( 'page' );
 		if ( $addnew == 'add new' ) {
-			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" . __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
+			$addnew = "<a class='add-new-h2' href='?page={$page}&amp;action=edit'>" 
+					. __( 'Add New', FOOTBALLPOOL_TEXT_DOMAIN ) . "</a>";
 		}
-		echo '<div class="wrap fp-admin">';
-		screen_icon();
+		
 		if ( $subtitle != '' ) {
 			$subtitle = sprintf( '<span class="subtitle">%s</span>', $subtitle );
 		}
+		
 		printf( '<h2>%s%s%s</h2>', $title, $subtitle, $addnew );
 
 		echo $extra;

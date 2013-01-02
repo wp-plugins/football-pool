@@ -25,6 +25,10 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
+	public function get_pages() {
+		return self::$pages;
+	}
+	
 	public function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;

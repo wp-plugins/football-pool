@@ -68,3 +68,82 @@ jQuery.fn.inputHints=function() {
 				.addClass('hint');
 	});
 }; // jQuery Input Hints plugin
+
+
+// tinymce extension
+function tinymce_init_tabs( id ) {
+	jQuery( 'li', '#' + id ).each( function() {
+		jQuery( this ).bind( "click", function() {
+			mcTabs.displayTab( 
+								jQuery( this ).attr( 'id' ), 
+								jQuery( this ).attr( 'id' ).replace( '_tab', '' ) + '_panel'
+							);
+			return false;
+		})
+	});
+}
+
+function tinymce_init() {
+	tinyMCEPopup.resizeToInnerSize();
+}
+
+function tinymce_insert_shortcode() {
+	var selected_val, 
+		shortcode = '', 
+		close_tag = false,
+		content = false,
+		the_text = '',
+		panel = '',
+		atts = '';
+	
+	// determine which panel was selected
+	jQuery( 'div', '#panel_wrapper' ).each( function() { 
+		if ( jQuery( this ).hasClass( 'current' ) ) panel = jQuery( this ).attr( 'id' );
+	});
+	
+	var panel_id = '#' + panel;
+	
+	switch( panel ) {
+		case 'options_panel':
+		case 'links_panel':
+			selected_val = jQuery( '.shortcode', panel_id ).val();
+			if ( selected_val != '' ) {
+				if ( selected_val == 'fp-link' ) {
+					var slug = jQuery( '#slug', panel_id ).val();
+					if ( slug != '' ) atts += ' slug="' + slug + '"';
+				} else if ( selected_val == 'fp-register' ) {
+					preserve_content = true;
+					close_tag = true;
+					var title = jQuery( '#link-title', panel_id ).val();
+					if ( title != '' ) atts += ' title="' + title + '"';
+					var new_window = jQuery( '#link-window', panel_id ).is( ':checked' );
+					if ( new_window ) atts += ' new="1"';
+				}
+			}
+			break;
+		case 'pool_panel':
+			break;
+		default:
+			tinyMCEPopup.close();
+	}
+	
+	if ( selected_val != '' ) {
+		if ( preserve_content && tinyMCE.activeEditor.selection.getContent() != '' ) {
+			the_text = tinyMCE.activeEditor.selection.getContent( { format : 'text' } );
+		}
+		shortcode  = '[' + selected_val + atts + ']';
+		shortcode += the_text;
+		shortcode += ( close_tag ? '[/' + selected_val + ']' : '' );
+	}
+	
+	if ( window.tinyMCE ) {
+		window.tinyMCE.execInstanceCommand( 'content', 'mceInsertContent', false, shortcode );
+		//Peforms a clean up of the current editor HTML.
+		//tinyMCEPopup.editor.execCommand( 'mceCleanup' );
+		//Repaints the editor. Sometimes the browser has graphic glitches.
+		tinyMCEPopup.editor.execCommand( 'mceRepaint' );
+		tinyMCEPopup.close();
+	}
+	return;
+}
+// end tinymce extension

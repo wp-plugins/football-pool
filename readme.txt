@@ -138,6 +138,7 @@ The Football Pool plugin is available in the following languages:
 = 2.1.1 =
 * Small updates for WordPress 3.5.
 * Prefixed all shortcodes with "fp-" (the ones that didn't have this prefix).
+* Added a tinymce extension for an easy way of adding shortcodes to your pages and posts via the visual editor.
 * Line charts now show team names for a match in the tooltip.
 * Bug fix: ordinal numbers in the 'position in the pool' chart were gone.
 * Bug fix: the CSV importer caused an 'unknown index' notice for the new comments field for venues.
