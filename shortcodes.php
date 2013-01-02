@@ -66,7 +66,7 @@ class Football_Pool_Shortcodes {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		if ( !is_numeric( $num ) || $num <= 0 ) {
+		if ( ! is_numeric( $num ) || $num <= 0 ) {
 			$num = $default_num;
 		}
 		

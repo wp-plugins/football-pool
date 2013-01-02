@@ -8,7 +8,7 @@
 				ed.windowManager.open({
 					file : url + '/tinymce-dialog.php',
 					width : 500 + parseInt(ed.getLang('footballpool.delta_width', 0)),
-					height : 300 + parseInt(ed.getLang('footballpool.delta_height', 0)),
+					height : 350 + parseInt(ed.getLang('footballpool.delta_height', 0)),
 					inline : 1
 				}, {
 					plugin_url : url

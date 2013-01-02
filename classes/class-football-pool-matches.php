@@ -114,7 +114,6 @@ class Football_Pool_Matches {
 				
 				$match_info[$i] = array();
 				$match_info[$i]['match_datetime'] = $matchdate->format( 'd M Y H:i' );
-				// $match_info[$i]['match_timestamp'] = $row['match_timestamp'];
 				$match_info[$i]['match_timestamp'] = $ts;
 				$match_info[$i]['playDate'] = $row['playDate'];
 				$match_info[$i]['date'] = $row['playDate'];

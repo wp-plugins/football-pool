@@ -97,6 +97,12 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="shortcodes">Shortcodes</h2>
+		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes the adding of these shortcodes a bit easier.
+		</p>
+		<p>
+		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
+		</p>
+		<p>The different shortcodes are explained in the following paragraphs.</p>
 		<h3>[fp-groups]</h3>
 		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
 		ommited, or not a valid group id, then nothing will be returned.</p>
