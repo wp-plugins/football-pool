@@ -124,17 +124,10 @@ The Football Pool plugin is available in the following languages:
 == Upgrade Notice ==
 
 = 2.1.2 =
-* Highcharts API is moved to a directory outside the plugin's directory so upgrading in the future won't break your site. See help or installation instructions for details.
+Highcharts API is moved to a directory outside the plugin's directory so future upgrading won't break your site.
 
 = 2.1.1 =
-* All shortcodes have a "fp-" prefix in this new version. Old shortcodes are still supported in this version but are deprecated. Next major release will stop supporting these old shortcodes. If you're using the old shortcodes please update your content.
-
-= 2.0.0 =
-* Please notice that the default language is now English. If you were using Dutch as the language for the plugin you have to change de `WPLANG` constant in the `wp-config.php` file to `nl_NL`.
-* If you're upgrading from a version prior to version 1.3 you get a database warning stating that the column `max_answers` already exists. You may ignore this warning, the plugin will work and you won't get the warning again. I promise :) 
-
-= 1.4.5 =
-* Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
+Shortcodes have changed in this version. Old shortcodes are still supported but are deprecated. Please update your content.
 
 == Changelog ==
 
