@@ -22,7 +22,7 @@ class Football_Pool_Chart {
 		
 		$this->stats_enabled = ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 );
 		$this->API_loaded = $this->stats_enabled 
-							&& file_exists( FOOTBALLPOOL_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API );
+							&& file_exists( WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API );
 	}
 		
 	public function draw() {

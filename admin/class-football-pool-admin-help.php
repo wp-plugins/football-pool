@@ -425,10 +425,15 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For now you have to follow these steps:
 		<ol>
 			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
-			<li>Place the files in the directory <span class="code">/wp-content/plugins/football-pool/assets/highcharts/</span>.</li>
+			<li>Place the files in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
-		</ol><br>
-		<img class="screenshot" src="<?php echo $img_dir; ?>example-chart.png" alt="screenshot" />
+		</ol>
+		</p>
+		<p>
+			<img class="screenshot" src="<?php echo $img_dir; ?>example-chart.png" alt="screenshot" />
+		</p>
+		<p>
+		If you don't want to use charts, then disable this option on the <a href="?page=footballpool-options">Options page</a>.
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>

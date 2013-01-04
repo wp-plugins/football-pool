@@ -213,7 +213,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		$chart = new Football_Pool_Chart;
 		if ( $chart->stats_enabled && ! $chart->API_loaded ) {
-			self::notice( __( 'Charts are enabled but Highcharts API was not found!', FOOTBALLPOOL_TEXT_DOMAIN ) , 'important' );
+			self::notice( sprintf( __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' ) , 'important' );
 		}
 		
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );

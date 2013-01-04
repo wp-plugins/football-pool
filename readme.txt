@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy football pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -53,7 +53,7 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool users
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
-9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/football-pool/assets/highcharts`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/highcharts-js/`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -123,6 +123,9 @@ The Football Pool plugin is available in the following languages:
 
 == Upgrade Notice ==
 
+= 2.1.2 =
+* Highcharts API is moved to a directory outside the plugin's directory so upgrading in the future won't break your site. See help or installation instructions for details.
+
 = 2.1.1 =
 * All shortcodes have a "fp-" prefix in this new version. Old shortcodes are still supported in this version but are deprecated. Next major release will stop supporting these old shortcodes. If you're using the old shortcodes please update your content.
 
@@ -134,6 +137,9 @@ The Football Pool plugin is available in the following languages:
 * Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
+
+= 2.1.2 =
+* Bug fix: upgrading the plugin also deletes the Highcharts API. Too make sure the front-end does not quit working, a small change was made to the init code. Also, the plugin now expects the API to be located outside the plugin's directory: `wp-content/plugins/highcharts-js/` directory.
 
 = 2.1.1 =
 * Small updates for WordPress 3.5.
