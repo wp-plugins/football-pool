@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Football pool package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Football pool 2.1.1\n"
+"Project-Id-Version: Football pool 2.1.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
-"POT-Creation-Date: 2013-01-02 20:47:10+00:00\n"
+"POT-Creation-Date: 2013-01-04 00:14:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: admin/class-football-pool-admin-bonusquestions.php:33
 #: admin/class-football-pool-admin-games.php:390
-#: admin/class-football-pool-admin-options.php:190
+#: admin/class-football-pool-admin-options.php:192
 #: admin/class-football-pool-admin-users.php:67
 msgid ""
 "Something went wrong while (re)calculating the scores. Please check if "
@@ -950,63 +950,76 @@ msgid ""
 "match. Only used for display of the time."
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:180
+#: admin/class-football-pool-admin-options.php:178
+msgid "Don't use shortcode button in visual editor"
+msgstr ""
+
+#: admin/class-football-pool-admin-options.php:178
+msgid ""
+"The plugin can add a button to the visual editor of WordPress. With this "
+"option enabled this button will not be included (check if the button is "
+"causing problems)."
+msgstr ""
+
+#: admin/class-football-pool-admin-options.php:182
 msgid ""
 "If you want to support this plugin, you can buy me an espresso (doppio "
 "please ;))"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:183
+#: admin/class-football-pool-admin-options.php:185
 #: admin/class-football-pool-admin.php:19
 msgid "Plugin Options"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:188
+#: admin/class-football-pool-admin-options.php:190
 #: admin/class-football-pool-admin-teams.php:57
 #: admin/class-football-pool-admin-teams.php:62
 #: admin/class-football-pool-admin-users.php:65
 msgid "Scores recalculated."
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:209
+#: admin/class-football-pool-admin-options.php:211
 #: admin/class-football-pool-admin-teams-position.php:13
 #: admin/class-football-pool-admin-users.php:30
 #: pages/class-football-pool-pool-page.php:18
 msgid "Changes saved."
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:214
-msgid "Charts are enabled but Highcharts API was not found!"
+#: admin/class-football-pool-admin-options.php:216
+msgid ""
+"Charts are enabled but Highcharts API was not found! See <a href=\"%s\">Help "
+"page</a> for details."
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:217
+#: admin/class-football-pool-admin-options.php:219
 msgid ""
 "If values in the fields marked with an asterisk are left empty, then the "
 "plugin will default to the initial values."
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:219
+#: admin/class-football-pool-admin-options.php:221
 msgid "Prediction Options"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:233
-#: admin/class-football-pool-admin-options.php:244
+#: admin/class-football-pool-admin-options.php:235
+#: admin/class-football-pool-admin-options.php:246
 msgid "Recalculate Scores"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:236
+#: admin/class-football-pool-admin-options.php:238
 msgid "League Options"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:247
+#: admin/class-football-pool-admin-options.php:249
 msgid "Pool Layout Options"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:257
+#: admin/class-football-pool-admin-options.php:259
 msgid "Other Options"
 msgstr ""
 
-#: admin/class-football-pool-admin-options.php:270
+#: admin/class-football-pool-admin-options.php:273
 msgid "Shortcodes"
 msgstr ""
 
@@ -1349,7 +1362,7 @@ msgid "no data"
 msgstr ""
 
 #: admin/class-football-pool-admin-users.php:379
-#: classes/class-football-pool.php:342
+#: classes/class-football-pool.php:346
 msgid "Play in league"
 msgstr ""
 
@@ -1830,64 +1843,64 @@ msgstr ""
 msgid "for free"
 msgstr ""
 
-#: classes/class-football-pool.php:356
+#: classes/class-football-pool.php:360
 msgid "<strong>ERROR:</strong> You must choose a league to play in!"
 msgstr ""
 
-#: classes/class-football-pool.php:363
+#: classes/class-football-pool.php:367
 msgid "second"
 msgstr ""
 
-#: classes/class-football-pool.php:364
+#: classes/class-football-pool.php:368
 msgid "seconds"
 msgstr ""
 
-#: classes/class-football-pool.php:365
+#: classes/class-football-pool.php:369
 msgid "day"
 msgstr ""
 
-#: classes/class-football-pool.php:366
+#: classes/class-football-pool.php:370
 msgid "days"
 msgstr ""
 
-#: classes/class-football-pool.php:367
+#: classes/class-football-pool.php:371
 msgid "hour"
 msgstr ""
 
-#: classes/class-football-pool.php:368
+#: classes/class-football-pool.php:372
 msgid "hours"
 msgstr ""
 
-#: classes/class-football-pool.php:369
+#: classes/class-football-pool.php:373
 msgid "minute"
 msgstr ""
 
-#: classes/class-football-pool.php:370
+#: classes/class-football-pool.php:374
 msgid "minutes"
 msgstr ""
 
-#: classes/class-football-pool.php:372
+#: classes/class-football-pool.php:376
 msgid "Wait "
 msgstr ""
 
-#: classes/class-football-pool.php:373
+#: classes/class-football-pool.php:377
 msgid " before the tournament starts"
 msgstr ""
 
-#: classes/class-football-pool.php:375
+#: classes/class-football-pool.php:379
 msgid " ago the tournament started."
 msgstr ""
 
-#: classes/class-football-pool.php:399
+#: classes/class-football-pool.php:403
 msgid ""
 "Click below to go to the football pool and predict your scores. Good luck!"
 msgstr ""
 
-#: classes/class-football-pool.php:400
+#: classes/class-football-pool.php:404
 msgid "Fill in your predictions."
 msgstr ""
 
-#: classes/class-football-pool.php:406
+#: classes/class-football-pool.php:410
 msgid "Start immediately with your predictions"
 msgstr ""
 
