@@ -203,10 +203,12 @@ class Football_Pool {
 		
 		global $pagenow;
 		
-		if ( $pagenow == 'update-core.php' || $pagenow == 'update.php' ) {
+		if ( $pagenow == 'plugins.php' || $pagenow == 'update-core.php' || $pagenow == 'update.php' ) {
 			$chart = new Football_Pool_Chart;
 			if ( $chart->stats_enabled && ! $chart->API_loaded ) {
-				Football_Pool_Admin::notice( sprintf( __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' ) , 'important' );
+				$notice = '<strong>' . sprintf( __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						. ':</strong> ' . __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' );
+				Football_Pool_Admin::notice( $notice , 'important' );
 			}
 		} 
 	}
