@@ -110,5 +110,6 @@ if ( is_admin() ) {
 	if ( Football_Pool_Utils::get_fp_option( 'no_tinymce' ) != 1 ) {
 		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
 	}
+	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );
 }
 ?>

@@ -198,6 +198,19 @@ class Football_Pool {
 		return $locale;
 	}
 	
+	public function admin_notice() {
+		if ( ! is_admin() || ! current_user_can( 'install_plugins' ) ) return;
+		
+		global $pagenow;
+		
+		if ( $pagenow == 'update-core.php' || $pagenow == 'update.php' ) {
+			$chart = new Football_Pool_Chart;
+			if ( $chart->stats_enabled && ! $chart->API_loaded ) {
+				Football_Pool_Admin::notice( sprintf( __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' ) , 'important' );
+			}
+		} 
+	}
+	
 	public function init() {
 		// i18n support:
 		//   http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
