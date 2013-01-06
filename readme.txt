@@ -18,7 +18,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 **Features**
 
 * Users can predict match outcomes.
-* Automatic calculation of the pool ranking.
+* Automatic calculation of the pool ranking. Or define your own custom ranking for a group of matches.
 * You can add bonus questions for extra fun (single answer and multiple choice).
 * Add your own teams and match info to use the plugin for another (national) competition.
 * Import or export the game schedule.
@@ -129,7 +129,19 @@ Highcharts API is moved to a directory outside the plugin's directory so future 
 = 2.1.1 =
 Shortcodes have changed in this version. Old shortcodes are still supported but are deprecated. Please update your content.
 
+= 2.0.0 =
+Default language is now English. Change de `WPLANG` constant if you want to use another language. If you're upgrading from a version prior to v1.3 you get a warning that the column `max_answers` already exists. That's fine, the plugin will work and you won't get the warning again. 
+
+= 1.4.5 =
+Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
+
 == Changelog ==
+
+= 2.2.0 =
+* New feature: user defined rankings.
+* New shortcode to support the user defined rankings.
+* New shortcode to show prediction form for a group of matches or bonus questions.
+* Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 
 = 2.1.3 =
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.

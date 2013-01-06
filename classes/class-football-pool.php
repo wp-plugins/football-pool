@@ -238,6 +238,7 @@ class Football_Pool {
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;
 				$highcharts_dir = WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API;
 				self::include_js( $highcharts_url, 'js-highcharts', false, $highcharts_dir );
+				self::include_js( 'assets/pool-charts.js', 'js-pool-charts' );
 			}
 			
 			//fancybox -> replaced with colorbox because of license problem
@@ -246,11 +247,10 @@ class Football_Pool {
 			self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
 			self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
 			
-			//pool js
-			self::include_js( 'assets/pool.js', 'js-pool' );
 			//pool css
 			self::include_css( 'assets/pool.css', 'css-pool' );
-			
+			//pool js
+			self::include_js( 'assets/pool.js', 'js-pool' );
 			//extra countdown code
 			add_action( 'wp_head', array( 'Football_Pool', 'countdown_texts' ) );
 		} else {
