@@ -131,3 +131,10 @@ CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
   KEY `ixGroup` (`groupId`),
   KEY `ixGroupOrder` (`groupOrder`)
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}rankings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `user_defined` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;

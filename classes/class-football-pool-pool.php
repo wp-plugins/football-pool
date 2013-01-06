@@ -114,7 +114,8 @@ class Football_Pool_Pool {
 	}
 	
 	// use league=0 to include all users
-	public function get_ranking_from_score_history( $league, $score_date = '', $type = 0 ) {
+	public function get_ranking_from_score_history( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
+													$score_date = '', $type = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
@@ -127,8 +128,8 @@ class Football_Pool_Pool {
 		if ( $this->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu 
 						ON (
-							u.ID=lu.userId
-							AND (" . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1=1 OR " : "") . "lu.leagueId = %d)
+							u.ID = lu.userId
+							AND ( " . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1 = 1 OR " : "") . "lu.leagueId = %d )
 							) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 		} else {
@@ -136,34 +137,36 @@ class Football_Pool_Pool {
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					(
-						s.userId=u.ID
-						AND (" . ($score_date == '' ? "1=1 OR " : "") . "s.scoreDate <= %s)
-						AND (" . ($type == 0 ? "1=1 OR " : "") . "s.type = %d)
+						s.userId = u.ID AND s.ranking_id = %d 
+						AND ( " . ($score_date == '' ? "1 = 1 OR " : "") . "s.scoreDate <= %s )
+						AND ( " . ($type == 0 ? "1 = 1 OR " : "") . "s.type = %d )
 					) ";
-		if ( ! $this->has_leagues ) $sql .= "WHERE ( leagueId <> 0 OR leagueId IS NULL ) ";
+		$sql .= "WHERE s.ranking_id IS NOT NULL ";
+		if ( ! $this->has_leagues ) $sql .= "AND ( leagueId <> 0 OR leagueId IS NULL ) ";
 		$sql .= "GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER(u.display_name) ASC";
 		
 		if ( $this->has_leagues ) 
-			return $wpdb->prepare( $sql, $league, $score_date, $type );
+			return $wpdb->prepare( $sql, $league, $ranking_id, $score_date, $type );
 		else
-			return $wpdb->prepare( $sql, $score_date, $type );
+			return $wpdb->prepare( $sql, $ranking_id, $score_date, $type );
 	}
 	
-	public function get_pool_ranking_limited( $league, $num_users, $score_date = '' ) {
+	public function get_pool_ranking_limited( $league, $num_users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
+												$score_date = '' ) {
 		global $wpdb;
-		$sql = $wpdb->prepare( $this->get_ranking_from_score_history( $league, $score_date ) . ' LIMIT %d', 
-								$num_users );
+		$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
+		$sql = $wpdb->prepare( $sql, $num_users );
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
-	public function get_pool_ranking( $league ) {
-		$cache_key = 'fp_get_pool_ranking';
+	public function get_pool_ranking( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		$cache_key = 'fp_get_pool_ranking_' . $ranking_id;
 		$rows = wp_cache_get( $cache_key );
 		
 		if ( $rows === false ) {
 			global $wpdb;
-			$sql = $this->get_ranking_from_score_history( $league );
+			$sql = $this->get_ranking_from_score_history( $league, $ranking_id );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			wp_cache_set( $cache_key, $rows );
 		}
@@ -171,10 +174,10 @@ class Football_Pool_Pool {
 		return $rows;
 	}
 	
-	public function print_pool_ranking( $league, $user ) {
+	public function print_pool_ranking( $league, $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$output = '';
 		
-		$rows = $this->get_pool_ranking( $league );
+		$rows = $this->get_pool_ranking( $league, $ranking_id );
 		$ranking = array();
 		if ( count( $rows ) > 0 ) {
 			// there are results in the database, so get the ranking
@@ -261,6 +264,30 @@ class Football_Pool_Pool {
 		}
 		
 		return $leagues;
+	}
+	
+	public function get_rankings( $only_user_defined = false ) {
+		$cache_key = 'fp_get_rankings_' . ( $only_user_defined ? 'user_defined' : 'all' );
+		$rankings = wp_cache_get( $cache_key );
+		
+		if ( $rankings === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$filter = $only_user_defined ? 'WHERE user_defined = 1' : '';
+			
+			$sql = "SELECT id, name, user_defined 
+					FROM {$prefix}rankings {$filter} ORDER BY user_defined ASC, name ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			$rankings = array();
+			foreach ( $rows as $row ) {
+				$rankings[$row['id']] = $row;
+			}
+			wp_cache_set( $cache_key, $rankings );
+		}
+		
+		return $rankings;
 	}
 	
 	public function league_filter( $league = 0, $select = 'league' ) {

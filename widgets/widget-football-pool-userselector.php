@@ -40,7 +40,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		$height = (integer) $instance['height'] > 0 ? (integer) $instance['height'] : 200;
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
@@ -76,10 +76,10 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		$classname = str_replace( '_', '', get_class( $this ) );
 		
 		parent::__construct( 
-							$classname, 
-							( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-							array( 'description' => $this->widget['description'] )
-							);
+			$classname, 
+			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
+			$this->widget['description']
+		);
 	}
 	
 	public function widget( $args, $instance ) {

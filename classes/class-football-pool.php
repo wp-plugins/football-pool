@@ -40,10 +40,13 @@ class Football_Pool {
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
-			$sql = "INSERT INTO `{$prefix}leagues` (`name`, `userDefined`, `image`) VALUES
-					('" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, ''),
-					('" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png'),
-					('" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '');";
+			$sql = "INSERT INTO `{$prefix}leagues` ( `name`, `userDefined`, `image` ) VALUES
+					( '" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, '' ),
+					( '" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png' ),
+					( '" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '' );";
+			$wpdb->query( $sql );
+			$sql = "INSERT INTO `{$prefix}rankings` ( `name`, `user_defined` ) VALUES
+					( '" . __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0 );";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
 			if ( ! self::is_at_least_version( '2.0.0' ) ) {
@@ -58,6 +61,10 @@ class Football_Pool {
 			}
 			if ( ! self::is_at_least_version( '2.1.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.1.0.txt' ) );
+				self::db_actions( $update_sql );
+			}
+			if ( ! self::is_at_least_version( '2.2.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.2.0.txt' ) );
 				self::db_actions( $update_sql );
 			}
 		}
@@ -97,19 +104,25 @@ class Football_Pool {
 		add_option( 'footballpool_match_time_display', 0 ); // 0: WP setting, 1: UTC, 2: custom
 		add_option( 'footballpool_match_time_offset', 0 ); // time in seconds to add to the start time in the database (negative value for substraction)
 		add_option( 'footballpool_csv_file_filter', '*' ); // defaults to 'all files'
-		add_option( 'footballpool_no_tinymce', 0 ); // 1: yes (disabled), 0: no (enable button)
+		add_option( 'footballpool_no_tinymce', 0 ); // 1: no button, 0: enable button
 		
 		update_option( 'footballpool_db_version', FOOTBALLPOOL_DB_VERSION );
-
+		
 		// create pages
 		$locale = self::get_locale();
-		if ( file_exists( FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt" ) ) {
+		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
+		
+		// first check for a translated text in the languages folder of WP
+		$file = WP_LANG_DIR . '/' . $domain . "/rules-page-content-{$locale}.txt";
+		if ( ! file_exists( $file ) ) {
+			// if no file found, then check the plugin's languages folder
 			$file = FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt";
-		} else {
-			$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
+			if ( ! file_exists( $file ) ) {
+				// no translation available, revert to default text
+				$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
+			}
 		}
-		$rules_text = self::read_from_file( $file );
-		self::$pages['rules']['text'] = $rules_text;
+		self::$pages['rules']['text'] = self::read_from_file( $file );
 		foreach ( self::$pages as $page ) {
 			self::create_page($page);
 		}
@@ -196,21 +209,6 @@ class Football_Pool {
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		return $locale;
-	}
-	
-	public function admin_notice() {
-		if ( ! is_admin() || ! current_user_can( 'install_plugins' ) ) return;
-		
-		global $pagenow;
-		
-		if ( $pagenow == 'plugins.php' || $pagenow == 'update-core.php' || $pagenow == 'update.php' ) {
-			$chart = new Football_Pool_Chart;
-			if ( $chart->stats_enabled && ! $chart->API_loaded ) {
-				$notice = '<strong>' . sprintf( __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ) 
-						. ':</strong> ' . __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' );
-				Football_Pool_Admin::notice( $notice , 'important' );
-			}
-		} 
 	}
 	
 	public function init() {
@@ -483,6 +481,21 @@ class Football_Pool {
 		}
 		
 		return $output;
+	}
+	
+	public function admin_notice() {
+		if ( ! is_admin() || ! current_user_can( 'install_plugins' ) ) return;
+		
+		global $pagenow;
+		
+		if ( $pagenow == 'plugins.php' || $pagenow == 'update-core.php' || $pagenow == 'update.php' ) {
+			$chart = new Football_Pool_Chart;
+			if ( $chart->stats_enabled && ! $chart->API_loaded ) {
+				$notice = '<strong>' . sprintf( __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						. ':</strong> ' . __( 'Charts are enabled but Highcharts API was not found! See <a href="%s">Help page</a> for details.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-help#charts' );
+				Football_Pool_Admin::notice( $notice , 'important' );
+			}
+		} 
 	}
 	
 //=============================================================================================================//

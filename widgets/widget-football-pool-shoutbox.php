@@ -50,7 +50,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		}
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
@@ -91,7 +91,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }

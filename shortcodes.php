@@ -47,6 +47,7 @@ class Football_Pool_Shortcodes {
 	
 	//[fp-ranking] 
 	//		league	: only show users in this league, defaults to all
+	//		ranking	: only show points from this ranking, defaults to complete ranking
 	//		num 	: number of users to show, defaults to 5
 	//		date	: show ranking up until this date, 
 	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
@@ -57,6 +58,7 @@ class Football_Pool_Shortcodes {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
 					'num' => $default_num,
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'date' => 'now',
 				), $atts ) );
 		
@@ -70,6 +72,10 @@ class Football_Pool_Shortcodes {
 			$num = $default_num;
 		}
 		
+		if ( ! is_numeric( $ranking ) || $ranking <= 0 ) {
+			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
+		}
+		
 		if ( $date == 'postdate' ) {
 			$score_date = get_the_date( 'Y-m-d H:i' );
 		//} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
@@ -79,7 +85,7 @@ class Football_Pool_Shortcodes {
 			$score_date = '';
 		}
 		
-		$rows = $pool->get_pool_ranking_limited( $league, $num, $score_date );
+		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, $score_date );
 		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
@@ -96,7 +102,7 @@ class Football_Pool_Shortcodes {
 			}
 			$output .= '</table>';
 		} else {
-			$output = '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 		
 		return $output;

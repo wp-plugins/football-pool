@@ -42,7 +42,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $match['nr'];
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match['playDate'] ) );
@@ -100,7 +100,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 	

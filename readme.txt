@@ -27,7 +27,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Use different leagues for your users (optional).
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
-* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), easy integration of some configuration options in your content (e.g. points).
+* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), show a prediction form for a subset of matches or bonus questions, easy integration of some configuration options in your content (e.g. points).
 * Extra info pages for venues and teams.
 
 **Translations**
@@ -111,7 +111,7 @@ The Football Pool plugin is available in the following languages:
 
 * Dutch (`nl_NL`) by me.
 * English (default) by me.
-* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.0.0).
+* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.x).
 * Spanish (`es_ES`) by Cristian Carlucci.
 
 == Screenshots ==
@@ -138,10 +138,11 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.2.0 =
-* New feature: user defined rankings.
+* New feature: user defined rankings (ranking for a defined group of matches).
 * New shortcode to support the user defined rankings.
 * New shortcode to show prediction form for a group of matches or bonus questions.
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
+* Bug fix: description text of widgets was not correct in the WordPress admin.
 
 = 2.1.3 =
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.

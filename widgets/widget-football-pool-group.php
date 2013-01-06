@@ -48,7 +48,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 		$layout = $layouts[ $instance['layout'] ];
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$groups = new Football_Pool_Groups;
@@ -63,7 +63,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 			$groups = $g->get_group_names();
 			$options = array();
 			foreach ( $groups as $id => $group ) {
-				$options[ $id ] = $group;
+				$options[$id] = $group;
 			}
 			$this->widget['fields'][1]['options'] = $options;
 			
@@ -79,7 +79,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }

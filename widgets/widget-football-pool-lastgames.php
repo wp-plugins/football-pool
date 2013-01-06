@@ -39,7 +39,7 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		$num_games = $instance['num_games'];
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$matches = new Football_Pool_Matches;
@@ -89,7 +89,7 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }

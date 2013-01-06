@@ -668,13 +668,17 @@ class Football_Pool_Admin {
 		
 		$pool = new Football_Pool_Pool;
 		
+		//@todo: fix ranking
+		$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT;
+		
 		// 1. empty table
 		$check = self::empty_table( 'scorehistory' );
 		$result = $check;
 		if ( $check !== false ) {
 			// 2. check predictions with actual match result (score type = 0)
 			$sql = "INSERT INTO {$prefix}scorehistory
-						( type, scoreDate, scoreOrder, userId, score, full, toto, goal_bonus, ranking ) 
+						( type, scoreDate, scoreOrder, userId, score, full, toto, goal_bonus
+						, ranking, ranking_id ) 
 					SELECT 
 						0, m.playDate, m.nr, u.ID, 
 						IF ( p.hasJoker = 1, 2, 1 ) AS score,
@@ -692,7 +696,8 @@ class Football_Pool_Admin {
 								IF ( m.awayScore = p.awayScore, 2, 1 ),
 								IF ( m.awayScore = p.awayScore, 1, NULL )
 						) AS goal_bonus,
-						0
+						0,
+						%d
 					FROM {$wpdb->users} u ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
@@ -705,15 +710,19 @@ class Football_Pool_Admin {
 						ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
 					WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql = $wpdb->prepare( $sql, $ranking_id );
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
 			// 3. update score for matches
 			$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 			$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
-			$sql = "UPDATE {$prefix}scorehistory 
-					SET score = score * ( ( full * {$full} ) + ( toto * {$toto} ) + ( goal_bonus * {$goal} ) ) 
-					WHERE type = 0";
+			$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory 
+									SET score = score * ( ( full * {$full} ) 
+												+ ( toto * {$toto} ) 
+												+ ( goal_bonus * {$goal} ) ) 
+									WHERE type = 0 AND ranking_id = %d"
+									, $ranking_id );
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
 			// 4. add bonusquestion scores (score type = 1)
@@ -721,10 +730,11 @@ class Football_Pool_Admin {
 			//    (we can set an alternate score for an individual user in the admin)
 			$sql = "INSERT INTO {$prefix}scorehistory 
 						( type, scoreDate, scoreOrder, userId, 
-						  score, full, toto, goal_bonus, ranking ) 
+						  score, full, toto, goal_bonus, ranking, ranking_id ) 
 					SELECT 
 						1, q.scoreDate, q.id, u.ID, 
-						( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, NULL, 0 
+						( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, NULL, 
+						0, %d 
 					FROM {$wpdb->users} u ";
 			if ( $pool->has_leagues ) {
 				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
@@ -738,30 +748,22 @@ class Football_Pool_Admin {
 						ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
 					WHERE q.scoreDate IS NOT NULL ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql = $wpdb->prepare( $sql, $ranking_id );
 			$check = $wpdb->query( $sql );
 			$result &= ( $check !== false );
 			// 5. update score incrementally
-			/* 
-			$sql = "ALTER TABLE {$prefix}scorehistory DROP INDEX totalScore";
-			$wpdb->query( $sql );
-			$sql = "UPDATE {$prefix}scorehistory
-					SET totalScore = score+IncrementalSum(userId, scoreDate)
-					ORDER BY scoreDate ASC";
-			$wpdb->query( $sql );
-			$sql = "ALTER TABLE {$prefix}scorehistory ADD INDEX (totalScore)";
-			$wpdb->query( $sql );
-			//*/
-			//*
 			$users = get_users( '' );
 			
 			foreach ( $users as $user ) {
 				$sql = $wpdb->prepare( "SELECT * FROM {$prefix}scorehistory 
-										WHERE userId = %d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
-										$user->ID
+										WHERE userId = %d AND ranking_id = %d
+										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
+										$user->ID, $ranking_id
 								);
 				$rows = $wpdb->get_results( $sql, ARRAY_A );
 				
-				$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user->ID );
+				$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory 
+										WHERE userId = %d AND ranking_id = %d", $user->ID, $ranking_id );
 				$check = $wpdb->query( $sql );
 				$result &= ( $check !== false );
 				
@@ -770,33 +772,39 @@ class Football_Pool_Admin {
 					$score += $row['score'];
 					$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
 												( type, scoreDate, scoreOrder, userId, 
-												  score, full, toto, goal_bonus, totalScore, ranking ) 
+												  score, full, toto, goal_bonus, totalScore, 
+												  ranking, ranking_id ) 
 											VALUES 
 												( %d, %s, %d, %d, 
-												  %d, %d, %d, %d, %d, 0 )",
+												  %d, %d, %d, %d, %d, 
+												  0, %d )",
 											$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
-											$row['score'], $row['full'], $row['toto'], $row['goal_bonus'], $score
+											$row['score'], $row['full'], $row['toto'], $row['goal_bonus'], $score,
+											$ranking_id
 									);
 					$check = $wpdb->query( $sql );
 					$result &= ( $check !== false );
 				}
 			}
-			//*/
 			// 6. update ranking
 			$pool = new Football_Pool_Pool;
-			$sql = "SELECT scoreDate, type FROM {$prefix}scorehistory GROUP BY scoreDate, type";
+			$sql = $wpdb->prepare( "SELECT scoreDate, type FROM {$prefix}scorehistory 
+									WHERE ranking_id = %d GROUP BY scoreDate, type"
+									, $ranking_id );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			foreach ( $rows as $row ) {
-				$sql = $pool->get_ranking_from_score_history( 0, $row['scoreDate'] );
+				$sql = $pool->get_ranking_from_score_history( 0, $ranking_id, $row['scoreDate'] );
 				$rows2 = $wpdb->get_results( $sql, ARRAY_A );
 				$rank = 1;
 				foreach ( $rows2 as $row2 ) {
 					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
-											WHERE userId = %d AND type = %d AND scoreDate = %s",
+											WHERE userId = %d AND type = %d AND scoreDate = %s 
+											AND ranking_id = %d",
 											$rank++,
 											$row2['userId'],
 											$row["type"],
-											$row['scoreDate']
+											$row['scoreDate'],
+											$ranking_id
 									);
 					$check = $wpdb->query( $sql );
 					$result &= ( $check !== false );
