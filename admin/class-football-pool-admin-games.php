@@ -10,6 +10,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				
+		echo "<iframe src='", FOOTBALLPOOL_PLUGIN_URL, "admin/test.html' width='400' height='150'></iframe>";
+		self::secondary_button( 'Close', 'close', true, 'button', array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) );
+		
 		$log = '';
 		$file = '';
 		
@@ -349,8 +352,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$rows = $matches->get_info();
 		
 		$full_data = ( Football_Pool_Utils::get_fp_option( 'export_format', 0, 'int' ) == 0 );
-		$download_url = FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php';
-		if ( ! $full_data ) $download_url .= '?format=minimal';
+		$download_url = wp_nonce_url( FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php'
+									, FOOTBALLPOOL_NONCE_CSV );
+		if ( ! $full_data ) $download_url = add_query_arg( array( 'format' => 'minimal' ), $download_url );
 		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );

@@ -141,6 +141,8 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * New feature: user defined rankings (ranking for a defined group of matches).
 * New shortcode to support the user defined rankings.
 * New shortcode to show prediction form for a group of matches or bonus questions.
+* Added nonces to all forms on blog pages and admin pages.
+* All dates in the front-end are localized using date_i18n().
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: description text of widgets was not correct in the WordPress admin.
 

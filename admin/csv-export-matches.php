@@ -2,6 +2,8 @@
 require_once( '../../../../wp-load.php' );
 require_once( '../define.php' );
 
+check_admin_referer( FOOTBALLPOOL_NONCE_CSV );
+
 $full_data = ! ( isset( $_GET['format'] ) && $_GET['format'] == 'minimal' );
 
 global $wpdb;
@@ -59,5 +61,4 @@ foreach ( $matches as $match ) {
 }
 fclose( $fp );
 exit;
-
 ?>

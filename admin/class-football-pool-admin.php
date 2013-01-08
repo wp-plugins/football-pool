@@ -815,7 +815,7 @@ class Football_Pool_Admin {
 		return $result;
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button' ) {
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = '' ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -831,13 +831,20 @@ class Football_Pool_Admin {
 		
 		if ( $type == 'button' ) {
 			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
+			$atts = array( "onclick" => $onclick_val );
+			
+			if ( is_array( $other_attributes ) ) {
+				foreach( $other_attributes as $key => $value ) {
+					$atts[$key] = $value;
+				}
+			}
 			
 			submit_button( 
 					$text, 
 					'secondary', 
 					$action_val, 
 					$wrap, 
-					array( "onclick" => $onclick_val ) 
+					$atts 
 			);
 		} elseif ( $type == 'link' ) {
 			// $onclick = ( $onclick_val != '' ) ? 'onclick="' . $onclick_val . '"' : '';

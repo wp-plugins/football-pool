@@ -38,4 +38,8 @@ define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_
 
 define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
 define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );
+
+// nonces
+define( 'FOOTBALLPOOL_NONCE_CSV', 'football-pool-csv-download' );
+define( 'FOOTBALLPOOL_NONCE', 'football-pool-other' );
 ?>

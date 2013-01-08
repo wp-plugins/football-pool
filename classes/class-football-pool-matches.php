@@ -249,8 +249,10 @@ class Football_Pool_Matches {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
-			if ( $date_title != $localdate->format( 'd M Y' ) ) {
-				$date_title = $localdate->format( 'd M Y' );
+			// if ( $date_title != $localdate->format( 'd M Y' ) ) {
+				// $date_title = $localdate->format( 'd M Y' );
+			if ( $date_title != date_i18n( __( 'd M Y', FOOTBALLPOOL_TEXT_DOMAIN ), $localdate->getTimestamp() ) ) {
+				$date_title = date_i18n( __( 'd M Y', FOOTBALLPOOL_TEXT_DOMAIN ), $localdate->getTimestamp() );
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
 									$localdate->format( 'l' ), $date_title );
 			}
@@ -275,7 +277,7 @@ class Football_Pool_Matches {
 						);
 			$output .= sprintf( '<td class="score"><a href="%s">%s - %s</a></td>',
 							esc_url( 
-								add_query_arg( 
+								add_query_arg(
 									array( 'view' => 'matchpredictions', 'match' => $row['nr'] ), 
 									$statisticspage 
 								)
