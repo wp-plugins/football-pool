@@ -45,7 +45,9 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		
 		// save a new shout?
 		$shout = Football_Pool_Utils::post_string( 'shouttext' );
-		if ( $shout != '' && $current_user->ID > 0 ) {
+		$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX );
+		if ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_SHOUTBOX ) !== false
+				&& $shout != '' && $current_user->ID > 0 ) {
 			$shoutbox->save_shout( $shout, $current_user->ID, $max_chars );
 		}
 		
@@ -72,6 +74,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		
 		if ( $current_user->ID > 0 ) {
 			echo '<form action="" method="post">';
+			wp_nonce_field( FOOTBALLPOOL_NONCE_SHOUTBOX, FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX );
 			echo '<p><span id="shouttext_notice" class="notice">';
 			echo sprintf( __( '(<span>%s</span> characters remaining)', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars );
 			echo '</span><br />';

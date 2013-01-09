@@ -513,6 +513,7 @@ class Football_Pool_Admin {
 		echo $extra;
 		echo '<form action="" method="post">';
 		echo '<input type="hidden" name="action" id="action" value="update" />';
+		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
 	}
 	
 	public function admin_footer() {
@@ -594,18 +595,34 @@ class Football_Pool_Admin {
 					echo $value;
 					
 					if ( $j == 0 ) {
+						$row_action_url = sprintf( '?page=%s&amp;action=edit&amp;item_id=%s'
+													, esc_attr( $page )
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo '</a></strong><br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="?page=', esc_attr( $page ), '&amp;action=edit&amp;item_id=', esc_attr( $rows[$i][$c] ), '">Edit</a> | 
+										<a href="', $row_action_url, '">Edit</a> | 
 									</span>';
 						foreach ( $rowactions as $action ) {
+							$row_action_url = sprintf( '?page=%s&amp;action=%s&amp;item_id=%s'
+														, esc_attr( $page )
+														, esc_attr( $action[0] )
+														, esc_attr( $rows[$i][$c] )
+												);
+							$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 							echo '<span class="edit">
-									<a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a> | 
+									<a href="', $row_action_url, '">', $action[1], '</a> | 
 								</span>';
 						}
+						$row_action_url = sprintf( '?page=%s&amp;action=delete&amp;item_id=%s'
+													, esc_attr( $page )
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo "<span class='delete'>
-									<a onclick=\"return confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' )\" href='?page={$page}&amp;action=delete&amp;item_id={$rows[$i][$c]}' class='submitdelete'>Delete</a>
+									<a onclick=\"return confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' )\" href='", $row_action_url, "' class='submitdelete'>Delete</a>
 								</span>
 							</div>";
 					}

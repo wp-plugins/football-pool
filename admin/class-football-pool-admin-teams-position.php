@@ -7,6 +7,7 @@ class Football_Pool_Admin_Teams_Position extends Football_Pool_Admin {
 		
 		$teams = new Football_Pool_Teams;
 		if ( Football_Pool_Utils::post_string( 'action' ) == 'update' ) {
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			$teams->update_teams();
 			// reset the teams
 			$teams = new Football_Pool_Teams;

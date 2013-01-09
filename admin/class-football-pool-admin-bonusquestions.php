@@ -16,10 +16,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				// new or updated question
 				$question_id = self::update( $question_id );
 				self::notice( __( 'Question saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -27,13 +28,14 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				self::edit( $question_id );
 				break;
 			case 'user-answers-save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$id = Football_Pool_Utils::post_integer( 'item_id' );
 				self::set_bonus_question_for_users( $id );
 				$success = self::update_bonus_question_points();
 				if ( ! $success ) self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 				
 				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
-				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -44,6 +46,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				self::edit_user_answers();
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $question_id > 0 ) {
 					self::delete( $question_id );
 					self::notice(sprintf( __( 'Question id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $question_id ) );

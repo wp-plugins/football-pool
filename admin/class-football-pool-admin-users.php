@@ -26,10 +26,12 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				self::update();
 				self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				break;
 			case 'remove':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $user_id > 0 ) {
 					self::remove( $user_id );
 					$user = get_userdata( $user_id );
@@ -44,6 +46,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				}
 				break;
 			case 'add':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $user_id > 0 ) {
 					self::add( $user_id );
 					$user = get_userdata( $user_id );
@@ -60,6 +63,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'list' ) {
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			$success = self::update_score_history();
 			if ( $success )
 				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
@@ -282,6 +286,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	protected function list_table_field( $type, $value, $name = '', $source = '' ) {
 		switch ( $type ) {
 			case 'checkbox':
+			case 'boolean':
 				$checked = $value == 1 ? 'checked="checked" ' : '';
 				$output = '<input type="checkbox" value="1" name="' . $name . '" ' . $checked . '/>';
 				break;
@@ -329,15 +334,25 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 					echo self::list_table_field( $cols[$j][0], $rows[$i][$j], $name, $cols[$j][3] );
 
 					if ( $j == 0 ) {
+						$row_action_url = sprintf( 'user-edit.php?user_id=%s'
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo '</a></strong><br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="user-edit.php?user_id=', esc_attr( $rows[$i][$c] ), '">Edit</a>
+										<a href="', $row_action_url, '">Edit</a>
 									</span>';
 						foreach ( $rowactions as $action ) {
-							$span_class = $action[0] == 'remove' ? 'delete' : 'edit';
+							$span_class = ( $action[0] == 'remove' ) ? 'delete' : 'edit';
+							$row_action_url = sprintf( '?page=%s&amp;action=%s&amp;item_id=%s'
+														, esc_attr( $page )
+														, esc_attr( $action[0] )
+														, esc_attr( $rows[$i][$c] )
+												);
+							$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 							echo '<span class="', $span_class, '">
-									| <a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a>
+									| <a href="', $row_action_url, '">', $action[1], '</a>
 								</span>';
 						}
 						echo "</div>";

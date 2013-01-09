@@ -18,7 +18,7 @@ class Football_Pool_Stadiums {
 		while ( $stadium = array_shift( $stadiums ) ) {
 			$output .= sprintf( '<li><a href="%s">%s</a></li>'
 								, add_query_arg( array( 'stadium' => $stadium->id ) )
-								, htmlentities( $stadium->name ) 
+								, htmlentities( $stadium->name, null, 'UTF-8' )
 						);
 		}
 		return $output;

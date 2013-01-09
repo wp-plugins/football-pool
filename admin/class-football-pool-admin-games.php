@@ -18,6 +18,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'upload_csv':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$uploaded_file = self::upload_csv();
 				if ( Football_Pool_Utils::post_int( 'csv_import' ) == 1 ) {
 					$file = $uploaded_file;
@@ -25,6 +26,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				}
 			case 'import_csv':
 			case 'import_csv_overwrite':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$log = self::import_csv( $action, $file );
 			case 'change-culture':
 			case 'schedule':
@@ -34,9 +36,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			case 'update':
 			case 'update_single_match':
 			case 'update_single_match_close':
+				if ( $action != 'edit' ) {
+					check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
+				}
 				self::edit_handler( $item_id, $action );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$success = self::delete( $item_id );
 				if ( $success )
 					self::notice( sprintf( __( 'Game %d deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
@@ -530,7 +536,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function print_matches( $rows ) {
-		$datetitle = '';
+		$date_title = '';
 		$matchtype = '';
 		
 		if ( ! is_array( $rows ) || count( $rows ) == 0 ) {
@@ -546,12 +552,18 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
-			if ( $datetitle != $localdate->format( 'd M Y' ) ) {
-				$datetitle = $localdate->format( 'd M Y' );
+			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
+											, $localdate->getTimestamp() );
+			if ( $date_title != $localdate_formatted ) {
+				$date_title = $localdate_formatted;
+				// Translators: this is a date format string (see http://php.net/date)
+				$localdate_tooltip = date_i18n( __( 'd M Y, H:i', FOOTBALLPOOL_TEXT_DOMAIN )
+												, $localdate->getTimestamp() );
 				echo '<tr><td class="sidebar-name"></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
-						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $localdate->format( 'd M Y, H:i' ), '">', $datetitle, '</span></td>',
+						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $localdate_tooltip, '">', $date_title, '</span></td>',
 						'</tr>';
 			}
 			

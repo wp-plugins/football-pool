@@ -195,13 +195,12 @@ class Football_Pool_Statistics_Page {
 						$chart->JS_options[] = 'options.yAxis.showFirstLabel = false';
 						$output .= $chart->draw();
 
-						//$output .= '<h2 id="c3">Stand van ' . $userInfo['name'] . ' in de pool (alle deelnemers)</h2>';
 						// chart 3: position of the players in the pool
 						$raw_data = $chart_data->ranking_per_match_line_chart_data( $users );
 						$chart = new Football_Pool_Chart( 'chart3', 'line', 720, 500 );
 						$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 						$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
-						/// The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
+						// Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
 						$ordinal_suffixes = __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN );
 						$chart->options[] = "tooltip: {
 												shared: true, crosshairs: true,

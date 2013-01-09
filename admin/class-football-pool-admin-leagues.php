@@ -15,10 +15,11 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				// new or updated league
 				$league_id = self::update( $league_id );
 				self::notice( __("League saved.", FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str('submit') == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str('submit') == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -26,6 +27,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 				self::edit( $league_id );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $league_id > 0 ) {
 					self::delete( $league_id );
 					self::notice( sprintf( __("League id:%s deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), $league_id ) );

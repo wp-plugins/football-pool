@@ -12,13 +12,18 @@ class Football_Pool_Pool_Page {
 		
 		if ( $current_user->ID != 0 && $user_is_player 
 									&& Football_Pool_Utils::post_string( '_action' ) == 'update' ) {
-			$success = $this->update_predictions( $current_user->ID );
-			
+			$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_BLOG );
+			$success = ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_BLOG ) !== false );
 			if ( $success ) {
-				$msg = sprintf( '<p style="errormessage">%s</p>', __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$success = $this->update_predictions( $current_user->ID );
+			}
+			if ( $success ) {
+				$msg = sprintf( '<p style="errormessage">%s</p>'
+								, __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 			} else {
-				$msg = sprintf( '<p style="error">%s</p>',
-							__( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
+				$msg = sprintf( '<p style="error">%s</p>'
+								, __( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 			}
 		}
@@ -42,6 +47,7 @@ class Football_Pool_Pool_Page {
 			
 			// the matches
 			$output .= sprintf( '<form id="predictionform" action="%s" method="post">', get_page_link() );
+			$output .= wp_nonce_field( FOOTBALLPOOL_NONCE_BLOG, FOOTBALLPOOL_NONCE_FIELD_BLOG, true, false );
 			$output .= $matches->print_matches_for_input( $result );
 			$joker = $matches->joker_value;
 			$output .= $this->save_button();
@@ -57,7 +63,8 @@ class Football_Pool_Pool_Page {
 			}
 			
 			$output .= sprintf( '<input type="hidden" id="_joker" name="_joker" value="%d" />', $joker );
-			$output .= '<input type="hidden" id="_action" name="_action" value="update" /></form>';
+			$output .= '<input type="hidden" id="_action" name="_action" value="update" />';
+			$output .= '</form>';
 		} else {
 			$output .= '<p>';
 			$output .= sprintf( __( 'You have to be a registered user and <a href="%s">logged in</a> to play in this pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 

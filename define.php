@@ -41,5 +41,10 @@ define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );
 
 // nonces
 define( 'FOOTBALLPOOL_NONCE_CSV', 'football-pool-csv-download' );
-define( 'FOOTBALLPOOL_NONCE', 'football-pool-other' );
+define( 'FOOTBALLPOOL_NONCE_ADMIN', 'football-pool-admin' );
+define( 'FOOTBALLPOOL_NONCE_BLOG', 'football-pool-blog' );
+define( 'FOOTBALLPOOL_NONCE_FIELD_BLOG', '_footballpool_wpnonce' );
+define( 'FOOTBALLPOOL_NONCE_SHOUTBOX', 'football-pool-shoutbox' );
+define( 'FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX', '_footballpool_shoutbox_wpnonce' );
+
 ?>

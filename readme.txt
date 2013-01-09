@@ -145,6 +145,8 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * All dates in the front-end are localized using date_i18n().
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: description text of widgets was not correct in the WordPress admin.
+* Bug fix: when using the plugin in a different language the 'Save & Close' buttons did not work correctly in the admin.
+* Bug fix: stadium names with special chars (like Ã) did not work correctly in PHP version below 5.4 (thanks angelpubli).
 
 = 2.1.3 =
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.

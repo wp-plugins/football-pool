@@ -27,10 +27,10 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/stadiums/';
 		}
 		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />'
-						, $path
-						, $this->photo
-						, htmlentities( $this->name )
-						, htmlentities( $this->name )
+						, esc_attr( $path )
+						, esc_attr( $this->photo )
+						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
 					);
 	}
 	

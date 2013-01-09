@@ -71,7 +71,7 @@ class Football_Pool_Groups {
 		
 		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
-			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'] );
+			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'], null, 'UTF-8' );
 		}
 		
 		return $group_names;

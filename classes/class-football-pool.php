@@ -230,7 +230,7 @@ class Football_Pool {
 			wp_enqueue_script( "jquery" );
 		}
 		
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			if ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 ) {
 				//highcharts
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;

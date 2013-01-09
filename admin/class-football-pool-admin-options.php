@@ -29,6 +29,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		// check if offset-dropdowns must be shown
 		
 		if ( $action == 'update' ) {
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			// in case of a save action
 			$offset_switch = ( Football_Pool_Utils::post_int( 'match_time_display' ) !== 2 );			
 		} else {
@@ -185,12 +186,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
 		if ( Football_Pool_Utils::post_string( 'recalculate' ) == 'Recalculate Scores' ) {
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			$success = self::update_score_history();
 			if ( $success )
 				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			else
 				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
 		} elseif ( $action == 'update' ) {
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			foreach ( $options as $option ) {
 				if ( is_array( $option[0] ) ) {
 					$value_type = $option[0][1];

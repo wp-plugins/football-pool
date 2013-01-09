@@ -9,7 +9,7 @@ class Football_Pool_Stadiums_Page {
 		$stadium = $stadiums->get_stadium_by_id( $stadium_id );
 		if ( is_object( $stadium ) ) {
 			// show details for stadium
-			$output .= sprintf( '<h1>%s</h1>', htmlentities( $stadium->name ) );
+			$output .= sprintf( '<h1>%s</h1>', htmlentities( $stadium->name, null, 'UTF-8' ) );
 			
 			if ( $stadium->comments != '' ) {
 				$output .= sprintf( '<p class="stadium bio">%s</p>', nl2br( $stadium->comments ) );
@@ -21,7 +21,7 @@ class Football_Pool_Stadiums_Page {
 			$plays = $stadium->get_plays();
 			if ( count( $plays ) > 0 ) {
 				$matches = new Football_Pool_Matches;
-				$output .= $matches->print_matches($plays);
+				$output .= $matches->print_matches( $plays );
 				$output .= sprintf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			
@@ -34,7 +34,7 @@ class Football_Pool_Stadiums_Page {
 			// show all stadiums
 			$output .= '<p><ol class="stadiumlist">';
 			$all_stadiums = $stadiums->get_stadiums();
-			$output .= $stadiums->print_lines($all_stadiums);
+			$output .= $stadiums->print_lines( $all_stadiums );
 			$output .= '</ol></p>';
 		}
 		
