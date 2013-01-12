@@ -127,10 +127,16 @@ abstract class Football_Pool_Widget extends WP_Widget {
 		if ( $do_wrapper ) 
 			echo $args['before_widget'];
 		
-		$this->html( $title, $args, $instance );
-			
+		$this->widget_html( $title, $args, $instance );
+		
 		if ( $do_wrapper ) 
 			echo $args['after_widget'];
+	}
+	
+	public function widget_html( $title, $args, $instance ) {
+		echo '<div class="football-pool-widget">';
+		$this->html( $title, $args, $instance );
+		echo '</div>';
 	}
 	
 	/**

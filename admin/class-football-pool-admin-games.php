@@ -588,7 +588,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		echo '</table>';
 	}
 	
-	private function show_input( $name, $value, $max_length = 2, $class = 'score' ) {
+	private function show_input( $name, $value, $max_length = 3, $class = 'score' ) {
 		return sprintf( '<input type="text" name="%s" value="%s" maxlength="%s" class="%s" />', 
 						$name, $value, $max_length, $class );
 	}

@@ -108,7 +108,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		if ( $do_wrapper ) 
 			echo $args['before_widget'];
 		
-		$this->html( $title, $args, $instance );
+		$this->widget_html( $title, $args, $instance );
 			
 		if ( $do_wrapper ) 
 			echo $args['after_widget'];

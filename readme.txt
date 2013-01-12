@@ -1,9 +1,9 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 2.1.3
+Stable tag: 2.2.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy football pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -123,6 +123,9 @@ The Football Pool plugin is available in the following languages:
 
 == Upgrade Notice ==
 
+= 2.2.0 =
+Plugin styling of widgets has changed to be a little less 'dominant' over the styling of your theme.
+
 = 2.1.3 =
 Highcharts API is moved to a directory outside the plugin's directory so future upgrading won't break your site.
 
@@ -138,11 +141,13 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.2.0 =
+* Important: styling of the widgets has changed. They contained too much general styles that could conflict with a theme.
 * New feature: user defined rankings (ranking for a defined group of matches).
+* New feature: the possibility to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
 * New shortcode to support the user defined rankings.
 * New shortcode to show prediction form for a group of matches or bonus questions.
-* Added nonces to all forms on blog pages and admin pages.
 * All dates in the front-end are localized using date_i18n().
+* All plugin options are now stored in an array in the wp_options table.
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: description text of widgets was not correct in the WordPress admin.
 * Bug fix: when using the plugin in a different language the 'Save & Close' buttons did not work correctly in the admin.

@@ -21,12 +21,21 @@ class Football_Pool_Utils {
 		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
 	}
 	
-	public function get_fp_option( $key, $default = '', $type = 'text' ) {
-		return self::get_wp_option( 'footballpool_' . $key, $default, $type = 'text' );
+	public function set_fp_option( $key, $value ) {
+		self::update_fp_option( $key, $value );
 	}
 	
-	public function get_wp_option( $key, $default = '', $type = 'text' ) {
-		$value = get_option( $key, $default );
+	public function update_fp_option( $key, $value, $overwrite = 'overwrite' ) {
+		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
+		if ( ! isset( $options[$key] ) || ( isset( $options[$key] ) && $overwrite == 'overwrite' ) ) {
+			$options[$key] = $value;
+			update_option( FOOTBALLPOOL_OPTIONS, $options );
+		}
+	}
+	
+	public function get_fp_option( $key, $default = '', $type = 'text' ) {
+		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
+		$value = isset( $options[$key] ) ? $options[$key] : $default;
 		if ( $type == 'int' || $type == 'integer' ) {
 			if ( ! is_numeric( $value ) ) $value = $default;
 		}

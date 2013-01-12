@@ -7,6 +7,8 @@ class Football_Pool_Matches {
 	private $force_lock_time = false;
 	private $lock;
 	public $matches;
+	public $always_show_predictions = 0;
+	private $use_spin_controls = true;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -23,6 +25,10 @@ class Football_Pool_Matches {
 		} else {
 			$this->lock = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 		}
+		// override hiding of predictions for editable matches?
+		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
+		// HTML5 number inputs?
+		$this->use_spin_controls = ( Football_Pool_Utils::get_fp_option( 'use_spin_controls', 'int', 1 ) == 1 );
 		
 		// cache match info
 		$this->matches = $this->match_info();
@@ -218,14 +224,21 @@ class Football_Pool_Matches {
 	 * only the value is shown.
 	 * The property matches_are_editable is used for the users page. It prevents the display of inputs
 	 * and it prevents the display of games that are still editable. The latter to make sure users do 
-	 * not copy results from each other.
+	 * not copy results from each other. This may be overridden with the always_show_predictions option.
 	 */
 	public function show_pool_input( $name, $value, $ts ) {
 		if ( $this->match_is_editable( $ts ) ) {
 			if ( $this->matches_are_editable ) {
-				return '<input type="number" name="' . $name . '" value="' . $value . '" maxlength="2" class="prediction" />';
+				if ( $this->use_spin_controls ) {
+					$control = 'type="number" min="0" max="999"';
+				} else {
+					$control = 'type="text" maxlength="3"';
+				}
+				return sprintf( '<input %s name="%s" value="%s" class="prediction" />'
+								, $control, $name, $value
+						);
 			} else {
-				return '';
+				return ( $this->always_show_predictions == 1 ? $value : '' );
 			}
 		} else {
 			return $value;
@@ -440,7 +453,7 @@ class Football_Pool_Matches {
 	
 	private function show_users_link( $match, $ts ) {
 		$output = '';
-		if ( ! $this->match_is_editable( $ts ) ) {
+		if ( $this->always_show_predictions || ! $this->match_is_editable( $ts ) ) {
 			$title = __( 'view other users predictions', FOOTBALLPOOL_TEXT_DOMAIN );
 			$output .= sprintf( '<a href="%s" title="%s">'
 							, esc_url(

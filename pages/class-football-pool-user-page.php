@@ -23,15 +23,18 @@ class Football_Pool_User_Page {
 				$output .= '</div>';
 			}
 
+			$matches = new Football_Pool_Matches;
+			$matches->disable_edits();
+
 			$output .= sprintf( '<p>%s <span class="username">%s</span>.</p>',
 								__( 'Below are all the predictions for', FOOTBALLPOOL_TEXT_DOMAIN ),
 								$user->display_name
 								);
-			$output .= sprintf( '<p>%s</p>',
-								__( 'Only matches and bonus questions that can\'t be changed are shown here.', FOOTBALLPOOL_TEXT_DOMAIN )
-								);
-			$matches = new Football_Pool_Matches;
-			$matches->disable_edits();
+			if ( ! $matches->always_show_predictions ) {
+				$output .= sprintf( '<p>%s</p>',
+									__( 'Only matches and bonus questions that can\'t be changed are shown here.', FOOTBALLPOOL_TEXT_DOMAIN )
+									);
+			}
 			
 			$result = $matches->get_match_info_for_user( $user_ID );
 			

@@ -55,18 +55,19 @@ class Football_Pool_Statistics {
 	public function show_match_info( $info ) {
 		$output = '';
 		$this->stats_visible = false;
+		$matches = new Football_Pool_Matches;
 		
 		if ( count( $info ) > 0 ) {
-			if ( $info['match_is_editable'] == true ) {
-				$output .= sprintf('<h1>%s - %s</h1>', $info['home_team'], $info['away_team']);
-				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			} else {
+			if ( $matches->always_show_predictions || $info['match_is_editable'] == false ) {
 				$output .= sprintf( '<h2>%s - %s', $info['home_team'], $info['away_team'] );
 				if ( $info['home_score'] != '' && $info['away_score'] != '' ) {
 					$output .= sprintf( ' (%d - %d)', $info['home_score'], $info['away_score'] );
 				}
 				$output .= '</h2>';
 				$this->stats_visible = true;
+			} else {
+				$output .= sprintf('<h2>%s - %s</h2>', $info['home_team'], $info['away_team']);
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );

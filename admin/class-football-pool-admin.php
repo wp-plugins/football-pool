@@ -162,7 +162,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function set_value( $key, $value, $type = 'text' ) {
-		update_option( 'footballpool_' . $key, $value );
+		Football_Pool_Utils::update_fp_option( $key, $value );
 	}
 	
 	// use type 'updated' for yellow message and type 'error' or 'important' for the red one

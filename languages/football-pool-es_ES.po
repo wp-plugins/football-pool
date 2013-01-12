@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Football pool 2.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/football-pool\n"
 "POT-Creation-Date: 2013-01-08 22:21:11+00:00\n"
-"PO-Revision-Date: 2013-01-08 23:22+0100\n"
+"PO-Revision-Date: 2013-01-10 20:50+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Cristian Carlucci\n"
 "Language: es_ES\n"
@@ -1824,7 +1824,7 @@ msgstr "Sin puntaje"
 #: classes/class-football-pool-chart-data.php:234
 #: pages/class-football-pool-statistics-page.php:138
 msgid "just the goal bonus"
-msgstr "Puntaje adicional por adivinar la cantidad de goles de un equipo"
+msgstr "Puntaje por gol"
 
 #: classes/class-football-pool-chart-data.php:241
 #: pages/class-football-pool-statistics-page.php:180

@@ -11,6 +11,7 @@ if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 }
 
 define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
+define( 'FOOTBALLPOOL_OPTIONS', 'footballpool_plugin_options' );
 
 define( 'FOOTBALLPOOL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOTBALLPOOL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

@@ -195,7 +195,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		$pool = new Football_Pool_Pool();
 		$has_leagues = $pool->has_leagues;
-		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
+		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
 		
 		$users = get_users();
 		foreach ( $users as $user ) {
@@ -252,7 +252,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
-			$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
+			$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
 			// if user is in a non-existing league, then force the update

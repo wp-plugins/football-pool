@@ -175,13 +175,18 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'',
 								$offset_switch,
 							),
-						'no_tinymce' => 
-							array( 'checkbox', __( 'Don\'t use shortcode button in visual editor', FOOTBALLPOOL_TEXT_DOMAIN ), 'no_tinymce', __( 'The plugin can add a button to the visual editor of WordPress. With this option enabled this button will not be included (check if the button is causing problems).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'add_tinymce_button' => 
+							array( 'checkbox', __( 'Use shortcode button in visual editor', FOOTBALLPOOL_TEXT_DOMAIN ), 'add_tinymce_button', __( 'The plugin can add a button to the visual editor of WordPress. With this option disabled this button will not be included (uncheck if the button is causing problems).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'always_show_predictions' => 
+							array( 'checkbox', __( 'Always show predictions', FOOTBALLPOOL_TEXT_DOMAIN ), 'always_show_predictions', __( 'Normally match predictions are only shown to other players after a prediction can\'t be changed anymore. With this option enabled the predictions are visible to anyone, anytime. Works only for matches, not bonus questions.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'use_spin_controls' => 
+							array( 'checkbox', __( 'Use HTML5 number inputs', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_spin_controls', __( 'Make use of HTML5 number inputs for the prediction form. Some browsers display these as spin controls.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
-		$donate = '<div class="donate">' 
-				. __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
-				. self::donate_button( 'return' ) . '</div>';
+		$donate = sprintf( '<div class="donate">%s%s</div>'
+							, __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
+							, self::donate_button( 'return' )
+					);
 		
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
@@ -231,7 +236,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['matches_locktime'],
 									$options['stop_time_method_questions'],
 									$options['bonus_question_locktime'],
-								) 
+									$options['always_show_predictions'],
+								)
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
@@ -251,6 +257,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['use_spin_controls'],
 									$options['match_time_display'],
 									$options['match_time_offset'],
 									$options['show_team_link'],
@@ -268,7 +275,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_favicon'],
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
-									$options['no_tinymce'], 
+									$options['add_tinymce_button'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );
