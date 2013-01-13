@@ -41,13 +41,18 @@ class Football_Pool {
 		
 		$matches = new Football_Pool_Matches();
 		$first_match = $matches->get_first_match_info();
-		$date = date( 'j F', $first_match['match_timestamp'] );
+		$matchdate = new DateTime( $first_match['playDate'] );
+		$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+		$localdate = new DateTime( $matches->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+		// Translators: this is a date format string (see http://php.net/date)
+		$localdate_formatted = date_i18n( __( 'j F', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $localdate->getTimestamp() );
 		
 		$options = array();
 		$options['webmaster'] = $current_user->user_email;
 		$options['money'] = '5 euro';
 		$options['bank'] = $current_user->user_login;
-		$options['start'] = $date;
+		$options['start'] = $localdate_formatted;
 		$options['fullpoints'] = FOOTBALLPOOL_FULLPOINTS;
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
@@ -123,7 +128,7 @@ class Football_Pool {
 					}
 				}
 				// change behaviour of tinymce option
-				$options['add_tinymce_button'] = (int) get_option( 'footballpool_no_tinymce', 1 );
+				$options['add_tinymce_button'] = ( (int) get_option( 'footballpool_no_tinymce', 1 ) == 1 ) ? 0 : 1;
 				delete_option( 'footballpool_no_tinymce' );
 				delete_option( 'footballpool_db_version' );
 				update_option( FOOTBALLPOOL_OPTIONS, $options );
