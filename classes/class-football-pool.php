@@ -39,20 +39,21 @@ class Football_Pool {
 		global $current_user;
 		get_currentuserinfo();
 		
-		$matches = new Football_Pool_Matches();
-		$first_match = $matches->get_first_match_info();
-		$matchdate = new DateTime( $first_match['playDate'] );
-		$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
-		$localdate = new DateTime( $matches->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+		// $matches = new Football_Pool_Matches();
+		// $first_match = $matches->get_first_match_info();
+		// $matchdate = new DateTime( $first_match['playDate'] );
+		// $date = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+		// $date = new DateTime( $matches->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+		$date = new DateTime();
 		// Translators: this is a date format string (see http://php.net/date)
-		$localdate_formatted = date_i18n( __( 'j F', FOOTBALLPOOL_TEXT_DOMAIN )
-										, $localdate->getTimestamp() );
+		$date_formatted = date_i18n( __( 'j F', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $date->getTimestamp() );
 		
 		$options = array();
 		$options['webmaster'] = $current_user->user_email;
 		$options['money'] = '5 euro';
 		$options['bank'] = $current_user->user_login;
-		$options['start'] = $localdate_formatted;
+		$options['start'] = $date_formatted;
 		$options['fullpoints'] = FOOTBALLPOOL_FULLPOINTS;
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
@@ -98,6 +99,7 @@ class Football_Pool {
 					( '" . __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0 );";
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
+			/** UPDATES FROM PREVIOUS VERSIONS **/
 			if ( ! self::is_at_least_version( '2.0.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
 				self::db_actions( $update_sql );
@@ -133,6 +135,7 @@ class Football_Pool {
 				delete_option( 'footballpool_db_version' );
 				update_option( FOOTBALLPOOL_OPTIONS, $options );
 			}
+			/** END UPDATES **/
 		}
 		
 		// all database installs and updates are finished, so update the db version value
@@ -142,13 +145,13 @@ class Football_Pool {
 		$locale = self::get_locale();
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		
-		// first check for a translated text in the languages folder of WP
-		$file = WP_LANG_DIR . '/' . $domain . "/rules-page-content-{$locale}.txt";
+		// first look for a translated text in the languages folder of WP
+		$file = WP_LANG_DIR . "/{$domain}/rules-page-content-{$locale}.txt";
 		if ( ! file_exists( $file ) ) {
 			// if no file found, then check the plugin's languages folder
 			$file = FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt";
 			if ( ! file_exists( $file ) ) {
-				// no translation available, revert to default text
+				// no translation available, revert to default English text
 				$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
 			}
 		}
@@ -195,14 +198,13 @@ class Football_Pool {
 		$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );
 		self::db_actions( $uninstall_sql );
 		
-		// delete plugin options
-		delete_option( FOOTBALLPOOL_OPTIONS );
-		
 		// delete pages
 		foreach ( self::$pages as $page ) {
 			wp_delete_post( Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ), true );
-			delete_option( 'footballpool_page_id_' . $page['slug'] );
 		}
+		
+		// delete plugin options
+		delete_option( FOOTBALLPOOL_OPTIONS );
 		
 		// delete custom user meta
 		$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'footballpool%'" );
@@ -545,8 +547,8 @@ class Football_Pool {
 		}
 	}
 	
-	private function create_page( $page, $menuOrder = null ) {
-		if ( ! Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ) ) {
+	private function create_page( $page, $menu_order = null ) {
+		if ( ! Football_Pool_Utils::get_fp_option( "page_id_{$page['slug']}", false ) ) {
 			global $current_user;
 			
 			$newpage = array();
@@ -556,11 +558,11 @@ class Football_Pool {
 			$newpage['post_status'] = 'publish';
 			$newpage['post_type'] = 'page';
 			$newpage['post_author'] = $current_user->ID;
-			if ( isset( $menuOrder ) ) {
-				$newpage['menu_order'] = $menuOrder;
+			if ( isset( $menu_order ) ) {
+				$newpage['menu_order'] = $menu_order;
 			}
 			if ( isset( $page['parent'] ) ) {
-				$parent_ID = (int) Football_Pool_Utils::get_fp_option('page_id_' . $page['parent'] );
+				$parent_ID = (int) Football_Pool_Utils::get_fp_option( "page_id_{$page['parent']}" );
 				if ( $parent_ID ) {
 					$newpage['post_parent'] = $parent_ID;
 				}
@@ -570,7 +572,7 @@ class Football_Pool {
 			}
 			$page_ID = wp_insert_post( $newpage );
 			
-			add_option( 'footballpool_page_id_' . $page['slug'], $page_ID );
+			Football_Pool_Utils::update_fp_option( "page_id_{$page['slug']}", $page_ID );
 			return $page_ID;
 		}
 	}

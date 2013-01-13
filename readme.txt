@@ -141,13 +141,13 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.2.0 =
-* Important: styling of the widgets has changed. They contained too much general styles that could conflict with a theme.
+* Important: styling of the widgets has changed. They contained styles that could conflict with the styling of other widgets.
 * New feature: user defined rankings (ranking for a defined group of matches).
 * New feature: the possibility to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
 * New shortcode to support the user defined rankings.
 * New shortcode to show prediction form for a group of matches or bonus questions.
 * All dates in the front-end are localized using date_i18n().
-* Plugin options are stored in an array in the wp_options table.
+* Plugin options are stored in a single array in the wp_options table.
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: description text of widgets was not correct in the WordPress admin.
 * Bug fix: when using the plugin in a different language the 'Save & Close' buttons did not work correctly in the admin.
