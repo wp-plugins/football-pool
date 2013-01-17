@@ -85,10 +85,7 @@ class Football_Pool_Statistics {
 								, __( 'Bonus question', FOOTBALLPOOL_TEXT_DOMAIN )
 								, $info['question'] 
 						);
-			if ( $info['bonus_is_editable'] == true ) {
-				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				$this->stats_visible = false;
-			} else {
+			if ( $pool->always_show_predictions || $info['bonus_is_editable'] == false ) {
 				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
 									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['answer'],
@@ -96,6 +93,9 @@ class Football_Pool_Statistics {
 									$info['points']
 								);
 				$this->stats_visible = true;
+			} else {
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$this->stats_visible = false;
 			}
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -172,7 +172,7 @@ class Football_Pool_Statistics {
 									$row['awayScore']
 							);
 				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
-									( $row['hasJoker'] == 1 ? 'joker' : 'nojoker' ) );
+									( $row['hasJoker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
 				$score = $pool->calc_score(
 									$match_info['home_score'], 
 									$match_info['away_score'], 

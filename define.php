@@ -26,8 +26,12 @@ define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . 'error_log.txt' );
 define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
 define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 
+// scorehistory
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
+define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
+define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
 
+// matches and scores
 define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
 define( 'FOOTBALLPOOL_FULLPOINTS',   5 ); // 3
 define( 'FOOTBALLPOOL_TOTOPOINTS',   2 ); // 2
@@ -47,5 +51,4 @@ define( 'FOOTBALLPOOL_NONCE_BLOG', 'football-pool-blog' );
 define( 'FOOTBALLPOOL_NONCE_FIELD_BLOG', '_footballpool_wpnonce' );
 define( 'FOOTBALLPOOL_NONCE_SHOUTBOX', 'football-pool-shoutbox' );
 define( 'FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX', '_footballpool_shoutbox_wpnonce' );
-
 ?>

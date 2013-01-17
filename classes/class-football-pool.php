@@ -95,11 +95,14 @@ class Football_Pool {
 					( '" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png' ),
 					( '" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '' );";
 			$wpdb->query( $sql );
-			$sql = "INSERT INTO `{$prefix}rankings` ( `name`, `user_defined` ) VALUES
-					( '" . __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0 );";
+			$sql = $wpdb->prepare( "INSERT INTO `{$prefix}rankings` ( `id`, `name`, `user_defined` ) 
+									VALUES ( %d, %s, 0 );"
+									, FOOTBALLPOOL_RANKING_DEFAULT
+									, __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
 			$wpdb->query( $sql );
 		} elseif ( $action == 'update' ) {
-			/** UPDATES FROM PREVIOUS VERSIONS **/
+			/** UPDATES FOR PREVIOUS VERSIONS **/
 			if ( ! self::is_at_least_version( '2.0.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update.txt' ) );
 				self::db_actions( $update_sql );
@@ -116,6 +119,11 @@ class Football_Pool {
 			}
 			if ( ! self::is_at_least_version( '2.2.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.2.0.txt' ) );
+				self::db_actions( $update_sql );
+				$update_sql = sprintf( "UPDATE {$prefix}scorehistory SET ranking_id = %d 
+										WHERE ranking_id IS NULL"
+										, FOOTBALLPOOL_RANKING_DEFAULT
+								);
 				self::db_actions( $update_sql );
 				// update plugin options to new format
 				foreach ( self::$pages as $page ) {
@@ -445,11 +453,11 @@ class Football_Pool {
 		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
 		
 		// Backup and delete our new dashbaord widget from the end of the array
-		$widget_backup = array('fp_dashboard_widget' => $normal_dashboard['fp_dashboard_widget']);
-		unset($normal_dashboard['fp_dashboard_widget']);
+		$widget_backup = array( 'fp_dashboard_widget' => $normal_dashboard['fp_dashboard_widget'] );
+		unset( $normal_dashboard['fp_dashboard_widget'] );
 
 		// Merge the two arrays together so our widget is at the beginning
-		$sorted_dashboard = array_merge($widget_backup, $normal_dashboard);
+		$sorted_dashboard = array_merge( $widget_backup, $normal_dashboard );
 
 		// Save the sorted array back into the original metaboxes 
 		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;	

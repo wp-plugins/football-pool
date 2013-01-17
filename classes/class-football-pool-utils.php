@@ -1,6 +1,48 @@
 <?php
 class Football_Pool_Utils {
-
+	// extract ids from a string ("x", "x-z", "x,y,z").
+	// only integers are returned
+	public function extract_ids( $input ) {
+		// remove all spaces and tabs
+		$replace = array( ' ', "\t" );
+		$replace_with = array( '', '' );
+		$input = str_replace( $replace, $replace_with, $input );
+		$ids = array();
+		// split for single numbers
+		$input = explode( ',', $input );
+		foreach ( $input as $part ) {
+			// split in case of ranges
+			$range = explode( '-', $part );
+			if ( count( $range ) == 2 ) {
+				// a range: lower-upper
+				$lower = (int) $range[0];
+				$upper = (int) $range[1];
+				// always include lower limit
+				$ids[] = $lower++;
+				while ( $lower <= $upper ) {
+					$ids[] = $lower++;
+				}
+			} else {
+				// single number
+				$ids[] = (int) $range[0];
+			}
+			// other cases are ignored, e.g. x--y
+		}
+		
+		return $ids;
+	}
+	
+	// returns an int and stores the value+1 in the WP cache
+	public function get_counter_value( $cache_key ) {
+		$id = wp_cache_get( $cache_key );
+		if ( $id === false ) {
+			$id = 1;
+		}
+		wp_cache_set( $cache_key, $id + 1 );
+		
+		return $id;
+	}
+	
 	// accepts a date in Y-m-d H:i format and changes it to UTC
 	public function gmt_from_date( $date_string ) {
 		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';

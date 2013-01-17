@@ -2,10 +2,12 @@
 class Football_Pool_Pool {
 	public $leagues;
 	public $has_bonus_questions = false;
+	public $has_matches = false;
 	public $has_leagues;
 	public $force_lock_time = false;
 	private $lock_timestamp;
 	private $lock_datestring;
+	public $always_show_predictions = 0;
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
@@ -22,6 +24,12 @@ class Football_Pool_Pool {
 		} else {
 			$this->lock_timestamp = 0; // bonus questions have no time threshold
 		}
+		
+		// override hiding of predictions for editable questions?
+		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
+		
+		$matches = new Football_Pool_Matches;
+		$this->has_matches = $matches->has_matches;
 	}
 	
 	private function is_toto_result($home, $away, $user_home, $user_away ) {
@@ -347,11 +355,16 @@ class Football_Pool_Pool {
 		$wpdb->query( $sql );
 	}
 	
-	public function get_bonus_questions_for_user( $user_id = 0 ) {
+	public function get_bonus_questions_for_user( $user_id = 0, $question_ids = array() ) {
 		if ( $user_id == 0 ) return false;
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$ids = '';
+		if ( is_array( $question_ids ) && count( $question_ids ) > 0 ) {
+			$ids = ' AND q.id IN ( ' . implode( ',', $question_ids ) . ' ) ';
+		}
 		// also include user answers
 		$sql = $wpdb->prepare( "SELECT 
 									q.id, q.question, a.answer, 
@@ -363,7 +376,7 @@ class Football_Pool_Pool {
 									qt.type, qt.options, qt.image, qt.max_answers
 								FROM {$prefix}bonusquestions q 
 								INNER JOIN {$prefix}bonusquestions_type qt
-									ON ( q.id = qt.question_id )
+									ON ( q.id = qt.question_id {$ids})
 								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
 									ON ( a.questionId = q.id AND a.userId = %d )
 								ORDER BY q.answerBeforeDate ASC",
@@ -373,8 +386,9 @@ class Football_Pool_Pool {
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		$questions = array();
 		
-		if ( count( $rows ) > 0 ) {
-			$this->has_bonus_questions = true;
+		$this->has_bonus_questions = ( count( $rows ) > 0 );
+		
+		if ( $this->has_bonus_questions ) {
 			$i = 0;
 			foreach ( $rows as $row ) {
 				$questions[$i] = $row;
@@ -408,7 +422,7 @@ class Football_Pool_Pool {
 					ORDER BY q.answerBeforeDate ASC";
 		
 			$rows = $wpdb->get_results( $sql );
-			if ( count( $rows ) > 0 ) $this->has_bonus_questions = true;
+			$this->has_bonus_questions = ( count( $rows ) > 0 );
 			
 			foreach ( $rows as $row ) {
 				$i = $row->id;
@@ -443,7 +457,7 @@ class Football_Pool_Pool {
 	public function get_bonus_question_info( $id ) {
 		$info = false;
 		$questions = $this->get_bonus_questions();
-		if ( array_key_exists( $id, $questions ) ) {
+		if ( is_array( $questions ) && array_key_exists( $id, $questions ) ) {
 			$info = $questions[$id];
 			$info['bonus_is_editable'] = $this->bonus_is_editable( $info['question_date'] );
 		}
@@ -604,13 +618,221 @@ class Football_Pool_Pool {
 		return $output;
 	}
 	
+	// updates the predictions for a submitted prediction form
+	public function prediction_form_update() {
+		global $current_user;
+		get_currentuserinfo();
+		
+		$user_is_player = $this->user_is_player( $current_user->ID );
+		$msg = '';
+		
+		if ( $current_user->ID != 0 && $user_is_player 
+									&& Football_Pool_Utils::post_string( '_fp_action' ) == 'update' ) {
+			$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_BLOG );
+			$success = ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_BLOG ) !== false );
+			if ( $success ) {
+				$success = $this->update_predictions( $current_user->ID );
+			}
+			if ( $success ) {
+				$msg = sprintf( '<p style="errormessage">%s</p>'
+								, __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+			} else {
+				$msg = sprintf( '<p style="error">%s</p>'
+								, __( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+			}
+		}
+		
+		return $msg;
+	}
+	
+	private function update_bonus_user_answers( $questions, $answers, $user ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		foreach ( $questions as $question ) {
+			if ( $this->bonus_is_editable( $question['question_date'] ) && $answers[ $question['id'] ] != '') {
+				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
+										SET userId = %d,
+											questionId = %d,
+											answer = %s,
+											points = 0",
+										$user, $question['id'], $answers[ $question['id'] ]
+									);
+				$wpdb->query( $sql );
+			}
+		}
+	}
+	
+	private function update_predictions( $user ) {
+		// only allow logged in users and players in the pool to update their predictions
+		if ( $user <= 0 || ! $this->user_is_player( $user ) ) return false;
+		
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+
+		$matches = new Football_Pool_Matches;
+		$joker = 0;
+		
+		// only allow setting of joker if it wasn't used before on a played match
+		$sql = $wpdb->prepare( "SELECT m.playDate AS match_timestamp
+								FROM {$prefix}predictions p, {$prefix}matches m 
+								WHERE p.matchNr = m.nr 
+									AND p.hasJoker = 1 AND p.userId = %d" 
+								, $user
+							);
+		$play_date = $wpdb->get_var( $sql );
+		if ( $play_date ) {
+			$play_date = new DateTime( $play_date );
+			$ts = $play_date->format( 'U' );
+			if ( $matches->match_is_editable( $ts ) ) {
+				$joker = $this->get_joker();
+			}
+		} else {
+			$joker = $this->get_joker();
+		}
+		
+		// get matches
+		$rows = $matches->get_info();
+		
+		// update predictions for all matches
+		foreach ( $rows as $row ) {
+			$match = $row['nr'];
+			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
+			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
+			
+			if ( $matches->match_is_editable( $row['match_timestamp'] ) ) {
+				if ( is_integer( $home ) && is_integer( $away ) ) {
+					$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
+											SET userId = %d, 
+												matchNr = %d, 
+												homeScore = %d, 
+												awayScore = %d, 
+												hasJoker = %d"
+											, $user, $match, $home, $away, ( $joker == $match ? 1 : 0 )
+									);
+				} else {
+					// fix for the multiple-joker-bug
+					$sql = $wpdb->prepare( "UPDATE {$prefix}predictions
+											SET hasJoker = %d
+											WHERE userId = %d AND matchNr = %d"
+											, ( $joker == $match ? 1 : 0 ), $user, $match
+									);
+				}
+				
+				$wpdb->query( $sql );
+			}
+		}
+		
+		// update bonusquestions
+		$questions = $this->get_bonus_questions();
+		if ( $this->has_bonus_questions ) {
+			$answers = array();
+			foreach ( $questions as $question ) {
+				switch ( $question['type'] ) {
+					case 3: // multiple n
+						$user_answers = Football_Pool_Utils::post_string_array( '_bonus_' . $question['id'] );
+						if ( $question['max_answers'] > 0 && count( $user_answers ) > $question['max_answers'] ) {
+							// remove answers from the end of the array
+							// (user is cheating or admin changed the max possible answers)
+							while ( count( $user_answers ) > $question['max_answers'] ) 
+								array_pop( $user_answers );
+						}
+						$answers[ $question['id'] ] = implode( ';', $user_answers );
+						break;
+					case 1: // text
+					case 2: // multiple 1
+					default:
+						$bonus_input = '_bonus_' . $question['id'];
+						$answers[ $question['id'] ] = Football_Pool_Utils::post_string( $bonus_input );
+				}
+				
+				// add user input to answer (for multiple choice questions) if there is some input
+				$user_input = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] . '_userinput' );
+				if ( $user_input != '' )
+					$answers[ $question['id'] ] .= " {$user_input}";
+			}
+			$this->update_bonus_user_answers( $questions, $answers, $user );
+		}
+		
+		return true;
+	}
+	
+	private function get_joker() {
+		return Football_Pool_Utils::post_integer( '_joker' );
+	}
+	
+	// outputs a prediction form for bonus questions.
+	//    wrap:        (optional) if true, wrap the questions in its own form
+	//    start_at_nr: (optional) the bonus question numbering will start at that number
+	public function prediction_form_questions( $questions, $wrap = false, $id = 1, $start_at_nr = 1 ) {
+		$output = '';
+		if ( $this->has_bonus_questions ) {
+			
+			if ( $wrap ) $this->prediction_form_start( $id );
+			
+			$nr = $start_at_nr;
+			foreach ( $questions as $question ) {
+				$output .= $this->print_bonus_question( $question, $nr++ );
+			}
+			
+			if ( count( $questions ) > 0 ) {
+				$output .= $this->save_button();
+			}
+			
+			if ( $wrap ) $this->prediction_form_end( $id );
+		}
+		
+		return $output;
+	}
+	
+	// outputs a prediction form for matches.
+	//    wrap:        (optional) if true, wrap the matches in its own form
+	//    id:          unique form id
+	public function prediction_form_matches( $matches, $wrap = false, $id = 1 ) {
+		$output = '';
+		if ( $this->has_matches ) {
+			
+			if ( $wrap ) $this->prediction_form_start( $id );
+			
+			global $current_user;
+			get_currentuserinfo();
+			
+			$m = new Football_Pool_Matches;
+			$output .= $m->print_matches_for_input( $matches, $id );
+			$joker = $m->joker_value;
+			$output .= sprintf( '<input type="hidden" id="_joker_%d" name="_joker" value="%d" />', $id, $joker );
+			
+			if ( count( $matches ) > 0 ) {
+				$output .= $this->save_button();
+			}
+			
+			if ( $wrap ) $this->prediction_form_end( $id );
+		}
+		
+		return $output;
+	}
+	
+	public function prediction_form_start( $id = 1) {
+		$output = sprintf( '<form id="predictionform-%d" action="%s" method="post">'
+							, $id, get_page_link() 
+					);
+		$output .= wp_nonce_field( FOOTBALLPOOL_NONCE_BLOG, FOOTBALLPOOL_NONCE_FIELD_BLOG, true, false );
+		return $output;
+	}
+	
+	public function prediction_form_end( $id = 1 ) {
+		return sprintf( '<input type="hidden" id="_action_%d" name="_fp_action" value="update" /></form>', $id );
+	}
+	
 	public function print_bonus_question_for_user( $questions ) {
 		$output = '';
 		$nr = 1;
 		$statspage = Football_Pool::get_page_link( 'statistics' );
 		
 		foreach ( $questions as $question ) {
-			if ( ! $this->bonus_is_editable( $question['question_date'] ) ) {
+			if ( $this->always_show_predictions || ! $this->bonus_is_editable( $question['question_date'] ) ) {
 				$output .= '<div class="bonus userview">';
 				$output .= sprintf( '<p class="question"><span class="nr">%d.</span> %s</p>'
 									, $nr++
@@ -680,6 +902,12 @@ class Football_Pool_Pool {
 		$sql = $wpdb->prepare( $sql, $question );
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		return $rows;
+	}
+	
+	private function save_button() {
+		return sprintf( '<div class="buttonblock"><input type="submit" name="_submit" value="%s" /></div>',
+						__( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
+				);
 	}
 }
 ?>

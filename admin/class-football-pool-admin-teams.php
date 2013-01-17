@@ -185,6 +185,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}teams WHERE id = %d", $id );
 		$wpdb->query( $sql );
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 	}
 	
 	private function update_item( $input ) {
@@ -213,6 +214,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$wpdb->query( $sql );
 		
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 
@@ -246,6 +248,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET is_active = %d WHERE id = %d"
 								, $active, $id );
 		$wpdb->query( $sql );
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 	}
 }
 ?>

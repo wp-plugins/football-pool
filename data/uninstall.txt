@@ -13,3 +13,5 @@ DROP TABLE IF EXISTS `{$prefix}stadiums`;
 DROP TABLE IF EXISTS `{$prefix}teams`;
 DROP TABLE IF EXISTS `{$prefix}users`;
 DROP TABLE IF EXISTS `{$prefix}rankings`;
+DROP TABLE IF EXISTS `{$prefix}rankings_matches`;
+DROP TABLE IF EXISTS `{$prefix}rankings_bonusquestions`;

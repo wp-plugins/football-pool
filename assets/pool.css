@@ -22,7 +22,7 @@
 .widget div.football-pool-widget { padding: 0; margin: 0; }
 
 img.flag { width: 18px; height: 18px; border: 0; }
-img.joker { width: 13px;  height: 13px; }
+img.fp-joker { width: 13px;  height: 13px; }
 
 tr.odd { }
 
@@ -40,9 +40,9 @@ table.matchinfo td.time { text-align: left; font-size: .7em; vertical-align: bot
 table.matchinfo td.home { text-align: right; padding-right: .5em; }
 table.matchinfo td.away { text-align: left; padding-left: .5em; }
 table.matchinfo td.score { text-align: center; font-weight: bold; padding: 0 .5em; }
-table.matchinfo td.joker { background-image: url(images/site/ball_over.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
-table.matchinfo td.nojoker { background-image: url(images/site/ball.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
-table.matchinfo td.joker.readonly, table.matchinfo td.nojoker.readonly { cursor: default; }
+table.matchinfo td.fp-joker { background-image: url(images/site/ball_over.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
+table.matchinfo td.fp-nojoker { background-image: url(images/site/ball.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
+table.matchinfo td.fp-joker.readonly, table.matchinfo td.fp-nojoker.readonly { cursor: default; }
 table.matchinfo th { color: #fff; background-color: #330039; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 table.matchinfo th.username { width: 200px; }
 table.statistics  { width: 400px; }

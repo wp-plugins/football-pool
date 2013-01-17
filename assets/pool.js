@@ -7,12 +7,15 @@ jQuery( document ).ready( function() {
 } );
 
 function footballpool_change_joker( id ) {
+	var the_form = jQuery( '#' + id ).closest( 'form' );
 	// set the joker input
-	jQuery( "input[name*='_joker']", "#predictionform" ).val( id.substring( id.indexOf( "_" ) + 1 ) );
+	var joker = id.substring( id.indexOf( '_' ) + 1 );
+	joker = joker.substring( 0, joker.indexOf( '_' ) );
+	jQuery( "input[name*='_joker']", the_form ).val( joker );
 	// remove old joker
-	jQuery( ".joker", "#matchinfo" ).removeClass( "joker" ).addClass( "nojoker" );
+	jQuery( ".fp-joker" ).removeClass( "fp-joker" ).addClass( "fp-nojoker" );
 	// set new joker
-	jQuery( "#" + id ).removeClass( "nojoker" ).addClass( "joker" );
+	jQuery( "#" + id ).removeClass( "fp-nojoker" ).addClass( "fp-joker" );
 }
 
 function footballpool_update_chars( id, chars ) {

@@ -38,7 +38,7 @@ class Football_Pool_User_Page {
 			
 			$result = $matches->get_match_info_for_user( $user_ID );
 			
-			$output .= $matches->print_matches_for_input( $result );
+			$output .= $matches->print_matches_for_input( $result, 1 );
 			
 			$pool = new Football_Pool_Pool;
 			$questions = $pool->get_bonus_questions_for_user( $user_ID );

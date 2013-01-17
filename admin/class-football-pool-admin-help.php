@@ -252,7 +252,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		For each player click the appropiate radiobutton for a right or wrong answer (2). If an answer is considered right you have the possibility to give a different amount of points to that user (3). For example to give extra bonuspoints or to give half the points for an incomplete answer. Leave blank if you want to give the default points for that question.<br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-2.png" alt="screenshot" />
 		</p>
-		<p>Please note that for points for bonus questions to be added to the total points for a player, an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts.</p>
+		<p>Please note that for points for bonus questions to be added to the total points for a player, an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts. If the score date is not set by the admin, then the score date is automatically set to the current time and date upon a save of the user answers.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="teams-groups-and-matches">Teams, groups and matches</h2>

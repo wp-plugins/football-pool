@@ -9,6 +9,7 @@ class Football_Pool_Matches {
 	public $matches;
 	public $always_show_predictions = 0;
 	private $use_spin_controls = true;
+	public $has_matches = false;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -32,6 +33,7 @@ class Football_Pool_Matches {
 		
 		// cache match info
 		$this->matches = $this->match_info();
+		$this->has_matches = ( count( $this->matches ) > 0 );
 	}
 	
 	public function disable_edits() {
@@ -158,9 +160,15 @@ class Football_Pool_Matches {
 			return array();
 	}
 	
-	public function get_match_info_for_user( $user ) {
+	public function get_match_info_for_user( $user, $match_ids = array() ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$ids = '';
+		if ( is_array( $match_ids ) && count( $match_ids ) > 0 ) {
+			$ids = ' AND m.nr IN ( ' . implode( ',', $match_ids ) . ' ) ';
+		}
+		
 		$sql = $wpdb->prepare( "SELECT 
 									m.homeTeamId, m.awayTeamId, 
 									p.homeScore, p.awayScore, 
@@ -168,7 +176,7 @@ class Football_Pool_Matches {
 									m.nr, m.playDate
 								FROM {$prefix}matches m 
 								JOIN {$prefix}matchtypes t 
-									ON ( m.matchtypeId = t.id )
+									ON ( m.matchtypeId = t.id {$ids})
 								LEFT OUTER JOIN {$prefix}predictions p 
 									ON ( p.matchNr = m.nr AND p.userId = %d )
 								WHERE t.visibility = 1
@@ -177,6 +185,17 @@ class Football_Pool_Matches {
 							);
 		
 		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+	
+	public function get_joker_value_for_user( $user ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT matchNr FROM {$prefix}predictions WHERE userId = %d AND hasJoker = 1"
+								, $user );
+		$joker = $wpdb->get_var( $sql );
+		
+		return ( $joker !== false ) ? $joker : null;
 	}
 	
 	public function first_empty_match_for_user( $user ) {
@@ -322,13 +341,13 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	public function print_matches_for_input( $matches ) {
+	public function print_matches_for_input( $matches, $form_id ) {
 		$teams = new Football_Pool_Teams;
 		$date_title = '';
 		$matchtype = '';
 		$joker = '';
 		
-		$output = '<table id="matchinfo" class="matchinfo input" border="1">';
+		$output = sprintf( '<table id="matchinfo-%d" class="matchinfo input" border="1">', $form_id );
 		foreach ( $matches as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
@@ -346,19 +365,19 @@ class Football_Pool_Matches {
 				$output .= sprintf( '<tr><td class="matchdate" colspan="11">%s</td></tr>', $date_title );
 			}
 			
-			if ( (integer) $row['hasJoker'] == 1 ) {
-				$joker = (integer) $row['nr'];
+			if ( (int) $row['hasJoker'] == 1 ) {
+				$joker = (int) $row['nr'];
 			}
 			
-			$info = $this->get_match_info( (integer) $row['nr'] );
+			$info = $this->get_match_info( (int) $row['nr'] );
 			
-			$home_team = isset( $teams->team_names[ (integer) $info['home_team_id'] ] ) ?
-							htmlentities( $teams->team_names[ (integer) $info['home_team_id'] ], null, 'UTF-8' ) :
+			$home_team = isset( $teams->team_names[ (int) $info['home_team_id'] ] ) ?
+							htmlentities( $teams->team_names[ (int) $info['home_team_id'] ], null, 'UTF-8' ) :
 							'';
-			$away_team = isset( $teams->team_names[ (integer) $info['away_team_id'] ] ) ?
-							htmlentities( $teams->team_names[ (integer) $info['away_team_id'] ], null, 'UTF-8' ) :
+			$away_team = isset( $teams->team_names[ (int) $info['away_team_id'] ] ) ?
+							htmlentities( $teams->team_names[ (int) $info['away_team_id'] ], null, 'UTF-8' ) :
 							'';
-			$output .= sprintf( '<tr id="match-%d">
+			$output .= sprintf( '<tr id="match-%d-%d">
 								<td class="time">%s</td>
 								<td class="home">%s</td>
 								<td class="flag">%s</td>
@@ -372,14 +391,16 @@ class Football_Pool_Matches {
 								<td>%s</td>
 								</tr>',
 							$info['nr'],
+							$form_id,
 							$localdate->format( 'H:i' ),
 							$home_team,
-							$teams->flag_image( (integer) $info['home_team_id'] ),
+							$teams->flag_image( (int) $info['home_team_id'] ),
 							$this->show_pool_input( '_home_' . $info['nr'], $row['homeScore'], $info['match_timestamp'] ),
 							$this->show_pool_input( '_away_' . $info['nr'], $row['awayScore'], $info['match_timestamp'] ),
-							$teams->flag_image( (integer) $info['away_team_id'] ),
+							$teams->flag_image( (int) $info['away_team_id'] ),
 							$away_team,
-							$this->show_pool_joker( $joker, (integer) $info['nr'], $info['match_timestamp'] ),
+							$this->show_pool_joker( $joker, (int) $info['nr'], $info['match_timestamp']
+													, $form_id ),
 							__( 'score', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $info['match_timestamp'] ),
 							$this->show_users_link( $info['nr'], $info['match_timestamp'] )
@@ -444,6 +465,22 @@ class Football_Pool_Matches {
 		return $result;
 	}
 	
+	public function get_matches_for_match_type( $ids = array() ) {
+		if ( count( $ids ) == 0 ) return array();
+		
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$matchtype_ids = implode( ',', $ids );
+		$sql = "SELECT nr FROM {$prefix}matches WHERE matchtypeId IN ( {$matchtype_ids} )";
+		$results = $wpdb->get_results( $sql );
+		$matches = array();
+		foreach ( $results as $row ) {
+			$matches[] = $row->nr;
+		}
+		return $matches;
+	}
+	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {
 		if ( ! $this->match_is_editable( $ts ) ) {
 			$pool = new Football_Pool_Pool;
@@ -487,20 +524,23 @@ class Football_Pool_Matches {
 		$this->joker_blocked = true;
 	}
 	
-	private function show_pool_joker( $joker, $match, $ts ) {
+	private function show_pool_joker( $joker, $match, $ts, $form_id = 1 ) {
 		$add_joker = '';
 		$style = '';
 		
-		$class = ( $joker == $match && $joker > 0 && $match > 0 ) ? 'joker' : 'nojoker';
+		$class = ( $joker == $match && $joker > 0 && $match > 0 ) ? 'fp-joker' : 'fp-nojoker';
 		/*
 		Make sure joker is not shown for matches that are editable in case 
-		the matches_are_editable property is set to false.
+		the matches_are_editable property is set to false. Unless we have the new 
+		'always display predictions' set, in that case we can ignore this.
 		*/
-		if ( ! $this->matches_are_editable && $this->match_is_editable( $ts ) ) {
-			$class = 'nojoker';
+		if ( ! $this->always_show_predictions ) {
+			if ( ! $this->matches_are_editable && $this->match_is_editable( $ts ) ) {
+				$class = 'fp-nojoker';
+			}
 		}
 		
-		if ( $class == 'joker' && ! $this->match_is_editable( $ts ) ) {
+		if ( $class == 'fp-joker' && ! $this->match_is_editable( $ts ) ) {
 			$this->block_joker();
 		}
 		
@@ -509,9 +549,9 @@ class Football_Pool_Matches {
 				$add_joker = ' onclick="footballpool_change_joker( this.id )" title="' . __( 'use your joker?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}
 		} else {
-			//$style = ' style="cursor: text!important;"';
+			$class .= ' readonly';
 		}
-		return '<td class="' . $class . '"' . $add_joker . ' id="match_' . $match . '"></td>';
+		return sprintf( '<td class="%s"%s id="match_%d_%d"></td>', $class, $add_joker, $match, $form_id );
 	}
 
 }

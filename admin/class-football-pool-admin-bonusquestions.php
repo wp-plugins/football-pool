@@ -262,12 +262,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		} else {
 			self::delete_bonus_question( $question_id );
 		}
+		self::update_bonus_question_points();
 	}
 	
 	private function delete_bonus_question( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE question_id = %d", $id );
+		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE questionId = %d", $id );
@@ -277,7 +280,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function update_bonus_question_points() {
-		// scorehistory table for statistics
 		return self::update_score_history();
 	}
 	
@@ -357,6 +359,17 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$wpdb->query( $sql );
 			}
 		}
+		
+		// If the score date for this question is not set, then set it to the current time and date.
+		$now = new DateTime();
+		$now = $now->setTimestamp( time() );
+		$now = $now->format( 'Y-m-d H:i' );
+		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions
+								SET scoreDate = %s
+								WHERE scoreDate IS NULL AND id = %d"
+								, $now, $question
+						);
+		$wpdb->query( $sql );
 	}
 
 }

@@ -143,15 +143,19 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 = 2.2.0 =
 * Important: styling of the widgets has changed. They contained styles that could conflict with the styling of other widgets.
 * New feature: user defined rankings (ranking for a defined group of matches).
-* New feature: the possibility to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
+* New feature: the plugin option to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
 * New shortcode to support the user defined rankings.
-* New shortcode to show prediction form for a group of matches or bonus questions.
+* New shortcode to show prediction form for a group of matches and/or bonus questions.
 * All dates in the front-end are localized using date_i18n().
-* Plugin options are stored in a single array in the wp_options table.
+* Clean up: all plugin options are stored in a single array in the wp_options table.
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
 * Bug fix: description text of widgets was not correct in the WordPress admin.
 * Bug fix: when using the plugin in a different language the 'Save & Close' buttons did not work correctly in the admin.
 * Bug fix: stadium names with special chars (like Ã) did not work correctly in PHP version below 5.4 (thanks angelpubli).
+* Bug fix: when adding teams the new team was not displayed in the list. You had to reload the page.
+* Bug fix: it was possible to add a match without a match type, venue or team. These 'orphaned' matches were saved in the database, but not shown.
+* Bug fix: adding a new bonus question caused a warning for the first question.
+* Bug fix: a user could use a trick to set multiple jokers. This was fixed.
 
 = 2.1.3 =
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.
