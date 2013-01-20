@@ -192,7 +192,11 @@ class Football_Pool_Utils {
 	}
 	
 	// print information about a variable in a human readable way
-	public function debug( $var, $type = 'echo' ) {
+	// if argument sleep is set, the execution will halt after the debug for the given amount of micro seconds
+	// (one micro second = one millionth of a second)
+	public function debug( $var, $type = 'echo', $sleep = 0 ) {
+		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
+		
 		$type = str_replace( array( 'only', 'just', ' ', '-' ), array( '', '', '', '' ), $type );
 		
 		if ( $type == 'once' || ( is_array( $type ) && $type[0] == 'once' ) ) {
@@ -235,6 +239,8 @@ class Football_Pool_Utils {
 				var_dump( $var );
 				echo $post;
 		}
+		
+		if ( is_int( $sleep ) && $sleep > 0 ) usleep( $sleep );
 	}
 
 }

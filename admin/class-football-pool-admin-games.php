@@ -9,9 +9,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				
-echo "<iframe src='", FOOTBALLPOOL_PLUGIN_URL, "admin/test.html' width='400' height='150'></iframe>";
-self::secondary_button( 'Close', 'close', true, 'button', array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) );
+		
+		self::recalculate_scorehistory_iframe();
 		
 		$log = '';
 		$file = '';
@@ -91,6 +90,7 @@ self::secondary_button( 'Close', 'close', true, 'button', array( 'id' => 'close-
 				self::empty_table( 'scorehistory' );
 				self::empty_table( 'predictions' );
 				self::empty_table( 'stadiums' );
+				self::empty_table( 'rankings_matches' );
 				self::empty_table( 'matches' );
 				self::empty_table( 'teams' );
 			}

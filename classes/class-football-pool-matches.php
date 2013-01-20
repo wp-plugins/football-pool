@@ -195,7 +195,7 @@ class Football_Pool_Matches {
 								, $user );
 		$joker = $wpdb->get_var( $sql );
 		
-		return ( $joker !== false ) ? $joker : null;
+		return $joker;
 	}
 	
 	public function first_empty_match_for_user( $user ) {

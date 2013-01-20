@@ -134,10 +134,11 @@ class Football_Pool_Pool {
 					COUNT( IF( s.type=1 AND score>0, 1, NULL ) ) AS bonus 
 				FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
+			$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ? '1 = 1 OR' : '' );
 			$sql .= "INNER JOIN {$prefix}league_users lu 
 						ON (
 							u.ID = lu.userId
-							AND ( " . ($league <= FOOTBALLPOOL_LEAGUE_ALL ? "1 = 1 OR " : "") . "lu.leagueId = %d )
+							AND ( {$league_switch} lu.leagueId = %d )
 							) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 		} else {
@@ -146,13 +147,13 @@ class Football_Pool_Pool {
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					(
 						s.userId = u.ID AND s.ranking_id = %d 
-						AND ( " . ($score_date == '' ? "1 = 1 OR " : "") . "s.scoreDate <= %s )
-						AND ( " . ($type == 0 ? "1 = 1 OR " : "") . "s.type = %d )
+						AND ( " . ( $score_date == '' ? '1 = 1 OR' : '' ) . " s.scoreDate <= %s )
+						AND ( " . ( $type == 0 ? '1 = 1 OR' : '' ) . " s.type = %d )
 					) ";
 		$sql .= "WHERE s.ranking_id IS NOT NULL ";
 		if ( ! $this->has_leagues ) $sql .= "AND ( leagueId <> 0 OR leagueId IS NULL ) ";
 		$sql .= "GROUP BY u.ID
-				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER(u.display_name) ASC";
+				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER( u.display_name ) ASC";
 		
 		if ( $this->has_leagues ) 
 			return $wpdb->prepare( $sql, $league, $ranking_id, $score_date, $type );

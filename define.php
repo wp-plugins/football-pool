@@ -2,12 +2,12 @@
 global $wpdb;
 /* are we developing or not? */
 if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
-	define( 'LOCAL', true );
+	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
 	$wpdb->show_errors();
 	define( 'ALTERNATE_WP_CRON', true );  // wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405
 } else {
-	define( 'LOCAL', false );
-	//$wpdb->hide_errors();
+	define( 'FOOTBALLPOOL_ENABLE_DEBUG', false );
+	$wpdb->hide_errors();
 }
 
 define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
