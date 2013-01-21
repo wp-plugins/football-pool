@@ -129,9 +129,9 @@ class Football_Pool_Pool {
 		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
 			. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
 			. "		COALESCE( MAX( s.totalScore ), 0 ) AS points, 
-					COUNT( IF( s.full=1, 1, NULL ) ) AS full, 
-					COUNT( IF( s.toto=1, 1, NULL ) ) AS toto,
-					COUNT( IF( s.type=1 AND score>0, 1, NULL ) ) AS bonus 
+					COUNT( IF( s.full = 1, 1, NULL ) ) AS full, 
+					COUNT( IF( s.toto = 1, 1, NULL ) ) AS toto,
+					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus 
 				FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ? '1 = 1 OR' : '' );
@@ -155,7 +155,7 @@ class Football_Pool_Pool {
 		$sql .= "GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER( u.display_name ) ASC";
 		
-		if ( $this->has_leagues ) 
+		if ( $this->has_leagues )
 			return $wpdb->prepare( $sql, $league, $ranking_id, $score_date, $type );
 		else
 			return $wpdb->prepare( $sql, $ranking_id, $score_date, $type );

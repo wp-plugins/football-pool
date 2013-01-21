@@ -25,7 +25,6 @@ define( 'FOOTBALLPOOL_DB_VERSION', '2.2.0' );
  */
 
 require_once 'define.php';
-require_once 'shortcodes.php';
 
 require_once 'classes/class-football-pool.php';
 require_once 'classes/class-football-pool-utils.php';
@@ -41,6 +40,7 @@ require_once 'classes/class-football-pool-chart-data.php';
 require_once 'classes/class-football-pool-statistics.php';
 require_once 'classes/class-football-pool-shoutbox.php';
 require_once 'classes/class-football-pool-widget.php';
+require_once 'classes/class-football-pool-shortcodes.php';
 
 if ( ! is_admin() ) {
 	// pages, not needed in the admin

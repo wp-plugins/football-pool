@@ -135,15 +135,19 @@ class Football_Pool_Groups {
 		foreach ( $rows as $row ) {
 			if ( ( $row['homeScore'] != null ) && ( $row['awayScore'] != null ) ) {
 				// set goals
-				$this->set_goals_array( $for, $against, $row['homeTeamId'], $row['awayTeamId'], $row['homeScore'], $row['awayScore'] );
+				$this->set_goals_array( 
+								$for, $against, 
+								$row['homeTeamId'], $row['awayTeamId'], 
+								$row['homeScore'], $row['awayScore'] 
+						);
 				// set wins, draws and losses
-				if ( (integer) $row['homeScore'] > (integer) $row['awayScore'] ) {
+				if ( (int) $row['homeScore'] > (int) $row['awayScore'] ) {
 					$wins   = $this->set_standing_array( $wins, $row['homeTeamId'] );
 					$losses = $this->set_standing_array( $losses, $row['awayTeamId'] );
-				} elseif ( (integer) $row['homeScore'] < (integer) $row['awayScore'] ) {
+				} elseif ( (int) $row['homeScore'] < (int) $row['awayScore'] ) {
 					$losses = $this->set_standing_array( $losses, $row['homeTeamId'] );
 					$wins   = $this->set_standing_array( $wins, $row['awayTeamId'] );
-				} elseif ( (integer) $row['homeScore'] == (integer) $row['awayScore'] ) {
+				} elseif ( (int) $row['homeScore'] == (int) $row['awayScore'] ) {
 					$draws = $this->set_standing_array( $draws, $row['homeTeamId'] );
 					$draws = $this->set_standing_array( $draws, $row['awayTeamId'] );
 				} else {
@@ -243,8 +247,8 @@ class Football_Pool_Groups {
 	}
 	
 	private function set_goals_array( &$for, &$against, $home_team, $away_team, $home_score, $away_score ) {
-		$home_team = (integer) $home_team;
-		$away_team = (integer) $away_team;
+		$home_team = (int) $home_team;
+		$away_team = (int) $away_team;
 		
 		$for[$home_team]     = $this->set_goals( $for, $home_team, $home_score );
 		$for[$away_team]     = $this->set_goals( $for, $away_team, $away_score );
@@ -279,7 +283,6 @@ class Football_Pool_Groups {
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
-//@todo: extra testing
 			$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
 					FROM {$prefix}teams t, {$prefix}groups g 
 					WHERE t.groupId = g.id AND t.is_real = 1 AND t.is_active = 1

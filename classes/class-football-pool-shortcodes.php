@@ -126,16 +126,17 @@ class Football_Pool_Shortcodes {
 		
 		if ( $date == 'postdate' ) {
 			$score_date = get_the_date( 'Y-m-d H:i' );
-		//} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
 		} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
 			$score_date = $score_date->format( 'Y-m-d H:i' );
 		} else {
 			$score_date = '';
 		}
 		
+		Football_Pool_Utils::debug('league='.$league.' , num='. $num.' , ranking_id='. $ranking.' , date='. $score_date,'file');
 		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, $score_date );
 		
 		$output = '';
+		Football_Pool_Utils::debug($rows,'file');
 		if ( count( $rows ) > 0 ) {
 			$i = 1;
 			$output .= '<table class="pool-ranking ranking-shortcode">';

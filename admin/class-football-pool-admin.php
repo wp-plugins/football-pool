@@ -795,18 +795,25 @@ class Football_Pool_Admin {
 		
 		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 			$sql_user_scores = sprintf( "SELECT * FROM {$prefix}scorehistory 
-							WHERE userId = %%d AND ranking_id = %d
-							ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
-							, $ranking_id
-					);
+										WHERE userId = %%d AND ranking_id = %d
+										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
+										, $ranking_id
+								);
 		} else {
 			$sql_user_scores = sprintf( "SELECT s.* FROM {$prefix}scorehistory s
-							JOIN {$prefix}rankings_matches rm
-								ON ( s.scoreOrder = rm.match_id AND rm.ranking_id = %d )
-							WHERE s.userId = %%d AND s.type = %d AND s.ranking_id = %d
-							ORDER BY s.scoreDate ASC, s.type ASC, s.scoreOrder ASC"
-							, $ranking_id, FOOTBALLPOOL_TYPE_MATCH, FOOTBALLPOOL_RANKING_DEFAULT
-					);
+										LEFT OUTER JOIN {$prefix}rankings_matches rm
+										  ON ( s.scoreOrder = rm.match_id 
+												AND rm.ranking_id = %d AND s.type = %d )
+										LEFT OUTER JOIN {$prefix}rankings_bonusquestions rq
+										  ON ( s.scoreOrder = rq.question_id 
+												AND rq.ranking_id = %d AND s.type = %d )
+										WHERE s.userId = %%d AND s.ranking_id = %d 
+										AND ( rm.ranking_id IS NOT NULL OR rq.ranking_id IS NOT NULL )
+										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
+										, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
+										, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
+										, FOOTBALLPOOL_RANKING_DEFAULT
+								);
 		}
 		
 		foreach ( $users as $user ) {
