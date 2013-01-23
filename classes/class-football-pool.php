@@ -80,6 +80,9 @@ class Football_Pool {
 		$options['add_tinymce_button'] = 1; // 1: button, 0: disable button
 		$options['always_show_predictions'] = 0; // 1: yes, 0: no
 		$options['use_spin_controls'] = 1; // 1: yes, 0: no
+		$options['groups_page_match_types'] = array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ); // array of match type ids
+		$options['match_sort_method'] = FOOTBALLPOOL_MATCH_SORT; // 0: date asc, 1: date desc
+		$options['show_avatar'] = 0; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
@@ -153,7 +156,7 @@ class Football_Pool {
 		$locale = self::get_locale();
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		
-		// first look for a translated text in the languages folder of WP
+		// first look for a translated text of the rules page in the languages folder of WP
 		$file = WP_LANG_DIR . "/{$domain}/rules-page-content-{$locale}.txt";
 		if ( ! file_exists( $file ) ) {
 			// if no file found, then check the plugin's languages folder

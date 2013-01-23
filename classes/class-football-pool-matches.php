@@ -77,8 +77,24 @@ class Football_Pool_Matches {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
+	public function get_match_sorting_method() {
+		$order = Football_Pool_Utils::get_fp_option( 'match_sort_method', FOOTBALLPOOL_MATCH_SORT, 'int' );
+		switch ( $order ) {
+			case 1:
+				$order = 'm.playDate DESC, m.nr DESC';
+				break;
+			case 0:
+			default:
+				$order = 'm.playDate ASC, m.nr ASC';
+		}
+		
+		return $order;
+	}
+	
 	private function matches_query( $where_clause = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = self::get_match_sorting_method();
+		
 		return "SELECT 
 					m.nr, 
 					UNIX_TIMESTAMP(m.playDate) AS match_timestamp, m.playDate,
@@ -88,17 +104,17 @@ class Football_Pool_Matches {
 					t.name AS matchtype, t.id AS typeId
 				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id AND t.visibility = 1 {$where_clause}
-				ORDER BY m.playDate ASC, nr ASC";
+				ORDER BY {$sorting}";
 	}
 	
 	public function get_first_match_info() {
 		return array_shift( $this->matches );
 	}
 	
-	public function get_info( $type = -1 ) {
+	public function get_info( $type = null ) {
 		global $wpdb;
-		if ( $type != -1 ) {
-			$sql = $wpdb->prepare( $this->matches_query( ' AND t.id = %d ' ), $type );
+		if ( is_array( $type ) && count( $type ) > 0 ) {
+			$sql = $this->matches_query( ' AND t.id IN ( ' . implode( ',', $type ) . ' ) ' );
 		} else {
 			$sql = $this->matches_query();
 		}
@@ -163,6 +179,7 @@ class Football_Pool_Matches {
 	public function get_match_info_for_user( $user, $match_ids = array() ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$order = self::get_match_sorting_method();
 		
 		$ids = '';
 		if ( is_array( $match_ids ) && count( $match_ids ) > 0 ) {
@@ -180,7 +197,7 @@ class Football_Pool_Matches {
 								LEFT OUTER JOIN {$prefix}predictions p 
 									ON ( p.matchNr = m.nr AND p.userId = %d )
 								WHERE t.visibility = 1
-								ORDER BY m.playDate ASC, nr ASC",
+								ORDER BY {$order}",
 								$user
 							);
 		

@@ -37,6 +37,8 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 	public function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		
 		$sql = $wpdb->prepare( "SELECT 
 									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
@@ -50,7 +52,8 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 									m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id  AND s.id = %d
-									AND m.matchtypeId = t.id AND t.visibility = 1", 
+									AND m.matchtypeId = t.id AND t.visibility = 1
+								ORDER BY {$sorting}", 
 							$this->id
 						);
 		

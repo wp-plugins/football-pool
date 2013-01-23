@@ -76,3 +76,20 @@ div.import.culture-select { text-align: right; }
 td.date-title { text-align: right; }
 
 div.fp-admin .button { margin-right: 3px; }
+
+.fp-multi-select { width: 300px; }
+
+div.help.important {
+	margin: 5px 15px;
+	background-color: #ffffe0;
+	border-color: #e6db55;
+	padding: 0 .6em;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+div.help-page h2 { padding: 3em 0 .5em; }
+div.help-page h2:first-of-type { padding-top: 1em; }
+div.help-page h3 { padding: 2em 0 .5em; }

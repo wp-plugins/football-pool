@@ -10,16 +10,18 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
+		<div class="help-page">
 		<h2>Index</h2>
 		<p>
 			<ol>
 				<li><a href="#time">Time</a></li>
 				<li><a href="#points">Points</a></li>
-				<li><a href="#shortcodes">Shortcodes</a></li>
+				<li><a href="#rankings">Rankings</a></li>
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
 				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
+				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#charts">Using charts</a></li>
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
@@ -39,11 +41,11 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
-		<p>
-		<strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 
-		<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
-		your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.
-		</p>
+		<div class="help important">
+			<p><strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 
+			<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
+			your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
+		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="points">Points</h2>
@@ -96,132 +98,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
-		<h2 id="shortcodes">Shortcodes</h2>
-		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes the adding of these shortcodes a bit easier.
-		</p>
+		<h2 id="rankings">Rankings</h2>
 		<p>
-		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
+		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
+		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). First make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions. The custom rankings can be used with the ranking shortcode or in ranking widget.
 		</p>
-		<p>The different shortcodes are explained in the following paragraphs.</p>
-		<h3>[fp-groups]</h3>
-		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
-		ommited, or not a valid group id, then nothing will be returned.</p>
-		<p>
-		<table class="widefat help">
-			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
-				<td class="row-title">id</td>
-				<td>The numeric id for the group</td>
-				<td>1..8 (integer)</td>
-				<td>1</td>
-			</tr>
-		</table>
+		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
-		<p>example:<br />
-		<span class="code">[fp-groups id=2]</span><br />
-		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
-		</p>
+		<div class="help important">
+			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database so when calculated, your playes shouldn't notice a delay when displaying a ranking. But an admin saving a match will have to wait for all the calculations to finish.</p>
+		</div>
 		
-		<h3>[fp-ranking]</h3>
-		<p>Shows the ranking at a given moment in time. Accepts multiple parameters. And just like the widget, if a logged in user of your blog (current_user) is in the ranking, his/her name will be highlighted.</p>
-		<p>
-		<table class="widefat help">
-			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
-				<td class="row-title">num</td>
-				<td>The number of rows in the ranking (top N)</td>
-				<td>1..n (integer)</td>
-				<td>5</td>
-			</tr>
-			<tr class="">
-				<td class="row-title">league</td>
-				<td>Show ranking for this league.<br />If the pool does not use leagues, then this parameter is ignored.</td>
-				<td><a href="?page=footballpool-leagues">league id</a> (integer)</td>
-				<td>all users</td>
-			</tr>
-			<tr class="alternate">
-				<td class="row-title">date</td>
-				<td>Calculate the ranking untill this date.</td>
-				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
-				<td>now</td>
-			</tr>
-		</table>
-		</p>
-		<p>example:<br />
-		<span class="code">[fp-ranking num=5 date="postdate"]</span><br />
-		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
-		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />
-		</p>
-
-		<h3>[fp-register]link text[/fp-register]</h3>
-		<p>Shows a link to the register page of WordPress. Text between the tags will be the text for the link. If no content is given, then a default text is shown as the link text. A redirect link to the post or page is automatically added if the get_permalink function does not return false.</p>
-		<p>
-		<table class="widefat help">
-			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
-				<td class="row-title">title</td>
-				<td>Title parameter for the &lt;a href&gt;</td>
-				<td>string</td>
-				<td>empty; don't display a tooltip</td>
-			</tr>
-			<tr class="">
-				<td class="row-title">new</td>
-				<td>Open link in a new window/tab.</td>
-				<td>integer: 0 (no) or 1 (yes)</td>
-				<td>0</td>
-			</tr>
-		</table>
-		</p>
-		<p>example:<br />
-		<span class="code">Click [fp-register]here[/fp-register] to register for this pool.</span><br />
-		<span class="code">Click [fp-register new=1 title="Go to the registration page"]here[/fp-register] to register for this pool.</span><br />
-		</p>
-		
-		<h3>[fp-countdown]</h3>
-		<p>Counts down to a date and time. If no date is given, the time of the first match of the tournament is used. If a valid match number is given, it counts down to that match. A textual countdown is added to the post (or page) wich updates automatically.</p>
-		<p>
-		<table class="widefat help">
-			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
-				<td class="row-title">date</td>
-				<td>The date and time to count down to.</td>
-				<td>Y-m-d H:i</td>
-				<td>empty</td>
-			</tr>
-			<tr class="">
-				<td class="row-title">match</td>
-				<td>Number of the match to count down to.</td>
-				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
-				<td>empty</td>
-			</tr>
-			<tr class="alternate">
-				<td class="row-title">texts</td>
-				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
-				If value is "none" then no texts are added.<br />
-				If left empty or ommitted then the default texts are used.</td>
-				<td>One of the following:<ul><li>- string;string;string;string</li><li>- none</li></ul></td>
-				<td>empty; default texts are used.</td>
-			</tr>
-			<tr class="">
-				<td class="row-title">display</td>
-				<td>Display counter inline or as a separate block.</td>
-				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
-				<td>block</td>
-			</tr>
-		</table>
-		</p>
-		<p>examples:<br />
-		<span class="code">[fp-countdown]</span><br />
-		<span class="code">[fp-countdown date="2012-06-22 11:00"]</span><br />
-		<span class="code">[fp-countdown match="3"]</span><br />
-		<span class="code">[fp-countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
-		<span class="code">[fp-countdown display="inline" match="3"]</span><br />
-		</p>
-		
-		<h3>Other shortcodes</h3>
-		<p>See <a href="?page=footballpool-options">Football Pool plugin settings</a> for some basic shortcodes that  will display the value for a plugin setting.</p>
-		<p>
-
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="leagues">Leagues</h2>
 		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done on the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
@@ -252,15 +139,18 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		For each player click the appropiate radiobutton for a right or wrong answer (2). If an answer is considered right you have the possibility to give a different amount of points to that user (3). For example to give extra bonuspoints or to give half the points for an incomplete answer. Leave blank if you want to give the default points for that question.<br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-2.png" alt="screenshot" />
 		</p>
-		<p>Please note that for points for bonus questions to be added to the total points for a player, an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts. If the score date is not set by the admin, then the score date is automatically set to the current time and date upon a save of the user answers.</p>
+		<div class="help important">
+			<p>Please note that for points for bonus questions to be added to the total points for a player, an admin also has to fill in the score date field for that question. The score date is used to determine the order in which points are plotted in the charts. If the score date is not set by the admin, then the score date is automatically set to the current time and date upon a save of the user answers.</p>
+		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="teams-groups-and-matches">Teams, groups and matches</h2>
 		<p>
 		In the pool your blog users can predict the outcome of matches in a competition. A competition consists of multiple teams that play each other in matches. The game schedule can be entered on the <a href="?page=footballpool-games">Matches</a> admin page. On that page the matches may be entered manually or uploaded via a csv file. See information below about the format of the csv file, or export an existing game schedule for an example. The format of the export (full data or minimal data) can be set on the options page of the plugin.
 		</p>
+		<h3>Groups</h3>
 		<p>
-		Teams may be grouped in groups. For example Group A, Group B, etc. for a tournament. Or in one group in the case of a national competition.
+		Teams may be grouped in groups. For example Group A, Group B, etc. for a tournament. Or in one group in the case of a national competition. The groups page in the blog (/tournament/groups) shows the ranking table for matches played in match type 1 by default. If you wish to use another match type for the calculation of points for a team, or use multiple match types, you can alter this in the <a href="?page=footballpool-options">plugin options</a>.
 		</p>
 		
 		<h3>csv file import</h3>
@@ -419,6 +309,180 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+		<h2 id="shortcodes">Shortcodes</h2>
+		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes the adding of these shortcodes a bit easier.
+		</p>
+		<p>
+		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
+		</p>
+		<p>The different shortcodes are explained in the following paragraphs.</p>
+		<h3>[fp-groups]</h3>
+		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
+		ommited, or not a valid group id, then nothing will be returned.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">id</td>
+				<td>The numeric id for the group</td>
+				<td><a href="?page=footballpool-groups">group id</a> (integer)</td>
+				<td>1</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-groups id=2]</span><br />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
+		</p>
+		
+		<h3>[fp-ranking]</h3>
+		<p>Shows the ranking at a given moment in time. Accepts multiple parameters. And just like the widget, if a logged in user of your blog (current_user) is in the ranking, his/her name will be highlighted.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">num</td>
+				<td>The number of rows in the ranking (top N)</td>
+				<td>1..n (integer)</td>
+				<td>5</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">league</td>
+				<td>Show ranking for this league.<br />If the pool does not use leagues, then this parameter is ignored.</td>
+				<td><a href="?page=footballpool-leagues">league id</a> (integer)</td>
+				<td>all users</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">date</td>
+				<td>Calculate the ranking untill this date.</td>
+				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>now</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">ranking</td>
+				<td>Show scores calculated in this ranking.<br />Defaults to all matches and all questions.</td>
+				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
+				<td></td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-ranking num=5 ranking=4]</span><br />
+		<span class="code">[fp-ranking num=5 date="postdate"]</span><br />
+		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />
+		</p>
+		
+		<h3>[fp-predictionform]</h3>
+		<p>Shows a prediction form for the selected matches, matches in a matchtype and/or bonus questions. All parameters are cumulative, so all given matches and matches in a matchtype are put together in one form.</p>
+		<p>All arguments can be entered in the following formats (example for matches):
+		<table>
+			<tr><td>match 1</td><td>&rarr;</td><td>match="1"</td></tr>
+			<tr><td>matches 1 to 5</td><td>&rarr;</td><td>match="1-5"</td></tr>
+			<tr><td>matches 1, 3 and 6</td><td>&rarr;</td><td>match="1,3,6"</td></tr>
+			<tr><td>matches 1 to 5 and 10</td><td>&rarr;</td><td>match="1-5,10"</td></tr>
+		</table>
+		</p>
+		<p>If an argument is left empty it is ignored. Matches are always displayed first in a prediction form.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>Collection of <a href="?page=footballpool-games">match ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+			<tr class="">
+				<td class="row-title">matchtype</td>
+				<td>Collection of <a href="?page=footballpool-matchtypes">match type ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">question</td>
+				<td>Collection of <a href="?page=footballpool-bonus">question ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-predictionform match="1-5"]</span><br />
+		<span class="code">[fp-predictionform match="1-4,9-12" question="1,5,10"]</span><br />
+		<span class="code">[fp-predictionform matchtype="1"]</span><br />
+		</p>
+
+		<h3>[fp-register]link text[/fp-register]</h3>
+		<p>Shows a link to the register page of WordPress. Text between the tags will be the text for the link. If no content is given, then a default text is shown as the link text. A redirect link to the post or page is automatically added if the get_permalink function does not return false.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">title</td>
+				<td>Title parameter for the &lt;a href&gt;</td>
+				<td>string</td>
+				<td>empty; don't display a tooltip</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">new</td>
+				<td>Open link in a new window/tab.</td>
+				<td>integer: 0 (no) or 1 (yes)</td>
+				<td>0</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">Click [fp-register]here[/fp-register] to register for this pool.</span><br />
+		<span class="code">Click [fp-register new=1 title="Go to the registration page"]here[/fp-register] to register for this pool.</span><br />
+		</p>
+		
+		<h3>[fp-countdown]</h3>
+		<p>Counts down to a date and time. If no date is given, the time of the first match of the tournament is used. If a valid match number is given, it counts down to that match. A textual countdown is added to the post (or page) wich updates automatically.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">date</td>
+				<td>The date and time to count down to.</td>
+				<td>Y-m-d H:i</td>
+				<td>empty</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">match</td>
+				<td>Number of the match to count down to.</td>
+				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
+				<td>empty</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">texts</td>
+				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
+				If value is "none" then no texts are added.<br />
+				If left empty or ommitted then the default texts are used.</td>
+				<td>One of the following:<ul><li>- string;string;string;string</li><li>- none</li></ul></td>
+				<td>empty; default texts are used.</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">display</td>
+				<td>Display counter inline or as a separate block.</td>
+				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
+				<td>block</td>
+			</tr>
+		</table>
+		</p>
+		<p>examples:<br />
+		<span class="code">[fp-countdown]</span><br />
+		<span class="code">[fp-countdown date="2012-06-22 11:00"]</span><br />
+		<span class="code">[fp-countdown match="3"]</span><br />
+		<span class="code">[fp-countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
+		<span class="code">[fp-countdown display="inline" match="3"]</span><br />
+		</p>
+		
+		<h3>Other shortcodes</h3>
+		<p>See <a href="?page=footballpool-options">Football Pool plugin settings</a> for some basic shortcodes that  will display the value for a plugin setting.</p>
+		<p>
+
+		<p class="help back-to-top"><a href="#">back to top</a></p>
 		<h2 id="charts">Using charts</h2>
 		<p>
 		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
@@ -449,6 +513,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<em>wordpressfootballpool [ at ] gmail [ dot ] com</em>
 		</p>
 		
+		</div> <!-- end help page -->
 		<?php
 	}
 

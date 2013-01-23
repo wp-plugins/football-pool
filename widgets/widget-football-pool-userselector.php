@@ -51,6 +51,8 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		get_currentuserinfo();
 		if ( ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
 		
+		$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
+		
 		$pool = new Football_Pool_Pool;
 		$rows = $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL );
 		if ( count($rows) > 0 ) {
@@ -62,7 +64,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 				echo '<li', ( $selected ? ' class="selected"' : '' ), '>
 						<input type="checkbox" name="users[]" id="user', $row['userId'], '"
 							value="', $row['userId'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
-						<label for="user', $row['userId'], '"> ', $row['userName'], '</label></li>';
+						<label for="user', $row['userId'], '"> ', $pool->get_avatar( $row['userId'], 'small' ), $row['userName'], '</label></li>';
 			}
 			echo '</ol>';
 			echo '<p><input type="submit" value="', __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></p>';

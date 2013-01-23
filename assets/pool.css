@@ -226,3 +226,14 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 }
 
 .user-label { font-size: 70%; font-style: italic; }
+
+.widget div.football-pool-widget div.ranking { padding: 0 .5em; margin: 0; } 
+
+/* avatars */
+.pool-ranking .avatar { 
+	padding: 0 .5em 0 0; vertical-align: middle; 
+}
+#sidebar .widget div.football-pool-widget .pool-ranking .avatar,
+.widget div.football-pool-widget .pool-ranking .avatar {
+	padding: 0 .5em 0 0; vertical-align: middle; 
+}

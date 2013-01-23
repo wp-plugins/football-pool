@@ -96,6 +96,15 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
+			__( 'Edit rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'administrator', 
+			'footballpool-rankings',
+			array( 'Football_Pool_Admin_Rankings', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
 			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
@@ -214,19 +223,56 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function dropdown( $key, $value, $options, $extra_attr = '' ) {
+	public function dropdown( $key, $value, $options, $extra_attr = '', $multi = 'single' ) {
 		$i = 0;
-		echo '<select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
+		$multiple = '';
+		$name = esc_attr( $key );
+		if ( $multi == 'multi' ) {
+			$multiple = 'multiple="multiple" size="6" class="fp-multi-select"';
+			$name .= '[]';
+		}
+		printf( '<select id="%s" name="%s" %s>'
+				, esc_attr( $key )
+				, $name
+				, $multiple
+		);
+		
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
 			} else {
 				$extra = $extra_attr;
 			}
-			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '>', $option['text'], '</option>';
+			
+			printf( '<option id="answer_%d" value="%s" %s %s>%s</option>'
+					, $i
+					, esc_attr( $option['value'] )
+					, ( self::check_selected_value( $value, $option['value'] ) ? 'selected="selected" ' : '' )
+					, $extra
+					, $option['text']
+			);
 			$i++;
 		}
 		echo '</select>';
+	}
+	
+	private function check_selected_value( $check_value, $option_value ) {
+		if ( is_array( $check_value ) ) {
+			return in_array( $option_value, $check_value );
+		} else {
+			return ( $option_value == $check_value );
+		}
+	}
+	
+	public function multiselect_input( $label, $key, $value, $options, $description = '', 
+									$extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
+		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
+		echo '<td>';
+		self::dropdown( $key, $value, $options, $extra_attr, 'multi' );
+		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
 	public function dropdown_input( $label, $key, $value, $options, $description = '', 
@@ -245,14 +291,24 @@ class Football_Pool_Admin {
 		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
 		
 		$i = 0;
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_0">', $label, '</label></th><td>';
+		printf( '<tr id="r-%s" valign="top"><th scope="row"><label for="answer_0">%s</label></th><td>'
+				, esc_attr( $key )
+				, $label
+		);
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
 			} else {
 				$extra = $extra_attr;
 			}
-			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), ' ', $extra, '> ', $option['text'], '</label><br />';
+			printf( '<label class="radio"><input name="%s" type="radio" id="answer_%d" value="%s" %s %s> %s</label><br />'
+					, esc_attr( $key )
+					, $i
+					, esc_attr( $option['value'] )
+					, ( self::check_selected_value( $value, $option['value'] ) ? 'checked="checked" ' : '' )
+					, $extra
+					, $option['text']
+			);
 			$i++;
 		}
 		echo '</td><td><span class="description">', $description, '</span></td></tr>';
@@ -384,6 +440,11 @@ class Football_Pool_Admin {
 		}
 		
 		switch ( $type ) {
+			case 'multi-list':
+			case 'multi-select':
+			case 'multi-selectbox':
+				self::multiselect_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
+				break;
 			case 'dropdownlist':
 			case 'dropdown':
 			case 'select':

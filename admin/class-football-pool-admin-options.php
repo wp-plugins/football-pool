@@ -26,17 +26,26 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 
 			$match_time_offsets[] = array( 'value' => $offset, 'text' => $offset_text );
 		}
-		// check if offset-dropdowns must be shown
 		
+		// check if offset-dropdowns must be shown
 		if ( $action == 'update' ) {
-			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			// in case of a save action
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			$offset_switch = ( Football_Pool_Utils::post_int( 'match_time_display' ) !== 2 );			
 		} else {
 			// normal situation
 			$offset_switch = ( (int)Football_Pool_Utils::get_fp_option( 'match_time_display', 0, 'int' ) !== 2 );
 		}
 		
+		// get the match types for the groups page
+		$match_types = Football_Pool_Matches::get_match_types();
+		$options = array();
+		foreach ( $match_types as $type ) {
+			$options[] = array( 'value' => $type->id, 'text' => $type->name );
+		}
+		$match_types = $options;
+		
+		// definition of all configurable options
 		$options = array(
 						//array( 'text', __( 'Remove data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'remove_data_on_uninstall', __( '', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'webmaster' => 
@@ -181,6 +190,28 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Always show predictions', FOOTBALLPOOL_TEXT_DOMAIN ), 'always_show_predictions', __( 'Normally match predictions are only shown to other players after a prediction can\'t be changed anymore. With this option enabled the predictions are visible to anyone, anytime. Works only for matches, not bonus questions.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_spin_controls' => 
 							array( 'checkbox', __( 'Use HTML5 number inputs', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_spin_controls', __( 'Make use of HTML5 number inputs for the prediction form. Some browsers display these as spin controls.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'groups_page_match_types' =>
+							array( 
+								array( 'multi-select', 'integer array' ), 
+								__( 'Groups page matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'groups_page_match_types', 
+								$match_types,
+								sprintf( __( 'The Groups page shows standings for the matches in these match types. Defaults to match type id: %d.', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) . ' ' . __( 'Use CTRL+click to select multiple values.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								'',
+							),
+						'match_sort_method' =>
+							array( 
+								'radiolist', 
+								__( 'Match sorting', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'match_sort_method', 
+								array( 
+									array( 'value' => 0, 'text' => __( 'Date ascending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 1, 'text' => __( 'Date descending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+								),
+								__( 'Select the order in which matches must be displayed on the matches page and the prediction page..', FOOTBALLPOOL_TEXT_DOMAIN ),
+							),
+						'show_avatar' => 
+							array( 'checkbox', __( 'Show (gr)avatars', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_avatar', __( 'Show the user\'s (gr)avatar in ranking tables (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -210,6 +241,10 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 					$value = Football_Pool_Utils::post_string( $option[2] );
 				} elseif ( $value != '' && $value_type == 'date' || $value_type == 'datetime' ) {
 					$value = self::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
+				} elseif ( $value_type == 'integer array' ) {
+					$value = Football_Pool_Utils::post_integer_array( $option[2] );
+				} elseif ( $value_type == 'string array' ) {
+					$value = Football_Pool_Utils::post_string_array( $option[2] );
 				} else {
 					$value = Football_Pool_Utils::post_integer( $option[2] );
 				}
@@ -258,10 +293,12 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['use_spin_controls'],
+									$options['show_avatar'],
 									$options['match_time_display'],
 									$options['match_time_offset'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],
+									$options['match_sort_method'],
 								) 
 							);
 		submit_button( null, 'primary', null, true );
@@ -276,6 +313,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
 									$options['add_tinymce_button'], 
+									$options['groups_page_match_types'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );

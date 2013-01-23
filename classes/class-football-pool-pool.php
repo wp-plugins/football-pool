@@ -8,6 +8,7 @@ class Football_Pool_Pool {
 	private $lock_timestamp;
 	private $lock_datestring;
 	public $always_show_predictions = 0;
+	public $show_avatar = false;
 	
 	public function __construct() {
 		$this->leagues = $this->get_leagues();
@@ -30,6 +31,8 @@ class Football_Pool_Pool {
 		
 		$matches = new Football_Pool_Matches;
 		$this->has_matches = $matches->has_matches;
+		
+		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 	}
 	
 	private function is_toto_result($home, $away, $user_home, $user_away ) {
@@ -217,13 +220,14 @@ class Football_Pool_Pool {
 				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
 				if ( $row['userId'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
-									<td><a href="%s">%s</a>%s</td>
+									<td><a href="%s">%s%s</a>%s</td>
 									<td>%d</td>
 									%s
 									</tr>',
 								$class,
 								$i++,
 								esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
+								$this->get_avatar( $row['userId'], 'medium' ),
 								$row['userName'],
 								Football_Pool::user_name( $row['userId'], 'label' ),
 								$row['points'],
@@ -909,6 +913,30 @@ class Football_Pool_Pool {
 		return sprintf( '<div class="buttonblock"><input type="submit" name="_submit" value="%s" /></div>',
 						__( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
+	}
+	
+	public function get_avatar( $user_id, $size = 'small', $wrap = true ) {
+		if ( ! $this->show_avatar ) return;
+		
+		if ( ! is_int( $size ) ) {
+			switch ( $size ) {
+				case 'large':
+					$size = FOOTBALLPOOL_LARGE_AVATAR;
+					break;
+				case 'medium':
+					$size = FOOTBALLPOOL_MEDIUM_AVATAR;
+					break;
+				case 'small':
+				default:
+					$size = FOOTBALLPOOL_SMALL_AVATAR;
+			}
+		}
+		
+		$avatar = get_avatar( $user_id, $size );
+		if ( $wrap )
+			return sprintf( '<span class="fp-avatar">%s</span>', $avatar );
+		else
+			return $avatar;
 	}
 }
 ?>

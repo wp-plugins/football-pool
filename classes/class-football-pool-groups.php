@@ -130,7 +130,11 @@ class Football_Pool_Groups {
 		$against = array();
 		
 		$matches = new Football_Pool_Matches;
-		$rows = $matches->get_info( 1 );
+		$match_types = Football_Pool_Utils::get_fp_option( 
+													'groups_page_match_types' 
+													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
+												);
+		$rows = $matches->get_info( $match_types );
 		
 		foreach ( $rows as $row ) {
 			if ( ( $row['homeScore'] != null ) && ( $row['awayScore'] != null ) ) {
@@ -183,6 +187,13 @@ class Football_Pool_Groups {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		$match_types = Football_Pool_Utils::get_fp_option( 
+													'groups_page_match_types' 
+													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
+												);
+		$match_types = implode( ',', $match_types );
+		
 		$sql = $wpdb->prepare( "SELECT DISTINCT
 									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
@@ -198,10 +209,10 @@ class Football_Pool_Groups {
 									{$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
-									AND t.id = 1 -- only round 1
+									AND t.id IN ( {$match_types} )
 									AND ( m.homeTeamId = tm.id OR m.awayTeamId = tm.id )
 									AND tm.groupId = %d
-								ORDER BY m.playDate ASC, m.nr ASC",
+								ORDER BY {$sorting}",
 							$group
 						);
 		
@@ -301,10 +312,8 @@ class Football_Pool_Groups {
 		$teams = new Football_Pool_Teams;
 		$team_names = $teams->team_names;
 
-		$groups = new Football_Pool_Groups;
-		$group_names = $groups->get_group_names();
-
-		$ranking = $groups->get_ranking_array();
+		$group_names = $this->get_group_names();
+		$ranking = $this->get_ranking_array();
 
 		if ( $layout == 'wide' ) {
 			$wdl = '<th class="wins"><span title="wins">w</span></th><th class="draws">'

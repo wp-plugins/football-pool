@@ -32,7 +32,7 @@ class Football_Pool_Shortcodes {
 	//        matches 1 to 5        -> match="1-5"
 	//        matches 1, 3 and 6    -> match="1,3,6"
 	//        matches 1 to 5 and 10 -> match="1-5,10"
-	//    If an argument is left empty it is ignored. Matches are always displayed first
+	//    If an argument is left empty it is ignored. Matches are always displayed first.
 	//
 	//    match     : collection of match ids 
 	//    question  : collection of question ids
@@ -132,11 +132,9 @@ class Football_Pool_Shortcodes {
 			$score_date = '';
 		}
 		
-		Football_Pool_Utils::debug('league='.$league.' , num='. $num.' , ranking_id='. $ranking.' , date='. $score_date,'file');
 		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, $score_date );
 		
 		$output = '';
-		Football_Pool_Utils::debug($rows,'file');
 		if ( count( $rows ) > 0 ) {
 			$i = 1;
 			$output .= '<table class="pool-ranking ranking-shortcode">';

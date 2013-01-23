@@ -76,6 +76,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	public function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		
 		$sql = $wpdb->prepare( "SELECT 
 									m.homeTeamId, m.awayTeamId, 
 									m.homeScore, m.awayScore, 
@@ -85,7 +87,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id AND t.visibility = 1
-									AND (m.homeTeamId = %d OR m.awayTeamId = %d)",
+									AND (m.homeTeamId = %d OR m.awayTeamId = %d)
+								ORDER BY {$sorting}",
 								$this->id,
 								$this->id
 						);

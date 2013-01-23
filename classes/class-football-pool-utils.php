@@ -89,7 +89,10 @@ class Football_Pool_Utils {
 	// http://kovshenin.com/2010/wordpress-and-magic-quotes/
 	public function safe_stripslashes( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes( $value ) : $value;
-		return stripslashes( $value );
+		if ( is_array( $value) )
+			return stripslashes_deep( $value );
+		else
+			return stripslashes( $value );
 	}
 	public function safe_stripslashes_deep( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes_deep( $value ) : $value;

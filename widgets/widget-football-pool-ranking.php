@@ -66,6 +66,8 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		
 		$rows = $pool->get_pool_ranking_limited( $league, $num_users, $ranking_id );
 		if ( count( $rows ) > 0 ) {
+			$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
+			
 			$i = 1;
 			echo '<table class="pool-ranking">';
 			foreach ( $rows as $row ) {
@@ -74,7 +76,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				
 				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
 				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $url, '">', $row["userName"], '</a></td>',
+					'<td><a href="', $url, '">', $pool->get_avatar( $row['userId'], 'small' ), $row["userName"], '</a></td>',
 					'<td class="score">', $row['points'], '</td></tr>';
 			}
 			echo '</table>';
