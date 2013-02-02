@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-01-22 17:33+0100\n"
+"PO-Revision-Date: 2013-01-24 22:58+0100\n"
 "Last-Translator: Julien Blancher <ju.blancher@gmail.com>\n"
 "Language-Team: IenIen <julien78480@hotmail.fr>\n"
 "X-Generator: Poedit 1.5.4\n"
@@ -773,27 +773,25 @@ msgid "Start date"
 msgstr "Date de début"
 
 #: admin/class-football-pool-admin-options.php:48
-#, fuzzy
 msgid ""
 "The start date of the tournament or pool. The shortcode [fp-start] adds this "
 "value in the content."
 msgstr ""
-"La date du début du tournoi. Le shortcode [fp-start] ajoute cette valeur "
-"dans un contenu."
+"La date du début du tournoi ou des pronostics. Le shortcode [fp-start] "
+"ajoute cette valeur dans un contenu."
 
 #: admin/class-football-pool-admin-options.php:50
 msgid "Full score *"
 msgstr "Points pronostic exact *"
 
 #: admin/class-football-pool-admin-options.php:50
-#, fuzzy
 msgid ""
 "The points a user gets for getting the exact outcome of a match. The "
 "shortcode [fp-fullpoints] adds this value in the content. This value is also "
 "used for the calculations in the pool."
 msgstr ""
 "Les points qu'un utilisateur obtient pour avoir trouvé le résultat exact du "
-"match. Le shortcode [fp-fullpoints] ajoute cette valeur dans une page. Cette "
+"match. Le shortcode [fp-fullpoints] ajoute cette valeur un contenu. Cette "
 "valeur est également utilisée pour les calculs généraux."
 
 #: admin/class-football-pool-admin-options.php:52
@@ -1136,9 +1134,8 @@ msgid "League Options"
 msgstr "Option des catégories"
 
 #: admin/class-football-pool-admin-options.php:249
-#, fuzzy
 msgid "Pool Layout Options"
-msgstr "Options d'affichage"
+msgstr "Options d'affichage de l'espace pronostics"
 
 #: admin/class-football-pool-admin-options.php:259
 msgid "Other Options"
@@ -1416,9 +1413,8 @@ msgid "Users"
 msgstr "Joueurs"
 
 #: admin/class-football-pool-admin-users.php:7
-#, fuzzy
 msgid "Change users in the football pool."
-msgstr "Changer les joueurs."
+msgstr "Changer les joueurs de l'espace pronostics."
 
 #: admin/class-football-pool-admin-users.php:11
 msgid ""
@@ -1466,9 +1462,8 @@ msgid "registered for league"
 msgstr "Enregistré dans la catégorie"
 
 #: admin/class-football-pool-admin-users.php:129
-#, fuzzy
 msgid "not a user in the pool"
-msgstr "N'est pas un joueur"
+msgstr "N'est pas un joueur de l'espace pronostics"
 
 #: admin/class-football-pool-admin-users.php:131
 msgid "payed?"
@@ -1554,14 +1549,12 @@ msgstr ""
 "shortcode classement."
 
 #: admin/class-football-pool-admin.php:8 admin/class-football-pool-admin.php:9
-#, fuzzy
 msgid "Football Pool"
-msgstr "Pronostics"
+msgstr "Espace pronostics"
 
 #: admin/class-football-pool-admin.php:18
-#, fuzzy
 msgid "Football Pool Options"
-msgstr "Options des pronostics de football"
+msgstr "Options dee l'espace pronostics"
 
 #: admin/class-football-pool-admin.php:27
 msgid "Edit users"
@@ -1641,9 +1634,8 @@ msgid "Select a shortcode"
 msgstr "Sélectionner un shortcode"
 
 #: assets/admin/tinymce/tinymce-dialog.php:61
-#, fuzzy
 msgid "Pool"
-msgstr "Pool"
+msgstr "Espace pronostics"
 
 #: assets/admin/tinymce/tinymce-dialog.php:62
 msgid "Options"
@@ -1802,9 +1794,8 @@ msgid "after - time passed"
 msgstr "après - temps écoulé"
 
 #: assets/admin/tinymce/tinymce-dialog.php:283
-#, fuzzy
 msgid "Display inline"
-msgstr "Afficher dans la file"
+msgstr "Afficher en tant que ligne"
 
 #: assets/admin/tinymce/tinymce-dialog.php:307
 msgid "Insert"
@@ -1893,16 +1884,15 @@ msgstr "Voir les pronostics des autres joueurs"
 
 #: classes/class-football-pool-matches.php:486
 msgid "use your joker?"
-msgstr "Utiliser votre jocker?"
+msgstr "Utiliser votre ballon d'or?"
 
 #: classes/class-football-pool-pool.php:188
 msgid "No results yet. Below is a list of all users."
 msgstr "Pas encore de résultats. Ci-dessous la liste de tous les joueurs."
 
 #: classes/class-football-pool-pool.php:193
-#, fuzzy
 msgid "No users have registered for this pool (yet)."
-msgstr "Aucun joueur ne s'est encore enregistré dans cette catégorie."
+msgstr "Aucun joueur ne s'est encore enregistré dans l'espace pronostics."
 
 #: classes/class-football-pool-pool.php:548
 msgid "Important:"
@@ -2064,12 +2054,11 @@ msgid " ago the tournament started."
 msgstr "le tournoi a commencé."
 
 #: classes/class-football-pool.php:403
-#, fuzzy
 msgid ""
 "Click below to go to the football pool and predict your scores. Good luck!"
 msgstr ""
-"Cliquer ci-dessous pour aller dans l'espace football et faire vos "
-"pronostics. Bonne chance !"
+"Cliquer ci-dessous pour aller dans l'espace pronostics et parier. Bonne "
+"chance !"
 
 #: classes/class-football-pool.php:404
 msgid "Fill in your predictions."
@@ -2181,9 +2170,8 @@ msgstr "Mauvaise réponse"
 #: pages/class-football-pool-statistics-page.php:203
 #: pages/class-football-pool-statistics-page.php:214
 #: pages/class-football-pool-statistics-page.php:219
-#, fuzzy
 msgid "position in the pool"
-msgstr "Classement général"
+msgstr "Classement général de l'espace pronostics"
 
 #: pages/class-football-pool-statistics-page.php:205
 msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
@@ -2311,14 +2299,12 @@ msgid "Change charts"
 msgstr "Changer les graphiques"
 
 #: widgets/widget-football-pool-userselector.php:71
-#, fuzzy
 msgid "No users in the pool."
-msgstr "Aucun joueur."
+msgstr "Aucun joueur dans l'espace pronostics"
 
 #. Plugin Name of the plugin/theme
-#, fuzzy
 msgid "Football pool"
-msgstr "Groupe de football"
+msgstr "Pronostics Football"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpressfootballpool.wordpress.com/"

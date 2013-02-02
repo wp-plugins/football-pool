@@ -26,7 +26,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
 		</p>
-		
+
 		<h2 id="times">Time</h2>
 		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
@@ -48,6 +48,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="points">Points</h2>
 		<p>The plugin uses 3 different scores that are rewarded to players for the match predictions they do. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
 		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points. The goal bonus is rewarded if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
@@ -98,6 +99,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="rankings">Rankings</h2>
 		<p>
 		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
@@ -110,16 +112,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="leagues">Leagues</h2>
 		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done on the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="players">Players</h2>
 		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
 		If not playing with leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="bonusquestions">Bonus questions</h2>
 		<h3>Types</h3>
 		<p>There are 3 types of bonus questions: 
@@ -144,6 +149,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="teams-groups-and-matches">Teams, groups and matches</h2>
 		<p>
 		In the pool your blog users can predict the outcome of matches in a competition. A competition consists of multiple teams that play each other in matches. The game schedule can be entered on the <a href="?page=footballpool-games">Matches</a> admin page. On that page the matches may be entered manually or uploaded via a csv file. See information below about the format of the csv file, or export an existing game schedule for an example. The format of the export (full data or minimal data) can be set on the options page of the plugin.
@@ -309,6 +315,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="shortcodes">Shortcodes</h2>
 		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes the adding of these shortcodes a bit easier.
 		</p>
@@ -483,6 +490,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="charts">Using charts</h2>
 		<p>
 		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
@@ -501,6 +509,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
+
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>

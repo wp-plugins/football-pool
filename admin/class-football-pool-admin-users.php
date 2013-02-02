@@ -95,9 +95,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$users = get_users( '' );
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
-			$league_name = array_key_exists( $league_id, $pool->leagues ) ? 
-									$pool->leagues[$league_id]['leagueName'] : 
-									__( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+			if ( array_key_exists( $league_id, $pool->leagues ) ) {
+				$league_name = $pool->leagues[$league_id]['leagueName'];
+			} else {
+				$league_name = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+			}
 			
 			$plays_in_league = array_key_exists( $user->ID, $league_users ) ? $league_users[$user->ID] : 0;
 			$is_no_player = in_array( $user->ID, $excluded_players ) ? 1 : 0;
@@ -116,6 +118,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 							'email_address'			=> $user->user_email,
 						);
 		}
+		
 		return $output;
 	}
 
@@ -437,6 +440,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
 		$wpdb->query( $sql );
 		// also recalculate scorehistory
+		// note: we are outside of the plugin admin scope here, so no "self::" available
 		$score = new Football_Pool_Admin();
 		$success = $score->update_score_history();
 	}

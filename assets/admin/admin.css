@@ -93,3 +93,4 @@ div.help.important {
 div.help-page h2 { padding: 3em 0 .5em; }
 div.help-page h2:first-of-type { padding-top: 1em; }
 div.help-page h3 { padding: 2em 0 .5em; }
+div.help-page h2 + h3 { padding-top: 0; }

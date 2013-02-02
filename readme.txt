@@ -32,7 +32,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch, Spanish and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+At the moment the plugin is available in English, Dutch, Spanish, French and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
 
@@ -113,6 +113,7 @@ The Football Pool plugin is available in the following languages:
 * English (default) by me.
 * Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.x).
 * Spanish (`es_ES`) by Cristian Carlucci.
+* French (`fr_FR`) by Julien Blancher.
 
 == Screenshots ==
 1. Matches in the tournament
@@ -142,12 +143,13 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 
 = 2.2.0 =
 * Important: styling of the widgets has changed. They contained styles that could conflict with the styling of other widgets.
-* New feature: user defined rankings (ranking for a defined group of matches).
+* New feature: user defined rankings (ranking for a selected group of matches and/or questions).
 * New feature: the plugin option to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
 * New shortcode to support the user defined rankings.
 * New shortcode to show prediction form for a group of matches and/or bonus questions.
 * New feature: ability to use result of matches in multiple match types as data for the Groups page. This option can be set in the plugin options screen (thanks to Eli for reporting this).
 * New feature: option to show user's avatar in the ranking tables.
+* Added French translation (thanks Julien Blancher).
 * All dates in the front-end are localized using date_i18n().
 * Clean up: all plugin options are stored in a single array in the wp_options table.
 * Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).

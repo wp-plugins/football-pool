@@ -10,7 +10,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		self::recalculate_scorehistory_iframe();
+		//self::recalculate_scorehistory_iframe();
 		
 		$log = '';
 		$file = '';
