@@ -10,8 +10,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		//self::recalculate_scorehistory_iframe();
-		
 		$log = '';
 		$file = '';
 		
@@ -386,7 +384,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			case 'update_single_match_close':
 				$success = self::update_single_match( $item_id );
 				if ( $item_id == 0 ) $item_id = $success;
-				if ( $success ) $success = self::update_score_history();
+				if ( $success ) self::update_score_history();
 				break;
 			case 'edit':
 				$success = self::edit( $item_id );
@@ -394,11 +392,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'edit' ) {
-			if ( $success ) {
-				self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			} else {
-				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-			}
+			if ( $success ) self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			
 			if ( $action == 'update_single_match' ) {
 				self::edit_handler( $item_id, 'edit' );

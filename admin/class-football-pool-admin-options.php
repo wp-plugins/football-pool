@@ -223,11 +223,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		if ( Football_Pool_Utils::post_string( 'recalculate' ) == 'Recalculate Scores' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			$success = self::update_score_history();
-			if ( $success )
-				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			else
-				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			self::update_score_history();
 		} elseif ( $action == 'update' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			foreach ( $options as $option ) {

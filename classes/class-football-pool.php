@@ -288,9 +288,13 @@ class Football_Pool {
 			}
 			
 			// admin css
-			self::include_css( 'assets/admin/admin.css', 'css-admin' );
+			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
 			// admin js
-			self::include_js( 'assets/admin/admin.js', 'js-admin' );
+			self::include_js( 'assets/admin/admin.js', 'js-pool-admin' );
+			wp_localize_script( 'js-pool-admin'
+								, 'FootballPoolAjax'
+								, array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) 
+			);
 		}
 	}
 	

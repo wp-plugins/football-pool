@@ -64,11 +64,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		if ( $action != 'list' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			$success = self::update_score_history();
-			if ( $success )
-				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-			else
-				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			self::update_score_history();
 		}
 		
 		self::view();
@@ -441,8 +437,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		// also recalculate scorehistory
 		// note: we are outside of the plugin admin scope here, so no "self::" available
-		$score = new Football_Pool_Admin();
-		$success = $score->update_score_history();
+		// removed since version 2.2.0 (iframe not available)
+		// $score = new Football_Pool_Admin();
+		// $score->update_score_history();
 	}
 	
 }

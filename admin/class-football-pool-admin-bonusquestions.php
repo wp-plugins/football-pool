@@ -31,8 +31,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$id = Football_Pool_Utils::post_integer( 'item_id' );
 				self::set_bonus_question_for_users( $id );
-				$success = self::update_bonus_question_points();
-				if ( ! $success ) self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+				self::update_score_history();
 				
 				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
@@ -252,7 +251,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					);
 		
 		$id = self::update_bonus_question( $question );
-		self::update_bonus_question_points();
+		self::update_score_history();
 		return $id;
 	}
 	
@@ -262,7 +261,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		} else {
 			self::delete_bonus_question( $question_id );
 		}
-		self::update_bonus_question_points();
+		self::update_score_history();
 	}
 	
 	private function delete_bonus_question( $id ) {
@@ -277,10 +276,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
 		$wpdb->query( $sql );
-	}
-	
-	private function update_bonus_question_points() {
-		return self::update_score_history();
 	}
 	
 	private function update_bonus_question( $input ) {

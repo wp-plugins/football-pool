@@ -1,3 +1,7 @@
+function close_calculation_iframe() {
+	jQuery( '#fp-calculation-iframe' ).hide( 'slow', function() { jQuery(this).remove() } );
+}
+
 function bulk_action_warning( id ) {
 	var bulk_select = jQuery( '#' + id );
 	var msg;
@@ -203,7 +207,6 @@ function tinymce_insert_shortcode() {
 				texts = 'none';
 			} else {
 				texts = [ jQuery( '#text-1', panel_id ).val(), jQuery( '#text-2', panel_id ).val(), jQuery( '#text-3', panel_id ).val(), jQuery( '#text-4', panel_id ).val() ].join( ';' );
-				// texts = texts.join( ';' );
 			}
 			if ( texts != '' && texts != ';;;' ) atts += ' texts="' + texts + '"';
 			break;

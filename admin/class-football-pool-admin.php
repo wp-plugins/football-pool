@@ -734,218 +734,33 @@ class Football_Pool_Admin {
 			wp_cache_set( $cache_key, $delete_method );
 			
 			$sql  = "{$delete_method} {$prefix}{$table_name}";
-			$check = $wpdb->query( $sql );
+			$check = ( $wpdb->query( $sql ) !== false );
 		}
 		
 		return $check;
 	}
 	
 	public function recalculate_scorehistory_iframe() {
-		echo "<iframe src='", FOOTBALLPOOL_PLUGIN_URL, "admin/test.html' width='400' height='150'></iframe>";
-		self::secondary_button( 'Close', 'close', true, 'button', array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) );
+		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
+		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
+		echo '<div id="fp-calculation-iframe">';
+		echo '<iframe src="', $url, '" width="500" height="160"></iframe>';
+		self::secondary_button( 
+			__( 'Close (re)calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'close_calculation_iframe()', 
+			true, 
+			'js-button', 
+			array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) 
+		);
+		echo '</div>';
 	}
 	
 	public function update_score_history() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$pool = new Football_Pool_Pool;
-		
-		// 1. empty table
-		$check = self::empty_table( 'scorehistory' );
-		$result = $check;
-		
-		if ( $check !== false ) {
-			// 2. check predictions with actual match result (score type = 0)
-			$sql = "INSERT INTO {$prefix}scorehistory
-						( type, scoreDate, scoreOrder, userId, score, full, toto, goal_bonus
-						, ranking, ranking_id ) 
-					SELECT 
-						%d, m.playDate, m.nr, u.ID, 
-						IF ( p.hasJoker = 1, 2, 1 ) AS score,
-						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL ) AS full,
-						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
-							IF (
-								IF ( m.homeScore > m.awayScore, 1, IF ( m.homeScore = m.awayScore, 3, 2 ) )
-								=
-								IF ( p.homeScore > p.awayScore, 1, IF (p.homeScore = p.awayScore, 3, 2) )
-								, IF ( p.homeScore IS NULL OR p.awayScore IS NULL, NULL, 1 )
-								, NULL 
-								)
-						) AS toto,
-						IF ( m.homeScore = p.homeScore, 
-								IF ( m.awayScore = p.awayScore, 2, 1 ),
-								IF ( m.awayScore = p.awayScore, 1, NULL )
-						) AS goal_bonus,
-						0,
-						%d
-					FROM {$wpdb->users} u ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			}
-			$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
-					LEFT OUTER JOIN {$prefix}predictions p
-						ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
-					WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
-			$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH, FOOTBALLPOOL_RANKING_DEFAULT );
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			
-			// 3. update score for matches
-			$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-			$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
-			$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
-			$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory 
-									SET score = score * ( ( full * {$full} ) 
-												+ ( toto * {$toto} ) 
-												+ ( goal_bonus * {$goal} ) ) 
-									WHERE type = %d AND ranking_id = %d"
-									, FOOTBALLPOOL_TYPE_MATCH, FOOTBALLPOOL_RANKING_DEFAULT );
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			
-			// 4. add bonusquestion scores (score type = 1)
-			//    make sure to take the userpoints into account (we can set an alternate score for an 
-			//    individual user in the admin)
-			$sql = "INSERT INTO {$prefix}scorehistory 
-						( type, scoreDate, scoreOrder, userId, 
-						  score, full, toto, goal_bonus, ranking, ranking_id ) 
-					SELECT 
-						%d, q.scoreDate, q.id, u.ID, 
-						( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, NULL, 
-						0, %d 
-					FROM {$wpdb->users} u ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			}
-			$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
-						ON ( 1 = 1 )
-					LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-						ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
-					WHERE q.scoreDate IS NOT NULL ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
-			$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, FOOTBALLPOOL_RANKING_DEFAULT );
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			
-			// 5. update score incrementally once for every ranking, start with the default one
-			$users = get_users( '' );
-			$result &= self::calculate_rankings_in_scorehistory( $users, FOOTBALLPOOL_RANKING_DEFAULT );
-			// followed by the user defined rankings
-			$sql = "SELECT id FROM {$prefix}rankings WHERE user_defined = 1 ORDER BY id DESC";
-			$rows = $wpdb->get_results( $sql );
-			foreach ( $rows as $row ) 
-				$result &= self::calculate_rankings_in_scorehistory( $users, $row->id );
-		}
-		
-		return $result;
+		self::recalculate_scorehistory_iframe();
+		return true;
 	}
 	
-	private function calculate_rankings_in_scorehistory( $users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$result = true;
-		
-		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-			$sql_user_scores = sprintf( "SELECT * FROM {$prefix}scorehistory 
-										WHERE userId = %%d AND ranking_id = %d
-										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
-										, $ranking_id
-								);
-		} else {
-			$sql_user_scores = sprintf( "SELECT s.* FROM {$prefix}scorehistory s
-										LEFT OUTER JOIN {$prefix}rankings_matches rm
-										  ON ( s.scoreOrder = rm.match_id 
-												AND rm.ranking_id = %d AND s.type = %d )
-										LEFT OUTER JOIN {$prefix}rankings_bonusquestions rq
-										  ON ( s.scoreOrder = rq.question_id 
-												AND rq.ranking_id = %d AND s.type = %d )
-										WHERE s.userId = %%d AND s.ranking_id = %d 
-										AND ( rm.ranking_id IS NOT NULL OR rq.ranking_id IS NOT NULL )
-										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
-										, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
-										, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
-										, FOOTBALLPOOL_RANKING_DEFAULT
-								);
-		}
-		
-		foreach ( $users as $user ) {
-			$sql = $wpdb->prepare( $sql_user_scores, $user->ID );
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory 
-									WHERE userId = %d AND ranking_id = %d", $user->ID, $ranking_id );
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			
-			$score = 0;
-			foreach ( $rows as $row ) {
-				$score += $row['score'];
-				$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
-											( type, scoreDate, scoreOrder, userId, 
-											  score, full, toto, goal_bonus, totalScore, 
-											  ranking, ranking_id ) 
-										VALUES 
-											( %d, %s, %d, %d, 
-											  %d, %d, %d, %d, %d, 
-											  0, %d )",
-										$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
-										$row['score'], $row['full'], $row['toto'], $row['goal_bonus'], $score,
-										$ranking_id
-								);
-				$check = $wpdb->query( $sql );
-				$result &= ( $check !== false );
-			}
-		}
-		
-		// 6. update ranking
-		$pool = new Football_Pool_Pool;
-		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-			$sql = $wpdb->prepare( "SELECT scoreDate, `type` FROM {$prefix}scorehistory 
-									WHERE ranking_id = %d GROUP BY scoreDate, `type`"
-									, $ranking_id );
-		} else {
-			$sql = $wpdb->prepare( "SELECT s.scoreDate, s.`type` FROM {$prefix}scorehistory s
-									JOIN {$prefix}rankings_matches rm
-										ON ( s.scoreOrder = rm.match_id AND rm.ranking_id = %d )
-									WHERE s.ranking_id = %d GROUP BY s.scoreDate, s.`type`"
-									, $ranking_id, $ranking_id );
-		}
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-		
-		if ( is_array( $rows ) ) {
-			foreach ( $rows as $row ) {
-				$sql = $pool->get_ranking_from_score_history( 0, $ranking_id, $row['scoreDate'] );
-				$rows2 = $wpdb->get_results( $sql, ARRAY_A );
-				$rank = 1;
-				foreach ( $rows2 as $row2 ) {
-					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
-											WHERE userId = %d AND type = %d AND scoreDate = %s 
-											AND ranking_id = %d"
-											, $rank++
-											, $row2['userId']
-											, $row["type"]
-											, $row['scoreDate']
-											, $ranking_id
-									);
-					$check = $wpdb->query( $sql );
-					$result &= ( $check !== false );
-				}
-			}
-		}
-		
-		return $result;
-	}
-	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = '' ) {
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = null ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -976,11 +791,25 @@ class Football_Pool_Admin {
 					$wrap, 
 					$atts 
 			);
-		} elseif ( $type == 'link' ) {
-			$button = sprintf( '<input type="button" onclick="location.href=\'%s\';%s" class="button-secondary" value="%s" />'
+		} elseif ( $type == 'link' || $type == 'js-button' ) {
+			$attributes = '';
+			if ( is_array( $other_attributes ) ) {
+				foreach( $other_attributes as $key => $value ) {
+					$attributes .= $key . '="' . esc_attr( $value ) . '" ';
+				}
+			} elseif ( ! empty( $other_attributes ) ) {
+				$attributes = $other_attributes;
+			}
+			
+			if ( $type == 'link' ) {
+				$action_val = "location.href='{$action_val}'";
+			}
+			$button = sprintf( '<input type="button" onclick="%s;%s" 
+										class="button-secondary" value="%s" %s/>'
 								, $action_val
 								, $onclick_val
-								, esc_attr( $text ) 
+								, esc_attr( $text )
+								, $attributes
 						);
 			if ( $wrap ) {
 				$button = '<p class="submit">' . $button . '</p>';

@@ -32,6 +32,7 @@ define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
 define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
 define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
+define( 'FOOTBALLPOOL_RECALC_USER_DIV', 20 );
 
 // matches and scores
 define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
@@ -55,6 +56,7 @@ define( 'FOOTBALLPOOL_LARGE_AVATAR', 36 ); // size in px
 // nonces
 define( 'FOOTBALLPOOL_NONCE_CSV', 'football-pool-csv-download' );
 define( 'FOOTBALLPOOL_NONCE_ADMIN', 'football-pool-admin' );
+define( 'FOOTBALLPOOL_NONCE_SCORE_CALC', 'football-pool-score-calculation' );
 define( 'FOOTBALLPOOL_NONCE_BLOG', 'football-pool-blog' );
 define( 'FOOTBALLPOOL_NONCE_FIELD_BLOG', '_footballpool_wpnonce' );
 define( 'FOOTBALLPOOL_NONCE_SHOUTBOX', 'football-pool-shoutbox' );
