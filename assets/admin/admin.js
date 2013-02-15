@@ -229,6 +229,8 @@ function tinymce_insert_shortcode() {
 			if ( group > 0 ) atts += ' id=' + group;
 			break;
 		case 'fp-ranking':
+			var ranking = jQuery( '#ranking-id', panel_id ).val();
+			if ( ranking > 0 ) atts += ' ranking="' + ranking + '"';
 			var league = jQuery( '#ranking-league', panel_id ).val();
 			if ( league > 0 ) atts += ' league="' + league + '"';
 			var num = jQuery( '#ranking-num', panel_id ).val();

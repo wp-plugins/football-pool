@@ -35,12 +35,15 @@ function match_options() {
 	
 	<style type="text/css">
 	#tabs li, .dialog-table label { cursor: pointer; }
-	.dialog-table { border: 0; }
-	.dialog-table td { padding: 3px; vertical-align: top; }
+	.dialog-table { border: 0; border-collapse: collapse; }
+	.dialog-table td { padding: 3px 5px 3px 3px; vertical-align: top; }
 	/* .dialog-table td * { font-size: 12px!important; } */
 	.dialog-table td p { margin-bottom: 3px; }
 	#panel_wrapper div.current { height: 270px; }
 	.atts { display: none; }
+	.shortcode-select { background-color: #f1f1f1; }
+	.shortcode-select td p { margin-bottom: 8px; }
+	.shortcode-select td { font-weight: bold; }
 	</style>
 	
 	<script type="text/javascript">
@@ -97,13 +100,33 @@ function match_options() {
 		<!-- panel -->
 		<div id="pool_panel" class="panel current"><br/>
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-pool"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform' } )">
 						<option value="fp-ranking"><?php _e( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-group"><?php _e( 'Group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-predictionform"><?php _e( 'Prediction form', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-ranking">
+				<td>
+					<label for="ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="ranking-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$rankings = $pool->get_rankings( 'user defined' );
+							foreach ( $rankings as $ranking ) {
+								printf( '<option value="%d">%s</option>', $ranking['id'], $ranking['name'] );
+							}
+							?>
+						</optgroup>
 					</select>
 				</td>
 			</tr>
@@ -221,7 +244,7 @@ function match_options() {
 		<!-- panel -->
 		<div id="options_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="shortcode"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="shortcode" class="shortcode">
@@ -241,7 +264,7 @@ function match_options() {
 		<!-- panel -->
 		<div id="links_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-link"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="s-link" class="shortcode" onchange="toggle_atts( this.id, { 'fp-link': 'tr-slug', 'fp-register': 'tr-title' } )">
@@ -279,7 +302,7 @@ function match_options() {
 		<!-- panel -->
 		<div id="other_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-other"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="s-other" class="shortcode" onchange="toggle_atts( this.id, { 'fp-countdown': 'tr-count' } )">
