@@ -66,7 +66,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$id = Football_Pool_Utils::request_integer( 'item_id' );
 		
 		if ( $id > 0 ) {
-			echo '<form action="" method="post">';
 			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
 			$questiondate = new DateTime( $question['answer_before_date'] );
@@ -121,7 +120,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '</p>';
 			self::hidden_input( 'item_id', $id );
 			self::hidden_input( 'action', 'user-answers-save' );
-			echo '</form>';
 		} else {
 			self::notice( __( 'No questions, users or answers found.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}

@@ -149,6 +149,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * New shortcode to show prediction form for a group of matches and/or bonus questions.
 * New feature: ability to use result of matches in multiple match types as data for the Groups page. This option can be set in the plugin options screen (thanks to Eli for reporting this).
 * New feature: option to show user's avatar in the ranking tables.
+* New option: choose sorting method of matches (date ascending or date descending).
 * Added French translation (thanks Julien Blancher).
 * All dates in the front-end are localized using date_i18n().
 * Clean up: all plugin options are stored in a single array in the wp_options table.

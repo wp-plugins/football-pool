@@ -41,7 +41,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 				break;
 			case 'save':
 				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-				// new or updated venue
+				// new or updated match type
 				$item_id = self::update( $item_id );
 				self::notice( __( 'Match type saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {

@@ -97,6 +97,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-stadiums.php';
 	require_once 'admin/class-football-pool-admin-matchtypes.php';
 	require_once 'admin/class-football-pool-admin-groups.php';
+	require_once 'admin/class-football-pool-admin-rankings.php';
 	
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );

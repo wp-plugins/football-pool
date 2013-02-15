@@ -279,7 +279,8 @@ class Football_Pool_Pool {
 		return $leagues;
 	}
 	
-	public function get_rankings( $only_user_defined = false ) {
+	public function get_rankings( $which = 'all' ) {
+		$only_user_defined = ( $which == 'user defined' );
 		$cache_key = 'fp_get_rankings_' . ( $only_user_defined ? 'user_defined' : 'all' );
 		$rankings = wp_cache_get( $cache_key );
 		
@@ -301,6 +302,31 @@ class Football_Pool_Pool {
 		}
 		
 		return $rankings;
+	}
+	
+	public function get_ranking_by_id( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT name, user_defined FROM {$prefix}rankings WHERE id = %d", $id );
+		return $wpdb->get_row( $sql, ARRAY_A ); // returns null if no ranking found
+	}
+	
+	public function get_ranking_matches( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );
+		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
+	}
+	
+	public function get_ranking_questions( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions WHERE ranking_id = %d"
+								, $id );
+		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
 	}
 	
 	public function league_filter( $league = 0, $select = 'league' ) {

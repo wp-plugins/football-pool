@@ -74,7 +74,7 @@ $step = Football_Pool_Utils::get_int( 'step', 1 );
 $progress = Football_Pool_Utils::get_int( 'progress', 1 );
 $ranking_id = Football_Pool_Utils::get_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
 $user_id = Football_Pool_Utils::get_int( 'user', 0 );
-$total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );;
+$total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );
 
 // steps:
 $msg = array();
@@ -82,9 +82,15 @@ $msg[] = __( 'empty ranking table', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'check user predictions with actual results', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'update score with points', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'add bonus question points', FOOTBALLPOOL_TEXT_DOMAIN );
-$msg[] = __( 'update total score incrementally', FOOTBALLPOOL_TEXT_DOMAIN ); // (once for every ranking)
-$msg[] = __( 'update ranking for users', FOOTBALLPOOL_TEXT_DOMAIN ); // (for each user)
-$msg[] = __( 'calculate user defined rankings', FOOTBALLPOOL_TEXT_DOMAIN ); // (for each score date)
+$msg[] = sprintf( __( 'ranking %d: update total score incrementally', FOOTBALLPOOL_TEXT_DOMAIN )
+				, $ranking_id 
+			);
+$msg[] = sprintf( __( 'ranking %d: update ranking for users', FOOTBALLPOOL_TEXT_DOMAIN )
+				, $ranking_id
+			);
+$msg[] = sprintf( __( 'ranking %d: calculate user ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+				, $ranking_id
+			);
 $msg[] = sprintf( '<strong>%s</strong>', __( 'score (re)calculation finished', FOOTBALLPOOL_TEXT_DOMAIN ) );
 
 if ( $total_steps == 0 ) {
@@ -261,7 +267,6 @@ switch ( $step ) {
 			}
 		}
 		
-		// check of we step 5 nog een keer moeten doen, of dat we door kunnen naar step 6
 		$params['step'] = 6;
 		$params['ranking'] = $ranking_id;
 		$params['user'] = 0; // @todo

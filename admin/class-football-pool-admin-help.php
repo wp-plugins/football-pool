@@ -108,7 +108,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
 		<div class="help important">
-			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database so when calculated, your playes shouldn't notice a delay when displaying a ranking. But an admin saving a match will have to wait for all the calculations to finish.</p>
+			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
