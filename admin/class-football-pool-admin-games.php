@@ -8,7 +8,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$log = '';
 		$file = '';

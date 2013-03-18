@@ -16,7 +16,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<ol>
 				<li><a href="#time">Time</a></li>
 				<li><a href="#points">Points</a></li>
-				<li><a href="#rankings">Rankings</a></li>
+				<li><a href="#rankings">Rankings & Scoring</a></li>
 				<li><a href="#leagues">Leagues</a></li>
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
@@ -110,6 +110,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<div class="help important">
 			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
 		</div>
+		<p>By default all rankings will be automatically (re)calculated when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a>.
+		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 

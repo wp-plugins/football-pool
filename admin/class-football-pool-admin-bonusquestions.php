@@ -33,7 +33,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				self::set_bonus_question_for_users( $id );
 				self::update_score_history();
 				
-				self::notice( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN );
+				self::notice( __( 'Answers updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;

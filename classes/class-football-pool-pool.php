@@ -280,7 +280,7 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_rankings( $which = 'all' ) {
-		$only_user_defined = ( $which == 'user defined' );
+		$only_user_defined = ( $which == 'user defined' || $which == 'user_defined' );
 		$cache_key = 'fp_get_rankings_' . ( $only_user_defined ? 'user_defined' : 'all' );
 		$rankings = wp_cache_get( $cache_key );
 		
@@ -333,16 +333,13 @@ class Football_Pool_Pool {
 		$output = '';
 		
 		if ( $this->has_leagues ) {
-			$output .= sprintf( '<select name="%s" id="%s">', $select, $select );
+			$options = array();
 			foreach ( $this->leagues as $row ) {
-				$output .= sprintf('<option value="%d"%s>%s</option>',
-								$row['leagueId'],
-								($row['leagueId'] == $league ? ' selected="selected"' : ''),
-								$row['leagueName']
-							);
+				$options[ $row['leagueId'] ] = $row['leagueName'];
 			}
-			$output .= '</select>';
+			$output .= Football_Pool_Utils::select( $select, $options, $league );
 		}
+		
 		return $output;
 	}
 	

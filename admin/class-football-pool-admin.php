@@ -755,8 +755,25 @@ class Football_Pool_Admin {
 		echo '</div>';
 	}
 	
-	public function update_score_history() {
-		self::recalculate_scorehistory_iframe();
+	private function recalculate_manual() {
+		self::secondary_button( 
+			__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN ), 
+			true, 
+			'link' 
+		);
+	}
+	
+	public function update_score_history( $force = 'no' ) {
+		$auto_calc = Football_Pool_Utils::get_fp_option( 'auto_calculation'
+														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
+														, 'int' );
+		
+		if ( $auto_calc == 1 || $force == 'force' ) {
+			self::recalculate_scorehistory_iframe();
+		} else {
+			self::recalculate_manual();
+		}
 		return true;
 	}
 	

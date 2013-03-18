@@ -27,14 +27,23 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			$match_time_offsets[] = array( 'value' => $offset, 'text' => $offset_text );
 		}
 		
+		$user_defined_rankings = array();
+		$pool = new Football_Pool_Pool;
+		$rankings = $pool->get_rankings( 'user defined' );
+		foreach ( $rankings as $ranking ) {
+			$user_defined_rankings[] = array( 'value' => $ranking['id'], 'text' => $ranking['name'] );
+		}
+		
 		// check if offset-dropdowns must be shown
 		if ( $action == 'update' ) {
 			// in case of a save action
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			$offset_switch = ( Football_Pool_Utils::post_int( 'match_time_display' ) !== 2 );			
+			$offset_switch = ( Football_Pool_Utils::post_int( 'match_time_display' ) !== 2 );
+			$ranking_switch = ( Football_Pool_Utils::post_int( 'ranking_display' ) !== 2 );
 		} else {
 			// normal situation
 			$offset_switch = ( (int)Football_Pool_Utils::get_fp_option( 'match_time_display', 0, 'int' ) !== 2 );
+			$ranking_switch = ( (int)Football_Pool_Utils::get_fp_option( 'ranking_display', 0, 'int' ) !== 2 );
 		}
 		
 		// get the match types for the groups page
@@ -163,7 +172,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								__( 'Match time setting', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								'match_time_display', 
 								array( 
-									array( 'value' => 0, 'text' => __( 'Use WordPress setting', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+									array( 'value' => 0, 'text' => __( 'Use WordPress Timezone setting', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 									array( 'value' => 1, 'text' => __( 'Use UTC time', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 									array( 'value' => 2, 'text' => __( 'Custom setting', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 								), 
@@ -212,6 +221,35 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							),
 						'show_avatar' => 
 							array( 'checkbox', __( 'Show (gr)avatars', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_avatar', __( 'Show the user\'s (gr)avatar in ranking tables (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'auto_calculation' =>
+							array( 'checkbox', __( 'Automatic calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 'auto_calculation', __( 'By default the rankings are automatically (re)calculated in the admin. Change this setting if you want to (temporarily) disable this behaviour.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'ranking_display' =>
+							array( 
+								'radiolist', 
+								__( 'Ranking to show', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'ranking_display', 
+								array( 
+									array( 'value' => 0, 'text' => __( 'Default', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+									array( 'value' => 1, 'text' => __( 'Let the user decide', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+									array( 'value' => 2, 'text' => __( 'Custom setting', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+								), 
+								__( 'The ranking page and charts page can show different rankings. Use this setting to decide which ranking to show.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								array(
+									'onclick="toggle_linked_radio_options( null, \'#r-show_ranking\' )"',
+									'onclick="toggle_linked_radio_options( null, \'#r-show_ranking\' )"',
+									'onclick="toggle_linked_radio_options( \'#r-show_ranking\', null )"',
+								),
+							),
+						'show_ranking' =>
+							array( 
+								array( 'dropdown', 'string' ), 
+								__( 'Choose ranking', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'show_ranking', 
+								$user_defined_rankings,
+								__( 'Choose the ranking you want to use on the ranking page and the charts page.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								'',
+								$ranking_switch,
+							),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -221,9 +259,12 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
-		if ( Football_Pool_Utils::post_string( 'recalculate' ) == 'Recalculate Scores' ) {
+		$recalculate = ( Football_Pool_Utils::post_string( 'recalculate' ) ==
+													__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ) )
+						|| ( Football_Pool_Utils::get_string( 'recalculate' ) == 'yes' );
+		if ( $recalculate ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			self::update_score_history();
+			self::update_score_history( 'force' );
 		} elseif ( $action == 'update' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			foreach ( $options as $option ) {
@@ -257,11 +298,21 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Ranking Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['auto_calculation'],
 									$options['fullpoints'],
 									$options['totopoints'],
 									$options['goalpoints'],
+								)
+							);
+		echo '<p class="submit">';
+		submit_button( null, 'primary', null, false );
+		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		echo '</p>';
+		
+		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
 									$options['stop_time_method_matches'],
 									$options['maxperiod'],
 									$options['matches_locktime'],
@@ -288,6 +339,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['ranking_display'],
+									$options['show_ranking'],
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],

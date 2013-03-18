@@ -83,6 +83,9 @@ class Football_Pool {
 		$options['groups_page_match_types'] = array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ); // array of match type ids
 		$options['match_sort_method'] = FOOTBALLPOOL_MATCH_SORT; // 0: date asc, 1: date desc
 		$options['show_avatar'] = 0; // 1: yes, 0: no
+		$options['auto_calculation'] = 1; // 1: yes, 0: no
+		$options['ranking_display'] = 0; // 0: default, 1: user decides, 2: admin decides
+		$options['show_ranking'] = FOOTBALLPOOL_RANKING_DEFAULT;
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );

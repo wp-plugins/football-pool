@@ -1,5 +1,21 @@
 <?php
 class Football_Pool_Utils {
+	public function select( $id, $options, $selected_val, $name = '' ) {
+		if ( $name == '' ) $name = $id;
+		
+		$output = sprintf( '<select name="%s" id="%s">', $name, $id );
+		foreach ( $options as $val => $text ) {
+			$output .= sprintf('<option value="%s"%s>%s</option>'
+								, $val
+								, ( $val == $selected_val ? ' selected="selected"' : '' )
+								, $text
+						);
+		}
+		$output .= '</select>';
+		
+		return $output;
+	}
+	
 	// extract ids from a string ("x", "x-z", "x,y,z").
 	// only integers are returned
 	public function extract_ids( $input ) {

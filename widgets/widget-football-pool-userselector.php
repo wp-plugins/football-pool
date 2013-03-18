@@ -56,9 +56,11 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		$pool = new Football_Pool_Pool;
 		$rows = $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL );
 		if ( count($rows) > 0 ) {
-			echo '<form action="', $statisticspage, '" method="get">';
+			$ranking = Football_Pool_Utils::request_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
+			printf( '<form action="%s" method="get">', $statisticspage );
+			printf( '<input type="hidden" name="ranking" value="%s" />', $ranking );
 			
-			echo '<ol class="userselector" style="height: ', $height, 'px;">';
+			printf( '<ol class="userselector" style="height: %spx;">', $height );
 			foreach( $rows as $row ) {
 				$selected = ( in_array( $row['userId'], $users ) ) ? true : false;
 				echo '<li', ( $selected ? ' class="selected"' : '' ), '>
@@ -67,7 +69,9 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 						<label for="user', $row['userId'], '"> ', $pool->get_avatar( $row['userId'], 'small' ), $row['userName'], '</label></li>';
 			}
 			echo '</ol>';
-			echo '<p><input type="submit" value="', __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></p>';
+			printf( '<p><input type="submit" value="%s" /></p>'
+					, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
+			);
 			echo '</form>';
 		} else {
 			echo '<p>', __( 'No users in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';

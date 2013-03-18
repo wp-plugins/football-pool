@@ -166,12 +166,13 @@ class Football_Pool_Chart_Data {
 		return $output;
 	}
 	
-	public function score_per_match_line_chart_data( $users ) {
-		return $this->per_match_line_chart_data( $users, 'totalScore' );
+	public function score_per_match_line_chart_data( $users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		return $this->per_match_line_chart_data( $users, 'totalScore', $ranking_id );
 	}
 	
-	public function ranking_per_match_line_chart_data( $users ) {
-		return $this->per_match_line_chart_data( $users, 'ranking' );
+	public function ranking_per_match_line_chart_data( $users, 
+														$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		return $this->per_match_line_chart_data( $users, 'ranking', $ranking_id );
 	}
 	
 	private function per_match_line_chart_data( $users, $history_data_to_plot, 

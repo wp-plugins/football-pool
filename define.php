@@ -29,6 +29,7 @@ define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
 define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 
 // scorehistory
+define( 'FOOTBALLPOOL_RANKING_AUTOCALCULATION', 1 );
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
 define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
 define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
@@ -52,6 +53,8 @@ define( 'FOOTBALLPOOL_MATCH_SORT', 0 ); // date asc
 define( 'FOOTBALLPOOL_SMALL_AVATAR', 18 ); // size in px
 define( 'FOOTBALLPOOL_MEDIUM_AVATAR', 28 ); // size in px
 define( 'FOOTBALLPOOL_LARGE_AVATAR', 36 ); // size in px
+define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
+define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
 
 // nonces
 define( 'FOOTBALLPOOL_NONCE_CSV', 'football-pool-csv-download' );

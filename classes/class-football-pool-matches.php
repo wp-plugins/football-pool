@@ -10,6 +10,7 @@ class Football_Pool_Matches {
 	public $always_show_predictions = 0;
 	private $use_spin_controls = true;
 	public $has_matches = false;
+	private $time_format;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -34,6 +35,8 @@ class Football_Pool_Matches {
 		// cache match info
 		$this->matches = $this->match_info();
 		$this->has_matches = ( count( $this->matches ) > 0 );
+		
+		$this->time_format = get_option( 'time_format', FOOTBALLPOOL_TIME_FORMAT );
 	}
 	
 	public function disable_edits() {
@@ -324,7 +327,7 @@ class Football_Pool_Matches {
 									<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
-							$localdate->format( 'H:i' ),
+							$localdate->format( $this->time_format ),
 							$team_name,
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
@@ -409,7 +412,7 @@ class Football_Pool_Matches {
 								</tr>',
 							$info['nr'],
 							$form_id,
-							$localdate->format( 'H:i' ),
+							$localdate->format( $this->time_format ),
 							$home_team,
 							$teams->flag_image( (int) $info['home_team_id'] ),
 							$this->show_pool_input( '_home_' . $info['nr'], $row['homeScore'], $info['match_timestamp'] ),
@@ -429,12 +432,14 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	public function format_match_time( $datetime, $format = 'H:i' ) {
+	public function format_match_time( $datetime, $format = false ) {
+		if ( $format === false ) $format = $this->time_format;
+		
 		$display = Football_Pool_Utils::get_fp_option( 'match_time_display' );
 		if ( $display == 0 ) { // WordPress setting
 			$datetime = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime->format( 'Y-m-d H:i' ) ) );
 		} elseif ( $display == 2 ) { // custom setting
-			$offset = 60 * 60 * (float)Football_Pool_Utils::get_fp_option( 'match_time_offset' );
+			$offset = 60 * 60 * (float) Football_Pool_Utils::get_fp_option( 'match_time_offset' );
 			if ( $offset >= 0 ) $offset = '+' . $offset;
 			$datetime->modify( $offset . ' seconds' );
 		} // else UTC

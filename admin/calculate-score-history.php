@@ -313,11 +313,11 @@ switch ( $step ) {
 	case 7:
 		// handle user defined rankings
 		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-			$sql = "SELECT id FROM {$prefix}rankings WHERE user_defined = 1 ORDER BY id DESC LIMIT 1";
+			$sql = "SELECT id FROM {$prefix}rankings WHERE user_defined = 1 ORDER BY id ASC LIMIT 1";
 		} else {
 			$sql = $wpdb->prepare( "SELECT id FROM {$prefix}rankings 
-									WHERE user_defined = 1 AND id < %d
-									ORDER BY id DESC LIMIT 1"
+									WHERE user_defined = 1 AND id > %d
+									ORDER BY id ASC LIMIT 1"
 									, $ranking_id
 							);
 		}
