@@ -1,5 +1,24 @@
+CREATE TABLE IF NOT EXISTS `{$prefix}rankings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `user_defined` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}rankings_matches` (
+  `ranking_id` int(11) NOT NULL,
+  `match_id` int(11) NOT NULL,
+  PRIMARY KEY (`ranking_id`,`match_id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `{$prefix}rankings_bonusquestions` (
+  `ranking_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  PRIMARY KEY (`ranking_id`,`question_id`)
+) DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `{$prefix}shoutbox` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(11) unsigned NOT NULL DEFAULT '0',
   `shoutText` tinytext NOT NULL DEFAULT '',
   `dateEntered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -8,18 +27,18 @@ CREATE TABLE IF NOT EXISTS `{$prefix}shoutbox` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question` text NOT NULL DEFAULT '',
   `answer` varchar(200) NOT NULL DEFAULT '',
   `points` smallint(5) unsigned NOT NULL DEFAULT '0',
   `answerBeforeDate` datetime NOT NULL,
   `scoreDate` datetime DEFAULT NULL,
-  `matchNr` int(10) unsigned DEFAULT NULL,
+  `matchNr` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_type` (
-  `question_id` int(10) unsigned NOT NULL,
+  `question_id` int(11) unsigned NOT NULL,
   `type` int(10) unsigned NOT NULL,
   `options` text NOT NULL,
   `image` text NOT NULL,
@@ -28,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_type` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
-  `questionId` int(10) unsigned NOT NULL,
+  `questionId` int(11) unsigned NOT NULL,
   `userId` int(11) unsigned NOT NULL,
   `answer` text NOT NULL DEFAULT '',
   `correct` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -37,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions_useranswers` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}groups` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
@@ -58,14 +77,14 @@ CREATE TABLE IF NOT EXISTS `{$prefix}league_users` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}matches` (
-  `nr` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `stadiumId` int(10) unsigned NOT NULL,
+  `nr` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `stadiumId` int(11) unsigned NOT NULL,
   `homeTeamId` int(11) NOT NULL,
   `awayTeamId` int(11) NOT NULL,
   `homeScore` tinyint(3) unsigned DEFAULT NULL,
   `awayScore` tinyint(3) unsigned DEFAULT NULL,
   `playDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `matchtypeId` int(10) unsigned NOT NULL,
+  `matchtypeId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`nr`),
   KEY `ixAwayTeam` (`awayTeamId`),
   KEY `ixHomeTeam` (`homeTeamId`),
@@ -74,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}matches` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}matchtypes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL DEFAULT '',
   `visibility` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
@@ -94,22 +113,24 @@ CREATE TABLE IF NOT EXISTS `{$prefix}predictions` (
 CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `scoreDate` datetime NOT NULL,
-  `scoreOrder` int(10) unsigned NOT NULL,
-  `userId` int(10) unsigned NOT NULL,
-  `score` int(10) unsigned NOT NULL,
+  `scoreOrder` int(11) unsigned NOT NULL,
+  `userId` int(11) unsigned NOT NULL,
+  `score` int(11) unsigned NOT NULL,
   `full` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `toto` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `goal_bonus` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `totalScore` int(10) unsigned NOT NULL DEFAULT '0',
-  `ranking` int(10) unsigned NOT NULL,
+  `totalScore` int(11) unsigned NOT NULL DEFAULT '0',
+  `ranking` int(11) unsigned NOT NULL,
+  `ranking_id` int(11) unsigned DEFAULT NULL,
   KEY `scoreDate` (`scoreDate`),
   KEY `scoreDate_2` (`scoreDate`,`userId`),
   KEY `totalScore` (`totalScore`),
-  KEY `type` (`type`,`scoreDate`,`scoreOrder`)
+  KEY `type` (`type`,`scoreDate`,`scoreOrder`),
+  KEY `ranking_id` (`ranking_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}stadiums` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `photo` text NOT NULL DEFAULT '',
   `comments` text,
@@ -122,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `{$prefix}teams` (
   `photo` text NOT NULL,
   `flag` text NOT NULL,
   `link` varchar(200) NOT NULL DEFAULT '',
-  `groupId` tinyint(4) NOT NULL DEFAULT '0',
+  `groupId` int(11) NOT NULL DEFAULT '0',
   `groupOrder` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `is_real` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `is_active` tinyint(3) unsigned NOT NULL DEFAULT '1',

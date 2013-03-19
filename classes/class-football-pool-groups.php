@@ -71,7 +71,7 @@ class Football_Pool_Groups {
 		
 		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
-			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'] );
+			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'], null, 'UTF-8' );
 		}
 		
 		return $group_names;
@@ -130,20 +130,28 @@ class Football_Pool_Groups {
 		$against = array();
 		
 		$matches = new Football_Pool_Matches;
-		$rows = $matches->get_info( 1 );
+		$match_types = Football_Pool_Utils::get_fp_option( 
+													'groups_page_match_types' 
+													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
+												);
+		$rows = $matches->get_info( $match_types );
 		
 		foreach ( $rows as $row ) {
 			if ( ( $row['homeScore'] != null ) && ( $row['awayScore'] != null ) ) {
 				// set goals
-				$this->set_goals_array( $for, $against, $row['homeTeamId'], $row['awayTeamId'], $row['homeScore'], $row['awayScore'] );
+				$this->set_goals_array( 
+								$for, $against, 
+								$row['homeTeamId'], $row['awayTeamId'], 
+								$row['homeScore'], $row['awayScore'] 
+						);
 				// set wins, draws and losses
-				if ( (integer) $row['homeScore'] > (integer) $row['awayScore'] ) {
+				if ( (int) $row['homeScore'] > (int) $row['awayScore'] ) {
 					$wins   = $this->set_standing_array( $wins, $row['homeTeamId'] );
 					$losses = $this->set_standing_array( $losses, $row['awayTeamId'] );
-				} elseif ( (integer) $row['homeScore'] < (integer) $row['awayScore'] ) {
+				} elseif ( (int) $row['homeScore'] < (int) $row['awayScore'] ) {
 					$losses = $this->set_standing_array( $losses, $row['homeTeamId'] );
 					$wins   = $this->set_standing_array( $wins, $row['awayTeamId'] );
-				} elseif ( (integer) $row['homeScore'] == (integer) $row['awayScore'] ) {
+				} elseif ( (int) $row['homeScore'] == (int) $row['awayScore'] ) {
 					$draws = $this->set_standing_array( $draws, $row['homeTeamId'] );
 					$draws = $this->set_standing_array( $draws, $row['awayTeamId'] );
 				} else {
@@ -179,6 +187,13 @@ class Football_Pool_Groups {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		$match_types = Football_Pool_Utils::get_fp_option( 
+													'groups_page_match_types' 
+													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
+												);
+		$match_types = implode( ',', $match_types );
+		
 		$sql = $wpdb->prepare( "SELECT DISTINCT
 									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
@@ -194,10 +209,10 @@ class Football_Pool_Groups {
 									{$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id 
-									AND t.id = 1 -- only round 1
+									AND t.id IN ( {$match_types} )
 									AND ( m.homeTeamId = tm.id OR m.awayTeamId = tm.id )
 									AND tm.groupId = %d
-								ORDER BY m.playDate ASC, m.nr ASC",
+								ORDER BY {$sorting}",
 							$group
 						);
 		
@@ -243,8 +258,8 @@ class Football_Pool_Groups {
 	}
 	
 	private function set_goals_array( &$for, &$against, $home_team, $away_team, $home_score, $away_score ) {
-		$home_team = (integer) $home_team;
-		$away_team = (integer) $away_team;
+		$home_team = (int) $home_team;
+		$away_team = (int) $away_team;
 		
 		$for[$home_team]     = $this->set_goals( $for, $home_team, $home_score );
 		$for[$away_team]     = $this->set_goals( $for, $away_team, $away_score );
@@ -279,7 +294,6 @@ class Football_Pool_Groups {
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
-//@todo: extra testing
 			$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
 					FROM {$prefix}teams t, {$prefix}groups g 
 					WHERE t.groupId = g.id AND t.is_real = 1 AND t.is_active = 1
@@ -298,10 +312,8 @@ class Football_Pool_Groups {
 		$teams = new Football_Pool_Teams;
 		$team_names = $teams->team_names;
 
-		$groups = new Football_Pool_Groups;
-		$group_names = $groups->get_group_names();
-
-		$ranking = $groups->get_ranking_array();
+		$group_names = $this->get_group_names();
+		$ranking = $this->get_ranking_array();
 
 		if ( $layout == 'wide' ) {
 			$wdl = '<th class="wins"><span title="wins">w</span></th><th class="draws">'

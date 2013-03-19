@@ -10,6 +10,7 @@ add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_
 $fp_translate_this = __( 'countdown', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
+	protected $match;
 	protected $widget = array(
 		'name' => 'Countdown Next Prediction Widget',
 		
@@ -34,18 +35,18 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		)
 	);
 	
-	public function html( $title, $match, $args, $instance ) {
+	public function html( $title, $args, $instance ) {
 		extract( $args );
 		
 		$teams = new Football_Pool_Teams;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
-		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $match['nr'];
+		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['nr'];
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
-		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match['playDate'] ) );
+		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['playDate'] ) );
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
 		$day   = $countdown_date->format( 'd' );
@@ -60,7 +61,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		wp_cache_set( $cache_key, $id + 1 );
 		
-		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
+		$extra_texts = sprintf( 
+							"{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
 								, __( 'Just ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' until', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -77,8 +79,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				</script>";
 		if ( $teams->show_team_links ) {
 			$teampage = Football_Pool::get_page_link( 'teams' );
-			$url_home = esc_url( add_query_arg( array( 'team' => $match['home_team_id'] ), $teampage ) );
-			$url_away = esc_url( add_query_arg( array( 'team' => $match['away_team_id'] ), $teampage ) );
+			$url_home = esc_url( add_query_arg( array( 'team' => $this->match['home_team_id'] ), $teampage ) );
+			$url_away = esc_url( add_query_arg( array( 'team' => $this->match['away_team_id'] ), $teampage ) );
 			$team_str = '<a href="%s">%s</a>';
 		} else {
 			$url_home = $url_away = '';
@@ -86,11 +88,11 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		printf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
 				, $url_home
-				, ( isset( $teams->team_names[ (int) $match['home_team_id'] ] ) ?
-							$teams->team_names[ (int) $match['home_team_id'] ] : '' )
+				, ( isset( $teams->team_names[ (int) $this->match['home_team_id'] ] ) ?
+							$teams->team_names[ (int) $this->match['home_team_id'] ] : '' )
 				, $url_away
-				, ( isset( $teams->team_names[ (int) $match['away_team_id'] ] ) ?
-							$teams->team_names[ (int) $match['away_team_id'] ] : '' )
+				, ( isset( $teams->team_names[ (int) $this->match['away_team_id'] ] ) ?
+							$teams->team_names[ (int) $this->match['away_team_id'] ] : '' )
 			);
 	}
 	
@@ -100,7 +102,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 	
@@ -112,6 +114,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		$matches = new Football_Pool_Matches;
 		$match = $matches->get_next_match();
 		if ( $match != null ) {
+			$this->match = $match;
+			
 			//initializing variables
 			$this->widget['number'] = $this->number;
 			if ( isset( $instance['title'] ) )
@@ -124,7 +128,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 			if ( $do_wrapper ) 
 				echo $args['before_widget'];
 			
-			$this->html( $title, $match, $args, $instance );
+			$this->widget_html( $title, $args, $instance );
 				
 			if ( $do_wrapper ) 
 				echo $args['after_widget'];

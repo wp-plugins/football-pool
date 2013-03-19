@@ -1,11 +1,11 @@
 <?php
-// Based on Highcharts
+// Football Pool uses the Highcharts javascript API
 class Football_Pool_Chart_Data {
 	/************************************************
 	 All the functions to get the data for the charts
 	*************************************************/
 	
-	public function predictions_pie_chart_data( $match ) {
+	public function predictions_pie_chart_data( $match, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT
@@ -17,14 +17,14 @@ class Football_Pool_Chart_Data {
 									) AS goalbonus, 
 									COUNT( userId ) AS scoretotal
 								FROM {$prefix}scorehistory 
-								WHERE `type` = 0 
+								WHERE `type` = 0 AND ranking_id = %d
 								GROUP BY scoreOrder HAVING scoreOrder = %d", 
-							$match
+							$ranking_id, $match
 						);
 		return $wpdb->get_row( $sql, ARRAY_A );
 	}
 	
-	public function score_chart_data( $users = array() ) {
+	public function score_chart_data( $users = array(), $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$data = array();
 		
 		$pool = new Football_Pool_Pool;
@@ -46,7 +46,8 @@ class Football_Pool_Chart_Data {
 			} else {
 				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			}
-			$sql .= "WHERE s.type = 0 AND s.userId IN ( " . implode( ',', $users ) . " ) ";
+			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = 0 
+						AND s.userId IN ( " . implode( ',', $users ) . " ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 			$sql .= "GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -63,7 +64,8 @@ class Football_Pool_Chart_Data {
 		return $data;
 	}
 	
-	public function bonus_question_for_users_pie_chart_data( $users = array() ) {
+	public function bonus_question_for_users_pie_chart_data( $users = array(), 
+															$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$data = array();
 		if ( count( $users ) > 0 ) {
 			$pool = new Football_Pool_Pool;
@@ -73,19 +75,20 @@ class Football_Pool_Chart_Data {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			$sql = "SELECT
-						COUNT(IF(s.score>0,1,NULL)) AS bonuscorrect, 
-						COUNT(IF(s.score=0,1,NULL)) AS bonuswrong,
-						COUNT(s.scoreOrder) AS bonustotal,
+						COUNT( IF(s.score > 0, 1, NULL ) ) AS bonuscorrect, 
+						COUNT( IF(s.score = 0, 1, NULL ) ) AS bonuswrong,
+						COUNT( s.scoreOrder ) AS bonustotal,
 						u.display_name AS username
 					FROM {$prefix}scorehistory s
-					INNER JOIN {$wpdb->users} u ON (u.ID=s.userId) ";
+					INNER JOIN {$wpdb->users} u ON ( u.ID = s.userId ) ";
 			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId=u.ID) ";
+				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			}
-			$sql .= "WHERE s.type = 1 AND s.userId IN (" . implode(',', $users) . ") ";
+			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = 1 
+						AND s.userId IN ( " . implode(',', $users) . " ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 			$sql .= "GROUP BY s.userId";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -108,17 +111,17 @@ class Football_Pool_Chart_Data {
 		
 		$pool = new Football_Pool_Pool;
 		$sql = "SELECT 
-					COUNT(IF(ua.correct>0,1,NULL)) AS bonuscorrect, 
-					COUNT(IF(ua.correct=0,1,NULL)) AS bonuswrong,
-					COUNT(u.ID) AS totalusers 
+					COUNT( IF( ua.correct > 0, 1, NULL ) ) AS bonuscorrect, 
+					COUNT( IF( ua.correct = 0, 1, NULL ) ) AS bonuswrong,
+					COUNT( u.ID ) AS totalusers 
 				FROM {$prefix}bonusquestions_useranswers AS ua 
 				RIGHT OUTER JOIN {$wpdb->users} AS u
-					ON (u.ID = ua.userId AND questionId = %d) ";
+					ON ( u.ID = ua.userId AND questionId = %d ) ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql = $wpdb->prepare( $sql, $question );
@@ -133,21 +136,22 @@ class Football_Pool_Chart_Data {
 		return $data;
 	}
 	
-	public function points_total_pie_chart_data( $user ) {
+	public function points_total_pie_chart_data( $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 
 		$output = array();
 		// get the user's score
 		$sql = $wpdb->prepare( "SELECT totalScore FROM {$prefix}scorehistory 
-								WHERE userId = %d ORDER BY scoreDate DESC, scoreOrder DESC, type DESC LIMIT 1", 
-								$user
+								WHERE userId = %d AND ranking_id = %d
+								ORDER BY scoreDate DESC, scoreOrder DESC, type DESC LIMIT 1", 
+								$user, $ranking_id
 							);
 		$data = $wpdb->get_row( $sql, ARRAY_A );
 		$output['totalScore'] = $data['totalScore'];
 		// get the number of matches for which there are results
 		$sql = $wpdb->prepare( "SELECT COUNT(*) AS numMatches FROM {$prefix}scorehistory
-								WHERE type = 0 AND userId = %d", $user);
+								WHERE type = 0 AND userId = %d AND ranking_id = %d", $user, $ranking_id );
 		$data = $wpdb->get_row( $sql, ARRAY_A );
 		
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
@@ -162,24 +166,30 @@ class Football_Pool_Chart_Data {
 		return $output;
 	}
 	
-	public function score_per_match_line_chart_data( $users ) {
-		return $this->per_match_line_chart_data( $users, 'totalScore' );
+	public function score_per_match_line_chart_data( $users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		return $this->per_match_line_chart_data( $users, 'totalScore', $ranking_id );
 	}
 	
-	public function ranking_per_match_line_chart_data( $users ) {
-		return $this->per_match_line_chart_data( $users, 'ranking' );
+	public function ranking_per_match_line_chart_data( $users, 
+														$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		return $this->per_match_line_chart_data( $users, 'ranking', $ranking_id );
 	}
 	
-	private function per_match_line_chart_data( $users, $history_data_to_plot ) {
+	private function per_match_line_chart_data( $users, $history_data_to_plot, 
+												$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$data = array();
 		if ( count( $users ) > 0 ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
-			$sql = "SELECT h.scoreOrder, h." . $history_data_to_plot . ", u.display_name, h.type 
-					FROM {$prefix}scorehistory h, {$wpdb->users} u 
-					WHERE u.ID = h.userId AND h.userId IN (" . implode(',', $users) . ")
-					ORDER BY h.scoreDate ASC, h.type ASC, h.scoreOrder ASC, h.userId ASC";
+			$sql = $wpdb->prepare( "SELECT h.scoreOrder, h." . $history_data_to_plot . ", 
+											u.display_name, h.type 
+											FROM {$prefix}scorehistory h, {$wpdb->users} u 
+											WHERE h.ranking_id = %d AND u.ID = h.userId 
+												AND h.userId IN (" . implode(',', $users) . ")
+											ORDER BY h.scoreDate ASC, h.type ASC, h.scoreOrder ASC, h.userId ASC"
+											, $ranking_id
+								);
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			foreach ( $rows as $row ) {

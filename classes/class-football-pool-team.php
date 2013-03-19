@@ -42,17 +42,17 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		}
 	}
 	
-	function HTML_thumb() {
+	public function HTML_thumb() {
 		if ( $this->photo != '' ) {
 			$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
 			$thumb = sprintf( '<a class="thumb fp-lightbox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
-									class="teamphotothumb" /></a>',
-							$img_url,
-							$img_url,
-							__( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$this->name,
-							__( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$this->name
+									class="teamphotothumb" /></a>'
+								, esc_attr( $img_url )
+								, esc_attr( $img_url )
+								, esc_attr( __( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ) )
+								, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+								, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) )
+								, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
 							);
 		} else {
 			$thumb = '';
@@ -60,13 +60,24 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		return $thumb;
 	}
 	
-	function HTML_image() {
-		return '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . str_replace( '_t', '', $this->photo ) . '" title="' . __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name . '" class="teamphoto" onclick="window.close();" />';
+	public function HTML_image() {
+		$path = '';
+		if ( strpos( $this->photo, 'http://' ) !== 0 && strpos( $this->photo, 'https://' ) !== 0 ) {
+			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/';
+		}
+		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="teamphoto" />'
+						, esc_attr( $path )
+						, esc_attr( str_replace( '_t', '', $this->photo ) )
+						, esc_attr( __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ) )
+						, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name )
+					);
 	}
 	
-	function get_plays() {
+	public function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		
 		$sql = $wpdb->prepare( "SELECT 
 									m.homeTeamId, m.awayTeamId, 
 									m.homeScore, m.awayScore, 
@@ -76,7 +87,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id 
 									AND m.matchtypeId = t.id AND t.visibility = 1
-									AND (m.homeTeamId = %d OR m.awayTeamId = %d)",
+									AND (m.homeTeamId = %d OR m.awayTeamId = %d)
+								ORDER BY {$sorting}",
 								$this->id,
 								$this->id
 						);
@@ -84,13 +96,13 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 
-	function get_stadiums() {
+	public function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo, s.comments
 								FROM {$prefix}stadiums s, {$prefix}matches m 
 								WHERE s.id = m.stadiumId 
-								AND ( m.homeTeamId = %d OR awayTeamId = %d )
+									AND ( m.homeTeamId = %d OR awayTeamId = %d )
 								ORDER BY s.name ASC",
 								$this->id,
 								$this->id

@@ -121,7 +121,7 @@ class Football_Pool_Teams {
 			if ( $team->is_real == 1 && $team->is_active == 1 ) {
 				$output .= sprintf( '<li><a href="%s">%s</a></li>'
 									, add_query_arg( array( 'team' => $team->id ) )
-									, $team->name
+									, htmlentities( $team->name, null, 'UTF-8' )
 							);
 			}
 		}
@@ -157,8 +157,11 @@ class Football_Pool_Teams {
 				$flag = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/flags/' . $flag;
 			}
 			
+			$team_name = esc_attr( htmlentities( $team_name, null, 'UTF-8' ) );
 			return sprintf( '<img src="%s" title="%s" alt="%s" class="flag" />'
-							, $flag, $team_name, $team_name
+							, esc_attr( $flag )
+							, $team_name
+							, $team_name
 					);
 		} else {
 			return '';

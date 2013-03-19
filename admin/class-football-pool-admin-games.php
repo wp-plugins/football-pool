@@ -8,13 +8,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				
+		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		
 		$log = '';
 		$file = '';
 		
 		switch ( $action ) {
 			case 'upload_csv':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$uploaded_file = self::upload_csv();
 				if ( Football_Pool_Utils::post_int( 'csv_import' ) == 1 ) {
 					$file = $uploaded_file;
@@ -22,6 +23,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				}
 			case 'import_csv':
 			case 'import_csv_overwrite':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$log = self::import_csv( $action, $file );
 			case 'change-culture':
 			case 'schedule':
@@ -31,9 +33,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			case 'update':
 			case 'update_single_match':
 			case 'update_single_match_close':
+				if ( $action != 'edit' ) {
+					check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
+				}
 				self::edit_handler( $item_id, $action );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				$success = self::delete( $item_id );
 				if ( $success )
 					self::notice( sprintf( __( 'Game %d deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
@@ -82,6 +88,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				self::empty_table( 'scorehistory' );
 				self::empty_table( 'predictions' );
 				self::empty_table( 'stadiums' );
+				self::empty_table( 'rankings_matches' );
 				self::empty_table( 'matches' );
 				self::empty_table( 'teams' );
 			}
@@ -349,8 +356,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$rows = $matches->get_info();
 		
 		$full_data = ( Football_Pool_Utils::get_fp_option( 'export_format', 0, 'int' ) == 0 );
-		$download_url = FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php';
-		if ( ! $full_data ) $download_url .= '?format=minimal';
+		$download_url = wp_nonce_url( FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php'
+									, FOOTBALLPOOL_NONCE_CSV );
+		if ( ! $full_data ) $download_url = add_query_arg( array( 'format' => 'minimal' ), $download_url );
 		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );
@@ -376,7 +384,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			case 'update_single_match_close':
 				$success = self::update_single_match( $item_id );
 				if ( $item_id == 0 ) $item_id = $success;
-				if ( $success ) $success = self::update_score_history();
+				if ( $success ) self::update_score_history();
 				break;
 			case 'edit':
 				$success = self::edit( $item_id );
@@ -384,11 +392,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'edit' ) {
-			if ( $success ) {
-				self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			} else {
-				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-			}
+			if ( $success ) self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			
 			if ( $action == 'update_single_match' ) {
 				self::edit_handler( $item_id, 'edit' );
@@ -421,6 +425,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 								, $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE matchNr = %d", $item_id );
+			$success &= ( $wpdb->query( $sql ) !== false );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			// update scorehistory
 			$success &= self::update_score_history();
@@ -467,6 +473,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			$options[] = array( 'value' => $id, 'text' => $name );
 		}
 		$teams = $options;
+		
+		// check if there is enough information to fill a match
+		if ( count( $teams ) == 0 || count( $types ) == 0 || count( $venues ) == 0 ) {
+			self::notice( sprintf( __( 'You have to enter some <a href="%s">teams</a>, <a href="%s">venues</a> and <a href="%s">match types</a> first.', FOOTBALLPOOL_TEXT_DOMAIN ), '?page=footballpool-teams', '?page=footballpool-venues', '?page=footballpool-matchtypes'), 'important' );
+			self::cancel_button( true, __( 'Back', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			return;
+		}
 		
 		$matchdate = new DateTime( $values['date'] );
 		$matchdate_local = self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) );
@@ -526,14 +539,15 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function print_matches( $rows ) {
-		$datetitle = '';
+		$date_title = '';
 		$matchtype = '';
 		
 		if ( ! is_array( $rows ) || count( $rows ) == 0 ) {
 			echo '<div style="text-align:right;"><img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/images/matches-import-here.png" alt="import a new schedule here" title="import a new schedule here"></div>';
+		} else {
+			echo '<table id="matchinfo" class="widefat matchinfo">';
 		}
 		
-		echo '<table id="matchinfo" class="widefat matchinfo">';
 		foreach( $rows as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
@@ -542,12 +556,18 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
-			if ( $datetitle != $localdate->format( 'd M Y' ) ) {
-				$datetitle = $localdate->format( 'd M Y' );
+			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
+											, $localdate->getTimestamp() );
+			if ( $date_title != $localdate_formatted ) {
+				$date_title = $localdate_formatted;
+				// Translators: this is a date format string (see http://php.net/date)
+				$localdate_tooltip = date_i18n( __( 'd M Y, H:i', FOOTBALLPOOL_TEXT_DOMAIN )
+												, $localdate->getTimestamp() );
 				echo '<tr><td class="sidebar-name"></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
-						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $localdate->format( 'd M Y, H:i' ), '">', $datetitle, '</span></td>',
+						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $localdate_tooltip, '">', $date_title, '</span></td>',
 						'</tr>';
 			}
 			
@@ -569,10 +589,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					'<td><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'delete' ), '</a></td>',
 					'</tr>';
 		}
-		echo '</table>';
+		if ( is_array( $rows ) && count( $rows ) > 0 ) {
+			echo '</table>';
+		}
 	}
 	
-	private function show_input( $name, $value, $max_length = 2, $class = 'score' ) {
+	private function show_input( $name, $value, $max_length = 3, $class = 'score' ) {
 		return sprintf( '<input type="text" name="%s" value="%s" maxlength="%s" class="%s" />', 
 						$name, $value, $max_length, $class );
 	}

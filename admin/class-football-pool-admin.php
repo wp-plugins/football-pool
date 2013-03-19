@@ -96,6 +96,15 @@ class Football_Pool_Admin {
 		
 		add_submenu_page(
 			$slug,
+			__( 'Edit rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			__( 'Rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'administrator', 
+			'footballpool-rankings',
+			array( 'Football_Pool_Admin_Rankings', 'admin' )
+		);
+		
+		add_submenu_page(
+			$slug,
 			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'administrator', 
@@ -162,7 +171,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function set_value( $key, $value, $type = 'text' ) {
-		update_option( 'footballpool_' . $key, $value );
+		Football_Pool_Utils::update_fp_option( $key, $value );
 	}
 	
 	// use type 'updated' for yellow message and type 'error' or 'important' for the red one
@@ -214,19 +223,56 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	public function dropdown( $key, $value, $options, $extra_attr = '' ) {
+	public function dropdown( $key, $value, $options, $extra_attr = '', $multi = 'single' ) {
 		$i = 0;
-		echo '<select id="', esc_attr( $key ), '" name="', esc_attr( $key ), '">';
+		$multiple = '';
+		$name = esc_attr( $key );
+		if ( $multi == 'multi' ) {
+			$multiple = 'multiple="multiple" size="6" class="fp-multi-select"';
+			$name .= '[]';
+		}
+		printf( '<select id="%s" name="%s" %s>'
+				, esc_attr( $key )
+				, $name
+				, $multiple
+		);
+		
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
 			} else {
 				$extra = $extra_attr;
 			}
-			echo '<option id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'selected="selected" ' : '' ), ' ', $extra, '>', $option['text'], '</option>';
+			
+			printf( '<option id="answer_%d" value="%s" %s %s>%s</option>'
+					, $i
+					, esc_attr( $option['value'] )
+					, ( self::check_selected_value( $value, $option['value'] ) ? 'selected="selected" ' : '' )
+					, $extra
+					, $option['text']
+			);
 			$i++;
 		}
 		echo '</select>';
+	}
+	
+	private function check_selected_value( $check_value, $option_value ) {
+		if ( is_array( $check_value ) ) {
+			return in_array( $option_value, $check_value );
+		} else {
+			return ( $option_value == $check_value );
+		}
+	}
+	
+	public function multiselect_input( $label, $key, $value, $options, $description = '', 
+									$extra_attr = '', $depends_on = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
+		
+		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
+		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
+		echo '<td>';
+		self::dropdown( $key, $value, $options, $extra_attr, 'multi' );
+		echo '</td><td><span class="description">', $description, '</span></td></tr>';
 	}
 	
 	public function dropdown_input( $label, $key, $value, $options, $description = '', 
@@ -245,14 +291,24 @@ class Football_Pool_Admin {
 		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
 		
 		$i = 0;
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="answer_0">', $label, '</label></th><td>';
+		printf( '<tr id="r-%s" valign="top"><th scope="row"><label for="answer_0">%s</label></th><td>'
+				, esc_attr( $key )
+				, $label
+		);
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
 			} else {
 				$extra = $extra_attr;
 			}
-			echo '<label class="radio"><input name="', esc_attr( $key ),'" type="radio" id="answer_', $i, '" value="', esc_attr( $option['value'] ), '" ', ( $option['value'] == $value ? 'checked="checked" ' : '' ), ' ', $extra, '> ', $option['text'], '</label><br />';
+			printf( '<label class="radio"><input name="%s" type="radio" id="answer_%d" value="%s" %s %s> %s</label><br />'
+					, esc_attr( $key )
+					, $i
+					, esc_attr( $option['value'] )
+					, ( self::check_selected_value( $value, $option['value'] ) ? 'checked="checked" ' : '' )
+					, $extra
+					, $option['text']
+			);
 			$i++;
 		}
 		echo '</td><td><span class="description">', $description, '</span></td></tr>';
@@ -384,6 +440,11 @@ class Football_Pool_Admin {
 		}
 		
 		switch ( $type ) {
+			case 'multi-list':
+			case 'multi-select':
+			case 'multi-selectbox':
+				self::multiselect_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], $option[5], ( isset( $option[6] ) ? $option[6] : '' ) );
+				break;
 			case 'dropdownlist':
 			case 'dropdown':
 			case 'select':
@@ -513,6 +574,7 @@ class Football_Pool_Admin {
 		echo $extra;
 		echo '<form action="" method="post">';
 		echo '<input type="hidden" name="action" id="action" value="update" />';
+		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
 	}
 	
 	public function admin_footer() {
@@ -594,18 +656,34 @@ class Football_Pool_Admin {
 					echo $value;
 					
 					if ( $j == 0 ) {
+						$row_action_url = sprintf( '?page=%s&amp;action=edit&amp;item_id=%s'
+													, esc_attr( $page )
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo '</a></strong><br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="?page=', esc_attr( $page ), '&amp;action=edit&amp;item_id=', esc_attr( $rows[$i][$c] ), '">Edit</a> | 
+										<a href="', $row_action_url, '">Edit</a> | 
 									</span>';
 						foreach ( $rowactions as $action ) {
+							$row_action_url = sprintf( '?page=%s&amp;action=%s&amp;item_id=%s'
+														, esc_attr( $page )
+														, esc_attr( $action[0] )
+														, esc_attr( $rows[$i][$c] )
+												);
+							$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 							echo '<span class="edit">
-									<a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a> | 
+									<a href="', $row_action_url, '">', $action[1], '</a> | 
 								</span>';
 						}
+						$row_action_url = sprintf( '?page=%s&amp;action=delete&amp;item_id=%s'
+													, esc_attr( $page )
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo "<span class='delete'>
-									<a onclick=\"return confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' )\" href='?page={$page}&amp;action=delete&amp;item_id={$rows[$i][$c]}' class='submitdelete'>Delete</a>
+									<a onclick=\"return confirm( 'You are about to delete this item. \'Cancel\' to stop, \'OK\' to delete.' )\" href='", $row_action_url, "' class='submitdelete'>Delete</a>
 								</span>
 							</div>";
 					}
@@ -656,158 +734,50 @@ class Football_Pool_Admin {
 			wp_cache_set( $cache_key, $delete_method );
 			
 			$sql  = "{$delete_method} {$prefix}{$table_name}";
-			$check = $wpdb->query( $sql );
+			$check = ( $wpdb->query( $sql ) !== false );
 		}
 		
 		return $check;
 	}
 	
-	public function update_score_history() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$pool = new Football_Pool_Pool;
-		
-		// 1. empty table
-		$check = self::empty_table( 'scorehistory' );
-		$result = $check;
-		if ( $check !== false ) {
-			// 2. check predictions with actual match result (score type = 0)
-			$sql = "INSERT INTO {$prefix}scorehistory
-						( type, scoreDate, scoreOrder, userId, score, full, toto, goal_bonus, ranking ) 
-					SELECT 
-						0, m.playDate, m.nr, u.ID, 
-						IF ( p.hasJoker = 1, 2, 1 ) AS score,
-						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL ) AS full,
-						IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
-							IF (
-								IF ( m.homeScore > m.awayScore, 1, IF ( m.homeScore = m.awayScore, 3, 2 ) )
-								=
-								IF ( p.homeScore > p.awayScore, 1, IF (p.homeScore = p.awayScore, 3, 2) )
-								, IF ( p.homeScore IS NULL OR p.awayScore IS NULL, NULL, 1 )
-								, NULL 
-								)
-						) AS toto,
-						IF ( m.homeScore = p.homeScore, 
-								IF ( m.awayScore = p.awayScore, 2, 1 ),
-								IF ( m.awayScore = p.awayScore, 1, NULL )
-						) AS goal_bonus,
-						0
-					FROM {$wpdb->users} u ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			}
-			$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
-					LEFT OUTER JOIN {$prefix}predictions p
-						ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
-					WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			// 3. update score for matches
-			$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-			$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
-			$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
-			$sql = "UPDATE {$prefix}scorehistory 
-					SET score = score * ( ( full * {$full} ) + ( toto * {$toto} ) + ( goal_bonus * {$goal} ) ) 
-					WHERE type = 0";
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			// 4. add bonusquestion scores (score type = 1)
-			//    make sure to take the userpoints into account
-			//    (we can set an alternate score for an individual user in the admin)
-			$sql = "INSERT INTO {$prefix}scorehistory 
-						( type, scoreDate, scoreOrder, userId, 
-						  score, full, toto, goal_bonus, ranking ) 
-					SELECT 
-						1, q.scoreDate, q.id, u.ID, 
-						( IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) ), NULL, NULL, NULL, 0 
-					FROM {$wpdb->users} u ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			}
-			$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
-						ON ( 1 = 1 )
-					LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-						ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
-					WHERE q.scoreDate IS NOT NULL ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
-			$check = $wpdb->query( $sql );
-			$result &= ( $check !== false );
-			// 5. update score incrementally
-			/* 
-			$sql = "ALTER TABLE {$prefix}scorehistory DROP INDEX totalScore";
-			$wpdb->query( $sql );
-			$sql = "UPDATE {$prefix}scorehistory
-					SET totalScore = score+IncrementalSum(userId, scoreDate)
-					ORDER BY scoreDate ASC";
-			$wpdb->query( $sql );
-			$sql = "ALTER TABLE {$prefix}scorehistory ADD INDEX (totalScore)";
-			$wpdb->query( $sql );
-			//*/
-			//*
-			$users = get_users( '' );
-			
-			foreach ( $users as $user ) {
-				$sql = $wpdb->prepare( "SELECT * FROM {$prefix}scorehistory 
-										WHERE userId = %d ORDER BY scoreDate ASC, type ASC, scoreOrder ASC",
-										$user->ID
-								);
-				$rows = $wpdb->get_results( $sql, ARRAY_A );
-				
-				$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user->ID );
-				$check = $wpdb->query( $sql );
-				$result &= ( $check !== false );
-				
-				$score = 0;
-				foreach ( $rows as $row ) {
-					$score += $row['score'];
-					$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
-												( type, scoreDate, scoreOrder, userId, 
-												  score, full, toto, goal_bonus, totalScore, ranking ) 
-											VALUES 
-												( %d, %s, %d, %d, 
-												  %d, %d, %d, %d, %d, 0 )",
-											$row['type'], $row['scoreDate'], $row['scoreOrder'], $row['userId'], 
-											$row['score'], $row['full'], $row['toto'], $row['goal_bonus'], $score
-									);
-					$check = $wpdb->query( $sql );
-					$result &= ( $check !== false );
-				}
-			}
-			//*/
-			// 6. update ranking
-			$pool = new Football_Pool_Pool;
-			$sql = "SELECT scoreDate, type FROM {$prefix}scorehistory GROUP BY scoreDate, type";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			foreach ( $rows as $row ) {
-				$sql = $pool->get_ranking_from_score_history( 0, $row['scoreDate'] );
-				$rows2 = $wpdb->get_results( $sql, ARRAY_A );
-				$rank = 1;
-				foreach ( $rows2 as $row2 ) {
-					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
-											WHERE userId = %d AND type = %d AND scoreDate = %s",
-											$rank++,
-											$row2['userId'],
-											$row["type"],
-											$row['scoreDate']
-									);
-					$check = $wpdb->query( $sql );
-					$result &= ( $check !== false );
-				}
-			}
-		}
-		
-		return $result;
+	public function recalculate_scorehistory_iframe() {
+		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
+		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
+		echo '<div id="fp-calculation-iframe">';
+		echo '<iframe src="', $url, '" width="500" height="160"></iframe>';
+		self::secondary_button( 
+			__( 'Close (re)calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			'close_calculation_iframe()', 
+			true, 
+			'js-button', 
+			array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) 
+		);
+		echo '</div>';
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button' ) {
+	private function recalculate_manual() {
+		self::secondary_button( 
+			__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 
+			wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN ), 
+			true, 
+			'link' 
+		);
+	}
+	
+	public function update_score_history( $force = 'no' ) {
+		$auto_calc = Football_Pool_Utils::get_fp_option( 'auto_calculation'
+														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
+														, 'int' );
+		
+		if ( $auto_calc == 1 || $force == 'force' ) {
+			self::recalculate_scorehistory_iframe();
+		} else {
+			self::recalculate_manual();
+		}
+		return true;
+	}
+	
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = null ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -823,25 +793,40 @@ class Football_Pool_Admin {
 		
 		if ( $type == 'button' ) {
 			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
+			$atts = array( "onclick" => $onclick_val );
+			
+			if ( is_array( $other_attributes ) ) {
+				foreach( $other_attributes as $key => $value ) {
+					$atts[$key] = $value;
+				}
+			}
 			
 			submit_button( 
 					$text, 
 					'secondary', 
 					$action_val, 
 					$wrap, 
-					array( "onclick" => $onclick_val ) 
+					$atts 
 			);
-		} elseif ( $type == 'link' ) {
-			// $onclick = ( $onclick_val != '' ) ? 'onclick="' . $onclick_val . '"' : '';
-			// $button = sprintf( '<a %s class="button-secondary fp-link-button" href="%s">%s</a>'
-								// , $onclick
-								// , $action_val
-								// , $text 
-						// );
-			$button = sprintf( '<input type="button" onclick="location.href=\'%s\';%s" class="button-secondary" value="%s" />'
+		} elseif ( $type == 'link' || $type == 'js-button' ) {
+			$attributes = '';
+			if ( is_array( $other_attributes ) ) {
+				foreach( $other_attributes as $key => $value ) {
+					$attributes .= $key . '="' . esc_attr( $value ) . '" ';
+				}
+			} elseif ( ! empty( $other_attributes ) ) {
+				$attributes = $other_attributes;
+			}
+			
+			if ( $type == 'link' ) {
+				$action_val = "location.href='{$action_val}'";
+			}
+			$button = sprintf( '<input type="button" onclick="%s;%s" 
+										class="button-secondary" value="%s" %s/>'
 								, $action_val
 								, $onclick_val
-								, esc_attr( $text ) 
+								, esc_attr( $text )
+								, $attributes
 						);
 			if ( $wrap ) {
 				$button = '<p class="submit">' . $button . '</p>';
@@ -875,8 +860,9 @@ class Football_Pool_Admin {
 		);
 	}
 	
-	public function cancel_button( $wrap = false ) {
-		self::secondary_button( __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 'cancel', $wrap );
+	public function cancel_button( $wrap = false, $text = '' ) {
+		if ( $text == '' ) $text = __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN );
+		self::secondary_button( $text, 'cancel', $wrap );
 	}
 	
 	public function donate_button( $return_type = 'echo' ) {
@@ -909,6 +895,6 @@ class Football_Pool_Admin {
 		}
 		return $translated_text;
 	}
-
+	
 }
 ?>

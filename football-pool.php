@@ -3,13 +3,13 @@
  Plugin Name: Football pool
  Plugin URI: http://wordpressfootballpool.wordpress.com/
  Description: This plugin adds a fantasy football pool to your blog. Standard installation contains data for the UEFA 2012 European championship. But you can change the teams and matches to a national competition. Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool players.
- Version: 2.1.3
+ Version: 2.2.0
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
- Tags: football, pool, poule, voetbal, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship
+ Tags: football, pool, poule, voetbal, soccer, game, prediction, competition, fifa worldcup, uefa championship
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '2.1.3' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.2.0' );
 
 /*
  This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,6 @@ define( 'FOOTBALLPOOL_DB_VERSION', '2.1.3' );
  */
 
 require_once 'define.php';
-require_once 'shortcodes.php';
 
 require_once 'classes/class-football-pool.php';
 require_once 'classes/class-football-pool-utils.php';
@@ -41,6 +40,7 @@ require_once 'classes/class-football-pool-chart-data.php';
 require_once 'classes/class-football-pool-statistics.php';
 require_once 'classes/class-football-pool-shoutbox.php';
 require_once 'classes/class-football-pool-widget.php';
+require_once 'classes/class-football-pool-shortcodes.php';
 
 if ( ! is_admin() ) {
 	// pages, not needed in the admin
@@ -97,6 +97,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-stadiums.php';
 	require_once 'admin/class-football-pool-admin-matchtypes.php';
 	require_once 'admin/class-football-pool-admin-groups.php';
+	require_once 'admin/class-football-pool-admin-rankings.php';
 	
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
@@ -107,7 +108,7 @@ if ( is_admin() ) {
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
 	add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
 	add_action( 'wp_dashboard_setup', array( 'Football_Pool', 'add_dashboard_widgets' ) );
-	if ( Football_Pool_Utils::get_fp_option( 'no_tinymce' ) != 1 ) {
+	if ( Football_Pool_Utils::get_fp_option( 'add_tinymce_button' ) == 1 ) {
 		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
 	}
 	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );

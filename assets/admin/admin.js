@@ -1,9 +1,27 @@
+jQuery( document ).ready( function() {
+	jQuery( 'div.matchtype input:checkbox' ).click( function() {
+		var matchtype_id = jQuery( this ).attr( 'id' ).replace( 'matchtype-', '' );
+		if ( jQuery( this ).is( ':checked' ) ) {
+			jQuery( 'div.matchtype-' + matchtype_id + ' input:checkbox' ).each( function() {
+				jQuery( this ).attr( 'checked', 'checked' );
+			} );
+		} else {
+			jQuery( 'div.matchtype-' + matchtype_id + ' input:checkbox' ).each( function() {
+				jQuery( this ).removeAttr( 'checked' );
+			} );
+		}
+	} );
+} );
+
+function close_calculation_iframe() {
+	jQuery( '#fp-calculation-iframe' ).hide( 'slow', function() { jQuery(this).remove() } );
+}
+
 function bulk_action_warning( id ) {
 	var bulk_select = jQuery( '#' + id );
 	var msg;
 	if ( bulk_select && bulk_select.prop( 'selectedIndex' ) != 0 ) {
 		msg = jQuery( '#' + id + ' option').filter( ':selected' ).attr( 'bulk-msg' );
-		// console.log(msg);
 		if ( msg != '' && msg != undefined ) {
 			return( confirm( msg ) );
 		} else {
@@ -203,7 +221,6 @@ function tinymce_insert_shortcode() {
 				texts = 'none';
 			} else {
 				texts = [ jQuery( '#text-1', panel_id ).val(), jQuery( '#text-2', panel_id ).val(), jQuery( '#text-3', panel_id ).val(), jQuery( '#text-4', panel_id ).val() ].join( ';' );
-				// texts = texts.join( ';' );
 			}
 			if ( texts != '' && texts != ';;;' ) atts += ' texts="' + texts + '"';
 			break;
@@ -212,6 +229,8 @@ function tinymce_insert_shortcode() {
 			if ( group > 0 ) atts += ' id=' + group;
 			break;
 		case 'fp-ranking':
+			var ranking = jQuery( '#ranking-id', panel_id ).val();
+			if ( ranking > 0 ) atts += ' ranking="' + ranking + '"';
 			var league = jQuery( '#ranking-league', panel_id ).val();
 			if ( league > 0 ) atts += ' league="' + league + '"';
 			var num = jQuery( '#ranking-num', panel_id ).val();
@@ -219,6 +238,14 @@ function tinymce_insert_shortcode() {
 			var date = jQuery( 'input:radio[name=ranking-date]:checked', panel_id ).val();
 			if ( date == 'custom' ) date = jQuery( '#ranking-date-custom-value', panel_id ).val();
 			if ( date != '' ) atts += ' date="' + date + '"';
+			break;
+		case 'fp-predictionform':
+			var matches = jQuery( '#match-id' ).val() || [];
+			var matchtypes = jQuery( '#matchtype-id' ).val() || [];
+			var questions = jQuery( '#question-id' ).val() || [];
+			if ( matches.length > 0 ) atts += ' match="' + matches.join( ',' ) + '"';
+			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
+			if ( questions.length > 0 ) atts += ' question="' + questions.join( ',' ) + '"';
 			break;
 		default:
 			if ( selected_val == '' ) tinyMCEPopup.close();

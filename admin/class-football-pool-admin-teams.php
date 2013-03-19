@@ -17,6 +17,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		switch ( $action ) {
 			case 'activate':
 			case 'deactivate':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $item_id > 0 ) {
 					self::activate( $user_id, $action );
 					if ( $action == 'activate' )
@@ -40,10 +41,11 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 				self::view();
 				break;
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				// new or updated team
 				$item_id = self::update( $item_id );
 				self::notice( __( 'Team saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -51,6 +53,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 				self::edit( $item_id );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $item_id > 0 ) {
 					self::delete( $item_id );
 					self::notice( sprintf( __( 'Team id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
@@ -121,6 +124,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'team', FOOTBALLPOOL_TEXT_DOMAIN ), 'team', '' ),
 					array( 'boolean', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_active', '' ),
+					array( 'boolean', __( 'real team', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_real', '' ),
 				);
 		
 		$rows = array();
@@ -128,6 +132,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 			$rows[] = array(
 						$item['name'], 
 						$item['is_active'], 
+						$item['is_real'], 
 						$item['id'],
 					);
 		}
@@ -180,6 +185,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}teams WHERE id = %d", $id );
 		$wpdb->query( $sql );
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 	}
 	
 	private function update_item( $input ) {
@@ -208,6 +214,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$wpdb->query( $sql );
 		
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 
@@ -218,7 +225,8 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 			$output[] = array(
 							'id' => $team->id, 
 							'name' => $team->name, 
-							'is_active' => $team->is_active
+							'is_active' => $team->is_active,
+							'is_real' => $team->is_real,
 						);
 		}
 		return $output;
@@ -240,6 +248,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET is_active = %d WHERE id = %d"
 								, $active, $id );
 		$wpdb->query( $sql );
+		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
 	}
 }
 ?>

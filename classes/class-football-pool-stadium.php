@@ -27,16 +27,18 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/stadiums/';
 		}
 		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />'
-						, $path
-						, $this->photo
-						, htmlentities( $this->name )
-						, htmlentities( $this->name )
+						, esc_attr( $path )
+						, esc_attr( $this->photo )
+						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
 					);
 	}
 	
 	public function get_plays() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		
 		$sql = $wpdb->prepare( "SELECT 
 									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
 									m.homeTeamId, 
@@ -50,7 +52,8 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 									m.playDate 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadiumId = s.id  AND s.id = %d
-									AND m.matchtypeId = t.id AND t.visibility = 1", 
+									AND m.matchtypeId = t.id AND t.visibility = 1
+								ORDER BY {$sorting}", 
 							$this->id
 						);
 		

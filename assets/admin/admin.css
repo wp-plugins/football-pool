@@ -25,8 +25,8 @@ th.manage-column.column-answer { width: 180px; }
 th.manage-column.column-points { width: 50px; }
 
 /* matches */
-.matchinfo { width: 400px; }
-input.score { width: 2em; }
+/* .matchinfo { width: 500px; } */
+input.score { width: 3em; }
 
 table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
@@ -76,3 +76,42 @@ div.import.culture-select { text-align: right; }
 td.date-title { text-align: right; }
 
 div.fp-admin .button { margin-right: 3px; }
+
+.fp-multi-select { width: 300px; }
+
+div.help.important {
+	margin: 5px 15px;
+	background-color: #ffffe0;
+	border-color: #e6db55;
+	padding: 0 .6em;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+div.help-page h2 { padding: 3em 0 .5em; }
+div.help-page h2:first-of-type { padding-top: 1em; }
+div.help-page h3 { padding: 2em 0 .5em; }
+div.help-page h2 + h3 { padding-top: 0; }
+
+div.ranking-definition div input[type="checkbox"] {
+	margin-right: 5px;
+}
+div.ranking-definition label {
+	font-weight: normal;
+	font-size: 1em;
+}
+div.ranking-definition div.matchtype label {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+div.ranking-definition div {
+	padding: 0 3px;
+}
+div.ranking-definition div.matchtype {
+	margin: 5px 0 2px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: rgb( 223, 223, 223 );
+}

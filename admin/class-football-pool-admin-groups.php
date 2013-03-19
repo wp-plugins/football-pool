@@ -15,10 +15,11 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				// new or updated group
 				$item_id = self::update( $item_id );
 				self::notice( __( 'Group saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str( 'submit' ) == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -26,6 +27,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 				self::edit( $item_id );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $item_id > 0 ) {
 					self::delete( $item_id );
 					self::notice( sprintf( __( 'Group id:%d deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );

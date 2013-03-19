@@ -5,6 +5,23 @@ require_once( '../../../define.php' );
 $site_url = get_option( 'siteurl' );
 $admin_url = get_admin_url();
 $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
+
+$pool = new Football_Pool_Pool;
+
+function match_options() {
+	$matches = new Football_Pool_Matches;
+	$matches = $matches->matches;
+	foreach ( $matches as $match ) {
+		$option_text = sprintf( '%d: %s - %s (%s)'
+								, $match['nr']
+								, $match['home_team']
+								, $match['away_team']
+								// , $match['match_datetime']
+								, Football_Pool_Utils::date_from_gmt( $match['date'] )
+						);
+		printf( '<option value="%d">%s</option>', $match['nr'], $option_text );
+	}
+}
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -18,12 +35,15 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 	
 	<style type="text/css">
 	#tabs li, .dialog-table label { cursor: pointer; }
-	.dialog-table { border: 0; }
-	.dialog-table td { padding: 3px; vertical-align: top; }
+	.dialog-table { border: 0; border-collapse: collapse; }
+	.dialog-table td { padding: 3px 5px 3px 3px; vertical-align: top; }
 	/* .dialog-table td * { font-size: 12px!important; } */
 	.dialog-table td p { margin-bottom: 3px; }
 	#panel_wrapper div.current { height: 270px; }
 	.atts { display: none; }
+	.shortcode-select { background-color: #f1f1f1; }
+	.shortcode-select td p { margin-bottom: 8px; }
+	.shortcode-select td { font-weight: bold; }
 	</style>
 	
 	<script type="text/javascript">
@@ -52,6 +72,17 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 		}
 		disable_inputs( text_ids, id );
 	}
+	
+	function toggle_predictionform_select( clicked ) {
+		clicked = jQuery( clicked ).attr( 'for' );
+		jQuery( '.tr-predictionform select' ).each( function() {
+			if ( jQuery( this ).attr( 'id' ) == clicked ) {
+				jQuery( this ).show( 'slow' );
+			} else {
+				jQuery( this ).hide( 'slow' );
+			}
+		});
+	}
 	</script>
 </head>
 <body>
@@ -66,19 +97,36 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 	</div>
 
 	<div id="panel_wrapper" class="panel_wrapper">
-<?php
-// fp-ranking
-// fp-group
-?>
 		<!-- panel -->
 		<div id="pool_panel" class="panel current"><br/>
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-pool"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
-					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group' } )">
+					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform' } )">
 						<option value="fp-ranking"><?php _e( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-group"><?php _e( 'Group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-predictionform"><?php _e( 'Prediction form', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-ranking">
+				<td>
+					<label for="ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="ranking-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$rankings = $pool->get_rankings( 'user defined' );
+							foreach ( $rankings as $ranking ) {
+								printf( '<option value="%d">%s</option>', $ranking['id'], $ranking['name'] );
+							}
+							?>
+						</optgroup>
 					</select>
 				</td>
 			</tr>
@@ -93,7 +141,7 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 						</optgroup>
 						<optgroup label="<?php _e( 'or choose a league', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
 							<?php
-							$leagues = Football_Pool_Pool::get_leagues( true );
+							$leagues = $pool->get_leagues( true );
 							foreach ( $leagues as $league ) {
 								printf( '<option value="%d">%s</option>', $league['leagueId'], $league['leagueName'] );
 							}
@@ -143,13 +191,60 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 					</select>
 				</td>
 			</tr>
+			<tr class="tr-predictionform atts">
+				<td colspan="2">
+					<strong><?php _e( 'Click a label to show the options.', FOOTBALLPOOL_TEXT_DOMAIN );?></strong>
+					<br />
+					<?php _e( 'Use CTRL+click to select multiple values.', FOOTBALLPOOL_TEXT_DOMAIN );?>
+				</td>
+			<tr>
+			<tr class="tr-predictionform atts">
+				<td>
+					<label for="match-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="match-id" style="width:320px; height:100px; display:none;" multiple="multiple">
+					<?php match_options(); ?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-predictionform atts">
+				<td>
+					<label for="matchtype-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more match types', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="matchtype-id" style="width:320px; height:100px; display:none;" multiple="multiple">
+					<?php
+					$match_types = Football_Pool_Matches::get_match_types();
+					foreach( $match_types as $match_type ) {
+						printf( '<option value="%d">%s</option>', $match_type->id, $match_type->name );
+					}
+					?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-predictionform atts">
+				<td>
+					<label for="question-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more questions', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="question-id" style="width:320px; height:100px; display:none;" multiple="multiple">
+					<?php
+					$questions = $pool->get_bonus_questions();
+					foreach( $questions as $question ) {
+						printf( '<option value="%d">%s</option>', $question['id'], $question['question'] );
+					}
+					?>
+					</select>
+				</td>
+			</tr>
 			</table>
 		</div>
 		
 		<!-- panel -->
 		<div id="options_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="shortcode"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="shortcode" class="shortcode">
@@ -169,7 +264,7 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 		<!-- panel -->
 		<div id="links_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-link"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="s-link" class="shortcode" onchange="toggle_atts( this.id, { 'fp-link': 'tr-slug', 'fp-register': 'tr-title' } )">
@@ -207,7 +302,7 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 		<!-- panel -->
 		<div id="other_panel" class="panel"><br />
 			<table class="dialog-table">
-			<tr>
+			<tr class="shortcode-select">
 				<td><label for="s-other"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="s-other" class="shortcode" onchange="toggle_atts( this.id, { 'fp-countdown': 'tr-count' } )">
@@ -237,25 +332,12 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 					<label for="count-match"><?php _e( 'Match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
-					<select id="count-match">
+					<select id="count-match" style="width:320px">
 						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
 							<option value="0" selected="selected"><?php _e( 'first match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						</optgroup>
 						<optgroup label="<?php _e( 'or choose a match', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
-							<?php
-							$matches = new Football_Pool_Matches;
-							$matches = $matches->matches;
-							foreach ( $matches as $match ) {
-								$option_text = sprintf( '%d: %s - %s (%s)'
-														, $match['nr']
-														, $match['home_team']
-														, $match['away_team']
-														// , $match['match_datetime']
-														, Football_Pool_Utils::date_from_gmt( $match['date'] )
-												);
-								printf( '<option value="%d">%s</option>', $match['nr'], $option_text );
-							}
-							?>
+							<?php match_options(); ?>
 						</optgroup>
 					</select>
 				</td>
@@ -286,14 +368,6 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 					<input id="count-inline" type="checkbox" />
 				</td>
 			</tr>
-			
-			<tr class="atts">
-				<td>
-				</td>
-				<td>
-				</td>
-			</tr>
-			</table>
 			</table>
 		</div>
 		

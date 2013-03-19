@@ -7,6 +7,10 @@ class Football_Pool_Matches {
 	private $force_lock_time = false;
 	private $lock;
 	public $matches;
+	public $always_show_predictions = 0;
+	private $use_spin_controls = true;
+	public $has_matches = false;
+	private $time_format;
 	
 	public function __construct() {
 		$this->joker_blocked = false;
@@ -23,9 +27,16 @@ class Football_Pool_Matches {
 		} else {
 			$this->lock = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 		}
+		// override hiding of predictions for editable matches?
+		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
+		// HTML5 number inputs?
+		$this->use_spin_controls = ( Football_Pool_Utils::get_fp_option( 'use_spin_controls', 'int', 1 ) == 1 );
 		
 		// cache match info
 		$this->matches = $this->match_info();
+		$this->has_matches = ( count( $this->matches ) > 0 );
+		
+		$this->time_format = get_option( 'time_format', FOOTBALLPOOL_TIME_FORMAT );
 	}
 	
 	public function disable_edits() {
@@ -69,8 +80,24 @@ class Football_Pool_Matches {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
+	public function get_match_sorting_method() {
+		$order = Football_Pool_Utils::get_fp_option( 'match_sort_method', FOOTBALLPOOL_MATCH_SORT, 'int' );
+		switch ( $order ) {
+			case 1:
+				$order = 'm.playDate DESC, m.nr DESC';
+				break;
+			case 0:
+			default:
+				$order = 'm.playDate ASC, m.nr ASC';
+		}
+		
+		return $order;
+	}
+	
 	private function matches_query( $where_clause = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sorting = self::get_match_sorting_method();
+		
 		return "SELECT 
 					m.nr, 
 					UNIX_TIMESTAMP(m.playDate) AS match_timestamp, m.playDate,
@@ -80,17 +107,17 @@ class Football_Pool_Matches {
 					t.name AS matchtype, t.id AS typeId
 				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 				WHERE m.stadiumId = s.id AND m.matchtypeId = t.id AND t.visibility = 1 {$where_clause}
-				ORDER BY m.playDate ASC, nr ASC";
+				ORDER BY {$sorting}";
 	}
 	
 	public function get_first_match_info() {
 		return array_shift( $this->matches );
 	}
 	
-	public function get_info( $type = -1 ) {
+	public function get_info( $type = null ) {
 		global $wpdb;
-		if ( $type != -1 ) {
-			$sql = $wpdb->prepare( $this->matches_query( ' AND t.id = %d ' ), $type );
+		if ( is_array( $type ) && count( $type ) > 0 ) {
+			$sql = $this->matches_query( ' AND t.id IN ( ' . implode( ',', $type ) . ' ) ' );
 		} else {
 			$sql = $this->matches_query();
 		}
@@ -152,9 +179,16 @@ class Football_Pool_Matches {
 			return array();
 	}
 	
-	public function get_match_info_for_user( $user ) {
+	public function get_match_info_for_user( $user, $match_ids = array() ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$order = self::get_match_sorting_method();
+		
+		$ids = '';
+		if ( is_array( $match_ids ) && count( $match_ids ) > 0 ) {
+			$ids = ' AND m.nr IN ( ' . implode( ',', $match_ids ) . ' ) ';
+		}
+		
 		$sql = $wpdb->prepare( "SELECT 
 									m.homeTeamId, m.awayTeamId, 
 									p.homeScore, p.awayScore, 
@@ -162,15 +196,26 @@ class Football_Pool_Matches {
 									m.nr, m.playDate
 								FROM {$prefix}matches m 
 								JOIN {$prefix}matchtypes t 
-									ON ( m.matchtypeId = t.id )
+									ON ( m.matchtypeId = t.id {$ids})
 								LEFT OUTER JOIN {$prefix}predictions p 
 									ON ( p.matchNr = m.nr AND p.userId = %d )
 								WHERE t.visibility = 1
-								ORDER BY m.playDate ASC, nr ASC",
+								ORDER BY {$order}",
 								$user
 							);
 		
 		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+	
+	public function get_joker_value_for_user( $user ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT matchNr FROM {$prefix}predictions WHERE userId = %d AND hasJoker = 1"
+								, $user );
+		$joker = $wpdb->get_var( $sql );
+		
+		return $joker;
 	}
 	
 	public function first_empty_match_for_user( $user ) {
@@ -218,14 +263,21 @@ class Football_Pool_Matches {
 	 * only the value is shown.
 	 * The property matches_are_editable is used for the users page. It prevents the display of inputs
 	 * and it prevents the display of games that are still editable. The latter to make sure users do 
-	 * not copy results from each other.
+	 * not copy results from each other. This may be overridden with the always_show_predictions option.
 	 */
 	public function show_pool_input( $name, $value, $ts ) {
 		if ( $this->match_is_editable( $ts ) ) {
 			if ( $this->matches_are_editable ) {
-				return '<input type="number" name="' . $name . '" value="' . $value . '" maxlength="2" class="prediction" />';
+				if ( $this->use_spin_controls ) {
+					$control = 'type="number" min="0" max="999"';
+				} else {
+					$control = 'type="text" maxlength="3"';
+				}
+				return sprintf( '<input %s name="%s" value="%s" class="prediction" />'
+								, $control, $name, $value
+						);
 			} else {
-				return '';
+				return ( $this->always_show_predictions == 1 ? $value : '' );
 			}
 		} else {
 			return $value;
@@ -249,10 +301,16 @@ class Football_Pool_Matches {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
-			if ( $date_title != $localdate->format( 'd M Y' ) ) {
-				$date_title = $localdate->format( 'd M Y' );
-				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>',
-									$localdate->format( 'l' ), $date_title );
+			// Translators: this is a date format string (see http://php.net/date)
+			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
+											, $localdate->getTimestamp() );
+			if ( $date_title != $localdate_formatted ) {
+				$date_title = $localdate_formatted;
+				// Translators: this is a date format string (see http://php.net/date)
+				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>'
+									, date_i18n( __( 'l', FOOTBALLPOOL_TEXT_DOMAIN )
+												, $localdate->getTimestamp() )
+									, $date_title );
 			}
 			
 			$team_name = ( isset( $teams->team_names[ (int) $row['homeTeamId'] ] ) ?
@@ -269,13 +327,13 @@ class Football_Pool_Matches {
 									<td class="flag">%s</td>',
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['nr'],
-							$localdate->format( 'H:i' ),
+							$localdate->format( $this->time_format ),
 							$team_name,
 							$teams->flag_image( (integer) $row['homeTeamId'] )
 						);
 			$output .= sprintf( '<td class="score"><a href="%s">%s - %s</a></td>',
 							esc_url( 
-								add_query_arg( 
+								add_query_arg(
 									array( 'view' => 'matchpredictions', 'match' => $row['nr'] ), 
 									$statisticspage 
 								)
@@ -303,33 +361,43 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	public function print_matches_for_input( $matches ) {
+	public function print_matches_for_input( $matches, $form_id ) {
 		$teams = new Football_Pool_Teams;
 		$date_title = '';
 		$matchtype = '';
 		$joker = '';
 		
-		$output = '<table id="matchinfo" class="matchinfo input" border="1">';
+		$output = sprintf( '<table id="matchinfo-%d" class="matchinfo input" border="1">', $form_id );
 		foreach ( $matches as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
-				$output .= sprintf( '<tr><td class="matchtype" colspan="11">%s</td></tr>', __( $matchtype, FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$output .= sprintf( '<tr><td class="matchtype" colspan="11">%s</td></tr>'
+									, __( $matchtype, FOOTBALLPOOL_TEXT_DOMAIN ) 
+							);
 			}
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
-			if ( $date_title != $localdate->format( 'd M Y' ) ) {
-				$date_title = $localdate->format( 'd M Y' );
+			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
+											, $localdate->getTimestamp() );
+			if ( $date_title != $localdate_formatted ) {
+				$date_title = $localdate_formatted;
 				$output .= sprintf( '<tr><td class="matchdate" colspan="11">%s</td></tr>', $date_title );
 			}
 			
-			if ( (integer) $row['hasJoker'] == 1 ) {
-				$joker = (integer) $row['nr'];
+			if ( (int) $row['hasJoker'] == 1 ) {
+				$joker = (int) $row['nr'];
 			}
 			
-			$info = $this->get_match_info( (integer) $row['nr'] );
+			$info = $this->get_match_info( (int) $row['nr'] );
 			
-			$output .= sprintf( '<tr id="match-%d">
+			$home_team = isset( $teams->team_names[ (int) $info['home_team_id'] ] ) ?
+							htmlentities( $teams->team_names[ (int) $info['home_team_id'] ], null, 'UTF-8' ) :
+							'';
+			$away_team = isset( $teams->team_names[ (int) $info['away_team_id'] ] ) ?
+							htmlentities( $teams->team_names[ (int) $info['away_team_id'] ], null, 'UTF-8' ) :
+							'';
+			$output .= sprintf( '<tr id="match-%d-%d">
 								<td class="time">%s</td>
 								<td class="home">%s</td>
 								<td class="flag">%s</td>
@@ -343,20 +411,16 @@ class Football_Pool_Matches {
 								<td>%s</td>
 								</tr>',
 							$info['nr'],
-							$localdate->format( 'H:i' ),
-							( isset( $teams->team_names[ (integer) $info['home_team_id'] ] ) ?
-									$teams->team_names[ (integer) $info['home_team_id'] ] :
-									''
-							),
-							$teams->flag_image( (integer) $info['home_team_id'] ),
+							$form_id,
+							$localdate->format( $this->time_format ),
+							$home_team,
+							$teams->flag_image( (int) $info['home_team_id'] ),
 							$this->show_pool_input( '_home_' . $info['nr'], $row['homeScore'], $info['match_timestamp'] ),
 							$this->show_pool_input( '_away_' . $info['nr'], $row['awayScore'], $info['match_timestamp'] ),
-							$teams->flag_image( (integer) $info['away_team_id'] ),
-							( isset( $teams->team_names[ (integer) $info['away_team_id'] ] ) ?
-									$teams->team_names[ (integer) $info['away_team_id'] ] :
-									''
-							),
-							$this->show_pool_joker( $joker, (integer) $info['nr'], $info['match_timestamp'] ),
+							$teams->flag_image( (int) $info['away_team_id'] ),
+							$away_team,
+							$this->show_pool_joker( $joker, (int) $info['nr'], $info['match_timestamp']
+													, $form_id ),
 							__( 'score', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $info['match_timestamp'] ),
 							$this->show_users_link( $info['nr'], $info['match_timestamp'] )
@@ -368,12 +432,14 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	private function format_match_time( $datetime, $format = 'H:i' ) {
+	public function format_match_time( $datetime, $format = false ) {
+		if ( $format === false ) $format = $this->time_format;
+		
 		$display = Football_Pool_Utils::get_fp_option( 'match_time_display' );
 		if ( $display == 0 ) { // WordPress setting
 			$datetime = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime->format( 'Y-m-d H:i' ) ) );
 		} elseif ( $display == 2 ) { // custom setting
-			$offset = 60 * 60 * (float)Football_Pool_Utils::get_fp_option( 'match_time_offset' );
+			$offset = 60 * 60 * (float) Football_Pool_Utils::get_fp_option( 'match_time_offset' );
 			if ( $offset >= 0 ) $offset = '+' . $offset;
 			$datetime->modify( $offset . ' seconds' );
 		} // else UTC
@@ -421,6 +487,22 @@ class Football_Pool_Matches {
 		return $result;
 	}
 	
+	public function get_matches_for_match_type( $ids = array() ) {
+		if ( count( $ids ) == 0 ) return array();
+		
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$matchtype_ids = implode( ',', $ids );
+		$sql = "SELECT nr FROM {$prefix}matches WHERE matchtypeId IN ( {$matchtype_ids} )";
+		$results = $wpdb->get_results( $sql );
+		$matches = array();
+		foreach ( $results as $row ) {
+			$matches[] = $row->nr;
+		}
+		return $matches;
+	}
+	
 	private function show_score( $home, $away, $user_home, $user_away, $joker, $ts ) {
 		if ( ! $this->match_is_editable( $ts ) ) {
 			$pool = new Football_Pool_Pool;
@@ -430,7 +512,7 @@ class Football_Pool_Matches {
 	
 	private function show_users_link( $match, $ts ) {
 		$output = '';
-		if ( ! $this->match_is_editable( $ts ) ) {
+		if ( $this->always_show_predictions || ! $this->match_is_editable( $ts ) ) {
 			$title = __( 'view other users predictions', FOOTBALLPOOL_TEXT_DOMAIN );
 			$output .= sprintf( '<a href="%s" title="%s">'
 							, esc_url(
@@ -464,20 +546,23 @@ class Football_Pool_Matches {
 		$this->joker_blocked = true;
 	}
 	
-	private function show_pool_joker( $joker, $match, $ts ) {
+	private function show_pool_joker( $joker, $match, $ts, $form_id = 1 ) {
 		$add_joker = '';
 		$style = '';
 		
-		$class = ( $joker == $match && $joker > 0 && $match > 0 ) ? 'joker' : 'nojoker';
+		$class = ( $joker == $match && $joker > 0 && $match > 0 ) ? 'fp-joker' : 'fp-nojoker';
 		/*
 		Make sure joker is not shown for matches that are editable in case 
-		the matches_are_editable property is set to false.
+		the matches_are_editable property is set to false. Unless we have the new 
+		'always display predictions' set, in that case we can ignore this.
 		*/
-		if ( ! $this->matches_are_editable && $this->match_is_editable( $ts ) ) {
-			$class = 'nojoker';
+		if ( ! $this->always_show_predictions ) {
+			if ( ! $this->matches_are_editable && $this->match_is_editable( $ts ) ) {
+				$class = 'fp-nojoker';
+			}
 		}
 		
-		if ( $class == 'joker' && ! $this->match_is_editable( $ts ) ) {
+		if ( $class == 'fp-joker' && ! $this->match_is_editable( $ts ) ) {
 			$this->block_joker();
 		}
 		
@@ -486,9 +571,9 @@ class Football_Pool_Matches {
 				$add_joker = ' onclick="footballpool_change_joker( this.id )" title="' . __( 'use your joker?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}
 		} else {
-			//$style = ' style="cursor: text!important;"';
+			$class .= ' readonly';
 		}
-		return '<td class="' . $class . '"' . $add_joker . ' id="match_' . $match . '"></td>';
+		return sprintf( '<td class="%s"%s id="match_%d_%d"></td>', $class, $add_joker, $match, $form_id );
 	}
 
 }

@@ -1,6 +1,64 @@
 <?php
 class Football_Pool_Utils {
-
+	public function select( $id, $options, $selected_val, $name = '' ) {
+		if ( $name == '' ) $name = $id;
+		
+		$output = sprintf( '<select name="%s" id="%s">', $name, $id );
+		foreach ( $options as $val => $text ) {
+			$output .= sprintf('<option value="%s"%s>%s</option>'
+								, $val
+								, ( $val == $selected_val ? ' selected="selected"' : '' )
+								, $text
+						);
+		}
+		$output .= '</select>';
+		
+		return $output;
+	}
+	
+	// extract ids from a string ("x", "x-z", "x,y,z").
+	// only integers are returned
+	public function extract_ids( $input ) {
+		// remove all spaces and tabs
+		$replace = array( ' ', "\t" );
+		$replace_with = array( '', '' );
+		$input = str_replace( $replace, $replace_with, $input );
+		$ids = array();
+		// split for single numbers
+		$input = explode( ',', $input );
+		foreach ( $input as $part ) {
+			// split in case of ranges
+			$range = explode( '-', $part );
+			if ( count( $range ) == 2 ) {
+				// a range: lower-upper
+				$lower = (int) $range[0];
+				$upper = (int) $range[1];
+				// always include lower limit
+				$ids[] = $lower++;
+				while ( $lower <= $upper ) {
+					$ids[] = $lower++;
+				}
+			} else {
+				// single number
+				$ids[] = (int) $range[0];
+			}
+			// other cases are ignored, e.g. x--y
+		}
+		
+		return $ids;
+	}
+	
+	// returns an int and stores the value+1 in the WP cache
+	public function get_counter_value( $cache_key ) {
+		$id = wp_cache_get( $cache_key );
+		if ( $id === false ) {
+			$id = 1;
+		}
+		wp_cache_set( $cache_key, $id + 1 );
+		
+		return $id;
+	}
+	
 	// accepts a date in Y-m-d H:i format and changes it to UTC
 	public function gmt_from_date( $date_string ) {
 		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';
@@ -21,12 +79,21 @@ class Football_Pool_Utils {
 		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
 	}
 	
-	public function get_fp_option( $key, $default = '', $type = 'text' ) {
-		return self::get_wp_option( 'footballpool_' . $key, $default, $type = 'text' );
+	public function set_fp_option( $key, $value ) {
+		self::update_fp_option( $key, $value );
 	}
 	
-	public function get_wp_option( $key, $default = '', $type = 'text' ) {
-		$value = get_option( $key, $default );
+	public function update_fp_option( $key, $value, $overwrite = 'overwrite' ) {
+		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
+		if ( ! isset( $options[$key] ) || ( isset( $options[$key] ) && $overwrite == 'overwrite' ) ) {
+			$options[$key] = $value;
+			update_option( FOOTBALLPOOL_OPTIONS, $options );
+		}
+	}
+	
+	public function get_fp_option( $key, $default = '', $type = 'text' ) {
+		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
+		$value = isset( $options[$key] ) ? $options[$key] : $default;
 		if ( $type == 'int' || $type == 'integer' ) {
 			if ( ! is_numeric( $value ) ) $value = $default;
 		}
@@ -38,7 +105,10 @@ class Football_Pool_Utils {
 	// http://kovshenin.com/2010/wordpress-and-magic-quotes/
 	public function safe_stripslashes( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes( $value ) : $value;
-		return stripslashes( $value );
+		if ( is_array( $value) )
+			return stripslashes_deep( $value );
+		else
+			return stripslashes( $value );
 	}
 	public function safe_stripslashes_deep( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes_deep( $value ) : $value;
@@ -141,7 +211,11 @@ class Football_Pool_Utils {
 	}
 	
 	// print information about a variable in a human readable way
-	public function debug( $var, $type = 'echo' ) {
+	// if argument sleep is set, the execution will halt after the debug for the given amount of micro seconds
+	// (one micro second = one millionth of a second)
+	public function debug( $var, $type = 'echo', $sleep = 0 ) {
+		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
+		
 		$type = str_replace( array( 'only', 'just', ' ', '-' ), array( '', '', '', '' ), $type );
 		
 		if ( $type == 'once' || ( is_array( $type ) && $type[0] == 'once' ) ) {
@@ -184,6 +258,8 @@ class Football_Pool_Utils {
 				var_dump( $var );
 				echo $post;
 		}
+		
+		if ( is_int( $sleep ) && $sleep > 0 ) usleep( $sleep );
 	}
 
 }

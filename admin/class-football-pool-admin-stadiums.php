@@ -15,10 +15,11 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				// new or updated venue
 				$venue_id = self::update( $venue_id );
 				self::notice( __( 'Venue saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str( 'submit') == 'Save & Close' ) {
+				if ( Football_Pool_Utils::post_str( 'submit') == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
 					break;
 				}
@@ -26,6 +27,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 				self::edit( $venue_id );
 				break;
 			case 'delete':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $venue_id > 0 ) {
 					self::delete( $venue_id );
 					self::notice( sprintf( __( 'Venue id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $venue_id ) );
@@ -49,7 +51,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 					);
 		
 		$venue = self::get_venue( $id );
-		if ( $venue && $id > 0 ) {
+		if ( is_array( $venue ) && $id > 0 ) {
 			$values = $venue;
 		}
 		$cols = array(
@@ -68,13 +70,15 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 	}
 	
 	private function get_venue( $id ) {
-		$venue = new Football_Pool_Stadium( $id );
-		if ( is_object( $venue ) ) {
-			$output = array(
-							'name' => $venue->name,
-							'photo' => $venue->photo,
-							'comments' => $venue->comments,
-						);
+		if ( $id > 0 ) {
+			$venue = new Football_Pool_Stadium( $id );
+			if ( isset( $venue->id ) ) {
+				$output = array(
+								'name' => $venue->name,
+								'photo' => $venue->photo,
+								'comments' => $venue->comments,
+							);
+			}
 		} else {
 			$output = null;
 		}

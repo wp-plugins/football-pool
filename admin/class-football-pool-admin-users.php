@@ -26,10 +26,12 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		switch ( $action ) {
 			case 'save':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				self::update();
 				self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				break;
 			case 'remove':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $user_id > 0 ) {
 					self::remove( $user_id );
 					$user = get_userdata( $user_id );
@@ -44,6 +46,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				}
 				break;
 			case 'add':
+				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				if ( $user_id > 0 ) {
 					self::add( $user_id );
 					$user = get_userdata( $user_id );
@@ -60,11 +63,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'list' ) {
-			$success = self::update_score_history();
-			if ( $success )
-				self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-			else
-				self::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
+			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
+			self::update_score_history();
 		}
 		
 		self::view();
@@ -91,9 +91,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$users = get_users( '' );
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
-			$league_name = array_key_exists( $league_id, $pool->leagues ) ? 
-									$pool->leagues[$league_id]['leagueName'] : 
-									__( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+			if ( array_key_exists( $league_id, $pool->leagues ) ) {
+				$league_name = $pool->leagues[$league_id]['leagueName'];
+			} else {
+				$league_name = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+			}
 			
 			$plays_in_league = array_key_exists( $user->ID, $league_users ) ? $league_users[$user->ID] : 0;
 			$is_no_player = in_array( $user->ID, $excluded_players ) ? 1 : 0;
@@ -112,6 +114,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 							'email_address'			=> $user->user_email,
 						);
 		}
+		
 		return $output;
 	}
 
@@ -191,7 +194,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		$pool = new Football_Pool_Pool();
 		$has_leagues = $pool->has_leagues;
-		$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
+		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
 		
 		$users = get_users();
 		foreach ( $users as $user ) {
@@ -248,7 +251,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
-			$default_league = Football_Pool_Utils::get_wp_option( 'footballpool_default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
+			$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
 			// if user is in a non-existing league, then force the update
@@ -282,6 +285,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	protected function list_table_field( $type, $value, $name = '', $source = '' ) {
 		switch ( $type ) {
 			case 'checkbox':
+			case 'boolean':
 				$checked = $value == 1 ? 'checked="checked" ' : '';
 				$output = '<input type="checkbox" value="1" name="' . $name . '" ' . $checked . '/>';
 				break;
@@ -329,15 +333,25 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 					echo self::list_table_field( $cols[$j][0], $rows[$i][$j], $name, $cols[$j][3] );
 
 					if ( $j == 0 ) {
+						$row_action_url = sprintf( 'user-edit.php?user_id=%s'
+													, esc_attr( $rows[$i][$c] )
+											);
+						$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 						echo '</a></strong><br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="user-edit.php?user_id=', esc_attr( $rows[$i][$c] ), '">Edit</a>
+										<a href="', $row_action_url, '">Edit</a>
 									</span>';
 						foreach ( $rowactions as $action ) {
-							$span_class = $action[0] == 'remove' ? 'delete' : 'edit';
+							$span_class = ( $action[0] == 'remove' ) ? 'delete' : 'edit';
+							$row_action_url = sprintf( '?page=%s&amp;action=%s&amp;item_id=%s'
+														, esc_attr( $page )
+														, esc_attr( $action[0] )
+														, esc_attr( $rows[$i][$c] )
+												);
+							$row_action_url = wp_nonce_url( $row_action_url, FOOTBALLPOOL_NONCE_ADMIN );
 							echo '<span class="', $span_class, '">
-									| <a href="?page=', esc_attr( $page ), '&amp;action=', esc_attr( $action[0] ), '&amp;item_id=', esc_attr( $rows[$i][$c] ), '">', $action[1], '</a>
+									| <a href="', $row_action_url, '">', $action[1], '</a>
 								</span>';
 						}
 						echo "</div>";
@@ -422,8 +436,10 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
 		$wpdb->query( $sql );
 		// also recalculate scorehistory
-		$score = new Football_Pool_Admin();
-		$success = $score->update_score_history();
+		// note: we are outside of the plugin admin scope here, so no "self::" available
+		// removed since version 2.2.0 (iframe not available)
+		// $score = new Football_Pool_Admin();
+		// $score->update_score_history();
 	}
 	
 }

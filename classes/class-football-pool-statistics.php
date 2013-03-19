@@ -20,8 +20,11 @@ class Football_Pool_Statistics {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT;
+		$single_match = ( $match > 0 ) ? '' : '1 = 1 OR';
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
-								WHERE (" . ( $match > 0 ? '' : '1=1 OR ' ) . "(type=0 AND scoreOrder=%d))", 
+								WHERE ranking_id = {$ranking_id} 
+									AND ( {$single_match} ( type = 0 AND scoreOrder = %d ) )", 
 								$match
 							);
 		$num = $wpdb->get_var( $sql );
@@ -52,18 +55,19 @@ class Football_Pool_Statistics {
 	public function show_match_info( $info ) {
 		$output = '';
 		$this->stats_visible = false;
+		$matches = new Football_Pool_Matches;
 		
 		if ( count( $info ) > 0 ) {
-			if ( $info['match_is_editable'] == true ) {
-				$output .= sprintf('<h1>%s - %s</h1>', $info['home_team'], $info['away_team']);
-				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			} else {
+			if ( $matches->always_show_predictions || $info['match_is_editable'] == false ) {
 				$output .= sprintf( '<h2>%s - %s', $info['home_team'], $info['away_team'] );
 				if ( $info['home_score'] != '' && $info['away_score'] != '' ) {
 					$output .= sprintf( ' (%d - %d)', $info['home_score'], $info['away_score'] );
 				}
 				$output .= '</h2>';
 				$this->stats_visible = true;
+			} else {
+				$output .= sprintf('<h2>%s - %s</h2>', $info['home_team'], $info['away_team']);
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -81,10 +85,7 @@ class Football_Pool_Statistics {
 								, __( 'Bonus question', FOOTBALLPOOL_TEXT_DOMAIN )
 								, $info['question'] 
 						);
-			if ( $info['bonus_is_editable'] == true ) {
-				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				$this->stats_visible = false;
-			} else {
+			if ( $pool->always_show_predictions || $info['bonus_is_editable'] == false ) {
 				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
 									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['answer'],
@@ -92,6 +93,9 @@ class Football_Pool_Statistics {
 									$info['points']
 								);
 				$this->stats_visible = true;
+			} else {
+				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				$this->stats_visible = false;
 			}
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -133,14 +137,14 @@ class Football_Pool_Statistics {
 		$sql .= "	u.display_name AS userName
 				FROM {$prefix}matches m 
 				LEFT OUTER JOIN {$prefix}predictions p 
-					ON (p.matchNr = m.nr AND m.nr = %d) 
+					ON ( p.matchNr = m.nr AND m.nr = %d ) 
 				RIGHT OUTER JOIN {$wpdb->users} u 
-					ON (u.ID = p.userId) ";
+					ON ( u.ID = p.userId ) ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON (u.ID = lu.userId)
-					INNER JOIN {$prefix}leagues l ON (l.id = lu.leagueId) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.userId )
+					INNER JOIN {$prefix}leagues l ON ( l.id = lu.leagueId ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
 			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";
@@ -168,7 +172,7 @@ class Football_Pool_Statistics {
 									$row['awayScore']
 							);
 				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
-									( $row['hasJoker'] == 1 ? 'joker' : 'nojoker' ) );
+									( $row['hasJoker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
 				$score = $pool->calc_score(
 									$match_info['home_score'], 
 									$match_info['away_score'], 
@@ -184,12 +188,5 @@ class Football_Pool_Statistics {
 		return $output;
 	}
 	
-	public function getNumScores() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$sql = "SELECT COUNT(*) FROM {$prefix}scorehistory GROUP BY userId LIMIT 1";
-		return (integer) $wpdb->get_var( $sql );
-	}
 }
 ?>

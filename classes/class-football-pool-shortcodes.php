@@ -1,5 +1,6 @@
 <?php
 // shortcodes
+add_shortcode( 'fp-predictionform', array( 'Football_Pool_Shortcodes', 'shortcode_predictionform' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
 add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
@@ -25,6 +26,53 @@ add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalp
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
+	//[fp-predictionform] 
+	//    All arguments can be entered in the following formats (example for matches:
+	//        match 1               -> match="1"
+	//        matches 1 to 5        -> match="1-5"
+	//        matches 1, 3 and 6    -> match="1,3,6"
+	//        matches 1 to 5 and 10 -> match="1-5,10"
+	//    If an argument is left empty it is ignored. Matches are always displayed first.
+	//
+	//    match     : collection of match ids 
+	//    question  : collection of question ids
+	//    matchtype : collection of match type ids
+	public function shortcode_predictionform( $atts ) {
+		extract( shortcode_atts( array(
+					'match' => '',
+					'question' => '',
+					'matchtype' => '',
+				), $atts ) );
+		
+		global $current_user;
+		get_currentuserinfo();
+		// $questions = new Football_Pool_Questions;
+		$pool = new Football_Pool_Pool;
+		$matches = new Football_Pool_Matches;
+		
+		// save user input
+		$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
+		$output = $pool->prediction_form_update();
+		
+		// extract all ids from the arguments
+		$match_ids = Football_Pool_Utils::extract_ids( $match );
+		$question_ids = Football_Pool_Utils::extract_ids( $question );
+		$matchtype_ids = Football_Pool_Utils::extract_ids( $matchtype );
+		// add all matches in the match types collection to the match_ids
+		$match_ids = array_merge( $match_ids, $matches->get_matches_for_match_type( $matchtype_ids ) );
+		
+		$matches = $matches->get_match_info_for_user( $current_user->ID, $match_ids );
+		$questions = $pool->get_bonus_questions_for_user( $current_user->ID, $question_ids );
+		
+		// display form(s)
+		$output .= $pool->prediction_form_start( $id );
+		$output .= $pool->prediction_form_matches( $matches, true, $id );
+		$output .= $pool->prediction_form_questions( $questions, true, $id );
+		$output .= $pool->prediction_form_end();
+		
+		return $output;
+	}
+	
 	//[fp-group]
 	//		id	: show the standing for the group with this id, defaults to a non-existing group and thus
 	//			  will not show anything when none is given.
@@ -47,6 +95,7 @@ class Football_Pool_Shortcodes {
 	
 	//[fp-ranking] 
 	//		league	: only show users in this league, defaults to all
+	//		ranking	: only show points from this ranking, defaults to complete ranking
 	//		num 	: number of users to show, defaults to 5
 	//		date	: show ranking up until this date, 
 	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
@@ -57,6 +106,7 @@ class Football_Pool_Shortcodes {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
 					'num' => $default_num,
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'date' => 'now',
 				), $atts ) );
 		
@@ -70,16 +120,19 @@ class Football_Pool_Shortcodes {
 			$num = $default_num;
 		}
 		
+		if ( ! is_numeric( $ranking ) || $ranking <= 0 ) {
+			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
+		}
+		
 		if ( $date == 'postdate' ) {
 			$score_date = get_the_date( 'Y-m-d H:i' );
-		//} elseif ( ( $score_date = DateTime::createFromFormat( 'Y-m-d H:i', $date ) ) !== false ) {
 		} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
 			$score_date = $score_date->format( 'Y-m-d H:i' );
 		} else {
 			$score_date = '';
 		}
 		
-		$rows = $pool->get_pool_ranking_limited( $league, $num, $score_date );
+		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, $score_date );
 		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
@@ -96,7 +149,7 @@ class Football_Pool_Shortcodes {
 			}
 			$output .= '</table>';
 		} else {
-			$output = '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 		
 		return $output;
@@ -113,12 +166,7 @@ class Football_Pool_Shortcodes {
 		
 		$matches = new Football_Pool_Matches();
 		
-		$cache_key = 'fp_countdown_id';
-		$id = wp_cache_get( $cache_key );
-		if ( $id === false ) {
-			$id = 1;
-		}
-		wp_cache_set( $cache_key, $id + 1 );
+		$id = Football_Pool_Utils::get_counter_value( 'fp_countdown_id' );
 		
 		$countdown_date = 0;
 		if ( (int) $match > 0 ) {

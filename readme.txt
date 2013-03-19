@@ -1,6 +1,6 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey
 Requires at least: 3.1
 Tested up to: 3.5
 Stable tag: 2.1.3
@@ -18,7 +18,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 **Features**
 
 * Users can predict match outcomes.
-* Automatic calculation of the pool ranking.
+* Automatic calculation of the pool ranking. Or define your own custom ranking for a group of matches.
 * You can add bonus questions for extra fun (single answer and multiple choice).
 * Add your own teams and match info to use the plugin for another (national) competition.
 * Import or export the game schedule.
@@ -27,12 +27,12 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Use different leagues for your users (optional).
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
-* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), easy integration of some configuration options in your content (e.g. points).
+* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), show a prediction form for a subset of matches or bonus questions, easy integration of some configuration options in your content (e.g. points).
 * Extra info pages for venues and teams.
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch, Spanish and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+At the moment the plugin is available in English, Dutch, Spanish, French and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
 
 **Other things**
 
@@ -111,8 +111,9 @@ The Football Pool plugin is available in the following languages:
 
 * Dutch (`nl_NL`) by me.
 * English (default) by me.
-* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.0.0).
+* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.x).
 * Spanish (`es_ES`) by Cristian Carlucci.
+* French (`fr_FR`) by Julien Blancher.
 
 == Screenshots ==
 1. Matches in the tournament
@@ -123,13 +124,44 @@ The Football Pool plugin is available in the following languages:
 
 == Upgrade Notice ==
 
+= 2.2.0 =
+Plugin styling of widgets has changed to be a little less 'dominant' over the styling of your theme.
+
 = 2.1.3 =
 Highcharts API is moved to a directory outside the plugin's directory so future upgrading won't break your site.
 
 = 2.1.1 =
 Shortcodes have changed in this version. Old shortcodes are still supported but are deprecated. Please update your content.
 
+= 2.0.0 =
+Default language is now English. Change de `WPLANG` constant if you want to use another language. If you're upgrading from a version prior to v1.3 you get a warning that the column `max_answers` already exists. That's fine, the plugin will work and you won't get the warning again. 
+
+= 1.4.5 =
+Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
+
 == Changelog ==
+
+= 2.2.0 =
+* Important: styling of the widgets has changed. They contained styles that could conflict with the styling of other widgets.
+* New feature: user defined rankings (ranking for a selected group of matches and/or questions).
+* New feature: plugin option to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
+* New shortcode to support the user defined rankings.
+* New option to let users choose between different rankings on the charts page or ranking page.
+* New shortcode to show prediction form for a group of matches and/or bonus questions.
+* New feature: ability to use result of matches in multiple match types as data for the Groups page. This option can be set in the plugin options screen (thanks to Eli for reporting this).
+* New feature: option to show user's avatar in the ranking tables.
+* New option: choose sorting method of matches (date ascending or date descending).
+* Added French translation (thanks Julien Blancher).
+* All dates in the front-end are localized using date_i18n() and WordPress' Time Format setting.
+* Clean up: all plugin options are stored in a single array in the wp_options table.
+* Bug fix: if charts were disabled the plugin could break other plugins that use javascript (thanks AndresCZ).
+* Bug fix: description text of widgets was not correct in the WordPress admin.
+* Bug fix: when using the plugin in a different language the 'Save & Close' buttons did not work correctly in the admin.
+* Bug fix: stadium names with special chars (like Ã) did not work correctly in PHP version below 5.4 (thanks angelpubli).
+* Bug fix: when adding teams the new team was not displayed in the list. You had to reload the page.
+* Bug fix: it was possible to add a match without a match type, venue or team. These 'orphaned' matches were saved in the database, but not shown.
+* Bug fix: adding a new bonus question caused a warning for the first question.
+* Bug fix: a user could use a trick to set multiple jokers. This was fixed.
 
 = 2.1.3 =
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.

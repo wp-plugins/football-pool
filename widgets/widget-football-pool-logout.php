@@ -44,7 +44,7 @@ class Football_Pool_Logout_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }

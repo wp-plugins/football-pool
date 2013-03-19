@@ -37,7 +37,8 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		extract( $args );
 		
 		$num_messages = ( is_numeric( $instance['num_messages'] ) ? $instance['num_messages'] : 20 );
-		$max_chars = Football_Pool_Utils::get_fp_option( 'shoutbox_max_chars', FOOTBALLPOOL_SHOUTBOX_MAXCHARS, 'int' );
+		$max_chars = Football_Pool_Utils::get_fp_option( 'shoutbox_max_chars'
+														, FOOTBALLPOOL_SHOUTBOX_MAXCHARS, 'int' );
 		
 		global $current_user;
 		get_currentuserinfo();
@@ -45,12 +46,14 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		
 		// save a new shout?
 		$shout = Football_Pool_Utils::post_string( 'shouttext' );
-		if ( $shout != '' && $current_user->ID > 0 ) {
+		$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX );
+		if ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_SHOUTBOX ) !== false
+				&& $shout != '' && $current_user->ID > 0 ) {
 			$shoutbox->save_shout( $shout, $current_user->ID, $max_chars );
 		}
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
@@ -59,11 +62,13 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		if ( count( $messages ) > 0 ) {
 			echo '<div class="wrapper">';
 			foreach ( $messages as $message ) {
+				$time_format = get_option( 'time_format', FOOTBALLPOOL_TIME_FORMAT );
+				$date_format = get_option( 'date_format', FOOTBALLPOOL_DATE_FORMAT );
 				$url = esc_url( add_query_arg( array( 'user' => $message['userId'] ), $userpage ) );
 				$shout_date = new DateTime( Football_Pool_Utils::date_from_gmt( $message['shoutDate'] ) );
 				echo '<p><a class="name" href="', $url, '">', $message['userName'], '</a>&nbsp;
-					<span class="date">(', $shout_date->format( 'j-n-Y, H:i' ), ')</span></p>
-					<p class="text">', htmlspecialchars($message['shoutText']), '</p><hr />';
+					<span class="date">(', $shout_date->format( "{$date_format}, {$time_format}" ), ')</span></p>
+					<p class="text">', htmlspecialchars( $message['shoutText'], null, 'UTF-8' ), '</p><hr />';
 			}
 			echo '</div>';
 		} else {
@@ -72,13 +77,20 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		
 		if ( $current_user->ID > 0 ) {
 			echo '<form action="" method="post">';
-			echo '<p><span id="shouttext_notice" class="notice">';
-			echo sprintf( __( '(<span>%s</span> characters remaining)', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars );
+			wp_nonce_field( FOOTBALLPOOL_NONCE_SHOUTBOX, FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX );
+			echo '<p><span class="notice">';
+			printf( __( '(<span>%s</span> characters remaining)', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars );
 			echo '</span><br />';
-			echo '<textarea id="shouttext" name="shouttext" 
-					onkeyup="footballpool_update_chars( this.id, ', $max_chars, ' )" 
-					title="', sprintf( __( 'all text longer than %s characters will be removed!', FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars ), '"></textarea>';
-			echo '<input type="submit" name="submit" value="', __( 'save', FOOTBALLPOOL_TEXT_DOMAIN ), '" />';
+			$id = Football_Pool_Utils::get_counter_value( 'fp_shoutbox_id' );
+			printf( '<textarea id="shouttext-%d" name="shouttext" 
+					onkeyup="footballpool_update_chars( this.id, %d )" title="%s"></textarea>'
+					, $id
+					, $max_chars
+					, sprintf( __( 'all text longer than %s characters will be removed!'
+								, FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars 
+							)
+			);
+			printf( '<input type="submit" name="submit" value="%s" />', __( 'save', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			echo '</p></form>';
 		}
 	}
@@ -91,7 +103,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }

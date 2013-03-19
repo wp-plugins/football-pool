@@ -24,6 +24,13 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				'std' => 'standing'
 			),
 			array(
+				'name'    => 'Ranking',
+				'desc' => '',
+				'id'      => 'ranking_id',
+				'type'    => 'select',
+				'options' => array() // get data from the database later on
+			),
+			array(
 				'name' => 'Number of users to show',
 				'desc' => '',
 				'id' => 'num_users',
@@ -45,9 +52,10 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		
 		$num_users = $instance['num_users'];
 		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
+		$ranking_id = ! empty( $instance['ranking_id'] ) ? $instance['ranking_id'] : FOOTBALLPOOL_RANKING_DEFAULT;
 		
 		if ( $title != '' ) {
-			echo $before_title . $title . $after_title;
+			echo $before_title, $title, $after_title;
 		}
 		
 		global $current_user;
@@ -56,8 +64,10 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		$rows = $pool->get_pool_ranking_limited( $league, $num_users );
+		$rows = $pool->get_pool_ranking_limited( $league, $num_users, $ranking_id );
 		if ( count( $rows ) > 0 ) {
+			$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
+			
 			$i = 1;
 			echo '<table class="pool-ranking">';
 			foreach ( $rows as $row ) {
@@ -66,7 +76,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				
 				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
 				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $url, '">', $row["userName"], '</a></td>',
+					'<td><a href="', $url, '">', $pool->get_avatar( $row['userId'], 'small' ), $row["userName"], '</a></td>',
 					'<td class="score">', $row['points'], '</td></tr>';
 			}
 			echo '</table>';
@@ -78,13 +88,21 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	public function __construct() {
 		// fields data only needed in the admin
 		if ( is_admin() ) {
-			// get the league-options from the database
 			$pool = new Football_Pool_Pool();
-			$leagues = $pool->get_leagues();
-			foreach ( $leagues as $league ) {
-				$options[ $league['leagueId'] ] = $league['leagueName'];
+			// get the ranking-options from the database
+			$rankings = $pool->get_rankings();
+			$options = array();
+			foreach ( $rankings as $ranking ) {
+				$options[$ranking['id']] = $ranking['name'];
 			}
-			$this->widget['fields'][2]['options'] = $options;
+			$this->widget['fields'][1]['options'] = $options;
+			// get the league-options from the database
+			$leagues = $pool->get_leagues();
+			$options = array();
+			foreach ( $leagues as $league ) {
+				$options[$league['leagueId']] = $league['leagueName'];
+			}
+			$this->widget['fields'][3]['options'] = $options;
 		}
 		
 		$classname = str_replace( '_', '', get_class( $this ) );
@@ -92,7 +110,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		parent::__construct( 
 			$classname, 
 			( isset( $this->widget['name'] ) ? $this->widget['name'] : $classname ), 
-			array( 'description' => $this->widget['description'] )
+			$this->widget['description']
 		);
 	}
 }
