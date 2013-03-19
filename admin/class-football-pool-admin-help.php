@@ -14,6 +14,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<h2>Index</h2>
 		<p>
 			<ol>
+				<li><a href="#introduction">Introduction</a></li>
 				<li><a href="#time">Time</a></li>
 				<li><a href="#points">Points</a></li>
 				<li><a href="#rankings">Rankings & Scoring</a></li>
@@ -27,6 +28,16 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</ol>
 		</p>
 
+		<h2 id="introduction">Introduction</h2>
+		<p>
+		The Football Pool plugin install a pool in your WordPress blog. In the default configuration this plugin enables you to define matches between (football) teams and lets your blog visitors predict the outcomes of the matches. Players earn points for correct predictions and the best player wins the pool.
+		</p>
+		<p>
+		There are several ways you can customize the plugin: different scores for correct answers, add bonus questions, add your own rankings, etc. See the contents of this help file for details. If you have any questions, you may leave them at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.
+		</p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
 		<h2 id="times">Time</h2>
 		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
@@ -103,7 +114,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<h2 id="rankings">Rankings</h2>
 		<p>
 		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
-		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). First make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions. The custom rankings can be used with the ranking shortcode or in ranking widget.
+		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). If you want to use this feature make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions; this is the ranking definition. The custom rankings can be used with the ranking shortcode, in a ranking widget or on the ranking and charts page.
 		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
