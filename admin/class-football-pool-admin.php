@@ -7,7 +7,7 @@ class Football_Pool_Admin {
 		add_menu_page(
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'administrator',
+			'manage_football_pool',
 			$slug,
 			array( 'Football_Pool_Admin_Options', 'admin' ),
 			'div'
@@ -17,7 +17,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Football Pool Options', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'administrator',
+			'manage_football_pool',
 			'footballpool-options',
 			array( 'Football_Pool_Admin_Options', 'admin' )
 		);
@@ -26,7 +26,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-users',
 			array( 'Football_Pool_Admin_Users', 'admin' )
 		);
@@ -35,7 +35,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-games',
 			array( 'Football_Pool_Admin_Games', 'admin' )
 		);
@@ -44,7 +44,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-bonus',
 			array( 'Football_Pool_Admin_Bonus_Questions', 'admin' )
 		);
@@ -53,7 +53,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-shoutbox',
 			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
 		);
@@ -62,7 +62,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-teams',
 			array( 'Football_Pool_Admin_Teams', 'admin' )
 		);
@@ -71,7 +71,7 @@ class Football_Pool_Admin {
 			// $slug,
 			// __( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			// __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			// 'administrator', 
+			// 'manage_football_pool', 
 			// 'footballpool-teams-position',
 			// array( 'Football_Pool_Admin_Teams_Position', 'admin' )
 		// );
@@ -80,7 +80,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-venues',
 			array( 'Football_Pool_Admin_Stadiums', 'admin' )
 		);
@@ -89,7 +89,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-leagues',
 			array( 'Football_Pool_Admin_Leagues', 'admin' )
 		);
@@ -98,7 +98,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-rankings',
 			array( 'Football_Pool_Admin_Rankings', 'admin' )
 		);
@@ -107,7 +107,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-matchtypes',
 			array( 'Football_Pool_Admin_Match_Types', 'admin' )
 		);
@@ -116,7 +116,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Edit groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-groups',
 			array( 'Football_Pool_Admin_Groups', 'admin' )
 		);
@@ -125,7 +125,7 @@ class Football_Pool_Admin {
 			$slug,
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'administrator', 
+			'manage_football_pool', 
 			'footballpool-help',
 			array( 'Football_Pool_Admin_Help', 'admin' )
 		);

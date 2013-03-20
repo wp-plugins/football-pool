@@ -33,6 +33,20 @@ class Football_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		// admin capabilities
+		add_role( 'football_pool_admin', 'Football Pool Admin', 
+					array(
+						'read' => true,
+						'manage_football_pool' => true,
+					)
+		);
+		
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'manage_football_pool' );
+		$role = get_role( 'editor' );
+		$role->add_cap( 'manage_football_pool' );
+		// end admin capabilities
+		
 		$action = empty( $action ) ? 'install' : $action;
 		
 		// default plugin options
@@ -144,7 +158,8 @@ class Football_Pool {
 					}
 				}
 				// change behaviour of tinymce option
-				$options['add_tinymce_button'] = ( (int) get_option( 'footballpool_no_tinymce', 1 ) == 1 ) ? 0 : 1;
+				$options['add_tinymce_button'] = 
+									( (int) get_option( 'footballpool_no_tinymce', 1 ) == 1 ) ? 0 : 1;
 				delete_option( 'footballpool_no_tinymce' );
 				delete_option( 'footballpool_db_version' );
 				update_option( FOOTBALLPOOL_OPTIONS, $options );
@@ -207,6 +222,13 @@ class Football_Pool {
 	public function deactivate() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		// remove added admin privileges
+		remove_role( 'football_pool_admin' );
+		$role = get_role( 'administrator' );
+		$role->remove_cap( 'manage_football_pool' );
+		$role = get_role( 'editor' );
+		$role->remove_cap( 'manage_football_pool' );
 		
 		// delete custom tables from database
 		$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );

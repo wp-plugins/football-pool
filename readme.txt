@@ -143,6 +143,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 
 = 2.2.0 =
 * Important: styling of the widgets has changed. They contained styles that could conflict with the styling of other widgets.
+* Some minor changes in the security model: WordPress editors can now also manage the plugin and there is a new role "Football Pool Admin" with only rights to the plugin's admin screens.
 * New feature: user defined rankings (ranking for a selected group of matches and/or questions).
 * New feature: plugin option to always show predictions of other players. Regardless of the fact if matches are editable for your contenders.
 * New shortcode to support the user defined rankings.
