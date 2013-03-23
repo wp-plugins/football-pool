@@ -186,10 +186,11 @@ class Football_Pool_Chart_Data {
 											u.display_name, h.type 
 											FROM {$prefix}scorehistory h, {$wpdb->users} u 
 											WHERE h.ranking_id = %d AND u.ID = h.userId 
-												AND h.userId IN (" . implode(',', $users) . ")
+												AND h.userId IN (" . implode( ',', $users ) . ")
 											ORDER BY h.scoreDate ASC, h.type ASC, h.scoreOrder ASC, h.userId ASC"
 											, $ranking_id
 								);
+								
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			foreach ( $rows as $row ) {
@@ -269,6 +270,7 @@ class Football_Pool_Chart_Data {
 	
 	private function per_match_line_series( $lines ) {
 		if ( count( $lines ) > 0 ) {
+			$match_obj = new Football_Pool_Matches;
 			$categoriesdata = array();
 			$seriesdata = array();
 			
@@ -291,9 +293,7 @@ class Football_Pool_Chart_Data {
 					$match = (int) $datarow['match'];
 					$type = $datarow['type'];
 					if ( $type == 0 ) {
-						// $categoriesdata[] = __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . ++$matchnr;
-						$matchinfo = new Football_Pool_Matches;
-						$matchinfo = $matchinfo->get_match_info( $match );
+						$matchinfo = $match_obj->get_match_info( $match );
 						$category_data = __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . ++$matchnr;
 						if ( isset( $matchinfo['home_team'] ) ) {
 							$category_data .= ': ' . $matchinfo['home_team'] . ' - ' . $matchinfo['away_team'];

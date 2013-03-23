@@ -273,17 +273,17 @@ switch ( $step ) {
 		break;
 	case 6:
 		// update ranking order for users
-		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
+		// if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 			$sql = $wpdb->prepare( "SELECT scoreDate, `type` FROM {$prefix}scorehistory 
 									WHERE ranking_id = %d GROUP BY scoreDate, `type`"
 									, $ranking_id );
-		} else {
-			$sql = $wpdb->prepare( "SELECT s.scoreDate, s.`type` FROM {$prefix}scorehistory s
-									JOIN {$prefix}rankings_matches rm
-										ON ( s.scoreOrder = rm.match_id AND rm.ranking_id = %d )
-									WHERE s.ranking_id = %d GROUP BY s.scoreDate, s.`type`"
-									, $ranking_id, $ranking_id );
-		}
+		// } else {
+			// $sql = $wpdb->prepare( "SELECT s.scoreDate, s.`type` FROM {$prefix}scorehistory s
+									// JOIN {$prefix}rankings_matches rm
+										// ON ( s.scoreOrder = rm.match_id AND rm.ranking_id = %d )
+									// WHERE s.ranking_id = %d GROUP BY s.scoreDate, s.`type`"
+									// , $ranking_id, $ranking_id );
+		// }
 		$ranking_dates = $wpdb->get_results( $sql, ARRAY_A );
 		
 		if ( is_array( $ranking_dates ) ) {
