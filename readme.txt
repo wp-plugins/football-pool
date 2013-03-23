@@ -109,11 +109,11 @@ That's correct. The plugin has some basic styling, but it will not change your e
 
 The Football Pool plugin is available in the following languages:
 
-* Dutch (`nl_NL`) by me.
 * English (default) by me.
-* Polish (`pl_PL`) by Łukasz Ciastoń (not updated for version 2.x).
+* Dutch (`nl_NL`) by me.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher.
+* Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
 
 == Screenshots ==
 1. Matches in the tournament
@@ -125,6 +125,7 @@ The Football Pool plugin is available in the following languages:
 == Upgrade Notice ==
 
 = 2.2.0 =
+Please back up your database before updating! 
 Plugin styling of widgets has changed to be a little less 'dominant' over the styling of your theme.
 
 = 2.1.3 =
