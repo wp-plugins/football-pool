@@ -1,9 +1,9 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 2.1.3
+Stable tag: 2.2.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy football pool to your blog. Play against other users, predict outcomes of matches and earn points.
