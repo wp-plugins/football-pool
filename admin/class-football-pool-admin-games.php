@@ -558,12 +558,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
-											, $localdate->getTimestamp() );
+											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
 				// Translators: this is a date format string (see http://php.net/date)
 				$localdate_tooltip = date_i18n( __( 'd M Y, H:i', FOOTBALLPOOL_TEXT_DOMAIN )
-												, $localdate->getTimestamp() );
+												, $localdate->format( 'U' ) );
 				echo '<tr><td class="sidebar-name"></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',

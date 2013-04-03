@@ -61,7 +61,7 @@ class Football_Pool {
 		$date = new DateTime();
 		// Translators: this is a date format string (see http://php.net/date)
 		$date_formatted = date_i18n( __( 'j F', FOOTBALLPOOL_TEXT_DOMAIN )
-										, $date->getTimestamp() );
+										, $date->format( 'U' ) );
 		
 		$options = array();
 		$options['webmaster'] = $current_user->user_email;

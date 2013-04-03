@@ -23,7 +23,7 @@ class Football_Pool_Matches {
 		if ( $this->force_lock_time ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $datetime );
 			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime ) );
-			$this->lock = $date->getTimestamp();
+			$this->lock = $date->format( 'U' );
 		} else {
 			$this->lock = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 		}
@@ -303,13 +303,13 @@ class Football_Pool_Matches {
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			// Translators: this is a date format string (see http://php.net/date)
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
-											, $localdate->getTimestamp() );
+											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
 				// Translators: this is a date format string (see http://php.net/date)
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>'
 									, date_i18n( __( 'l', FOOTBALLPOOL_TEXT_DOMAIN )
-												, $localdate->getTimestamp() )
+												, $localdate->format( 'U' ) )
 									, $date_title );
 			}
 			
@@ -379,7 +379,7 @@ class Football_Pool_Matches {
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
-											, $localdate->getTimestamp() );
+											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
 				$output .= sprintf( '<tr><td class="matchdate" colspan="11">%s</td></tr>', $date_title );
