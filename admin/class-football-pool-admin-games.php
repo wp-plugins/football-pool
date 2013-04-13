@@ -571,7 +571,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						'</tr>';
 			}
 			
-			$page = '?page=' . Football_Pool_Utils::get_string( 'page' ) . '&amp;item_id=' . $row['nr'];
+			$page = wp_nonce_url( sprintf( '?page=%s&amp;item_id=%d'
+											, Football_Pool_Utils::get_string( 'page' )
+											, $row['nr'] )
+									, FOOTBALLPOOL_NONCE_ADMIN );
 			$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
 								, $row['nr'] 
 							);
