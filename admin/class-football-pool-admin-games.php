@@ -274,7 +274,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						);
 			
 			echo '<div class="import culture-select">';
-			self::dropdown( 'culture', $locale_filter, $options );
+			echo self::dropdown( 'culture', $locale_filter, $options );
 			self::secondary_button( __( 'change', FOOTBALLPOOL_TEXT_DOMAIN ), 'change-culture' );
 			echo '</div>';
 			

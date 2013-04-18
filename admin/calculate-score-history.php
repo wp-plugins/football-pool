@@ -4,6 +4,12 @@ require_once( '../define.php' );
 require_once 'class-football-pool-admin.php';
 
 check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC );
+
+// alles uit totaalqueries halen, via losse queries
+// sets serializen (json_encode/decode) en in options table, array poppen/shiften tot volgende stap
+// berekening voor 1 ranking ondersteunen
+// in ranking-table bijhouden of een ranking moet worden bijgewerkt (save-actie bij matches, queries, users)
+// 
 ?>
 <!doctype html>
 <html>
@@ -73,8 +79,19 @@ $check = true;
 $step = Football_Pool_Utils::get_int( 'step', 1 );
 $progress = Football_Pool_Utils::get_int( 'progress', 1 );
 $ranking_id = Football_Pool_Utils::get_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
-$user_id = Football_Pool_Utils::get_int( 'user', 0 );
+$user_set = Football_Pool_Utils::get_int( 'user_set', 0 );
+$total_user_sets = Football_Pool_Utils::get_int( 'total_user_sets', 0 );
+$total_users = Football_Pool_Utils::get_int( 'total_users', 0 );
 $total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );
+
+if ( $total_user_sets > 0 ) {
+	$from = ( $user_set * FOOTBALLPOOL_RECALC_USER_DIV ) + 1;
+	$to = ( ( $user_set + 1 ) * FOOTBALLPOOL_RECALC_USER_DIV );
+	if ( $to > $total_users ) $to = $total_users;
+	$user_batch = sprintf( __( '(users %d - %d of %d)', FOOTBALLPOOL_TEXT_DOMAIN ), $from, $to, $total_users );
+} else {
+	$user_batch = '';
+}
 
 // steps:
 $msg = array();
@@ -82,8 +99,8 @@ $msg[] = __( 'empty ranking table', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'check user predictions with actual results', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'update score with points', FOOTBALLPOOL_TEXT_DOMAIN );
 $msg[] = __( 'add bonus question points', FOOTBALLPOOL_TEXT_DOMAIN );
-$msg[] = sprintf( __( 'ranking %d: update total score incrementally', FOOTBALLPOOL_TEXT_DOMAIN )
-				, $ranking_id 
+$msg[] = sprintf( __( 'ranking %d: update total score incrementally %s', FOOTBALLPOOL_TEXT_DOMAIN )
+				, $ranking_id, $user_batch
 			);
 $msg[] = sprintf( __( 'ranking %d: update ranking for users', FOOTBALLPOOL_TEXT_DOMAIN )
 				, $ranking_id
@@ -95,12 +112,14 @@ $msg[] = sprintf( '<strong>%s</strong>', __( 'score (re)calculation finished', F
 
 if ( $total_steps == 0 ) {
 	// determine total calculation steps
-	$users = get_users( 'orderby=ID' );
+	$users = get_users( 'orderby=ID&order=ASC' );
 	$sql = "SELECT COUNT( * ) FROM {$prefix}rankings WHERE user_defined = 1 ORDER BY id DESC";
 	$rankings = $wpdb->get_var( $sql );
 	
-	$total_steps = count( $msg ) + ( $rankings * 3 );
-					// + ( ceil( count( $users ) / FOOTBALLPOOL_RECALC_USER_DIV ) - 1 );
+	$total_users = count( $users );
+	$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_USER_DIV ) - 1;
+	$total_steps = count( $msg ) + ( $rankings * 3 )
+					+ ( ( $rankings + 1 ) * $total_user_sets );
 }
 
 // print status messages
@@ -237,7 +256,10 @@ switch ( $step ) {
 		}
 		
 		// cumulate scores for each user
-		$users = get_users( 'orderby=ID' );
+		$offset = $user_set * FOOTBALLPOOL_RECALC_USER_DIV;
+		$number = FOOTBALLPOOL_RECALC_USER_DIV;
+		$users = get_users( "orderby=ID&order=ASC&offset={$offset}&number={$number}" );
+		
 		foreach ( $users as $user ) {
 			$sql = $wpdb->prepare( $sql_user_scores, $user->ID );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -267,23 +289,15 @@ switch ( $step ) {
 			}
 		}
 		
-		$params['step'] = 6;
+		$params['step'] = ( $user_set == $total_user_sets ) ? 6 : 5; // repeat step until there are no more users
 		$params['ranking'] = $ranking_id;
-		$params['user'] = 0; // @todo
+		$params['user_set'] = ++$user_set;
 		break;
 	case 6:
 		// update ranking order for users
-		// if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-			$sql = $wpdb->prepare( "SELECT scoreDate, `type` FROM {$prefix}scorehistory 
-									WHERE ranking_id = %d GROUP BY scoreDate, `type`"
-									, $ranking_id );
-		// } else {
-			// $sql = $wpdb->prepare( "SELECT s.scoreDate, s.`type` FROM {$prefix}scorehistory s
-									// JOIN {$prefix}rankings_matches rm
-										// ON ( s.scoreOrder = rm.match_id AND rm.ranking_id = %d )
-									// WHERE s.ranking_id = %d GROUP BY s.scoreDate, s.`type`"
-									// , $ranking_id, $ranking_id );
-		// }
+		$sql = $wpdb->prepare( "SELECT scoreDate, `type` FROM {$prefix}scorehistory 
+								WHERE ranking_id = %d GROUP BY scoreDate, `type`"
+								, $ranking_id );
 		$ranking_dates = $wpdb->get_results( $sql, ARRAY_A );
 		
 		if ( is_array( $ranking_dates ) ) {
@@ -335,6 +349,8 @@ if ( $check === true ) {
 	if ( count( $params ) > 0 ) {
 		$params['progress'] = ++$progress;
 		$params['total_steps'] = $total_steps;
+		$params['total_user_sets'] = $total_user_sets;
+		$params['total_users'] = $total_users;
 		$params['_wpnonce'] = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
 		$url = add_query_arg( $params, $_SERVER['PHP_SELF'] );
 		printf( $js, sprintf( 'location.href = "%s";', $url ) );

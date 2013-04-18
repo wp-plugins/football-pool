@@ -452,6 +452,7 @@ class Football_Pool_Pool {
 			$rows = $wpdb->get_results( $sql );
 			$this->has_bonus_questions = ( count( $rows ) > 0 );
 			
+			$question_info = array();
 			foreach ( $rows as $row ) {
 				$i = $row->id;
 				$question_date = new DateTime( $row->questionDate );

@@ -207,20 +207,28 @@ class Football_Pool_Admin {
 			});
 			</script>';
 		
-		echo '<tr id="r-', $key, '" valign="top">
-			<th scope="row"><label for="', $key, '">', $label, '</label></th>
-			<td><input name="', $key, '" type="text" id="', $key, '" value="', esc_attr( $value ), '" title="', esc_attr( $value ), '" class="', esc_attr( $type ), '">
-			<input id="', $key, '_button" type="button" value="', __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN ), '"></td>
-			<td><span class="description">', $description, '</span></td>
-			</tr>';
+		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="%s">
+							<input id="%s_button" type="button" value="%s">'
+							, $key
+							, $key
+							, esc_attr( $value )
+							, esc_attr( $value )
+							, esc_attr( $type )
+							, $key
+							, __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		echo self::option_row( $key, $label, $input, $description );
 	}
 	
-	public function checkbox_input( $label, $key, $checked, $description = '', $extra_attr = '' ) {
-		echo '<tr id="r-', esc_attr( $key ), '" valign="top">
-			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td><input name="', esc_attr( $key ),'" type="checkbox" id="', esc_attr( $key ), '" value="1" ', ($checked ? 'checked="checked" ' : ''), ' ', $extra_attr, '></td>
-			<td><span class="description">', $description, '</span></td>
-			</tr>';
+	public function checkbox_input( $label, $key, $checked, $description = ''
+									, $extra_attr = '', $depends_on = '' ) {
+		$input = sprintf( '<input name="%s" type="checkbox" id="%s" value="1" %s %s>'
+							, esc_attr( $key )
+							, esc_attr( $key )
+							, ( $checked ? 'checked="checked" ' : '' )
+							, $extra_attr
+						);
+		echo self::option_row( $key, $label, $input, $description, $depends_on );
 	}
 	
 	public function dropdown( $key, $value, $options, $extra_attr = '', $multi = 'single' ) {
@@ -231,11 +239,7 @@ class Football_Pool_Admin {
 			$multiple = 'multiple="multiple" size="6" class="fp-multi-select"';
 			$name .= '[]';
 		}
-		printf( '<select id="%s" name="%s" %s>'
-				, esc_attr( $key )
-				, $name
-				, $multiple
-		);
+		$output = sprintf( '<select id="%s" name="%s" %s>', esc_attr( $key ), $name, $multiple );
 		
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
@@ -244,16 +248,19 @@ class Football_Pool_Admin {
 				$extra = $extra_attr;
 			}
 			
-			printf( '<option id="answer_%d" value="%s" %s %s>%s</option>'
-					, $i
-					, esc_attr( $option['value'] )
-					, ( self::check_selected_value( $value, $option['value'] ) ? 'selected="selected" ' : '' )
-					, $extra
-					, $option['text']
-			);
+			$selected = ( self::check_selected_value( $value, $option['value'] ) ? 'selected="selected" ' : '' );
+			$output .= sprintf( '<option id="answer_%d" value="%s" %s %s>%s</option>'
+								, $i
+								, esc_attr( $option['value'] )
+								, $selected
+								, $extra
+								, $option['text']
+						);
 			$i++;
 		}
-		echo '</select>';
+		$output .= '</select>';
+		
+		return $output;
 	}
 	
 	private function check_selected_value( $check_value, $option_value ) {
@@ -266,24 +273,14 @@ class Football_Pool_Admin {
 	
 	public function multiselect_input( $label, $key, $value, $options, $description = '', 
 									$extra_attr = '', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
-		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
-		echo '<td>';
-		self::dropdown( $key, $value, $options, $extra_attr, 'multi' );
-		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+		echo self::option_row( $key, $label, self::dropdown( $key, $value, $options, $extra_attr, 'multi' )
+								, $description, $depends_on );
 	}
 	
 	public function dropdown_input( $label, $key, $value, $options, $description = '', 
 									$extra_attr = '', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">';
-		echo '<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>';
-		echo '<td>';
-		self::dropdown( $key, $value, $options, $extra_attr );
-		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+		echo self::option_row( $key, $label, self::dropdown( $key, $value, $options, $extra_attr )
+								, $description, $depends_on );
 	}
 	
 	public function radiolist_input( $label, $key, $value, $options, $description = '', 
@@ -291,27 +288,28 @@ class Football_Pool_Admin {
 		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
 		
 		$i = 0;
-		printf( '<tr id="r-%s" valign="top"><th scope="row"><label for="answer_0">%s</label></th><td>'
-				, esc_attr( $key )
-				, $label
-		);
+		$label_extra = sprintf( '_answer_%d', $i );
+		$input = '';
 		foreach ( $options as $option ) {
 			if ( is_array( $extra_attr ) ) {
 				$extra = isset( $extra_attr[$i] ) ? $extra_attr[$i] : '';
 			} else {
 				$extra = $extra_attr;
 			}
-			printf( '<label class="radio"><input name="%s" type="radio" id="answer_%d" value="%s" %s %s> %s</label><br />'
-					, esc_attr( $key )
-					, $i
-					, esc_attr( $option['value'] )
-					, ( self::check_selected_value( $value, $option['value'] ) ? 'checked="checked" ' : '' )
-					, $extra
-					, $option['text']
-			);
-			$i++;
+			$selected = ( self::check_selected_value( $value, $option['value'] ) ? 'checked="checked" ' : '' );
+			$input .= sprintf( '<label class="radio"><input name="%s" type="radio" id="%s_answer_%d" 
+								value="%s" %s %s> %s</label><br />'
+								, esc_attr( $key )
+								, esc_attr( $key )
+								, $i++
+								, esc_attr( $option['value'] )
+								, $selected
+								, $extra
+								, $option['text']
+						);
 		}
-		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+		
+		echo self::option_row( $key, $label, $input, $description, $depends_on, $label_extra );
 	}
 	
 	public function hidden_input( $key, $value ) {
@@ -354,9 +352,6 @@ class Football_Pool_Admin {
 	}
 	
 	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top"><th scope="row"><label for="', esc_attr( $key ), '_y">', $label, '</label></th><td>';
 		if ( $value != '' ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
 			$date = new DateTime( self::date_from_gmt ( $value ) );
@@ -368,17 +363,41 @@ class Football_Pool_Admin {
 		} else {
 			$year = $month = $day = $hour = $minute = '';
 		}
-		echo '<input name="', esc_attr( $key ),'_y" type="text" id="', esc_attr( $key ), '_y" value="', esc_attr( $year ), '" class="with-hint date-y" title="yyyy" maxlength="4">';
-		echo '-';
-		echo '<input name="', esc_attr( $key ),'_m" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $month ), '" class="with-hint date-m" title="mm" maxlength="2">';
-		echo '-';
-		echo '<input name="', esc_attr( $key ),'_d" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $day ), '" class="with-hint date-d" title="dd" maxlength="2">';
-		echo '&nbsp;';
-		echo '<input name="', esc_attr( $key ),'_h" type="text" id="', esc_attr( $key ), '_m" value="', esc_attr( $hour ), '" class="with-hint date-h" title="hr" maxlength="2">';
-		echo ':';
-		echo '<input name="', esc_attr( $key ),'_i" type="text" id="', esc_attr( $key ), '_d" value="', esc_attr( $minute ), '" class="with-hint date-i" title="mn" maxlength="2">';
 		
-		echo '</td><td><span class="description">', $description, '</span></td></tr>';
+		$input = sprintf( '<input name="%s_y" type="text" id="%s_y" value="%s" class="with-hint date-y"
+							title="yyyy" maxlength="4">'
+							, esc_attr( $key ), esc_attr( $key ), esc_attr( $year )
+				);
+		$input .= '-';
+		$input .= sprintf( '<input name="%s_m" type="text" id="%s_m" value="%s" class="with-hint date-m"
+							title="mm" maxlength="2">'
+							, esc_attr( $key )
+							, esc_attr( $key )
+							, esc_attr( $month )
+				);
+		$input .= '-';
+		$input .= sprintf( '<input name="%s_d" type="text" id="%s_d" value="%s" class="with-hint date-d"
+							title="dd" maxlength="2">'
+							, esc_attr( $key )
+							, esc_attr( $key )
+							, esc_attr( $day )
+				);
+		$input .= '&nbsp;';
+		$input .= sprintf( '<input name="%s_h" type="text" id="%s_m" value="%s" class="with-hint date-h"
+							title="hr" maxlength="2">'
+							, esc_attr( $key )
+							, esc_attr( $key )
+							, esc_attr( $hour )
+				);
+		$input .= ':';
+		$input .= sprintf( '<input name="%s_i" type="text" id="%s_d" value="%s" class="with-hint date-i"
+							title="mn" maxlength="2">'
+							, esc_attr( $key )
+							, esc_attr( $key )
+							, esc_attr( $minute )
+				);
+		
+		echo self::option_row( $key, $label, $input, $description, $depends_on );
 	}
 	
 	public function textarea_field( $key, $value, $type = '' ) {
@@ -388,13 +407,8 @@ class Football_Pool_Admin {
 	}
 	
 	public function textarea_input( $label, $key, $value, $description = '', $type = '', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
-			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td>', self::textarea_field( $key, $value, $type ), '</td>
-			<td><span class="description">', $description, '</span></td>
-			</tr>';
+		echo self::option_row( $key, $label, self::textarea_field( $key, $value, $type )
+								, $description, $depends_on );
 	}
 	
 	public function text_input_field( $key, $value, $type = 'regular-text', $capability = '' ) {
@@ -407,14 +421,10 @@ class Football_Pool_Admin {
 		return $output;
 	}
 	
-	public function text_input( $label, $key, $value, $description = '', $type = 'regular-text', $depends_on = '' ) {
-		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
-		
-		echo '<tr', $hide, ' id="r-', esc_attr( $key ), '" valign="top">
-			<th scope="row"><label for="', esc_attr( $key ), '">', $label, '</label></th>
-			<td>', self::text_input_field( $key, $value, $type ), '</td>
-			<td><span class="description">', $description, '</span></td>
-			</tr>';
+	public function text_input( $label, $key, $value, $description = ''
+								, $type = 'regular-text', $depends_on = '' ) {
+		echo self::option_row( $key, $label, self::text_input_field( $key, $value, $type )
+								, $description, $depends_on );
 	}
 	
 	private function hide_input( $depends_on ) {
@@ -430,6 +440,20 @@ class Football_Pool_Admin {
 		}
 		
 		return $hide;
+	}
+	
+	private function option_row( $id, $label, $input, $description, $depends_on = '', $label_extra = '' ) {
+		$hide = self::hide_input( $depends_on ) ? ' style="display: none"' : '';
+		$class = ( $depends_on == '' ) ? '' : ' class="no-border"';
+		
+		$option = sprintf( '<th scope="row"><label for="%s%s">%s</label></th>'
+							, esc_attr( $id ), $label_extra, $label );
+		$input = sprintf( '<td>%s</td>', $input );
+		$description = sprintf( '<td><span class="description">%s</span></td>', $description );
+		
+		return sprintf( '<tr%s%s id="r-%s" valign="top">%s%s%s</tr>'
+						, $hide, $class, esc_attr( $id ), $option, $input, $description
+				);
 	}
 	
 	public function show_option( $option ) {
@@ -455,7 +479,7 @@ class Football_Pool_Admin {
 				self::radiolist_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], $option[4], isset( $option[5] ) ? $option[5] : '', isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'checkbox':
-				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
+				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
 				break;
 			case 'datetime':
 				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
@@ -494,7 +518,7 @@ class Football_Pool_Admin {
 				self::radiolist_input( $option[1], $option[2], $option[3], $option[4], isset( $option[5] ) ? $option[5] : '', isset( $option[6] ) ? $option[6] : '' );
 				break;
 			case 'checkbox':
-				self::checkbox_input( $option[1], $option[2], $option[3], $option[4] );
+				self::checkbox_input( $option[1], $option[2], $option[3], $option[4], isset( $option[5] ) ? $option[5] : '' );
 				break;
 			case 'hidden':
 				self::hidden_input( $option[2], $option[3] );
@@ -705,7 +729,7 @@ class Football_Pool_Admin {
 	}
 
 	public function options_form( $values ) {
-		echo '<table class="form-table">';
+		echo '<table class="form-table fp-options">';
 		foreach ( $values as $value ) {
 			self::show_option( $value );
 		}

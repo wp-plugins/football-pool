@@ -70,7 +70,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		self::view();
 		self::admin_footer();
 	}
-
+	
 	private function get_users() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -88,7 +88,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$excluded_players[] = $user['userId'];
 		}
 		
-		$users = get_users( '' );
+		$users = get_users( 'orderby=ID&order=ASC' );
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			if ( array_key_exists( $league_id, $pool->leagues ) ) {

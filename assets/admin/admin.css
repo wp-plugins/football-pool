@@ -115,3 +115,7 @@ div.ranking-definition div.matchtype {
 	padding-bottom: 3px;
 	background-color: rgb( 223, 223, 223 );
 }
+
+table.fp-options  tr { border-top: 1px solid rgb( 223, 223, 223 ); }
+table.fp-options  tr.no-border { border: none; }
+table.fp-options  tr:last-child { border-bottom: 1px solid rgb( 223, 223, 223 ); }

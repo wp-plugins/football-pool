@@ -100,6 +100,8 @@ class Football_Pool {
 		$options['auto_calculation'] = 1; // 1: yes, 0: no
 		$options['ranking_display'] = 0; // 0: default, 1: user decides, 2: admin decides
 		$options['show_ranking'] = FOOTBALLPOOL_RANKING_DEFAULT;
+		$options['prediction_type'] = 0; // 0: score, 1: winner/draw
+		$options['prediction_type_draw'] = 1; // 1: also include draw as an option, 0: only home and away team
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );

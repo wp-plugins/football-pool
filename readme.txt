@@ -1,17 +1,17 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.1
 Tested up to: 3.5
 Stable tag: 2.2.2
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
-This plugin adds a fantasy football pool to your blog. Play against other users, predict outcomes of matches and earn points.
+This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
 
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships. **Please note that deactivating this plugin also destroys all your pool data** (like predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. **Please note that deactivating this plugin also destroys all your pool data** (like predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
@@ -142,8 +142,16 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 
 == Changelog ==
 
+= 2.3.0 =
+* New feature: predict winner of a match instead of the score.
+* New feature: multiple joker support.
+* Updated score calculation. Better support for a large user base.
+
+= 2.2.3 =
+* Bug fix: on pools with no bonus questions the User defined ranking admin gave an error (thanks Guzz Windsor for reporting this).
+
 = 2.2.2 =
-* Bug fix: WP nonce not set on delete and edit link in matches admin screen (thanks ipixelestudio).
+* Bug fix: WP nonce not set on delete and edit link in matches admin screen (thanks ipixelestudio for reporting this).
 
 = 2.2.1 =
 * DateTime::getTimestamp requires PHP 5.3 or higher. I replaced those calls with code that doesn't break on PHP version 5.2 (thanks to chiribombi for reporting this).
@@ -175,7 +183,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Added an extra warning for the administrator of the blog in the Plugins and Updates pages in the WordPress admin when the plugin has the charts enabled but the Highcharts API is missing.
 
 = 2.1.2 =
-* Bug fix: upgrading the plugin also deletes the Highcharts API. Too make sure the front-end does not quit working, a small change was made to the init code. Also, the plugin now expects the API to be located outside the plugin's directory: `wp-content/plugins/highcharts-js/` directory.
+* Bug fix: upgrading the plugin also deletes the Highcharts API. To make sure the front-end does not quit working, a small change was made to the init code. Also, the plugin now expects the API to be located outside the plugin's directory: `wp-content/plugins/highcharts-js/`.
 
 = 2.1.1 =
 * Small updates for WordPress 3.5.
