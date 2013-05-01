@@ -13,6 +13,7 @@ add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_cou
 add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
+add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
 
 // deprecated shortcodes
 add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
@@ -26,6 +27,46 @@ add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalp
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
+	//[fp-user-score] 
+	//  Displays the score for a given user in the given ranking.  
+	//
+	//    user    : user Id, defaults to the logged in user 
+	//    ranking : ranking Id, defaults to the default ranking
+	//    date    : show score up until this date, 
+	//              possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
+	//              defaults to 'now'
+	//    text    : text to display if no user or no score is found, defaults to "0"
+	public function shortcode_user_score( $atts ) {
+		extract( shortcode_atts( array(
+					'user' => '',
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
+					'date' => 'now',
+					'text' => '0',
+				), $atts ) );
+		
+		$output = $text;
+		
+		if ( $user == '' || ! is_numeric( $user ) ) {
+			$user = get_current_user_id();
+		}
+		
+		if ( ( int ) $user > 0 ) {
+			if ( $date == 'postdate' ) {
+				$score_date = get_the_date( 'Y-m-d H:i' );
+			} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
+				$score_date = $score_date->format( 'Y-m-d H:i' );
+			} else {
+				$score_date = ''; // default aka now
+			}
+			
+			$pool = new Football_Pool_Pool;
+			$score = $pool->get_user_score( $user, $ranking, $score_date );
+			if ( $score != null ) $output = $score;
+		}
+		
+		return $output;
+	}
+	
 	//[fp-predictionform] 
 	//    All arguments can be entered in the following formats (example for matches:
 	//        match 1               -> match="1"

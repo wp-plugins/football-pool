@@ -109,6 +109,12 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</tr>
 		</table>
 		
+		<h3>The golden ball</h3>
+		<p>
+		A player in the pool gets <strong>one</strong> golden ball. This golden ball can be placed next to a match to double the points for that match.<br />
+		The golden ball may be placed and/or moved to other matches as long the matches are still changeable. A golden ball is activated at the moment the match it is placed on is no longer changeable. And once activated the golden ball cannot be moved.
+		</p>
+		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="rankings">Rankings</h2>
@@ -336,6 +342,43 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
 		</p>
 		<p>The different shortcodes are explained in the following paragraphs.</p>
+		
+		<h3>[fp-user-score]</h3>
+		<p>Shows the score for a given user.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">user</td>
+				<td>The numeric id for user</td>
+				<td><a href="users.php">user id</a> (integer)</td>
+				<td>current user</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">ranking</td>
+				<td>The numeric id for the ranking from which the score has to be taken</td>
+				<td><a href="?page=footballpool-groups">ranking id</a> (integer)</td>
+				<td>default ranking</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">date</td>
+				<td>Calculate the score untill this date.</td>
+				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>now</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">text</td>
+				<td>text to display if no user or no score is found</td>
+				<td>string</td>
+				<td>0</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-groups id=2]</span><br />
+		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
+		</p>
+		
 		<h3>[fp-groups]</h3>
 		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
 		ommited, or not a valid group id, then nothing will be returned.</p>

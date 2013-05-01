@@ -239,6 +239,17 @@ function tinymce_insert_shortcode() {
 			if ( date == 'custom' ) date = jQuery( '#ranking-date-custom-value', panel_id ).val();
 			if ( date != '' ) atts += ' date="' + date + '"';
 			break;
+		case 'fp-user-score':
+			var ranking = jQuery( '#user-score-ranking-id', panel_id ).val();
+			if ( ranking > 0 ) atts += ' ranking="' + ranking + '"';
+			var user = jQuery( '#user-score-user-id', panel_id ).val();
+			if ( user != '' ) atts += ' user="' + user + '"';
+			var text = jQuery( '#user-score-text', panel_id ).val();
+			if ( text != '' ) atts += ' text="' + text + '"';
+			var date = jQuery( 'input:radio[name=user-score-date]:checked', panel_id ).val();
+			if ( date == 'custom' ) date = jQuery( '#user-score-date-custom-value', panel_id ).val();
+			if ( date != '' ) atts += ' date="' + date + '"';
+			break;
 		case 'fp-predictionform':
 			var matches = jQuery( '#match-id' ).val() || [];
 			var matchtypes = jQuery( '#matchtype-id' ).val() || [];

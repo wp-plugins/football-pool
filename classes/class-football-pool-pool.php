@@ -124,6 +124,20 @@ class Football_Pool_Pool {
 		return (int) $league;
 	}
 	
+	public function get_user_score( $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT, $score_date = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( 
+						sprintf( "SELECT totalScore FROM {$prefix}scorehistory 
+								WHERE userId = %%d AND ranking_id = %%d 
+								AND ( %s scoreDate <= %%s )
+								ORDER BY scoreDate DESC LIMIT 1"
+								, ( $score_date == '' ? '1 = 1 OR' : '' ) 
+						) , $user, $ranking_id, $score_date );
+		return $wpdb->get_var( $sql ); // return null if nothing found
+	}
+	
 	// use league=0 to include all users
 	public function get_ranking_from_score_history( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
 													$score_date = '', $type = 0 ) {

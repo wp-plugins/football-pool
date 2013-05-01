@@ -27,7 +27,7 @@ function match_options() {
 <head>
 	<title><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></title>
 	<meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
 	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.js"></script>
@@ -103,8 +103,9 @@ function match_options() {
 			<tr class="shortcode-select">
 				<td><label for="s-pool"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
-					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform' } )">
+					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform', 'fp-user-score': 'tr-user-score' } )">
 						<option value="fp-ranking"><?php _e( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-user-score"><?php _e( 'User score', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-group"><?php _e( 'Group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-predictionform"><?php _e( 'Prediction form', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 					</select>
@@ -174,6 +175,72 @@ function match_options() {
 				</td>
 				<td>
 					<span style="padding-left:24px"><input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" /></span>
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-user-id"><?php _e( 'Select a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="user-score-user-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="" selected="selected"><?php _e( 'logged in user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose another user', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$users = $pool->get_users( 1 );
+							foreach ( $users as $user ) {
+								printf( '<option value="%d">%s</option>', $user['userId'], $user['userName'] );
+							}
+							?>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="user-score-ranking-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$rankings = $pool->get_rankings( 'user defined' );
+							foreach ( $rankings as $ranking ) {
+								printf( '<option value="%d">%s</option>', $ranking['id'], $ranking['name'] );
+							}
+							?>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-text"><?php _e( 'Text', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<input type="text" id="user-score-text" placeholder="0" />
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label><a href="//php.net/manual/en/function.date.php" title="<?php _e( 'information about PHP\'s date format', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" target="_blank"><?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
+				</td>
+				<td>
+					<label><input type="radio" id="user-score-date-now" name="user-score-date" value="now" checked="checked" onclick="toggle_linked_radio_options( '', '#tr-user-score-date' )" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-postdate" name="user-score-date" value="postdate" onclick="toggle_linked_radio_options( '', '#tr-user-score-date' )" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-custom" name="user-score-date" value="custom" onclick="toggle_linked_radio_options( '#tr-user-score-date', '' )" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+				</td>
+			</tr>
+			<tr id="tr-user-score-date" class="tr-user-score atts">
+				<td>
+					<label></label>
+				</td>
+				<td>
+					<span style="padding-left:24px"><input type="text" id="user-score-date-custom-value" placeholder="Y-m-d H:i" /></span>
 				</td>
 			</tr>
 			<tr class="tr-group atts">
