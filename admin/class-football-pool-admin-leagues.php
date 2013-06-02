@@ -2,9 +2,20 @@
 class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => 'Overview',
+						'content' => '<p>On this page you can add, change or delete leagues.</p>'
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#leagues">Help section about leagues</a></p><p><a href="?page=footballpool-help#players">Help section about players</a>';
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Add, change or delete leagues.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );

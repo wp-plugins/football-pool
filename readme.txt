@@ -115,6 +115,12 @@ The Football Pool plugin is available in the following languages:
 * French (`fr_FR`) by Julien Blancher.
 * Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
 
+== Incompatible plugins ==
+
+The following plugins have been reported as not compatible with the Football Pool plugin. If you have a solution and/or are the author of the plugin you can contact me on wordpressfootballpool [at] gmail [dot] com. If you're having problems with another plugin that is not in the list please let me know.
+
+* DB Cache Reloaded Fix (v2.3)
+
 == Screenshots ==
 1. Matches in the tournament
 2. Score charts of multiple players
@@ -145,8 +151,10 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 = 2.3.0 =
 * New feature: predict winner of a match instead of the score.
 * New feature: multiple joker support.
-* New shortcode: display the score of a single user with [fp-user-score]
+* New shortcode: display the score of a single user with [fp-user-score].
 * Updated score calculation. Better support for a large user base.
+* Added contextual help to admin screens.
+* Bug fix: old values were shown after a save of a match or a question in the admin (cache is now flushed after a save).
 
 = 2.2.3 =
 * Bug fix: on pools with no bonus questions the User defined ranking admin gave an error (thanks Guzz Windsor for reporting this).

@@ -178,8 +178,9 @@ class Football_Pool_Pool {
 			return $wpdb->prepare( $sql, $ranking_id, $score_date, $type );
 	}
 	
-	public function get_pool_ranking_limited( $league, $num_users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
-												$score_date = '' ) {
+	public function get_pool_ranking_limited( $league, $num_users
+											, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT
+											, $score_date = '' ) {
 		global $wpdb;
 		$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
 		$sql = $wpdb->prepare( $sql, $num_users );
@@ -330,7 +331,8 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );
+		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}rankings_matches 
+								WHERE ranking_id = %d", $id );
 		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
 	}
 	
@@ -338,8 +340,8 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions WHERE ranking_id = %d"
-								, $id );
+		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions 
+								WHERE ranking_id = %d", $id );
 		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
 	}
 	
@@ -365,10 +367,10 @@ class Football_Pool_Pool {
 			$output .= '<option value="0"></option>';
 			foreach ( $this->leagues as $row ) {
 				if ( $row['userDefined'] == 1 ) {
-					$output .= sprintf( '<option value="%d"%s>%s</option>',
-									$row['leagueId'],
-									( $row['leagueId'] == $league ? ' selected="selected"' : '' ),
-									$row['leagueName']
+					$output .= sprintf( '<option value="%d"%s>%s</option>'
+										, $row['leagueId']
+										, ( $row['leagueId'] == $league ? ' selected="selected"' : '' )
+										, $row['leagueName']
 								);
 				}
 			}
@@ -446,8 +448,7 @@ class Football_Pool_Pool {
 	
 	// returns array of questions
 	public function get_bonus_questions() {
-		$cache_key = 'fp_bonus_question_info';
-		$question_info = wp_cache_get( $cache_key );
+		$question_info = wp_cache_get( FOOTBALLPOOL_CACHE_QUESTIONS );
 		
 		if ( $question_info === false ) {
 			global $wpdb;
@@ -455,8 +456,8 @@ class Football_Pool_Pool {
 		
 			$sql = "SELECT 
 						q.id, q.question, q.answer, q.points, q.answerBeforeDate AS questionDate, 
-						DATE_FORMAT(q.scoreDate,'%Y-%m-%d %H:%i') AS scoreDate, 
-						DATE_FORMAT(q.answerBeforeDate,'%Y-%m-%d %H:%i') AS answerBeforeDate, q.matchNr,
+						DATE_FORMAT( q.scoreDate,'%Y-%m-%d %H:%i' ) AS scoreDate, 
+						DATE_FORMAT( q.answerBeforeDate,'%Y-%m-%d %H:%i' ) AS answerBeforeDate, q.matchNr,
 						qt.type, qt.options, qt.image, qt.max_answers
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
@@ -487,7 +488,7 @@ class Football_Pool_Pool {
 				$question_info[$i]['max_answers'] = $row->max_answers;
 			}
 			
-			wp_cache_set( $cache_key, $question_info );
+			wp_cache_set( FOOTBALLPOOL_CACHE_QUESTIONS, $question_info );
 		}
 		
 		return $question_info;

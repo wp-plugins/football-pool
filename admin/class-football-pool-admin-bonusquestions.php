@@ -2,10 +2,27 @@
 class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => 'Overview',
+						'content' => '<p>On this page you can add, change or delete bonus questions.</p><p>The <em class="help-admin-def">\'User Answers\'</em> link in the table view, or <em class="help-admin-def">\'Edit User Answers\'</em> button in the detail view, is used to check answers from your players.</p><p><strong>Important:</strong> points are only rewarded <em>after</em> the admin has checked the user answers!</p>'
+					),
+					array(
+						'id' => 'calculation',
+						'title' => 'Score calculation',
+						'content' => '<p>The score for a bonus question will be added to the players total score after an admin has \'approved\' the answer (<em class="help-admin-def">\'Edit user answers\'</em>) and when the Score Date is filled. The Score Date is the point in time where the points are added to the total (needed for the charts and/or a ranking for a given date).</p>
+						<p>You can give a user more points (or less) for a question. Use the field <em class="help-admin-def">\'points\'</em> in the Edit User Answers screen for this; leave the field empty for standard points.</p>'
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#bonusquestions">Help section about bonus questions</a></p><p><a href="?page=footballpool-help#rankings">Help section about ranking calculation</a>';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Add, change or delete bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::intro( __( 'After saving bonus question data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$question_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -39,9 +56,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					break;
 				}
 			case 'user-answers':
-				self::intro( __( 'On this page you can edit if a user answered the question correctly. If you entered the correct answer with the question, it is displayed on this page as a reference.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				self::intro( __( '<strong>Important:</strong> The points for getting a correct answer are only awarded once you saved this admin page.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				self::intro( __( "You can give a user more points (or less) for a question. Use the field 'points' for this; leave the field empty for standard points.", FOOTBALLPOOL_TEXT_DOMAIN ) );
 				self::edit_user_answers();
 				break;
 			case 'delete':
@@ -55,11 +69,23 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					self::notice( sprintf( __("%s questions deleted.", FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
 				}
 			default:
-				self::intro( __( 'Use the "User Answers" link to check if users answered the questions correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				self::view();
 		}
 		
 		self::admin_footer();
+	}
+	
+	private function update_ranking_log_questions( $item_id, $old_set, $new_set, $log_msg
+													, $preserve_keys = 'no' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT ranking_id FROM {$prefix}rankings_bonusquestions
+								WHERE question_id = %d", $item_id );
+		$ranking_ids = $wpdb->get_col( $sql );
+		foreach( $ranking_ids as $ranking_id ) {
+			self::update_ranking_log( $ranking_id, $old_set, $new_set, $log_msg, $preserve_keys );
+		}
 	}
 	
 	private function edit_user_answers() {
@@ -78,13 +104,21 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'point(s)', FOOTBALLPOOL_TEXT_DOMAIN ), 
 						', ', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ), ' ', $questiondate->format( 'Y-m-d H:i' ), '</span></p>';
 			
+			if ( count( $answers ) > 0 ) {
+				echo '<p class="submit">';
+				submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
+				submit_button( null, 'secondary', 'save', false );
+				self::cancel_button();
+				echo '</p>';
+			}
+			
 			echo '<table class="widefat bonus user-answers">';
 			echo '<thead><tr>
 					<th>', __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
 					<th>', __( 'false', FOOTBALLPOOL_TEXT_DOMAIN ), '</th>
-					<th title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
+					<th title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), ' <span class="sup">*)</span></th>
 				</tr></thead>';
 			echo '<tbody>';
 			if ( count( $answers ) > 0 ) {
@@ -103,7 +137,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
-					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( "Leave empty if you don't want to give extra or less points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
+					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
 			} else {
@@ -234,6 +268,37 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
 	
+	private function delete( $question_id ) {
+		if ( is_array( $question_id ) ) {
+			foreach ( $question_id as $id ) self::delete_bonus_question( $id );
+		} else {
+			self::delete_bonus_question( $question_id );
+		}
+		wp_cache_delete( FOOTBALLPOOL_CACHE_QUESTIONS );
+		self::update_score_history();
+	}
+	
+	private function delete_bonus_question( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		// ranking update log
+		self::update_ranking_log_questions( 
+									$id, null, null, 
+									sprintf( __( 'question %d deleted', FOOTBALLPOOL_TEXT_DOMAIN ), $id )
+								);
+		
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE question_id = %d", $id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers 
+								WHERE questionId = %d", $id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
+		$wpdb->query( $sql );
+	}
+	
 	private function update( $question_id ) {
 		$question = array(
 						$question_id,
@@ -253,29 +318,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $question_id ) {
-		if ( is_array( $question_id ) ) {
-			foreach ( $question_id as $id ) self::delete_bonus_question( $id );
-		} else {
-			self::delete_bonus_question( $question_id );
-		}
-		self::update_score_history();
-	}
-	
-	private function delete_bonus_question( $id ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE question_id = %d", $id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE questionId = %d", $id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
-		$wpdb->query( $sql );
-	}
-	
 	private function update_bonus_question( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -292,11 +334,13 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$max_answers = $input[9];
 		$matchNr = 0;
 		
+		$new_set = array( $points, $scoredate );
+		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
 										(question, points, answerBeforeDate, scoreDate, answer, matchNr)
-									VALUES (%s, %d, %s, NULL, %s, %d)",
-							$question, $points, $date, $answer, $matchNr
+									VALUES (%s, %d, %s, %s, %s, %d)",
+							$question, $points, $date, $scoredate, $answer, $matchNr
 						);
 			$wpdb->query( $sql );
 			$id = $wpdb->insert_id;
@@ -310,6 +354,17 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$wpdb->query( $sql );
 			}
 		} else {
+			// ranking log update
+			$pool = new Football_Pool_Pool();
+			$old_set = $pool->get_bonus_question( $id );
+			$old_set = array( $old_set['points'], $old_set['score_date'] );
+			$new_set = array( $points, $scoredate );
+			self::update_ranking_log_questions( 
+									$id, $old_set, $new_set, 
+									sprintf( __( 'question %d updated', FOOTBALLPOOL_TEXT_DOMAIN ), $id ),
+									'assoc'
+								);
+			
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET
 										question = %s,
 										points = %d,
@@ -328,9 +383,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$wpdb->query( $sql );
 		}
 		
-		// quick&dirty work-around for prepare's lack of null value support
-		$wpdb->query( "UPDATE {$prefix}bonusquestions SET scoreDate = NULL WHERE scoreDate = '0000-00-00 00:00'" );
+		// quick & dirty work-around for prepare's lack of null value support
+		$wpdb->query( "UPDATE {$prefix}bonusquestions SET scoreDate = NULL 
+						WHERE scoreDate = '0000-00-00 00:00'" );
 		
+		wp_cache_delete( FOOTBALLPOOL_CACHE_QUESTIONS );
 		return $id;
 	}
 	

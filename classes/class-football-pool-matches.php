@@ -125,8 +125,7 @@ class Football_Pool_Matches {
 	}
 	
 	private function match_info() {
-		$cache_key = 'fp_match_info';
-		$match_info = wp_cache_get( $cache_key );
+		$match_info = wp_cache_get( FOOTBALLPOOL_CACHE_MATCHES );
 		
 		if ( $match_info === false ) {
 			global $wpdb;
@@ -166,7 +165,7 @@ class Football_Pool_Matches {
 				$match_info[$i]['match_type'] = $row['matchtype'];
 			}
 			
-			wp_cache_set( $cache_key, $match_info );
+			wp_cache_set( FOOTBALLPOOL_CACHE_MATCHES, $match_info );
 		}
 		
 		return $match_info;

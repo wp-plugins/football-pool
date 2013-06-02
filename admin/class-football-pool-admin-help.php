@@ -15,6 +15,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 			<ol>
 				<li><a href="#introduction">Introduction</a></li>
+				<li><a href="#admin">Admin pages</a></li>
 				<li><a href="#time">Time</a></li>
 				<li><a href="#points">Points</a></li>
 				<li><a href="#rankings">Rankings & Scoring</a></li>
@@ -38,6 +39,15 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		
+		<h2 id="admin">Admin pages</h2>
+		<p>
+		The admin pages of the plugin let you define all necessary parts of the plugin. Every admin page contains contextual help: use the help tab at the top right of every screen if you need information about the admin page.<br />
+		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-admin-help.png" alt="screenshot" />
+		</p>
+		<p>You can use this help file for more detailed information about all the aspects of the plugin. </p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
 		<h2 id="times">Time</h2>
 		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
@@ -53,8 +63,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
 		<div class="help important">
-			<p><strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 
-			<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
+			<p><strong>Tip:</strong> Always test if your <a href="options-general.php" title="WordPress general settings">timezone setting</a> and 
+			<a href="admin.php?page=footballpool-options" title="Football Pool plugin settings">plugin times</a> are correct. Change the date of one of 
 			your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
 		</div>
 		
@@ -117,30 +127,31 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
-		<h2 id="rankings">Rankings</h2>
+		<h2 id="rankings">Rankings & Scoring</h2>
 		<p>
 		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
 		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). If you want to use this feature make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions; this is the ranking definition. The custom rankings can be used with the ranking shortcode, in a ranking widget or on the ranking and charts page.
 		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
-		<div class="help important">
-			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
-		</div>
-		<p>By default all rankings will be automatically (re)calculated when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a>.
+		<h3>Ranking calculation</h3>
+		<p>By default all rankings will be automatically (re)calculated when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a> and do a manual recalculation when you're finished editing.
 		</p>
+		<div class="help important">
+			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So, once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
+		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="leagues">Leagues</h2>
 		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done on the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
-		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
+		<p>When using leagues all players have to be a member of a league, otherwise they are not considered to be a pool player.</p>
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="players">Players</h2>
-		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
-		If not playing with leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
+		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues, your blog users have to be in an active league before they can participate in the pool. New subscribers to your blog choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them on the <a href="?page=footballpool-users">Users page</a>).</p>
+		<p>When not using leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 

@@ -1,133 +1,155 @@
 <?php
 class Football_Pool_Admin {
 	
+	public function adminhook_suffix() {
+		global $hook_suffix;
+		echo "<!-- admin hook for current page is: {$hook_suffix} -->";
+	}
+	
+	private function add_submenu_page( $parent_slug, $page_title, $menu_title
+									, $capability, $menu_slug, $class ) {
+		if ( is_array( $class ) ) {
+			$function = $class;
+			$help_class = $class[0];
+		} else {
+			$function = array( $class, 'admin' );
+			$help_class = $class;
+		}
+		
+		add_action( "admin_head-football-pool_page_{$menu_slug}", array( $help_class, 'help' ) );
+		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+	}
+	
 	public function init() {
 		$slug = 'footballpool-options';
+		$capability = 'manage_football_pool';
 		
+		// main menu item
 		add_menu_page(
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'manage_football_pool',
+			$capability, 
 			$slug,
 			array( 'Football_Pool_Admin_Options', 'admin' ),
 			'div'
 		);
 		
-		add_submenu_page(
+		// submenu pages
+		self::add_submenu_page(
 			$slug,
 			__( 'Football Pool Options', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'manage_football_pool',
+			$capability, 
 			'footballpool-options',
-			array( 'Football_Pool_Admin_Options', 'admin' )
+			'Football_Pool_Admin_Options'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-users',
-			array( 'Football_Pool_Admin_Users', 'admin' )
+			'Football_Pool_Admin_Users'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-games',
-			array( 'Football_Pool_Admin_Games', 'admin' )
+			'Football_Pool_Admin_Games'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-bonus',
-			array( 'Football_Pool_Admin_Bonus_Questions', 'admin' )
+			'Football_Pool_Admin_Bonus_Questions'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-shoutbox',
-			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
+			'Football_Pool_Admin_Shoutbox'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-teams',
-			array( 'Football_Pool_Admin_Teams', 'admin' )
+			'Football_Pool_Admin_Teams'
 		);
 		
-		// add_submenu_page(
+		// self::add_submenu_page(
 			// $slug,
 			// __( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			// __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			// 'manage_football_pool', 
+			// $capability, 
 			// 'footballpool-teams-position',
-			// array( 'Football_Pool_Admin_Teams_Position', 'admin' )
+			// 'Football_Pool_Admin_Teams_Position'
 		// );
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-venues',
-			array( 'Football_Pool_Admin_Stadiums', 'admin' )
+			'Football_Pool_Admin_Stadiums'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-leagues',
-			array( 'Football_Pool_Admin_Leagues', 'admin' )
+			'Football_Pool_Admin_Leagues'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'manage_football_pool', 
 			'footballpool-rankings',
-			array( 'Football_Pool_Admin_Rankings', 'admin' )
+			'Football_Pool_Admin_Rankings'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-matchtypes',
-			array( 'Football_Pool_Admin_Match_Types', 'admin' )
+			'Football_Pool_Admin_Match_Types'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-groups',
-			array( 'Football_Pool_Admin_Groups', 'admin' )
+			'Football_Pool_Admin_Groups'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-help',
-			array( 'Football_Pool_Admin_Help', 'admin' )
+			'Football_Pool_Admin_Help'
 		);
 	}
 	
@@ -351,7 +373,8 @@ class Football_Pool_Admin {
 		return $value;
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '', $depends_on = '' ) {
+	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
+									, $depends_on = '' ) {
 		if ( $value != '' ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
 			$date = new DateTime( self::date_from_gmt ( $value ) );
@@ -547,14 +570,37 @@ class Football_Pool_Admin {
 		echo sprintf( '<p>%s</p>', $txt );
 	}
 	
-	public function help( $id, $title, $content ) {
-		//@todo: why won't this work???
-		get_current_screen()->add_help_tab( array(
-												'id'		=> $id,
-												'title'		=> $title,
-												'content'	=> '<p>' . $content . '</p>'
-											) 
-								);
+	// overwrite in the individual help pages
+	public function help() {
+		self::add_help_tabs();
+	}
+	
+	// Define a method named 'help' on each admin page that calls this method with 
+	// the tab definition (array of tabs) and an optional sidebar.
+	// Don't forget to add the admin_head-hook!
+	public function add_help_tabs( $help_tabs = '', $help_sidebar = '' ) {
+		if ( ! is_array( $help_tabs ) ) return;
+		
+		$screen = get_current_screen();
+		foreach ( $help_tabs as $help_tab ) {
+			$screen->add_help_tab(
+						array(
+							'id' => $help_tab['id'],
+							'title' => $help_tab['title'],
+							'content' => $help_tab['content']
+						)
+					);
+		}
+		
+		if ( $help_sidebar != '' ) {
+			$screen->set_help_sidebar(
+							sprintf( 
+									'<p><strong>%s</strong></p><p>%s</p>' 
+									, __( 'For more information:' )
+									, $help_sidebar
+							)
+						);
+		}
 	}
 	
 	public function admin_sectiontitle( $title ) {
@@ -767,16 +813,22 @@ class Football_Pool_Admin {
 	public function recalculate_scorehistory_iframe() {
 		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
 		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
-		echo '<div id="fp-calculation-iframe">';
-		echo '<iframe src="', $url, '" width="500" height="160"></iframe>';
-		self::secondary_button( 
-			__( 'Close (re)calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'close_calculation_iframe()', 
-			true, 
-			'js-button', 
-			array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) 
+		
+		printf( '<script>
+					jQuery.colorbox( { 
+										iframe: true, 
+										href: "%s", 
+										overlayClose: false, 
+										escKey: false, 
+										arrowKey: false,
+										close: "%s",
+										innerWidth: "500px",
+										innerHeight: "250px",
+									} ); 
+				</script>'
+				, $url
+				, __( 'close', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
-		echo '</div>';
 	}
 	
 	private function recalculate_manual() {
@@ -801,7 +853,33 @@ class Football_Pool_Admin {
 		return true;
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = null ) {
+	public function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
+										, $preserve_keys = 'no' ) {
+		$log = ( ! is_array( $new_set ) || ! is_array( $old_set ) 
+					|| count( $new_set ) != count( $old_set ) );
+					
+		if ( $preserve_keys == 'assoc' || $preserve_keys == 'preserve keys' ) {
+			$log = ( $log || count( array_diff_assoc( $new_set, $old_set ) ) > 0 );
+		} else {
+			$log = ( $log || count( array_diff( $new_set, $old_set ) ) > 0 );
+		}
+		
+		if ( $log ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_updatelog 
+										( ranking_id, log_message, log_date )
+									VALUES ( %d, %s, NOW() )"
+									, $ranking_id, $log_message
+							);
+			
+			$wpdb->query( $sql );
+		}
+	}
+	
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button'
+									, $other_attributes = null ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {

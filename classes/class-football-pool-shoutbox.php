@@ -1,11 +1,11 @@
 <?php
-class Football_Pool_Shoutbox
-{
+class Football_Pool_Shoutbox {
 	public function get_messages( $nr = -1 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT s.id, u.display_name AS userName, u.ID AS userId, s.shoutText, s.dateEntered as shoutDate
+		$sql = "SELECT s.id, u.display_name AS userName, u.ID AS userId
+					, s.shoutText, s.dateEntered as shoutDate
 				FROM {$prefix}shoutbox s, {$wpdb->users} u 
 				WHERE s.userId = u.ID 
 				ORDER BY s.dateEntered DESC, s.id DESC";
@@ -19,7 +19,8 @@ class Football_Pool_Shoutbox
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT s.id, u.display_name AS userName, u.ID AS userId, s.shoutText, s.dateEntered as shoutDate
+		$sql = "SELECT s.id, u.display_name AS userName, u.ID AS userId
+					, s.shoutText, s.dateEntered as shoutDate
 				FROM {$prefix}shoutbox s, {$wpdb->users} u 
 				WHERE s.userId = u.ID AND s.id = %d";
 		$sql = $wpdb->prepare( $sql, $id );
@@ -35,8 +36,8 @@ class Football_Pool_Shoutbox
 				$text = substr( $text, 0, $max_chars );
 			
 			$shout_date = Football_Pool_Utils::gmt_from_date( current_time( 'mysql' ) );
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}shoutbox (userId, shoutText, dateEntered) 
-									VALUES (%d, %s, %s)",
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}shoutbox ( userId, shoutText, dateEntered ) 
+									VALUES ( %d, %s, %s )",
 									$user, $text, $shout_date );
 			$wpdb->query( $sql );
 		}
@@ -50,7 +51,7 @@ class Football_Pool_Shoutbox
 		
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}shoutbox 
 								WHERE userId = %d AND shoutText = %s 
-									AND (%d - UNIX_TIMESTAMP(dateEntered)) < %d",
+									AND ( %d - UNIX_TIMESTAMP( dateEntered ) ) < %d",
 								$user, $text, time(), $interval );
 		
 		$result = $wpdb->get_var( $sql );

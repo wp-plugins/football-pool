@@ -1,3 +1,12 @@
+CREATE TABLE IF NOT EXISTS `{$prefix}rankings_updatelog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ranking_id` int(10) unsigned NOT NULL,
+  `log_date` datetime NOT NULL,
+  `log_message` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ranking_id` (`ranking_id`)
+) DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `{$prefix}rankings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',

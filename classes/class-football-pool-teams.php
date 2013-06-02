@@ -6,8 +6,6 @@ class Football_Pool_Teams {
 	public $team_flags;
 	public $show_team_links;
 	
-	const CACHE_KEY_TEAMS = 'fp_get_teams';
-	
 	public function __construct() {
 		// get the team_names
 		$this->team_types = $this->get_team_types();
@@ -92,7 +90,7 @@ class Football_Pool_Teams {
 									'inserted'    => true
 									);
 			// clear the cache
-			wp_cache_delete( self::CACHE_KEY_TEAMS );
+			wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 		}
 		
 		return $result;
@@ -101,7 +99,7 @@ class Football_Pool_Teams {
 	public function get_group_order( $team ) {
 		if ( ! is_integer( $team ) ) return 0;
 		
-		$cache_key = 'fp_group_order_' . $team;
+		$cach_key = 'fp_group_order_' . $team;
 		$group_order = wp_cache_get( $cache_key );
 		
 		if ( $group_order === false ) {
@@ -169,7 +167,7 @@ class Football_Pool_Teams {
 	}
 	
 	public function get_teams() {
-		$rows = wp_cache_get( self::CACHE_KEY_TEAMS );
+		$rows = wp_cache_get( FOOTBALLPOOL_CACHE_TEAMS );
 		
 		if ( $rows === false ) {
 			global $wpdb;
@@ -182,7 +180,7 @@ class Football_Pool_Teams {
 					LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id 
 					ORDER BY t.name ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( self::CACHE_KEY_TEAMS, $rows );
+			wp_cache_set( FOOTBALLPOOL_CACHE_TEAMS, $rows );
 		}
 		
 		$teams = array();

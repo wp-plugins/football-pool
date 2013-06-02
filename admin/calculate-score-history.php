@@ -18,6 +18,7 @@ check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC );
 	<link rel="stylesheet" href="../assets/admin/jquery-ui/css/start/jquery-ui-1.10.0.custom.min.css">
 	<script src="../assets/admin/jquery-ui/js/jquery-1.9.0.js"></script>
 	<script src="../assets/admin/jquery-ui/js/jquery-ui-1.10.0.custom.min.js"></script>
+	<script> jQuery( parent.document ).find( "#cboxClose" ).hide(); </script>
 	<style>
 	body {
 		margin: 0;
@@ -321,17 +322,29 @@ switch ( $step ) {
 			}
 		}
 		
+		// this ranking is finished, so clear the update log for this ranking
+		if ( $check === true ) {
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_updatelog 
+									WHERE ranking_id = %d", $ranking_id );
+			$wpdb->query( $sql );
+		}
+		
 		$params['step'] = 7;
 		$params['ranking'] = $ranking_id;
 		break;
 	case 7:
 		// handle user defined rankings
+		// only process rankings that have changes logged
 		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-			$sql = "SELECT id FROM {$prefix}rankings WHERE user_defined = 1 ORDER BY id ASC LIMIT 1";
+			$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r
+					JOIN `pool_wp_rankings_updatelog` l ON ( r.id = l.ranking_id )
+					WHERE r.user_defined = 1
+					ORDER BY r.id ASC LIMIT 1";
 		} else {
-			$sql = $wpdb->prepare( "SELECT id FROM {$prefix}rankings 
-									WHERE user_defined = 1 AND id > %d
-									ORDER BY id ASC LIMIT 1"
+			$sql = $wpdb->prepare( "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r
+									JOIN `pool_wp_rankings_updatelog` l ON ( r.id = l.ranking_id )
+									WHERE r.user_defined = 1 AND r.id > %d
+									ORDER BY r.id ASC LIMIT 1"
 									, $ranking_id
 							);
 		}
@@ -344,6 +357,7 @@ switch ( $step ) {
 }
 
 $js = '<script type="text/javascript">%s</script>';
+$close_calculation = 'jQuery( parent.document ).find( "#cboxClose" ).show();';
 
 if ( $check === true ) {
 	if ( count( $params ) > 0 ) {
@@ -356,11 +370,16 @@ if ( $check === true ) {
 		printf( $js, sprintf( 'location.href = "%s";', $url ) );
 	} else {
 		// last step finished
-		printf( $js, '$( parent.document ).find( "#close-iframe" ).removeAttr( "disabled" );' );
+		printf( $js, $close_calculation );
 	}
 } else {
-	Football_Pool_Admin::notice( __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
-	printf( $js, '$( parent.document ).find( "#close-iframe" ).removeAttr( "disabled" );' );
+	Football_Pool_Admin::notice( sprintf( '%s %d: %s'
+											, __( 'Step', FOOTBALLPOOL_TEXT_DOMAIN )
+											, ( $params['step'] - 1 )
+											, __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database and try again.', FOOTBALLPOOL_TEXT_DOMAIN )
+										)
+								, 'important' );
+	printf( $js, $close_calculation );
 }
 ?>
 </body>

@@ -2,9 +2,21 @@
 class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => 'Overview',
+						'content' => '<p>On this page you can add, change or delete custom rankings.</p><p>A ranking is calculated for the total points scored for the matches and/or bonus questions in the ranking. Change the matches and bonus questions for a ranking via the <em class="help-admin-def">\'Ranking composition\'</em> link beneath the ranking name.</p>'
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#rankings">Help section about rankings</a>';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'User defined rankings', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Add, change or delete user defined rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -25,7 +37,6 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					break;
 				}
 			case 'define':
-				self::intro( __( 'On this page you can select the matches and/or questions you want to include in your custom ranking.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				self::define_ranking( $item_id );
 				break;
 			case 'save':
@@ -165,6 +176,10 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// save the matches
+		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );
+		$old_set = $wpdb->get_col( $sql );
+		$new_set = array();
+		
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );
 		$wpdb->query( $sql );
 		
@@ -173,14 +188,28 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		foreach ( $rows as $row ) {
 			$checked = Football_Pool_Utils::post_int( 'match-' . $row['nr'], 0 );
 			if ( $checked == 1 ) {
-				$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_matches ( ranking_id, match_id )
-										VALUES ( %d, %d )"
-										, $id, $row['nr']
-									);
-				$wpdb->query( $sql );
+				$new_set[] = $row['nr'];
 			}
 		}
+		
+		self::update_ranking_log( $id, $old_set, $new_set, 
+								__( 'matches added or removed from ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+								);
+		
+		foreach ( $new_set as $match_id ) {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_matches ( ranking_id, match_id )
+									VALUES ( %d, %d )"
+									, $id, $match_id
+								);
+			$wpdb->query( $sql );
+		}
+		
 		// save the questions
+		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions 
+								WHERE ranking_id = %d", $id );
+		$old_set = $wpdb->get_col( $sql );
+		$new_set = array();
+		
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE ranking_id = %d", $id );
 		$wpdb->query( $sql );
 		
@@ -189,12 +218,21 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		foreach ( $questions as $question ) {
 			$checked = Football_Pool_Utils::post_int( 'question-' . $question['id'], 0 );
 			if ( $checked == 1 ) {
-				$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_bonusquestions ( ranking_id, question_id )
-										VALUES ( %d, %d )"
-										, $id, $question['id']
-									);
-				$wpdb->query( $sql );
+				$new_set[] = $question['id'];
 			}
+		}
+		
+		self::update_ranking_log( $id, $old_set, $new_set, 
+								__( 'questions added or removed from ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+								);
+		
+		foreach ( $new_set as $question_id ) {
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_bonusquestions 
+										( ranking_id, question_id )
+									VALUES ( %d, %d )"
+									, $id, $question_id
+								);
+			$wpdb->query( $sql );
 		}
 	}
 	
@@ -296,6 +334,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_updatelog WHERE ranking_id = %d", $id );
+		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE ranking_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );

@@ -210,9 +210,14 @@ class Football_Pool_Utils {
 		return ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ? self::safe_stripslashes_deep( $_POST[$key] ) : $default );
 	}
 	
-	// print information about a variable in a human readable way
-	// if argument sleep is set, the execution will halt after the debug for the given amount of micro seconds
-	// (one micro second = one millionth of a second)
+	// debug function, but defaults to file log instead of echoing the debug info
+	public function debugf( $var, $type = 'file', $sleep = 0 ) {
+		self::debug( $var, $type, $sleep );
+	}
+	
+	// Print information about a variable in a human readable way.
+	// If argument sleep is set, the execution will halt after the debug for the given 
+	// amount of micro seconds (one micro second = one millionth of a second).
 	public function debug( $var, $type = 'echo', $sleep = 0 ) {
 		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
 		

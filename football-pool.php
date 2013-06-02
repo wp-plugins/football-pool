@@ -100,6 +100,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-rankings.php';
 	
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
+	// add_action( 'user_deleted', array( 'Football_Pool_Admin_Users', 'admin_notice' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'edit_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'personal_options_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
@@ -112,5 +113,6 @@ if ( is_admin() ) {
 		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
 	}
 	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );
+	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
 }
 ?>

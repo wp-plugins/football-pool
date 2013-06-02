@@ -1,5 +1,6 @@
 <?php
 // shortcodes
+add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
 add_shortcode( 'fp-predictionform', array( 'Football_Pool_Shortcodes', 'shortcode_predictionform' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
@@ -13,7 +14,6 @@ add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_cou
 add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
-add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
 
 // deprecated shortcodes
 add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
@@ -27,6 +27,18 @@ add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalp
 add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
+	private function date_helper( $date ) {
+		if ( $date == 'postdate' ) {
+			$the_date = get_the_date( 'Y-m-d H:i' );
+		} elseif ( ( $the_date = date_create( $date ) ) !== false ) {
+			$the_date = $the_date->format( 'Y-m-d H:i' );
+		} else {
+			$the_date = '';
+		}
+		
+		return $the_date;
+	}
+	
 	//[fp-user-score] 
 	//  Displays the score for a given user in the given ranking.  
 	//
@@ -51,16 +63,8 @@ class Football_Pool_Shortcodes {
 		}
 		
 		if ( ( int ) $user > 0 ) {
-			if ( $date == 'postdate' ) {
-				$score_date = get_the_date( 'Y-m-d H:i' );
-			} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
-				$score_date = $score_date->format( 'Y-m-d H:i' );
-			} else {
-				$score_date = ''; // default aka now
-			}
-			
 			$pool = new Football_Pool_Pool;
-			$score = $pool->get_user_score( $user, $ranking, $score_date );
+			$score = $pool->get_user_score( $user, $ranking, self::date_helper( $date ) );
 			if ( $score != null ) $output = $score;
 		}
 		
@@ -165,15 +169,7 @@ class Football_Pool_Shortcodes {
 			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
 		}
 		
-		if ( $date == 'postdate' ) {
-			$score_date = get_the_date( 'Y-m-d H:i' );
-		} elseif ( ( $score_date = date_create( $date ) ) !== false ) {
-			$score_date = $score_date->format( 'Y-m-d H:i' );
-		} else {
-			$score_date = '';
-		}
-		
-		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, $score_date );
+		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, self::date_helper( $date ) );
 		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
@@ -217,15 +213,16 @@ class Football_Pool_Shortcodes {
 		}
 		
 		if ( ! is_object( $countdown_date ) ) {
-			// $countdown_date = DateTime::createFromFormat( 'Y-m-d H:i', $date );
 			$countdown_date = date_create( $date );
 			if ( $date == '' || $countdown_date === false ) {
-				$firstMatch = $matches->get_first_match_info();
-				$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $firstMatch['playDate'] ) );
+				$first_match = $matches->get_first_match_info();
+				$countdown_date = new DateTime(
+											Football_Pool_Utils::date_from_gmt( $first_match['playDate'] ) 
+										);
 			}
 		}
 		
-		if ( $texts == 'none' ) $texts = ';;;'; // 4 empty strings are added overwriting the default texts
+		if ( $texts == 'none' ) $texts = ';;;'; // 4 empty strings overwriting the default texts
 		
 		$texts = explode( ';', $texts );
 		
@@ -237,10 +234,10 @@ class Football_Pool_Shortcodes {
 		
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
-		$day	= $countdown_date->format( 'd' );
+		$day   = $countdown_date->format( 'd' );
 		$hour  = $countdown_date->format( 'H' );
-		$min	= $countdown_date->format( 'i' );
-		$sec	= 0;
+		$min   = $countdown_date->format( 'i' );
+		$sec   = 0;
 		
 		$output = '';
 		if ( $display == 'inline' ) {

@@ -290,12 +290,6 @@ class Football_Pool {
 				self::include_js( 'assets/pool-charts.js', 'js-pool-charts' );
 			}
 			
-			//fancybox -> replaced with colorbox because of license problem
-			// self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
-			// self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
-			self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
-			self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
-			
 			//pool css
 			self::include_css( 'assets/pool.css', 'css-pool' );
 			//pool js
@@ -323,6 +317,10 @@ class Football_Pool {
 								, array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) 
 			);
 		}
+		
+		// color box jQuery plugin for lightboxes
+		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
+		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
 	}
 	
 	public function the_content( $content ) {
@@ -553,7 +551,7 @@ class Football_Pool {
 		} 
 	}
 	
-//=============================================================================================================//
+//======================================================================================================//
 	
 	private function include_css( $file, $handle, $forced_exit = true, $custom_path = '' ) {
 		if ( $custom_path != '' ) {

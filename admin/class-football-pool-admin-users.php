@@ -2,9 +2,35 @@
 class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	public function __construct() {}
 
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => 'Overview',
+						'content' => '<p>On this page you can add or remove users from the pool.</p><p>Use the bulk actions to add or remove more players at once.</p>'
+					),
+					array(
+						'id' => 'leagues',
+						'title' => 'Leagues',
+						'content' => '<p>The plugin can use leagues (a league is a group of players in your pool) to group players together. If you are using leagues in the pool an admin has to acknowledge the league for which a player subscribed.</p><p>The <em class="help-admin-def">\'plays in league\'</em> column shows the league where the user is currently added to; you may change that value. The column <em class="help-admin-def">\'registered for league\'</em> shows the league the user wants to play in (the user chose this value upon subscribing for the pool).</p>'
+					),
+					array(
+						'id' => 'other',
+						'title' => 'Other options',
+						'content' => '<p>The <em class="help-admin-def">\'payed?\'</em> option has no function in the pool, but can be a help for the admin to remember which of the players have payed if you are using a fee for competing in the pool.</p>'
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-options">Change league settings</a></p><p><a href="?page=footballpool-help#players">Help section about players</a></p><p><a href="?page=footballpool-help#leagues">Help section about leagues</a>';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
-		self::admin_header( __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), '', '' );
-		self::intro( __( 'Change users in the football pool.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_header( sprintf( '%s %s'
+									, __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ) 
+									)
+							, '', '' );
 		
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
@@ -226,7 +252,18 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	private function remove_user( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-
+		
+		// log a recalculation for a ranking if applicable
+		$ranking_ids = get_ranking_ids_from_scorehistory_for_user( $id );
+		if ( $ranking_ids ) {
+			foreach( $ranking_ids as $ranking_id ) {
+				self::update_ranking_log( 
+								$ranking_id, null, null, 
+								sprintf( __( 'user %d removed from pool', FOOTBALLPOOL_TEXT_DOMAIN ), $id )
+							);
+			}
+		}
+		
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			update_user_meta( $id, 'footballpool_league', 0 );
@@ -249,6 +286,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 
+		// @TODO: log a recalculation for a ranking if applicable?
+		//        check predictions and bonusquestions an look them up in the rankings table.
+		
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
@@ -423,10 +463,35 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 	
+	private function get_ranking_ids_from_scorehistory_for_user( $user_id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sql = $wpdb->prepare( "SELECT DISTINCT( ranking_id ) FROM {$prefix}scorehistory
+								WHERE userId = %d", $user_id );
+		return $wpdb->get_col( $sql );
+	}
+	
 	public function delete_user_from_pool( $user_id ) {
+		// note: we are outside of the plugin admin scope here when this function is called, 
+		//       so no "self::" available
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		// log a scorehistory recalculation if applicable
+		$ranking_ids = self::get_ranking_ids_from_scorehistory_for_user( $user_id );
+		
+		if ( $ranking_ids ) {
+			$fp_admin = new Football_Pool_Admin();
+			foreach( $ranking_ids as $ranking_id ) {
+				$fp_admin->update_ranking_log( 
+								$ranking_id, null, null, 
+								sprintf( __( 'user %d deleted from blog', FOOTBALLPOOL_TEXT_DOMAIN )
+										, $user_id )
+							);
+			}
+		}
+		
+		// delete all references in the pool tables
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user_id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d", $user_id );
@@ -435,12 +500,14 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
 		$wpdb->query( $sql );
-		// also recalculate scorehistory
-		// note: we are outside of the plugin admin scope here, so no "self::" available
-		// removed since version 2.2.0 (iframe not available)
-		// $score = new Football_Pool_Admin();
-		// $score->update_score_history();
 	}
 	
+	// public function admin_notice() {
+		// if ( ! is_admin() ) return;
+		
+		// $notice = '<strong>' . sprintf( __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ) 
+				// . ':</strong> ' . __( 'User deleted, <a href="%s">score (re)calculation</a> may be needed.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-rankings' );
+		// Football_Pool_Admin::notice( $notice , 'important' );
+	// }
 }
 ?>
