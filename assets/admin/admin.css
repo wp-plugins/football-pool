@@ -20,9 +20,9 @@
 th.manage-column { vertical-align: top; }
 
 /* bonus questions */
-th.manage-column.column-question { width: 340px; }
-th.manage-column.column-answer { width: 180px; }
-th.manage-column.column-points { width: 50px; }
+.football-pool_page_footballpool-bonus th.manage-column.column-question { width: 340px; }
+.football-pool_page_footballpool-bonus th.manage-column.column-answer { width: 180px; }
+.football-pool_page_footballpool-bonus th.manage-column.column-points { width: 50px; }
 
 /* matches */
 /* .matchinfo { width: 500px; } */
@@ -120,4 +120,12 @@ table.fp-options  tr { border-top: 1px solid rgb( 223, 223, 223 ); }
 table.fp-options  tr.no-border { border: none; }
 table.fp-options  tr:last-child { border-bottom: 1px solid rgb( 223, 223, 223 ); }
 
-.help-admin-def { font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif; }
+.help-label { font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif; }
+div.ranking-log-rest { display: none; }
+.cboxContent div.ranking-log-rest{ display: block; }
+
+div.ranking-log span { padding-right: 10px; }
+
+.football-pool_page_footballpool-rankings th.manage-column.column-name { width: 30%; }
+.football-pool_page_footballpool-rankings th.manage-column.column-log { width: 50%; }
+.football-pool_page_footballpool-rankings th.manage-column.column-calculate { width: 20%; }

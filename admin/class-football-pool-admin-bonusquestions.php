@@ -7,13 +7,13 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array(
 						'id' => 'overview',
 						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete bonus questions.</p><p>The <em class="help-admin-def">\'User Answers\'</em> link in the table view, or <em class="help-admin-def">\'Edit User Answers\'</em> button in the detail view, is used to check answers from your players.</p><p><strong>Important:</strong> points are only rewarded <em>after</em> the admin has checked the user answers!</p>'
+						'content' => '<p>On this page you can add, change or delete bonus questions.</p><p>The <em class="help-label">\'User Answers\'</em> link in the table view, or <em class="help-label">\'Edit User Answers\'</em> button in the detail view, is used to check answers from your players.</p><p><strong>Important:</strong> points are only rewarded <em>after</em> the admin has checked the user answers!</p>'
 					),
 					array(
 						'id' => 'calculation',
 						'title' => 'Score calculation',
-						'content' => '<p>The score for a bonus question will be added to the players total score after an admin has \'approved\' the answer (<em class="help-admin-def">\'Edit user answers\'</em>) and when the Score Date is filled. The Score Date is the point in time where the points are added to the total (needed for the charts and/or a ranking for a given date).</p>
-						<p>You can give a user more points (or less) for a question. Use the field <em class="help-admin-def">\'points\'</em> in the Edit User Answers screen for this; leave the field empty for standard points.</p>'
+						'content' => '<p>The score for a bonus question will be added to the players total score after an admin has \'approved\' the answer (<em class="help-label">\'Edit user answers\'</em>) and when the Score Date is filled. The Score Date is the point in time where the points are added to the total (needed for the charts and/or a ranking for a given date).</p>
+						<p>You can give a user more points (or less) for a question. Use the field <em class="help-label">\'points\'</em> in the Edit User Answers screen for this; leave the field empty for standard points.</p>'
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#bonusquestions">Help section about bonus questions</a></p><p><a href="?page=footballpool-help#rankings">Help section about ranking calculation</a>';

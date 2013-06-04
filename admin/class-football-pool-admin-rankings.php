@@ -7,7 +7,12 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					array(
 						'id' => 'overview',
 						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete custom rankings.</p><p>A ranking is calculated for the total points scored for the matches and/or bonus questions in the ranking. Change the matches and bonus questions for a ranking via the <em class="help-admin-def">\'Ranking composition\'</em> link beneath the ranking name.</p>'
+						'content' => '<p>On this page you can add, change or delete custom rankings.</p><p>A ranking is calculated for the total points scored for the matches and/or bonus questions in the ranking. Change the matches and bonus questions for a ranking via the <em class="help-label">\'Ranking composition\'</em> link beneath the ranking name.</p>'
+					),
+					array(
+						'id' => 'log',
+						'title' => 'Log',
+						'content' => '<p>The log shows actions in the plugin that may have an affect on a  particular ranking (e.g. when a score is entered for a match). If a ranking shows a log you may want to consider doing a recalculation of that ranking.</p>'
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#rankings">Help section about rankings</a>';
@@ -29,7 +34,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 			case 'save-definition':
 				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				self::save_ranking_definition( $item_id );
-				self::update_score_history();
+				// self::update_score_history();
 				
 				self::notice( 'Ranking updated.', FOOTBALLPOOL_TEXT_DOMAIN );
 				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
@@ -44,8 +49,14 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 				// new or updated ranking
 				$item_id = self::update( $item_id );
 				self::notice( __( 'Ranking saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				if ( Football_Pool_Utils::post_str( 'submit' ) == __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
+				if ( Football_Pool_Utils::post_str( 'submit' ) 
+							== __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
 					self::view();
+					break;
+				}
+				if ( Football_Pool_Utils::post_str( 'define' ) 
+							== __( 'Save & Define', FOOTBALLPOOL_TEXT_DOMAIN ) ) {
+					self::define_ranking( $item_id );
 					break;
 				}
 			case 'edit':
@@ -61,7 +72,6 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					self::delete( $bulk_ids );
 					self::notice( sprintf( __( '%s rankings deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
 				}
-				self::update_score_history();
 			default:
 				self::view();
 		}
@@ -74,6 +84,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$ranking = self::get_ranking( $id );
 		if ( $ranking != null ) {
 			printf( '<h3>%s: %s<h3>', __( 'Definition of', FOOTBALLPOOL_TEXT_DOMAIN ), $ranking['name'] );
+			
 			printf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			self::print_matches( $id );
 			
@@ -255,18 +266,29 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		self::value_form( $cols );
 		echo '<p class="submit">';
 		submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
-		// submit_button( __( 'Save & Define', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'define', false
-						// , array( 'onclick' => "jQuery('#action, #form_action').val('save-define');" ) );
+		submit_button( __( 'Save & Define', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'define', false );
 		submit_button( null, 'secondary', 'save', false );
 		self::cancel_button();
 		echo '</p>';
 	}
 	
+	private function get_ranking_log( $id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( "SELECT log_date, log_message FROM {$prefix}rankings_updatelog 
+								WHERE ranking_id = %d ORDER BY log_date DESC"
+								, $id );
+		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+	
 	private function get_ranking( $id ) {
 		$ranking = Football_Pool_Pool::get_ranking_by_id( $id );
+		$log = self::get_ranking_log( $id );
 		if ( $ranking != null && is_array( $ranking ) ) {
 			$output = array(
 							'name' => $ranking['name'],
+							'log' => $log,
 							// 'active' => $ranking['active'],
 							);
 		} else {
@@ -276,13 +298,42 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $output;
 	}
 	
+	private function ranking_log_summary( $log ) {
+		$summary = '';
+		$log_count = count( $log );
+		$j = 2;
+		if ( $log_count > 0 ) {
+			$summary .= '<div class="ranking-log ranking-log-summary">';
+			foreach ( $log as $line ) {
+				if ( $j-- == 0 ) {
+					$summary .= '</div>';
+					$summary .= sprintf( '<a class="ranking-log-summary" href="">%s >></a>'
+											, __( 'show more', FOOTBALLPOOL_TEXT_DOMAIN ) 
+										);
+					$summary .= '<div class="ranking-log ranking-log-rest">';
+				}
+				$date = new DateTime( $line['log_date'] );
+				$summary .= sprintf( '<span>%s</span><span>%s</span><span>%s</span><br />'
+									, $date->format( 'Y-m-d' )
+									, $date->format( 'H:i' )
+									, $line['log_message'] 
+							);
+			}
+			
+			$summary .= '</div>';
+		}
+		return $summary;
+	}
+	
 	private function get_rankings() {
 		$rankings = Football_Pool_Pool::get_rankings( 'user defined' );
 		$output = array();
 		foreach ( $rankings as $ranking ) {
+			$log = self::ranking_log_summary( self::get_ranking_log( $ranking['id'] ) );
 			$output[] = array(
 							'id' => $ranking['id'], 
 							'name' => $ranking['name'],
+							'log' => $log,
 							// 'active' => $ranking['active'],
 						);
 		}
@@ -294,13 +345,25 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'ranking', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
+					array( 'text', __( 'log', FOOTBALLPOOL_TEXT_DOMAIN ), 'log', '' ),
+					array( 'text', __( 'calculate', FOOTBALLPOOL_TEXT_DOMAIN ), 'calculate', '' ),
 					// array( 'boolean', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'active', '' ),
 				);
 		
+		$link = self::link_button( 
+					__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+					, add_query_arg( 'ranking_id'
+									, '%d'
+									, wp_nonce_url( '?page=footballpool-options&amp;recalculate=yes'
+													, FOOTBALLPOOL_NONCE_ADMIN ) )
+					, false
+				);
 		$rows = array();
 		foreach( $items as $item ) {
 			$rows[] = array(
 						$item['name'], 
+						$item['log'], 
+						( $item['log'] != '' ) ? sprintf( $link, $item['id'] ) : '', 
 						// $item['active'], 
 						$item['id'],
 					);
@@ -339,6 +402,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE ranking_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE ranking_id = %d", $id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE ranking_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings WHERE id = %d", $id );
 		$wpdb->query( $sql );

@@ -2,6 +2,19 @@
 class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => 'Overview',
+						'content' => '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), if changing such a setting you can recalculate the ranking on this page with the <em class="help-label">\'Recalculate scores\'</em> button.</p><p>You have to click <em class="help-label">Save Changes</em> for the new settings to take effect.</p>'
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#rankings">Help section about rankings</a>';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		$action = Football_Pool_Utils::post_string( 'action' );
 		

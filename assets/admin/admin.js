@@ -11,6 +11,16 @@ jQuery( document ).ready( function() {
 			} );
 		}
 	} );
+	
+	jQuery( 'a.ranking-log-summary' ).colorbox( { 
+		html: function() {
+				return '<div class="ranking-log">' 
+						+ jQuery( 'div.ranking-log-summary', jQuery( this ).parent() ).html() 
+						+ jQuery( 'div.ranking-log-rest', jQuery( this ).parent() ).html() + '</div>';
+			},
+		innerWidth: "600px",
+		innerHeight: "400px",
+	} );
 } );
 
 function close_calculation_iframe() {

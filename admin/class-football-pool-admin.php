@@ -7,7 +7,7 @@ class Football_Pool_Admin {
 	}
 	
 	private function add_submenu_page( $parent_slug, $page_title, $menu_title
-									, $capability, $menu_slug, $class ) {
+									, $capability, $menu_slug, $class, $toplevel = false ) {
 		if ( is_array( $class ) ) {
 			$function = $class;
 			$help_class = $class[0];
@@ -16,7 +16,8 @@ class Football_Pool_Admin {
 			$help_class = $class;
 		}
 		
-		add_action( "admin_head-football-pool_page_{$menu_slug}", array( $help_class, 'help' ) );
+		$menu_level = $toplevel ? 'toplevel' : 'football-pool';
+		add_action( "admin_head-{$menu_level}_page_{$menu_slug}", array( $help_class, 'help' ) );
 		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 	}
 	
@@ -41,7 +42,8 @@ class Football_Pool_Admin {
 			__( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ),
 			$capability, 
 			'footballpool-options',
-			'Football_Pool_Admin_Options'
+			'Football_Pool_Admin_Options',
+			true
 		);
 		
 		self::add_submenu_page(
@@ -878,8 +880,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button'
-									, $other_attributes = null ) {
+	private function get_button_action_val( $action ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -892,7 +893,45 @@ class Football_Pool_Admin {
 		} else {
 			$action_val = $action;
 		}
+		return array( $action_val, $onclick_val );
+	}
+	
+	// this function returns HTML for a secondary button, rather than echoing it
+	public function link_button( $text, $action, $wrap = false, $other_attributes = null ) {
+		$actions = self::get_button_action_val( $action );
+		$action_val  = $actions[0];
+		$onclick_val = $actions[1];
 		
+		$attributes = '';
+		if ( is_array( $other_attributes ) ) {
+			foreach( $other_attributes as $key => $value ) {
+				$attributes .= $key . '="' . esc_attr( $value ) . '" ';
+			}
+		} elseif ( ! empty( $other_attributes ) ) {
+			$attributes = $other_attributes;
+		}
+		
+		$action_val = "location.href='{$action_val}'";
+		$button = sprintf( '<input type="button" onclick="%s;%s" 
+									class="button-secondary" value="%s" %s/>'
+							, $action_val
+							, $onclick_val
+							, esc_attr( $text )
+							, $attributes
+					);
+		if ( $wrap ) {
+			$button = '<p class="submit">' . $button . '</p>';
+		}
+		
+		return $button;
+	}
+	
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button'
+									, $other_attributes = null ) {
+		$actions = self::get_button_action_val( $action );
+		$action_val  = $actions[0];
+		$onclick_val = $actions[1];
+				
 		if ( $type == 'button' ) {
 			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
 			$atts = array( "onclick" => $onclick_val );
@@ -911,29 +950,7 @@ class Football_Pool_Admin {
 					$atts 
 			);
 		} elseif ( $type == 'link' || $type == 'js-button' ) {
-			$attributes = '';
-			if ( is_array( $other_attributes ) ) {
-				foreach( $other_attributes as $key => $value ) {
-					$attributes .= $key . '="' . esc_attr( $value ) . '" ';
-				}
-			} elseif ( ! empty( $other_attributes ) ) {
-				$attributes = $other_attributes;
-			}
-			
-			if ( $type == 'link' ) {
-				$action_val = "location.href='{$action_val}'";
-			}
-			$button = sprintf( '<input type="button" onclick="%s;%s" 
-										class="button-secondary" value="%s" %s/>'
-								, $action_val
-								, $onclick_val
-								, esc_attr( $text )
-								, $attributes
-						);
-			if ( $wrap ) {
-				$button = '<p class="submit">' . $button . '</p>';
-			}
-			echo $button;
+			echo self::link_button( $text, $action, $wrap, $other_attributes );
 		}
 	}
 	

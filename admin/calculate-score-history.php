@@ -42,6 +42,10 @@ check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC );
 		margin: 0;
 		padding: 0;
 	}
+	p.animation {
+		margin-top: 15px;
+		text-align: center;
+	}
 	div.updated, div.error {
 		margin: 5px 0 15px;
 		padding: 0 .6em;
@@ -134,6 +138,13 @@ echo "<script>
 		});
 		</script>";
 printf( '<p>%s...</p>', $msg[$step - 1] );
+
+// just for fun ;-)
+// $img_dir = FOOTBALLPOOL_ASSETS_URL . 'admin/images';
+// printf( '<p class="animation"><img src="%s/recalc-animation-%d.gif" width="160" /></p>'
+		// , $img_dir
+		// , 1 
+// );
 
 // calculation steps
 switch ( $step ) {
