@@ -250,30 +250,30 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'',
 								$ranking_switch,
 							),
-						'prediction_type' =>
-							array( 
-								'radiolist', 
-								__( 'Prediction type', FOOTBALLPOOL_TEXT_DOMAIN ), 
-								'prediction_type', 
-								array( 
-									array( 'value' => 0, 'text' => __( 'Scores', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-									array( 'value' => 1, 'text' => __( 'Match winner', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-								),
-								__( 'Select the prediction method for matches. Possible choices are \'Scores\' for the prediction of the match result in goals/points and \'Match winner\' for picking the winner of the match', FOOTBALLPOOL_TEXT_DOMAIN ),
-								array(
-									'onclick="toggle_linked_radio_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
-									'onclick="toggle_linked_radio_options( \'#r-prediction_type_draw\', null )"',
-								),
-							),
-						'prediction_type_draw' => 
-							array( 
-								'checkbox', 
-								__( 'Include \'Draw\' as prediction option', FOOTBALLPOOL_TEXT_DOMAIN ), 
-								'prediction_type_draw', 
-								__( 'If checked users may also predict a draw as outcome of a match. If unchecked only home team and away team are selectable options.', FOOTBALLPOOL_TEXT_DOMAIN ),
-								'',
-								array( 'prediction_type' => 0 )
-							),
+						// 'prediction_type' =>
+							// array( 
+								// 'radiolist', 
+								// __( 'Prediction type', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								// 'prediction_type', 
+								// array( 
+									// array( 'value' => 0, 'text' => __( 'Scores', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									// array( 'value' => 1, 'text' => __( 'Match winner', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+								// ),
+								// __( 'Select the prediction method for matches. Possible choices are \'Scores\' for the prediction of the match result in goals/points and \'Match winner\' for picking the winner of the match', FOOTBALLPOOL_TEXT_DOMAIN ),
+								// array(
+									// 'onclick="toggle_linked_radio_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
+									// 'onclick="toggle_linked_radio_options( \'#r-prediction_type_draw\', null )"',
+								// ),
+							// ),
+						// 'prediction_type_draw' => 
+							// array( 
+								// 'checkbox', 
+								// __( 'Include \'Draw\' as prediction option', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								// 'prediction_type_draw', 
+								// __( 'If checked users may also predict a draw as outcome of a match. If unchecked only home team and away team are selectable options.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								// '',
+								// array( 'prediction_type' => 0 )
+							// ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -337,8 +337,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['prediction_type'],
-									$options['prediction_type_draw'],
+									// $options['prediction_type'],
+									// $options['prediction_type_draw'],
 									$options['stop_time_method_matches'],
 									$options['maxperiod'],
 									$options['matches_locktime'],
