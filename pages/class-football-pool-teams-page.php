@@ -40,7 +40,7 @@ class Football_Pool_Teams_Page {
 				if ( is_array( $stadiums ) && count( $stadiums ) > 0 ) {
 					$output .= sprintf( '<tr>
 										<th>%s:</th>
-										<td><ol class="stadiumlist">',
+										<td><ol class="stadium-list">',
 										__( 'venues', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 					$stadium_page = Football_Pool::get_page_link( 'stadiums' );
@@ -75,7 +75,7 @@ class Football_Pool_Teams_Page {
 		} else {
 			// show all teams
 			$teams = new Football_Pool_Teams();
-			$output .= '<p><ol class="teamlist">';
+			$output .= '<p><ol class="team-list">';
 			$all_teams = $teams->get_teams();
 			$output .= $teams->print_lines( $all_teams );
 			$output .= '</ol></p>';

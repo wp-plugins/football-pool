@@ -7,12 +7,12 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 					array(
 						'id' => 'overview',
 						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete teams.</p><p>Only <em class="help-label">\'Active\'</em> teams are shown on the teams page in the blog. The <em class="help-label">\'real\'</em> column indicates if the team is a real team in the tournament or a temporary placeholder for a match that is not yet set (e.g. Winner Group A).</p>'
+						'content' => '<p>On this page you can add, change or delete teams.</p><p>Only <em>\'Active\'</em> teams are shown on the teams page in the blog. The <em>\'real\'</em> column indicates if the team is a real team in the tournament or a temporary placeholder for a match that is not yet set (e.g. Winner Group A).</p>'
 					),
 					array(
 						'id' => 'details',
 						'title' => 'Team details',
-						'content' => '<ul><li><em class="help-label">photo</em> is used on the team page.</li><li><em class="help-label">flag</em> is used in the standing table and the match overview.</li><li>If <em class="help-label">link</em> is filled the team name on the team\'s page will link to this address.</li><li>The <em class="help-label">comments</em> field can be used to add some extra info about the team. The info is shown on the team\'s page.</li></ul>'
+						'content' => '<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is used in the standing table and the match overview.</li><li>If <em>link</em> is filled the team name on the team\'s page will link to this address.</li><li>The <em>comments</em> field can be used to add some extra info about the team. The info is shown on the team\'s page.</li></ul>'
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about teams</a>';

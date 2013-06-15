@@ -1,1 +1,0 @@
-ALTER TABLE  `{$prefix}predictions` CHANGE  `matchNr`  `matchNr` INT UNSIGNED NOT NULL DEFAULT  '0';

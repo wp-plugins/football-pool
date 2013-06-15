@@ -139,13 +139,15 @@ class Football_Pool_Pool {
 	}
 	
 	// use league=0 to include all users
-	public function get_ranking_from_score_history( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
-													$score_date = '', $type = 0 ) {
+	public function get_ranking_from_score_history( 
+									$league, 
+									$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
+									$score_date = '', $type = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
-			. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
-			. "		COALESCE( MAX( s.totalScore ), 0 ) AS points, 
+				. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
+				. "	COALESCE( MAX( s.totalScore ), 0 ) AS points, 
 					COUNT( IF( s.full = 1, 1, NULL ) ) AS full, 
 					COUNT( IF( s.toto = 1, 1, NULL ) ) AS toto,
 					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus 
@@ -170,7 +172,9 @@ class Football_Pool_Pool {
 		$sql .= "WHERE s.ranking_id IS NOT NULL ";
 		if ( ! $this->has_leagues ) $sql .= "AND ( leagueId <> 0 OR leagueId IS NULL ) ";
 		$sql .= "GROUP BY u.ID
-				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " . ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) . "LOWER( u.display_name ) ASC";
+				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " 
+				. ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) 
+				. "LOWER( u.display_name ) ASC";
 		
 		if ( $this->has_leagues )
 			return $wpdb->prepare( $sql, $league, $ranking_id, $score_date, $type );

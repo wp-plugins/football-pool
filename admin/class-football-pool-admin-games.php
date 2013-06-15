@@ -7,17 +7,17 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					array(
 						'id' => 'overview',
 						'title' => 'Overview',
-						'content' => '<p>On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the <em class="help-label">\'edit\'</em> link.</p><p>After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while. You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.</p>'
+						'content' => '<p>On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the <em>\'edit\'</em> link.</p><p>After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while. You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.</p>'
 					),
 					array(
 						'id' => 'import',
 						'title' => 'Import & Export',
-						'content' => '<p>Matches can be imported into the plugin using the import function (<em class="help-label">\'Bulk change game schedule\'</em>). See the help page for more information about the required format.</p><p>On the import screen you can choose one of the already uploaded schedules or upload a new one (if write is enabled on the upload directory).</p><p>The import can add matches to your schedule, or completely overwrite the existing schedule. Please beware that when overwriting the schedule all existing predictions and rankings will be lost.</p><p>Existing matches can be exported using the <em class="help-label">\'Download game schedule\'</em> button.</p>'
+						'content' => '<p>Matches can be imported into the plugin using the import function (<em>\'Bulk change game schedule\'</em>). See the help page for more information about the required format.</p><p>On the import screen you can choose one of the already uploaded schedules or upload a new one (if write is enabled on the upload directory).</p><p>The import can add matches to your schedule, or completely overwrite the existing schedule. Please beware that when overwriting the schedule all existing predictions and rankings will be lost.</p><p>Existing matches can be exported using the <em>\'Download game schedule\'</em> button.</p>'
 					),
 					array(
 						'id' => 'details',
 						'title' => 'Match details',
-						'content' => '<ul><li><em class="help-label">match date</em> must be in UTC format.</li></ul>'
+						'content' => '<ul><li><em>match date</em> must be in UTC format.</li></ul>'
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about matches and the import</a></p><p><a href="?page=footballpool-options">Plugin options page</a>';

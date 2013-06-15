@@ -107,7 +107,9 @@ if ( is_admin() ) {
 	add_action( 'edit_user_profile_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
 	add_action( 'admin_menu', array( 'Football_Pool_Admin', 'init' ) );
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
-	add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
+	if ( FOOTBALLPOOL_WP_MEDIA === false ) {
+		add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
+	}
 	add_action( 'wp_dashboard_setup', array( 'Football_Pool', 'add_dashboard_widgets' ) );
 	if ( Football_Pool_Utils::get_fp_option( 'add_tinymce_button' ) == 1 ) {
 		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );

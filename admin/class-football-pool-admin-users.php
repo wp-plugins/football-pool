@@ -12,12 +12,12 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 					array(
 						'id' => 'leagues',
 						'title' => 'Leagues',
-						'content' => '<p>The plugin can use leagues (a league is a group of players in your pool) to group players together. If you are using leagues in the pool an admin has to acknowledge the league for which a player subscribed.</p><p>The <em class="help-label">\'plays in league\'</em> column shows the league where the user is currently added to; you may change that value. The column <em class="help-label">\'registered for league\'</em> shows the league the user wants to play in (the user chose this value upon subscribing for the pool).</p>'
+						'content' => '<p>The plugin can use leagues (a league is a group of players in your pool) to group players together. If you are using leagues in the pool an admin has to acknowledge the league for which a player subscribed.</p><p>The <em>\'plays in league\'</em> column shows the league where the user is currently added to; you may change that value. The column <em>\'registered for league\'</em> shows the league the user wants to play in (the user chose this value upon subscribing for the pool).</p>'
 					),
 					array(
 						'id' => 'other',
 						'title' => 'Other options',
-						'content' => '<p>The <em class="help-label">\'payed?\'</em> option has no function in the pool, but can be a help for the admin to remember which of the players have payed if you are using a fee for competing in the pool.</p>'
+						'content' => '<p>The <em>\'payed?\'</em> option has no function in the pool, but can be a help for the admin to remember which of the players have payed if you are using a fee for competing in the pool.</p>'
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-options">Change league settings</a></p><p><a href="?page=footballpool-help#players">Help section about players</a></p><p><a href="?page=footballpool-help#leagues">Help section about leagues</a>';

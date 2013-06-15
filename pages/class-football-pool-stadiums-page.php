@@ -32,7 +32,7 @@ class Football_Pool_Stadiums_Page {
 		else
 		{
 			// show all stadiums
-			$output .= '<p><ol class="stadiumlist">';
+			$output .= '<p><ol class="stadium-list">';
 			$all_stadiums = $stadiums->get_stadiums();
 			$output .= $stadiums->print_lines( $all_stadiums );
 			$output .= '</ol></p>';

@@ -102,6 +102,12 @@ class Football_Pool {
 		$options['show_ranking'] = FOOTBALLPOOL_RANKING_DEFAULT;
 		$options['prediction_type'] = 0; // 0: score, 1: winner/draw
 		$options['prediction_type_draw'] = 1; // 1: also include draw as an option, 0: only home and away team
+		$options['team_points_win'] = FOOTBALLPOOL_TEAM_POINTS_WIN;
+		$options['team_points_draw'] = FOOTBALLPOOL_TEAM_POINTS_DRAW;
+		$options['listing_show_team_thumb'] = 1; // 1: yes, 0: no
+		$options['listing_show_venue_thumb'] = 1; // 1: yes, 0: no
+		$options['listing_show_team_comments'] = 1; // 1: yes, 0: no
+		$options['listing_show_venue_comments'] = 1; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
@@ -165,6 +171,10 @@ class Football_Pool {
 				delete_option( 'footballpool_no_tinymce' );
 				delete_option( 'footballpool_db_version' );
 				update_option( FOOTBALLPOOL_OPTIONS, $options );
+			}
+			if ( ! self::is_at_least_version( '2.3.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.3.0.txt' ) );
+				self::db_actions( $update_sql );
 			}
 			/** END UPDATES **/
 		}
@@ -298,14 +308,18 @@ class Football_Pool {
 			add_action( 'wp_head', array( 'Football_Pool', 'countdown_texts' ) );
 		} else {
 			// image uploader scripts
-			if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
-				wp_enqueue_script('media-upload');
-			}
-			if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
-				wp_enqueue_script('thickbox');
-			}
-			if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
-				wp_enqueue_style('thickbox');
+			if ( FOOTBALLPOOL_WP_MEDIA ) {
+				wp_enqueue_media();
+			} else {
+				if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
+					wp_enqueue_script('media-upload');
+				}
+				if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
+					wp_enqueue_script('thickbox');
+				}
+				if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
+					wp_enqueue_style('thickbox');
+				}
 			}
 			
 			// admin css

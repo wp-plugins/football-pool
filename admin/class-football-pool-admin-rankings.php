@@ -6,16 +6,18 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete custom rankings.</p><p>A ranking is calculated for the total points scored for the matches and/or bonus questions in the ranking. Change the matches and bonus questions for a ranking via the <em class="help-label">\'Ranking composition\'</em> link beneath the ranking name.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete custom rankings.</p><p>A ranking is calculated for the total points scored for the matches and/or bonus questions in the ranking. Change the matches and bonus questions for a ranking via the <em>\'Ranking composition\'</em> link beneath the ranking name.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'log',
-						'title' => 'Log',
-						'content' => '<p>The log shows actions in the plugin that may have an affect on a  particular ranking (e.g. when a score is entered for a match). If a ranking shows a log you may want to consider doing a recalculation of that ranking.</p>'
+						'title' => __( 'Log', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The log shows actions in the plugin that may have an affect on a  particular ranking (e.g. when a score is entered for a match). If a ranking shows a log you may want to consider doing a recalculation of that ranking.</p><p>Log is only effective when <em>Automatic Calculation</em> is off</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-help#rankings">Help section about rankings</a>';
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#rankings">%s</a>'
+								, __( 'Help section about rankings', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 	
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
@@ -351,8 +353,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 				);
 		
 		$link = self::link_button( 
-					__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-					, add_query_arg( 'ranking_id'
+					__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+					, add_query_arg( 'single_ranking'
 									, '%d'
 									, wp_nonce_url( '?page=footballpool-options&amp;recalculate=yes'
 													, FOOTBALLPOOL_NONCE_ADMIN ) )

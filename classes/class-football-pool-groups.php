@@ -163,12 +163,15 @@ class Football_Pool_Groups {
 	}
 	
 	private function get_standing_for_team( $ranking, $id ) {
+		$team_points_win  = Football_Pool_Utils::get_fp_option( 'team_points_win', FOOTBALLPOOL_TEAM_POINTS_WIN, 'int' );
+		$team_points_draw = Football_Pool_Utils::get_fp_option( 'team_points_draw', FOOTBALLPOOL_TEAM_POINTS_DRAW, 'int' );
+		
 		$wins =    ( isset( $ranking[0][$id] ) ? $ranking[0][$id] : 0 );
 		$draws =   ( isset( $ranking[1][$id] ) ? $ranking[1][$id] : 0 );
 		$losses =  ( isset( $ranking[2][$id] ) ? $ranking[2][$id] : 0 );
 		$for =     ( isset( $ranking[3][$id] ) ? $ranking[3][$id] : 0 );
 		$against = ( isset( $ranking[4][$id] ) ? $ranking[4][$id] : 0 );
-		$points =  ( $wins * 3 ) + $draws;
+		$points =  ( $wins * $team_points_win ) + ( $draws * $team_points_draw );
 		$plays =   $wins + $draws + $losses;
 		return array(
 					'team' => $id, 

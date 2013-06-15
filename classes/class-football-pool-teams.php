@@ -114,12 +114,18 @@ class Football_Pool_Teams {
 	}
 	
 	public function print_lines( $teams ) {
+		$thumbs_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_team_thumb' );
+		$comments_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_team_comments' );
 		$output = '';
 		while ( $team = array_shift( $teams ) ) {
 			if ( $team->is_real == 1 && $team->is_active == 1 ) {
-				$output .= sprintf( '<li><a href="%s">%s</a></li>'
+				$photo = ( $thumbs_in_listing && $team->photo != '' ) ? $team->HTML_thumb( 'thumb' ) : '';
+				$comments = ( $comments_in_listing ) ? $team->comments : '';
+				$output .= sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
 									, add_query_arg( array( 'team' => $team->id ) )
+									, $photo
 									, htmlentities( $team->name, null, 'UTF-8' )
+									, $comments
 							);
 			}
 		}

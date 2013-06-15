@@ -1,6 +1,13 @@
 <?php
 global $wpdb;
 
+// WP constants
+if ( function_exists( 'wp_enqueue_media' ) ) {
+	define( 'FOOTBALLPOOL_WP_MEDIA', true );
+} else {
+	define( 'FOOTBALLPOOL_WP_MEDIA', false );
+}
+
 // database and path constants
 define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
 define( 'FOOTBALLPOOL_OPTIONS', 'footballpool_plugin_options' );
@@ -24,7 +31,11 @@ define( 'FOOTBALLPOOL_RANKING_AUTOCALCULATION', 1 );
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
 define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
 define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
-define( 'FOOTBALLPOOL_RECALC_USER_DIV', 50 );
+define( 'FOOTBALLPOOL_RECALC_STEP2_DIV', 500 );
+define( 'FOOTBALLPOOL_RECALC_STEP3_DIV', 200 );
+define( 'FOOTBALLPOOL_RECALC_STEP4_DIV', 500 );
+define( 'FOOTBALLPOOL_RECALC_STEP5_DIV', 50 );
+define( 'FOOTBALLPOOL_RECALC_STEP6_DIV', 4 );
 
 // matches and scores
 define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
@@ -36,6 +47,8 @@ define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
 define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );
 // groups page
 define( 'FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE', 1 );
+define( 'FOOTBALLPOOL_TEAM_POINTS_WIN', 3 );
+define( 'FOOTBALLPOOL_TEAM_POINTS_DRAW', 1 );
 
 // others
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );

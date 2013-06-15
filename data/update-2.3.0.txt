@@ -1,0 +1,3 @@
+ALTER TABLE  `{$prefix}predictions` CHANGE  `matchNr`  `matchNr` INT UNSIGNED NOT NULL DEFAULT  '0';
+ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `questionId` );
+ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `userId` );

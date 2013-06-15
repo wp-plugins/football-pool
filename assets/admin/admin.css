@@ -120,7 +120,9 @@ table.fp-options  tr { border-top: 1px solid rgb( 223, 223, 223 ); }
 table.fp-options  tr.no-border { border: none; }
 table.fp-options  tr:last-child { border-bottom: 1px solid rgb( 223, 223, 223 ); }
 
-.help-label { font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif; }
+.contextual-help-tabs-wrap p em { 
+	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif; 
+}
 div.ranking-log-rest { display: none; }
 .cboxContent div.ranking-log-rest{ display: block; }
 

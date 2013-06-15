@@ -29,7 +29,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			}
 		} elseif ( is_array( $team ) ) {
 			$this->id = $team['id'];
-			$this->name = __( $team['name'], FOOTBALLPOOL_TEXT_DOMAIN );
+			$this->name = $team['name'];
 			$this->photo = $team['photo'];
 			$this->flag = $team['flag'];
 			$this->link = $team['link'];
@@ -42,18 +42,36 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		}
 	}
 	
-	public function HTML_thumb() {
+	private function get_photo_url( $photo ) {
+		$path = '';
+		if ( stripos( $photo, 'http://' ) !== 0 && stripos( $photo, 'https://' ) !== 0 ) {
+			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/';
+		}
+		
+		return $path . $photo;
+	}
+	
+	public function HTML_thumb( $return = 'all' ) {
 		if ( $this->photo != '' ) {
-			$img_url = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/' . $this->photo;
-			$thumb = sprintf( '<a class="thumb fp-lightbox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
-									class="teamphotothumb" /></a>'
-								, esc_attr( $img_url )
-								, esc_attr( $img_url )
-								, esc_attr( __( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ) )
-								, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
-								, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) )
-								, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
-							);
+			$photo = $this->get_photo_url( $this->photo );
+			if ( $return == 'thumb' ) {
+				$thumb = sprintf( '<img src="%s" title="%s" alt="%s %s" class="team-photo thumb team-list" />'
+									, esc_attr( $photo )
+									, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+									, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) )
+									, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+								);
+			} else {
+				$thumb = sprintf( '<a class="thumb fp-lightbox" href="%s"><img src="%s" title="%s %s" alt="%s %s" 
+										class="team-photo thumb" /></a>'
+									, esc_attr( $photo )
+									, esc_attr( $photo )
+									, esc_attr( __( 'Click to enlarge:', FOOTBALLPOOL_TEXT_DOMAIN ) )
+									, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+									, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) )
+									, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+								);
+			}
 		} else {
 			$thumb = '';
 		}
@@ -61,13 +79,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	}
 	
 	public function HTML_image() {
-		$path = '';
-		if ( strpos( $this->photo, 'http://' ) !== 0 && strpos( $this->photo, 'https://' ) !== 0 ) {
-			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/teams/';
-		}
-		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="teamphoto" />'
-						, esc_attr( $path )
-						, esc_attr( str_replace( '_t', '', $this->photo ) )
+		return sprintf( '<img src="%s" title="%s" alt="%s" class="team-photo" />'
+						, esc_attr( str_replace( '_t', '', $this->get_photo_url( $this->photo ) ) )
 						, esc_attr( __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ) )
 						, esc_attr( __( 'team photo for', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $this->name )
 					);

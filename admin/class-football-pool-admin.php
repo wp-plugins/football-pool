@@ -204,7 +204,55 @@ class Football_Pool_Admin {
 		echo '<div class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
-	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+	private function image_input_WP3_5( $label, $key, $value, $description, $type ) {
+		$key = esc_attr( $key );
+		$title = __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN );
+		// based on http://mikejolley.com/2012/12/using-the-new-wordpress-3-5-media-uploader-in-plugins/
+		echo "<script type='text/javascript'>
+			jQuery( document ).ready( function() {
+				var file_frame;
+				jQuery( '#{$key}_button ' ).live( 'click', function( event ) {
+					event.preventDefault();
+					
+					if ( file_frame ) {
+						file_frame.open();
+						return;
+					}
+				 
+					file_frame = wp.media.frames.file_frame = wp.media( {
+						title: '{$title}',//jQuery( this ).data( 'uploader_title' ),
+						button: {
+							text: jQuery( this ).data( 'uploader_button_text' ),
+						},
+						multiple: false  
+					} );
+				 
+					file_frame.on( 'select', function() {
+						attachment = file_frame.state().get( 'selection' ).first().toJSON();
+						// jQuery( '#{$key}' ).val( attachment.sizes.thumbnail.url );
+						jQuery( '#{$key}' ).val( attachment.url );
+					} );
+				 
+					file_frame.open();
+				} );
+			} );
+			</script>
+		";
+		
+		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="fp-image-upload-value %s">
+							<input id="%s_button" type="button" value="%s" class="fp-image-upload-button">'
+							, $key
+							, $key
+							, esc_attr( $value )
+							, esc_attr( $value )
+							, esc_attr( $type )
+							, $key
+							, $title
+						);
+		echo self::option_row( $key, $label, $input, $description );
+	}
+	
+	private function image_input_old( $label, $key, $value, $description, $type ) {
 		$key = esc_attr( $key );
 		echo '<script type="text/javascript">
 			jQuery( document ).ready( function() {
@@ -231,8 +279,8 @@ class Football_Pool_Admin {
 			});
 			</script>';
 		
-		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="%s">
-							<input id="%s_button" type="button" value="%s">'
+		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="fp-image-upload-value %s">
+							<input id="%s_button" type="button" value="%s" class="fp-image-upload-button">'
 							, $key
 							, $key
 							, esc_attr( $value )
@@ -242,6 +290,14 @@ class Football_Pool_Admin {
 							, __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		echo self::option_row( $key, $label, $input, $description );
+	}
+	
+	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+		if ( FOOTBALLPOOL_WP_MEDIA ) {
+			self::image_input_WP3_5( $label, $key, $value, $description, $type );
+		} else {
+			self::image_input_old( $label, $key, $value, $description, $type );
+		}
 	}
 	
 	public function checkbox_input( $label, $key, $checked, $description = ''
@@ -598,7 +654,7 @@ class Football_Pool_Admin {
 			$screen->set_help_sidebar(
 							sprintf( 
 									'<p><strong>%s</strong></p><p>%s</p>' 
-									, __( 'For more information:' )
+									, __( 'For more information:', FOOTBALLPOOL_TEXT_DOMAIN )
 									, $help_sidebar
 							)
 						);
@@ -784,6 +840,22 @@ class Football_Pool_Admin {
 		echo '</table>';
 	}
 	
+	public function empty_scorehistory( $ranking_id = 'all' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $ranking_id == 'all' ) {
+			$check = self::empty_table( 'scorehistory' );
+		} elseif ( is_int( $ranking_id ) && $ranking_id > 0 ) {
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE ranking_id = %d", $ranking_id );
+			$check = ( $wpdb->query( $sql ) !== false );
+		} else {
+			$check = false;
+		}
+		
+		return $check;
+	}
+	
 	public function empty_table( $table_name = '' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -812,9 +884,12 @@ class Football_Pool_Admin {
 		return $check;
 	}
 	
-	public function recalculate_scorehistory_iframe() {
+	public function recalculate_scorehistory_iframe( $ranking_id = 0 ) {
 		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
 		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
+		if ( $ranking_id > 0 ) { // it's a single ranking calc
+			$url = add_query_arg( 'single_ranking', $ranking_id, $url );
+		}
 		
 		printf( '<script>
 					jQuery.colorbox( { 
@@ -833,37 +908,46 @@ class Football_Pool_Admin {
 		);
 	}
 	
-	private function recalculate_manual() {
+	private function recalculate_manual( $ranking_id = 0 ) {
+		$url = wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN );
+		if ( $ranking_id > 0 ) { // it's a single ranking calc
+			$url = add_query_arg( 'single_ranking', $ranking_id, $url );
+		}
+		
 		self::secondary_button( 
 			__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN ), 
+			$url, 
 			true, 
 			'link' 
 		);
 	}
 	
-	public function update_score_history( $force = 'no' ) {
+	public function update_score_history( $force = 'no', $ranking_id = 0 ) {
 		$auto_calc = Football_Pool_Utils::get_fp_option( 'auto_calculation'
 														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
 														, 'int' );
 		
 		if ( $auto_calc == 1 || $force == 'force' ) {
-			self::recalculate_scorehistory_iframe();
+			self::recalculate_scorehistory_iframe( $ranking_id );
 		} else {
-			self::recalculate_manual();
+			self::recalculate_manual( $ranking_id );
 		}
 		return true;
 	}
 	
 	public function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
 										, $preserve_keys = 'no' ) {
-		$log = ( ! is_array( $new_set ) || ! is_array( $old_set ) 
-					|| count( $new_set ) != count( $old_set ) );
-					
-		if ( $preserve_keys == 'assoc' || $preserve_keys == 'preserve keys' ) {
-			$log = ( $log || count( array_diff_assoc( $new_set, $old_set ) ) > 0 );
+		if ( $new_set == null || $old_set == null ) {
+			$log = true;
+		} elseif ( is_array( $new_set ) && is_array( $old_set ) ) {
+			$log = ( count( $new_set ) != count( $old_set ) );
+			if ( $preserve_keys == 'assoc' || $preserve_keys == 'preserve keys' ) {
+				$log = ( $log || count( array_diff_assoc( $new_set, $old_set ) ) > 0 );
+			} else {
+				$log = ( $log || count( array_diff( $new_set, $old_set ) ) > 0 );
+			}
 		} else {
-			$log = ( $log || count( array_diff( $new_set, $old_set ) ) > 0 );
+			$log = ( $old_set != $new_set );
 		}
 		
 		if ( $log ) {
@@ -1007,6 +1091,9 @@ class Football_Pool_Admin {
 	 * @author Modern Tribe, Inc. (Peter Chester)
 	 */
 	public function replace_text_in_thickbox( $translated_text, $source_text, $domain ) {
+		// only used for older versions of WP, WP3.5 and newer use the media library
+		if ( FOOTBALLPOOL_WP_MEDIA ) return;
+		
 		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
 			if ( 'Insert into Post' == $source_text ) {
 				return __( 'Use Image', FOOTBALLPOOL_TEXT_DOMAIN );

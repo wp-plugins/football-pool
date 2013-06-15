@@ -6,12 +6,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), if changing such a setting you can recalculate the ranking on this page with the <em class="help-label">\'Recalculate scores\'</em> button.</p><p>You have to click <em class="help-label">Save Changes</em> for the new settings to take effect.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), if changing such a setting you can recalculate the ranking on this page with the <em>\'Recalculate scores\'</em> button.</p><p>You have to click <em>Save Changes</em> for the new settings to take effect.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-help#rankings">Help section about rankings</a>';
-	
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#rankings">%s</a>'
+								, __( 'Help section about rankings', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
@@ -23,10 +25,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		$match_time_offsets = array();
 		// based on WordPress's functions.php
 		$offset_range = array( 
-							-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, -6.5, -6, -5.5, 
-							-5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5,
-							0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 
-							8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.75, 13, 13.75, 14
+							-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, 
+							-6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, 
+							-0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 
+							6, 6.5, 7, 7.5, 8, 8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 
+							12, 12.75, 13, 13.75, 14
 						);
 		foreach ( $offset_range as $offset ) {
 			if ( 0 <= $offset )
@@ -287,6 +290,18 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'',
 								array( 'prediction_type' => 0 )
 							),
+						'team_points_win' => 
+							array( 'text', __( 'Points for win *', FOOTBALLPOOL_TEXT_DOMAIN ), 'team_points_win', __( 'The points a team gets for a win.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'team_points_draw' => 
+							array( 'text', __( 'Points for draw *', FOOTBALLPOOL_TEXT_DOMAIN ), 'team_points_draw', __( 'The points a team gets for a draw.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_team_thumb' => 
+							array( 'checkbox', __( 'Show photo in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_thumb', __( 'Show the team\'s photo on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_venue_thumb' => 
+							array( 'checkbox', __( 'Show photo in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_thumb', __( 'Show the venue\'s photo on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_team_comments' => 
+							array( 'checkbox', __( 'Show comments in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_comments', __( 'Show the team\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_venue_comments' => 
+							array( 'checkbox', __( 'Show comments in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_comments', __( 'Show the venue\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -299,11 +314,16 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		$recalculate = ( Football_Pool_Utils::post_string( 'recalculate' ) ==
 													__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ) )
 						|| ( Football_Pool_Utils::get_string( 'recalculate' ) == 'yes' );
+		$ranking_id = Football_Pool_Utils::get_int( 'single_ranking' );
 		if ( $recalculate ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			self::update_score_history( 'force' );
+			self::update_score_history( 'force', $ranking_id );
 		} elseif ( $action == 'update' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
+			
+			$update_log = false;
+			$log_options = array( 'fullpoints', 'totopoints', 'goalpoints', 'use_leagues' );
+			
 			foreach ( $options as $option ) {
 				if ( is_array( $option[0] ) ) {
 					$value_type = $option[0][1];
@@ -323,7 +343,21 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 					$value = Football_Pool_Utils::post_integer( $option[2] );
 				}
 				
+				// check if ranking log should be updated
+				if ( in_array( $option[2], $log_options ) && self::get_value( $option[2] ) != $value ) {
+					Football_Pool_Utils::debug(self::get_value( $option[2] ) .' : '. $value);
+					$update_log = true;
+				}
+				
 				self::set_value( $option[2], $value );
+			}
+			
+			if ( $update_log ) {
+				foreach ( $user_defined_rankings as $ranking ) {
+					self::update_ranking_log( $ranking['value'], null, null, 
+											__( 'plugin options changed', FOOTBALLPOOL_TEXT_DOMAIN )
+											);
+				}
 			}
 			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
@@ -386,6 +420,10 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['match_time_offset'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],
+									$options['listing_show_team_thumb'],
+									$options['listing_show_team_comments'],
+									$options['listing_show_venue_thumb'],
+									$options['listing_show_venue_comments'],
 									$options['match_sort_method'],
 								) 
 							);
@@ -401,6 +439,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
 									$options['add_tinymce_button'], 
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		
+		self::admin_sectiontitle( __( 'Groups Page Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['team_points_win'],
+									$options['team_points_draw'],
 									$options['groups_page_match_types'], 
 								) 
 							);
