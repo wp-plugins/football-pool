@@ -50,6 +50,9 @@ define( 'FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE', 1 );
 define( 'FOOTBALLPOOL_TEAM_POINTS_WIN', 3 );
 define( 'FOOTBALLPOOL_TEAM_POINTS_DRAW', 1 );
 
+// predictions
+define( 'FOOTBALLPOOL_DEFAULT_JOKERS', 1 );
+
 // others
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
 define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=S83YHERL39GHA');

@@ -302,6 +302,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Show comments in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_comments', __( 'Show the team\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'listing_show_venue_comments' => 
 							array( 'checkbox', __( 'Show comments in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_comments', __( 'Show the venue\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'number_of_jokers' => 
+							array( 'text', __( 'Number of jokers *', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -392,6 +394,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['stop_time_method_questions'],
 									$options['bonus_question_locktime'],
 									$options['always_show_predictions'],
+									$options['number_of_jokers'],
 								)
 							);
 		echo '<p class="submit">';

@@ -362,6 +362,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		if ( $upload_is_writable ) {
 			// set the right the enctype for the upload
 			echo '</form><form method="post" enctype="multipart/form-data" action="">';
+			wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
 			echo '<input type="hidden" name="action" value="upload_csv">';
 			echo '<h3>', __( 'Upload new game schedule', FOOTBALLPOOL_TEXT_DOMAIN ), '</h3>';
 			// link to help/data explanation and explain the extra data that is needed for teams etc (e.g. photo)

@@ -9,8 +9,12 @@ class Football_Pool_Pool {
 	private $lock_datestring;
 	public $always_show_predictions = 0;
 	public $show_avatar = false;
+	private $pool_has_jokers;
 	
 	public function __construct() {
+		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
+		$this->pool_has_jokers = ( $this->num_jokers > 0 );
+		
 		$this->leagues = $this->get_leagues();
 		$this->has_leagues = ( Football_Pool_Utils::get_fp_option( 'use_leagues' ) == '1' ) && ( count( $this->leagues ) > 1 );
 		
@@ -849,8 +853,11 @@ class Football_Pool_Pool {
 			
 			$m = new Football_Pool_Matches;
 			$output .= $m->print_matches_for_input( $matches, $id );
-			$joker = $m->joker_value;
-			$output .= sprintf( '<input type="hidden" id="_joker_%d" name="_joker" value="%d" />', $id, $joker );
+			
+			if ( $this->pool_has_jokers ) {
+				$joker = $m->joker_value;
+				$output .= sprintf( '<input type="hidden" id="_joker_%d" name="_joker" value="%d" />', $id, $joker );
+			}
 			
 			if ( count( $matches ) > 0 ) {
 				$output .= $this->save_button();

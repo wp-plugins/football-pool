@@ -11,9 +11,13 @@ class Football_Pool_Matches {
 	private $use_spin_controls = true;
 	public $has_matches = false;
 	private $time_format;
+	private $num_jokers = FOOTBALLPOOL_DEFAULT_JOKERS;
+	private $pool_has_jokers;
 	
 	public function __construct() {
-		$this->joker_blocked = false;
+		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
+		$this->pool_has_jokers = ( $this->num_jokers > 0 );
+		$this->joker_blocked = $this->pool_has_jokers ? false : true;
 		$this->enable_edits();
 		
 		$datetime = Football_Pool_Utils::get_fp_option( 'matches_locktime', '' );
@@ -30,7 +34,7 @@ class Football_Pool_Matches {
 		// override hiding of predictions for editable matches?
 		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
 		// HTML5 number inputs?
-		$this->use_spin_controls = ( Football_Pool_Utils::get_fp_option( 'use_spin_controls', 'int', 1 ) == 1 );
+		$this->use_spin_controls = ( Football_Pool_Utils::get_fp_option( 'use_spin_controls', 1, 'int' ) == 1 );
 		
 		// cache match info
 		$this->matches = $this->match_info();
@@ -207,6 +211,8 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_joker_value_for_user( $user ) {
+		if ( ! $this->pool_has_jokers ) return 0;
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -421,7 +427,8 @@ class Football_Pool_Matches {
 							$this->show_pool_joker( $joker, (int) $info['nr'], $info['match_timestamp']
 													, $form_id ),
 							__( 'score', FOOTBALLPOOL_TEXT_DOMAIN ),
-							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], $row['hasJoker'], $info['match_timestamp'] ),
+							$this->show_score( $info['home_score'], $info['away_score'], $row['homeScore'], $row['awayScore'], 
+												$row['hasJoker'], $info['match_timestamp'] ),
 							$this->show_users_link( $info['nr'], $info['match_timestamp'] )
 						);
 		}
@@ -546,6 +553,8 @@ class Football_Pool_Matches {
 	}
 	
 	private function show_pool_joker( $joker, $match, $ts, $form_id = 1 ) {
+		if ( ! $this->pool_has_jokers ) return '<td></td>';
+		
 		$add_joker = '';
 		$style = '';
 		
@@ -572,6 +581,7 @@ class Football_Pool_Matches {
 		} else {
 			$class .= ' readonly';
 		}
+		
 		return sprintf( '<td class="%s"%s id="match_%d_%d"></td>', $class, $add_joker, $match, $form_id );
 	}
 
