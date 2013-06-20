@@ -58,7 +58,10 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		if ( count($rows) > 0 ) {
 			$ranking = Football_Pool_Utils::request_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
 			printf( '<form action="%s" method="get">', $statisticspage );
-			printf( '<input type="hidden" name="ranking" value="%s" />', $ranking );
+			printf( '<input type="hidden" name="ranking" value="%d" />', $ranking );
+			// fix for the default permalink setting
+			$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
+			printf( '<input type="hidden" name="page_id" value="%d" />', $page_id );
 			
 			printf( '<ol class="userselector" style="height: %spx;">', $height );
 			foreach( $rows as $row ) {

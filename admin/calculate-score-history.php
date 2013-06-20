@@ -22,13 +22,25 @@ $prefix = FOOTBALLPOOL_DB_PREFIX;
 $pool = new Football_Pool_Pool;
 $params = array();
 $check = true;
+$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+
+//@todo: fix problem of multiple recalcs on options page. add recalc-all option?
+
+// get step number and other parameters
+$step = Football_Pool_Utils::get_int( 'step', 0 );
+$sub_step = Football_Pool_Utils::get_int( 'sub_step', 1 );
+$progress = Football_Pool_Utils::get_int( 'progress', 1 );
+$user_set = Football_Pool_Utils::get_int( 'user_set', 0 );
+$total_user_sets = Football_Pool_Utils::get_int( 'total_user_sets', 0 );
+$total_users = Football_Pool_Utils::get_int( 'total_users', 0 );
+$total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );
 
 // is this a single ranking calculation?
 $ranking_id = Football_Pool_Utils::get_int( 'single_ranking', 0 );
 $is_single_ranking = ( $ranking_id > 0 );
 if ( ! $is_single_ranking ) {
 	$ranking_id = Football_Pool_Utils::get_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
-} else {
+} elseif ( $step > 0 ) {
 	// get ranking matches and ranking questions to narrow the results
 	$ranking_matches = $pool->get_ranking_matches( $ranking_id );
 	if ( $ranking_matches == null ) {
@@ -52,15 +64,6 @@ if ( ! $is_single_ranking ) {
 		$ranking_questions = implode( ',', $ids );
 	}
 }
-
-// get step number and other parameters
-$step = Football_Pool_Utils::get_int( 'step', 1 );
-$sub_step = Football_Pool_Utils::get_int( 'sub_step', 1 );
-$progress = Football_Pool_Utils::get_int( 'progress', 1 );
-$user_set = Football_Pool_Utils::get_int( 'user_set', 0 );
-$total_user_sets = Football_Pool_Utils::get_int( 'total_user_sets', 0 );
-$total_users = Football_Pool_Utils::get_int( 'total_users', 0 );
-$total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );
 
 if ( $total_user_sets > 0 ) {
 	$from = ( $user_set * FOOTBALLPOOL_RECALC_STEP5_DIV ) + 1;
@@ -97,40 +100,43 @@ $msg[] = sprintf( __( 'ranking %d: calculate user ranking %s', FOOTBALLPOOL_TEXT
 			);
 $msg[] = sprintf( '<strong>%s</strong>', __( 'score (re)calculation finished', FOOTBALLPOOL_TEXT_DOMAIN ) );
 
-if ( $total_steps == 0 ) {
-	// determine total calculation steps (sub steps are not counted)
-	$users = get_users( 'orderby=ID&order=ASC' );
-	if ( $is_single_ranking ) {
-		// only one loop through the steps, no pre-calculation of the default ranking
-		$rankings = 0;
-	} else {
-		// get number of unique ranking ids from update log
-		$sql = "SELECT COUNT( * ) FROM {$prefix}rankings r
-				JOIN {$prefix}rankings_updatelog l
-					ON ( r.id = l.ranking_id )
-				WHERE r.user_defined = 1
-				GROUP BY r.id";
-		$rankings = $wpdb->get_var( $sql );
-	}
-	
-	$total_users = count( $users );
-	$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
-	$total_steps = count( $msg ) + ( $rankings * 3 )
-					+ ( ( $rankings + 1 ) * $total_user_sets );
-}
-
-// print status messages
 printf( '<h2>%s</h2>', __( 'Score (re)calculation', FOOTBALLPOOL_TEXT_DOMAIN ) );
-printf( '<h3>%s</h3>', __( 'Please do not interrupt this process.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-printf( '<p>%s</p>', __( 'Sit back and relax, this may take a while :-)', FOOTBALLPOOL_TEXT_DOMAIN ) );
-echo '<div id="progressbar"></div>';
-echo "<script>
-		$( '#progressbar' ).progressbar({
-			max: {$total_steps},
-			value: {$progress}
-		});
-		</script>";
-printf( '<p>%s...</p>', $msg[$step - 1] );
+
+if ( $step > 0 ) {
+	if ( $total_steps == 0 ) {
+		// determine total calculation steps (sub steps are not counted)
+		if ( $is_single_ranking ) {
+			// only one loop through the steps, no pre-calculation of the default ranking
+			$rankings = 0;
+		} else {
+			// get number of unique ranking ids from update log
+			$sql = "SELECT COUNT( * ) FROM {$prefix}rankings r
+					JOIN {$prefix}rankings_updatelog l
+						ON ( r.id = l.ranking_id )
+					WHERE r.user_defined = 1
+					GROUP BY r.id";
+			$rankings = $wpdb->get_var( $sql );
+		}
+		
+		$users = get_users( 'orderby=ID&order=ASC' );
+		$total_users = count( $users );
+		$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
+		$total_steps = count( $msg ) + ( $rankings * 3 )
+						+ ( ( $rankings + 1 ) * $total_user_sets );
+	}
+
+	// print status messages
+	printf( '<h3>%s</h3>', __( 'Please do not interrupt this process.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+	printf( '<p>%s</p>', __( 'Sit back and relax, this may take a while :-)', FOOTBALLPOOL_TEXT_DOMAIN ) );
+	echo '<div id="progressbar"></div>';
+	echo "<script>
+			$( '#progressbar' ).progressbar({
+				max: {$total_steps},
+				value: {$progress}
+			});
+			</script>";
+	printf( '<p>%s...</p>', $msg[$step - 1] );
+}
 
 // just for fun ;-)
 // $img_dir = FOOTBALLPOOL_ASSETS_URL . 'admin/images';
@@ -141,6 +147,28 @@ printf( '<p>%s...</p>', $msg[$step - 1] );
 
 // calculation steps
 switch ( $step ) {
+	case 0:
+		$acknowledge = Football_Pool_Utils::get_string( 'acknowledge' );
+		if ( $acknowledge == 'yes' ) {
+			$params['step'] = 1;
+		} else {
+			echo '<p>sure?</p>';
+			echo '<p>';
+			Football_Pool_Admin::secondary_button( 
+										__( 'Yes', FOOTBALLPOOL_TEXT_DOMAIN ), 
+										"?acknowledge=yes&_wpnonce={$nonce}", 
+										false, 
+										'js-button' 
+									);
+			Football_Pool_Admin::secondary_button( 
+										__( 'No', FOOTBALLPOOL_TEXT_DOMAIN ), 
+										array( '', 'parent.jQuery.fn.colorbox.close()' ), 
+										false, 
+										'js-button' 
+									);
+			echo '</p>';
+		}
+		break;
 	case 1:
 		// empty table
 		if ( $is_single_ranking ) {
@@ -430,11 +458,11 @@ if ( $check === true ) {
 		$params['total_user_sets'] = $total_user_sets;
 		$params['total_users'] = $total_users;
 		if ( $is_single_ranking ) $params['single_ranking'] = $ranking_id;
-		$params['_wpnonce'] = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+		$params['_wpnonce'] = $nonce;
 		$url = add_query_arg( $params, $_SERVER['PHP_SELF'] );
 		printf( $js, sprintf( 'location.href = "%s";', $url ) );
 	} else {
-		// last step finished
+		// last step finished or step 0
 		printf( $js, $close_calculation );
 	}
 } else {

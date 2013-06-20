@@ -372,7 +372,7 @@ class Football_Pool_Matches {
 		$matchtype = '';
 		$joker = '';
 		
-		$output = sprintf( '<table id="matchinfo-%d" class="matchinfo input" border="1">', $form_id );
+		$output = sprintf( '<table id="matchinfo-%d" class="matchinfo input">', $form_id );
 		foreach ( $matches as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
@@ -383,6 +383,7 @@ class Football_Pool_Matches {
 			
 			$matchdate = new DateTime( $row['playDate'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			// Translators: this is a date format string (see http://php.net/date)
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {

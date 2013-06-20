@@ -981,7 +981,7 @@ class Football_Pool_Admin {
 	}
 	
 	// this function returns HTML for a secondary button, rather than echoing it
-	public function link_button( $text, $action, $wrap = false, $other_attributes = null ) {
+	public function link_button( $text, $action, $wrap = false, $other_attributes = null, $type = 'secondary' ) {
 		$actions = self::get_button_action_val( $action );
 		$action_val  = $actions[0];
 		$onclick_val = $actions[1];
@@ -997,9 +997,10 @@ class Football_Pool_Admin {
 		
 		$action_val = "location.href='{$action_val}'";
 		$button = sprintf( '<input type="button" onclick="%s;%s" 
-									class="button-secondary" value="%s" %s/>'
+									class="button-%s" value="%s" %s/>'
 							, $action_val
 							, $onclick_val
+							, $type
 							, esc_attr( $text )
 							, $attributes
 					);

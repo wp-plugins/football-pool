@@ -97,7 +97,7 @@ class Football_Pool_Shortcodes {
 		
 		// save user input
 		$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
-		$output = $pool->prediction_form_update();
+		$output = $pool->prediction_form_update( $id );
 		
 		// extract all ids from the arguments
 		$match_ids = Football_Pool_Utils::extract_ids( $match );

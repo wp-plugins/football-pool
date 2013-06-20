@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -149,18 +149,23 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.3.0 =
-* New feature: predict winner of a match instead of the score.
-* New feature: multiple joker support.
+* New feature: multiple joker support, or disable jokers.
 * New shortcode: display the score of a single user with [fp-user-score].
-* New shortcode: display a chart in a page or posting with [fp-chart].
 * Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up.
 * Some additions to the custom rankings admin screen.
-* Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).
 * New options for points a team gets for a win or draw (for the Groups page). This makes the plugin more suitable for sports that don't use the 3-point rule for wins.
-* New option to show team photo's on team listing page.
-* New option to show venue photo's on venue listing page.
+* New option to show team photos on team listing page.
+* New option to show venue photos on venue listing page.
 * Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5.
+* Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).
 * Bug fix: old values were shown after a save of a match or a question in the admin (cache is now flushed after a save).
+* Bug fix: prediction form shortcode did not update values when used in a post (thanks BruceFeuillette for reporting the bug).
+* Bug fix: user selector widget did not work in WordPress installs with default permalink setting (thanks Tomas Jonsson to for reporting this).
+* Bug fix: ranking selector did not work in WordPress installs with default permalink setting (related to bug in user selector widget).
+* Bug fix: pie charts where not updated correctly for user defined rankings once such a ranking was selected on the charts page.
+
+= 2.2.5 =
+* Bug fix: CSV upload in matches admin was not working (thanks BruceFeuillette for reporting the bug).
 
 = 2.2.4 =
 * Bug fix: removed a non-working option (prediction type) from the plugin option screen (thanks Matías for sending the screenshot). The prediction type will probably be in version 2.3.0.

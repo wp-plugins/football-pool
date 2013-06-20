@@ -147,21 +147,30 @@ class Football_Pool_Chart_Data {
 								ORDER BY scoreDate DESC, scoreOrder DESC, type DESC LIMIT 1", 
 								$user, $ranking_id
 							);
-		$data = $wpdb->get_row( $sql, ARRAY_A );
-		$output['totalScore'] = $data['totalScore'];
+		$data = $wpdb->get_var( $sql );
+		$output['totalScore'] = ( $data != null ) ? $data : 0;
 		// get the number of matches for which there are results
-		$sql = $wpdb->prepare( "SELECT COUNT(*) AS numMatches FROM {$prefix}scorehistory
+		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory
 								WHERE type = 0 AND userId = %d AND ranking_id = %d", $user, $ranking_id );
-		$data = $wpdb->get_row( $sql, ARRAY_A );
+		$data = $wpdb->get_var( $sql );
+		$num_matches = ( $data != null ) ? $data : 0;
 		
+		// on a full score you get the fullpoints and two times the goal bonus
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
 				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
 		$output['maxScore'] = $full * 2; // count first match with joker
-		$output['maxScore'] += ( (int) $data['numMatches'] - 1 ) * $full; // all other matches
+		$output['maxScore'] += ( (int) $num_matches - 1 ) * $full; // all other matches
 		// add the bonusquestions
-		$sql = "SELECT SUM(points) AS `maxPoints` FROM {$prefix}bonusquestions WHERE scoreDate IS NOT NULL";
-		$data = $wpdb->get_row( $sql, ARRAY_A );
-		$output['maxScore'] += (int) $data['maxPoints'];
+		$sql = "SELECT SUM( q.points ) FROM {$prefix}bonusquestions q ";
+		if ( $ranking_id != FOOTBALLPOOL_RANKING_DEFAULT ) {
+			$sql .= $wpdb->prepare( "JOIN {$prefix}rankings_bonusquestions rb 
+										ON ( rb.question_id = q.id AND rb.ranking_id = %d ) "
+									, $ranking_id );
+		}
+		$sql .= "WHERE q.scoreDate IS NOT NULL";
+		$data = $wpdb->get_var( $sql );
+		$max_points = ( $data != null ) ? $data : 0;
+		$output['maxScore'] += (int) $max_points;
 		
 		return $output;
 	}

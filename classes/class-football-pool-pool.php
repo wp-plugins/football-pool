@@ -234,12 +234,12 @@ class Football_Pool_Pool {
 		
 		if ( count( $ranking ) > 0 ) {
 			$userpage = Football_Pool::get_page_link( 'user' );
+			$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
 			$i = 1;
 			
 			$output .= '<table class="pool-ranking ranking-page">';
 			foreach ( $ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
-				$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
 				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
 				if ( $row['userId'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
@@ -671,28 +671,31 @@ class Football_Pool_Pool {
 	}
 	
 	// updates the predictions for a submitted prediction form
-	public function prediction_form_update() {
+	public function prediction_form_update( $id = null ) {
 		global $current_user;
 		get_currentuserinfo();
 		
-		$user_is_player = $this->user_is_player( $current_user->ID );
 		$msg = '';
 		
-		if ( $current_user->ID != 0 && $user_is_player 
-									&& Football_Pool_Utils::post_string( '_fp_action' ) == 'update' ) {
-			$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_BLOG );
-			$success = ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_BLOG ) !== false );
-			if ( $success ) {
-				$success = $this->update_predictions( $current_user->ID );
-			}
-			if ( $success ) {
-				$msg = sprintf( '<p style="errormessage">%s</p>'
-								, __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN )
-						);
-			} else {
-				$msg = sprintf( '<p style="error">%s</p>'
-								, __( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
-						);
+		if ( $id == null || Football_Pool_Utils::post_int( '_fp_form_id' ) == $id ) {
+			$user_is_player = $this->user_is_player( $current_user->ID );
+			
+			if ( $current_user->ID != 0 && $user_is_player
+										&& Football_Pool_Utils::post_string( '_fp_action' ) == 'update' ) {
+				$nonce = Football_Pool_Utils::post_string( FOOTBALLPOOL_NONCE_FIELD_BLOG );
+				$success = ( wp_verify_nonce( $nonce, FOOTBALLPOOL_NONCE_BLOG ) !== false );
+				if ( $success ) {
+					$success = $this->update_predictions( $current_user->ID );
+				}
+				if ( $success ) {
+					$msg = sprintf( '<p style="errormessage">%s</p>'
+									, __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+				} else {
+					$msg = sprintf( '<p style="error">%s</p>'
+									, __( 'Something went wrong during the save. Check if you are still logged in. If the problems persist, then contact your webmaster.', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+				}
 			}
 		}
 		
@@ -821,8 +824,7 @@ class Football_Pool_Pool {
 	public function prediction_form_questions( $questions, $wrap = false, $id = 1, $start_at_nr = 1 ) {
 		$output = '';
 		if ( $this->has_bonus_questions ) {
-			
-			if ( $wrap ) $this->prediction_form_start( $id );
+			if ( $wrap ) $output .= $this->prediction_form_start( $id );
 			
 			$nr = $start_at_nr;
 			foreach ( $questions as $question ) {
@@ -833,7 +835,7 @@ class Football_Pool_Pool {
 				$output .= $this->save_button();
 			}
 			
-			if ( $wrap ) $this->prediction_form_end( $id );
+			if ( $wrap ) $output .= $this->prediction_form_end( $id );
 		}
 		
 		return $output;
@@ -846,7 +848,7 @@ class Football_Pool_Pool {
 		$output = '';
 		if ( $this->has_matches ) {
 			
-			if ( $wrap ) $this->prediction_form_start( $id );
+			if ( $wrap ) $output .= $this->prediction_form_start( $id );
 			
 			global $current_user;
 			get_currentuserinfo();
@@ -863,17 +865,19 @@ class Football_Pool_Pool {
 				$output .= $this->save_button();
 			}
 			
-			if ( $wrap ) $this->prediction_form_end( $id );
+			if ( $wrap ) $output .= $this->prediction_form_end( $id );
 		}
 		
 		return $output;
 	}
 	
 	public function prediction_form_start( $id = 1) {
+		$action_url = '';//( is_page() ? get_page_link() : get_permalink() );
 		$output = sprintf( '<form id="predictionform-%d" action="%s" method="post">'
-							, $id, get_page_link() 
+							, $id, $action_url
 					);
 		$output .= wp_nonce_field( FOOTBALLPOOL_NONCE_BLOG, FOOTBALLPOOL_NONCE_FIELD_BLOG, true, false );
+		$output .= sprintf( '<input type="hidden" name="_fp_form_id" value="%d" />', $id );
 		return $output;
 	}
 	
