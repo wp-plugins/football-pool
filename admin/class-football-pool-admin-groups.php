@@ -115,7 +115,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		// update all teams in the given group (reset to default)
-		$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET groupId = 0 WHERE groupId = %d", $id );
+		$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET group_id = 0 WHERE group_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}groups WHERE id = %d", $id );
 		$wpdb->query( $sql );

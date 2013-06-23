@@ -249,6 +249,14 @@ function tinymce_insert_shortcode() {
 			if ( date == 'custom' ) date = jQuery( '#ranking-date-custom-value', panel_id ).val();
 			if ( date != '' ) atts += ' date="' + date + '"';
 			break;
+		case 'fp-user-predictions':
+			var match = jQuery( '#user-predictions-match', panel_id ).val();
+			if ( match > 0 ) atts += ' match="' + match + '"';
+			var question = jQuery( '#user-predictions-question', panel_id ).val();
+			if ( question > 0 ) atts += ' question="' + question + '"';
+			var text = jQuery( '#user-predictions-text', panel_id ).val();
+			if ( text != '' ) atts += ' text="' + text + '"';
+			break;
 		case 'fp-user-score':
 			var ranking = jQuery( '#user-score-ranking-id', panel_id ).val();
 			if ( ranking > 0 ) atts += ' ranking="' + ranking + '"';

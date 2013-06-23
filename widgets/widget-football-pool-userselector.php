@@ -65,11 +65,11 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 			
 			printf( '<ol class="userselector" style="height: %spx;">', $height );
 			foreach( $rows as $row ) {
-				$selected = ( in_array( $row['userId'], $users ) ) ? true : false;
+				$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
 				echo '<li', ( $selected ? ' class="selected"' : '' ), '>
-						<input type="checkbox" name="users[]" id="user', $row['userId'], '"
-							value="', $row['userId'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
-						<label for="user', $row['userId'], '"> ', $pool->get_avatar( $row['userId'], 'small' ), $row['userName'], '</label></li>';
+						<input type="checkbox" name="users[]" id="user', $row['user_id'], '"
+							value="', $row['user_id'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
+						<label for="user', $row['user_id'], '"> ', $pool->get_avatar( $row['user_id'], 'small' ), $row['user_name'], '</label></li>';
 			}
 			echo '</ol>';
 			printf( '<p><input type="submit" value="%s" /></p>'

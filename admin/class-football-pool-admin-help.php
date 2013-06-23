@@ -16,7 +16,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<ol>
 				<li><a href="#introduction">Introduction</a></li>
 				<li><a href="#admin">Admin pages</a></li>
-				<li><a href="#time">Time</a></li>
+				<li><a href="#times">Time</a></li>
 				<li><a href="#points">Points</a></li>
 				<li><a href="#rankings">Rankings & Scoring</a></li>
 				<li><a href="#leagues">Leagues</a></li>
@@ -54,18 +54,21 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff of the match (dynamic time), or a single date/time for all matches. The default is a dynamic time setting of 900 seconds (= 15 minutes) before the start of a match.<br>
 		Bonus questions each have an 'answer before' date and time. But you may override these individual values with a single stop time for all bonus questions. The default is to allow for a 'answer before' time per question.
 		</p>
+		
+		<h3>Questions and plugin settings</h3>
 		<p>
-		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in the database in UTC.)
+		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time (the plugin stores them in the database in UTC).
 		</p>
 		
 		<h3>Matches</h3>
 		<p>
 		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
+		
 		<div class="help important">
-			<p><strong>Tip:</strong> Always test if your <a href="options-general.php" title="WordPress general settings">timezone setting</a> and 
-			<a href="admin.php?page=footballpool-options" title="Football Pool plugin settings">plugin times</a> are correct. Change the date of one of 
-			your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
+			<p><strong>Debugging timezone problems</strong></p>
+			<p><strong>Tip:</strong> Always test if your <a href="options-general.php" title="WordPress general settings">timezone setting</a> and <a href="admin.php?page=footballpool-options" title="Football Pool plugin settings">plugin times</a> are correct. Change the date of one of your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
+			<p>The plugin also has a helper page that displays some debug info on your plugin and server settings. The helper page can be found <a target="_blank" href="<?php echo FOOTBALLPOOL_PLUGIN_URL, 'admin/timezone-test.php'; ?>" title="debug info on date and time settings">here</a>.</p>
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
@@ -354,6 +357,35 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>The different shortcodes are explained in the following paragraphs.</p>
 		
+		<h3>[fp-predictions]</h3>
+		<p>Shows the predictions for a given match and/or question.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>The numeric id for the match</td>
+				<td>match id (integer)</td>
+				<td>none</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">question</td>
+				<td>The numeric id for the question</td>
+				<td>question id (integer)</td>
+				<td>none</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">text</td>
+				<td>text to display if no predictions can be shown (invalid id, or predictions not publicly viewable)</td>
+				<td>string</td>
+				<td>empty string</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-predictions match=1]</span><br />
+		</p>
+		
 		<h3>[fp-user-score]</h3>
 		<p>Shows the score for a given user.</p>
 		<p>
@@ -386,8 +418,9 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>example:<br />
-		<span class="code">[fp-groups id=2]</span><br />
-		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
+		<span class="code">[fp-user-score user=1 text="no score"]</span><br />
+		<span class="code">[fp-user-score user=58 ranking=2 text="no score"]</span><br />
+		<span class="code">[fp-user-score user=5 date="2013-06-01 12:00"]</span><br />
 		</p>
 		
 		<h3>[fp-groups]</h3>
@@ -524,8 +557,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</tr>
 			<tr class="">
 				<td class="row-title">match</td>
-				<td>Number of the match to count down to.</td>
-				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
+				<td>ID of the match to count down to.</td>
+				<td><a href="?page=footballpool-games">match id</a> (integer)</td>
 				<td>empty</td>
 			</tr>
 			<tr class="alternate">

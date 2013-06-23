@@ -24,7 +24,7 @@ class Football_Pool_Statistics {
 		$single_match = ( $match > 0 ) ? '' : '1 = 1 OR';
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
 								WHERE ranking_id = {$ranking_id} 
-									AND ( {$single_match} ( type = 0 AND scoreOrder = %d ) )", 
+									AND ( {$single_match} ( type = 0 AND score_order = %d ) )", 
 								$match
 							);
 		$num = $wpdb->get_var( $sql );
@@ -85,7 +85,7 @@ class Football_Pool_Statistics {
 								, __( 'Bonus question', FOOTBALLPOOL_TEXT_DOMAIN )
 								, $info['question'] 
 						);
-			if ( $pool->always_show_predictions || $info['bonus_is_editable'] == false ) {
+			if ( $pool->always_show_predictions || $info['question_is_editable'] == false ) {
 				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
 									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$info['answer'],
@@ -109,15 +109,32 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
 		
-		$output = '<table class="statistics">
-					<tr><th>' . __( 'user', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th>' . __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ) . '</th><th class="correct">' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '?</th></tr>';
+		$output = sprintf( '<table class="statistics prediction-table-questions">
+							<tr><th>%s</th><th>%s</th><th class="correct">%s</th></tr>'
+							, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'correct?', FOOTBALLPOOL_TEXT_DOMAIN )
+				);
 		
-		$img = '<img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/images/site/correct.jpg" 
-					title="' . __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" alt="' . __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ) . '" width="16" height="16" />';
+		$img = sprintf( '<img src="%sassets/images/site/correct.jpg" title="%s" alt="%s" width="16" height="16" />'
+						, FOOTBALLPOOL_PLUGIN_URL
+						, __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN )
+						, __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN )
+				);
 		
 		foreach ( $answers as $answer ) {
+			if ( $answer['correct'] == 1 ) {
+				$class = 'correct';
+				$title = __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN );
+			} else {
+				$class = 'wrong';
+				$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
+			}
 			$output .= sprintf( '<tr><td>%s</td><td>%s</td>', $answer['name'], $answer['answer'] );
-			$output .= sprintf( '<td class="score">%s</td></tr>', ( $answer['correct'] == 1 ? $img : '' ) );
+			$output .= sprintf( '<td class="score %s" title="%s"></td></tr>'
+								, $class 
+								, $title
+						);
 		}
 		$output .= '</table>';
 		
@@ -131,24 +148,24 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		
 		$sql = "SELECT
-					m.homeTeamId, m.awayTeamId, 
-					p.homeScore, p.awayScore, p.hasJoker, u.ID AS userId, ";
-		$sql .= ( $pool->has_leagues ? "l.id AS leagueId, " : "" );
-		$sql .= "	u.display_name AS userName
+					m.home_team_id, m.away_team_id, 
+					p.home_score, p.away_score, p.has_joker, u.ID AS user_id, ";
+		$sql .= ( $pool->has_leagues ? "l.id AS league_id, " : "" );
+		$sql .= "	u.display_name AS user_name
 				FROM {$prefix}matches m 
 				LEFT OUTER JOIN {$prefix}predictions p 
-					ON ( p.matchNr = m.nr AND m.nr = %d ) 
+					ON ( p.match_id = m.id AND m.id = %d ) 
 				RIGHT OUTER JOIN {$wpdb->users} u 
-					ON ( u.ID = p.userId ) ";
+					ON ( u.ID = p.user_id ) ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.userId )
-					INNER JOIN {$prefix}leagues l ON ( l.id = lu.leagueId ) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id )
+					INNER JOIN {$prefix}leagues l ON ( l.id = lu.league_id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			$sql .= "WHERE ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";
-		$sql = $wpdb->prepare( $sql, $match_info['nr'] );
+		$sql = $wpdb->prepare( $sql, $match_info['id'] );
 		
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		$output = '';
@@ -164,21 +181,21 @@ class Football_Pool_Statistics {
 			$userpage = Football_Pool::get_page_link( 'user' );
 			foreach ( $rows as $row ) {
 				$output .= sprintf( '<tr><td><a href="%s">%s</a></td>',
-									esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
-									$row['userName']
+									esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
+									$row['user_name']
 							);
 				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',
-									$row['homeScore'],
-									$row['awayScore']
+									$row['home_score'],
+									$row['away_score']
 							);
 				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
-									( $row['hasJoker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
+									( $row['has_joker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
 				$score = $pool->calc_score(
 									$match_info['home_score'], 
 									$match_info['away_score'], 
-									$row['homeScore'], 
-									$row['awayScore'], 
-									$row['hasJoker']
+									$row['home_score'], 
+									$row['away_score'], 
+									$row['has_joker']
 								);
 				$output .= sprintf( '<td class="score">%s&nbsp;</td></tr>', $score);
 			}

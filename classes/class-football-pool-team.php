@@ -33,8 +33,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 			$this->photo = $team['photo'];
 			$this->flag = $team['flag'];
 			$this->link = $team['link'];
-			$this->group_id = $team['groupId'];
-			$this->group_name = $team['groupName'];
+			$this->group_id = $team['group_id'];
+			$this->group_name = $team['group_name'];
 			$this->group_order = $team['group_order'];
 			$this->is_real = $team['is_real'];
 			$this->is_active = $team['is_active'];
@@ -92,15 +92,19 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		$sorting = Football_Pool_Matches::get_match_sorting_method();
 		
 		$sql = $wpdb->prepare( "SELECT 
-									m.homeTeamId, m.awayTeamId, 
-									m.homeScore, m.awayScore, 
-									s.id, s.name, 
+									m.home_team_id, 
+									m.away_team_id, 
+									m.home_score, 
+									m.away_score, 
+									s.id AS stadium_id, 
+									s.name, 
 									t.name AS matchtype, 
-									m.nr, m.playDate 
+									m.id AS match_id, 
+									m.play_date 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-								WHERE m.stadiumId = s.id 
-									AND m.matchtypeId = t.id AND t.visibility = 1
-									AND (m.homeTeamId = %d OR m.awayTeamId = %d)
+								WHERE m.stadium_id = s.id 
+									AND m.matchtype_id = t.id AND t.visibility = 1
+									AND ( m.home_team_id = %d OR m.away_team_id = %d )
 								ORDER BY {$sorting}",
 								$this->id,
 								$this->id
@@ -114,8 +118,8 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT DISTINCT s.id, s.name, s.photo, s.comments
 								FROM {$prefix}stadiums s, {$prefix}matches m 
-								WHERE s.id = m.stadiumId 
-									AND ( m.homeTeamId = %d OR awayTeamId = %d )
+								WHERE s.id = m.stadium_id 
+									AND ( m.home_team_id = %d OR away_team_id = %d )
 								ORDER BY s.name ASC",
 								$this->id,
 								$this->id

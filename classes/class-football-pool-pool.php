@@ -79,18 +79,18 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, ";
-		$sql .= ( $this->has_leagues ? "lu.leagueId, " : "" );
+		$sql = "SELECT u.ID AS user_id, u.display_name AS user_name, u.user_email AS email, ";
+		$sql .= ( $this->has_leagues ? "lu.league_id, " : "" );
 		$sql .= "0 AS points, 0 AS full, 0 AS toto, 0 AS bonus FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu 
-						ON (u.ID = lu.userId" . ( $league > 1 ? ' AND lu.leagueId = ' . $league : '' ) . ") ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+						ON (u.ID = lu.user_id" . ( $league > 1 ? ' AND lu.league_id = ' . $league : '' ) . ") ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON (lu.userId = u.ID) ";
-			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			$sql .= "WHERE ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 		}
-		$sql .= "ORDER BY userName ASC";
+		$sql .= "ORDER BY user_name ASC";
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
@@ -100,13 +100,13 @@ class Football_Pool_Pool {
 		
 		if ( $this->has_leagues ) {
 			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
-									INNER JOIN {$wpdb->users} u ON ( u.ID = lu.userId )
-									WHERE u.ID = %d AND lu.leagueId <> 0"
+									INNER JOIN {$wpdb->users} u ON ( u.ID = lu.user_id )
+									WHERE u.ID = %d AND lu.league_id <> 0"
 									, $user_id );
 		} else {
 			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
-									RIGHT OUTER JOIN {$wpdb->users} u ON ( u.ID = lu.userId )
-									WHERE u.ID = %d AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL )"
+									RIGHT OUTER JOIN {$wpdb->users} u ON ( u.ID = lu.user_id )
+									WHERE u.ID = %d AND ( lu.league_id <> 0 OR lu.league_id IS NULL )"
 									, $user_id );
 		}
 		
@@ -119,7 +119,7 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( $this->has_leagues ) {
-			$sql = $wpdb->prepare( "SELECT leagueId FROM {$prefix}league_users WHERE userId = %d", $user_id );
+			$sql = $wpdb->prepare( "SELECT league_id FROM {$prefix}league_users WHERE user_id = %d", $user_id );
 			$league = $wpdb->get_var( $sql );
 		} else {
 			$league = null;
@@ -133,10 +133,10 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = $wpdb->prepare( 
-						sprintf( "SELECT totalScore FROM {$prefix}scorehistory 
-								WHERE userId = %%d AND ranking_id = %%d 
-								AND ( %s scoreDate <= %%s )
-								ORDER BY scoreDate DESC LIMIT 1"
+						sprintf( "SELECT total_score FROM {$prefix}scorehistory 
+								WHERE user_id = %%d AND ranking_id = %%d 
+								AND ( %s score_date <= %%s )
+								ORDER BY score_date DESC LIMIT 1"
 								, ( $score_date == '' ? '1 = 1 OR' : '' ) 
 						) , $user, $ranking_id, $score_date );
 		return $wpdb->get_var( $sql ); // return null if nothing found
@@ -149,9 +149,9 @@ class Football_Pool_Pool {
 									$score_date = '', $type = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT u.ID AS userId, u.display_name AS userName, u.user_email AS email, " 
-				. ( $this->has_leagues ? "lu.leagueId, " : "" ) 
-				. "	COALESCE( MAX( s.totalScore ), 0 ) AS points, 
+		$sql = "SELECT u.ID AS user_id, u.display_name AS user_name, u.user_email AS email, " 
+				. ( $this->has_leagues ? "lu.league_id, " : "" ) 
+				. "	COALESCE( MAX( s.total_score ), 0 ) AS points, 
 					COUNT( IF( s.full = 1, 1, NULL ) ) AS full, 
 					COUNT( IF( s.toto = 1, 1, NULL ) ) AS toto,
 					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus 
@@ -160,24 +160,24 @@ class Football_Pool_Pool {
 			$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ? '1 = 1 OR' : '' );
 			$sql .= "INNER JOIN {$prefix}league_users lu 
 						ON (
-							u.ID = lu.userId
-							AND ( {$league_switch} lu.leagueId = %d )
+							u.ID = lu.user_id
+							AND ( {$league_switch} lu.league_id = %d )
 							) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					(
-						s.userId = u.ID AND s.ranking_id = %d 
-						AND ( " . ( $score_date == '' ? '1 = 1 OR' : '' ) . " s.scoreDate <= %s )
+						s.user_id = u.ID AND s.ranking_id = %d 
+						AND ( " . ( $score_date == '' ? '1 = 1 OR' : '' ) . " s.score_date <= %s )
 						AND ( " . ( $type == 0 ? '1 = 1 OR' : '' ) . " s.type = %d )
 					) ";
 		$sql .= "WHERE s.ranking_id IS NOT NULL ";
-		if ( ! $this->has_leagues ) $sql .= "AND ( leagueId <> 0 OR leagueId IS NULL ) ";
+		if ( ! $this->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 		$sql .= "GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " 
-				. ( $this->has_leagues ? "lu.leagueId ASC, " : "" ) 
+				. ( $this->has_leagues ? "lu.league_id ASC, " : "" ) 
 				. "LOWER( u.display_name ) ASC";
 		
 		if ( $this->has_leagues )
@@ -240,8 +240,8 @@ class Football_Pool_Pool {
 			$output .= '<table class="pool-ranking ranking-page">';
 			foreach ( $ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
-				if ( $all_user_view ) $class .= ' league-' . $row['leagueId'];
-				if ( $row['userId'] == $user ) $class .= ' currentuser';
+				if ( $all_user_view ) $class .= ' league-' . $row['league_id'];
+				if ( $row['user_id'] == $user ) $class .= ' currentuser';
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
 									<td><a href="%s">%s%s</a>%s</td>
 									<td>%d</td>
@@ -249,12 +249,12 @@ class Football_Pool_Pool {
 									</tr>',
 								$class,
 								$i++,
-								esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) ),
-								$this->get_avatar( $row['userId'], 'medium' ),
-								$row['userName'],
-								Football_Pool::user_name( $row['userId'], 'label' ),
+								esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
+								$this->get_avatar( $row['user_id'], 'medium' ),
+								$row['user_name'],
+								Football_Pool::user_name( $row['user_id'], 'label' ),
 								$row['points'],
-								( $all_user_view ? $this->league_image( $row['leagueId'] ) : '' )
+								( $all_user_view ? $this->league_image( $row['league_id'] ) : '' )
 							);
 				$output .= "\n";
 			}
@@ -286,15 +286,15 @@ class Football_Pool_Pool {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
-			$filter = $only_user_defined ? 'WHERE userDefined=1' : '';
+			$filter = $only_user_defined ? 'WHERE user_defined = 1' : '';
 			
-			$sql = "SELECT id AS leagueId, name AS leagueName, userDefined, image 
-					FROM {$prefix}leagues {$filter} ORDER BY userDefined ASC, name ASC";
+			$sql = "SELECT id AS league_id, name AS league_name, user_defined, image 
+					FROM {$prefix}leagues {$filter} ORDER BY user_defined ASC, name ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			$leagues = array();
 			foreach ( $rows as $row ) {
-				$leagues[$row['leagueId']] = $row;
+				$leagues[$row['league_id']] = $row;
 			}
 			wp_cache_set( $cache_key, $leagues );
 		}
@@ -359,7 +359,7 @@ class Football_Pool_Pool {
 		if ( $this->has_leagues ) {
 			$options = array();
 			foreach ( $this->leagues as $row ) {
-				$options[ $row['leagueId'] ] = $row['leagueName'];
+				$options[ $row['league_id'] ] = $row['league_name'];
 			}
 			$output .= Football_Pool_Utils::select( $select, $options, $league );
 		}
@@ -374,11 +374,11 @@ class Football_Pool_Pool {
 			$output .= sprintf('<select name="%s" id="%s">', $select, $select);
 			$output .= '<option value="0"></option>';
 			foreach ( $this->leagues as $row ) {
-				if ( $row['userDefined'] == 1 ) {
+				if ( $row['user_defined'] == 1 ) {
 					$output .= sprintf( '<option value="%d"%s>%s</option>'
-										, $row['leagueId']
-										, ( $row['leagueId'] == $league ? ' selected="selected"' : '' )
-										, $row['leagueName']
+										, $row['league_id']
+										, ( $row['league_id'] == $league ? ' selected="selected"' : '' )
+										, $row['league_name']
 								);
 				}
 			}
@@ -392,15 +392,15 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( $old_league == 'no update' ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( user_id, league_id ) 
 									VALUES ( %d, %d )
-									ON DUPLICATE KEY UPDATE leagueId = leagueId", 
+									ON DUPLICATE KEY UPDATE league_id = league_id", 
 									$user_id, $new_league_id
 								);
 		} else {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( user_id, league_id ) 
 									VALUES ( %d, %d )
-									ON DUPLICATE KEY UPDATE leagueId = %d", 
+									ON DUPLICATE KEY UPDATE league_id = %d", 
 									$user_id, $new_league_id, $new_league_id
 								);
 		}
@@ -420,18 +420,18 @@ class Football_Pool_Pool {
 		// also include user answers
 		$sql = $wpdb->prepare( "SELECT 
 									q.id, q.question, a.answer, 
-									q.points, a.points AS userPoints, 
-									q.answerBeforeDate AS questionDate, 
-									DATE_FORMAT(q.scoreDate,'%%Y-%%m-%%d %%H:%%i') AS scoreDate, 
-									DATE_FORMAT(q.answerBeforeDate,'%%Y-%%m-%%d %%H:%%i') AS answerBeforeDate, 
-									q.matchNr, a.correct,
+									q.points, a.points AS user_points, 
+									q.answer_before_date AS question_date, 
+									DATE_FORMAT( q.score_date,'%%Y-%%m-%%d %%H:%%i') AS score_date, 
+									DATE_FORMAT( q.answer_before_date,'%%Y-%%m-%%d %%H:%%i') AS answer_before_date, 
+									q.match_id, a.correct,
 									qt.type, qt.options, qt.image, qt.max_answers
 								FROM {$prefix}bonusquestions q 
 								INNER JOIN {$prefix}bonusquestions_type qt
 									ON ( q.id = qt.question_id {$ids})
 								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
-									ON ( a.questionId = q.id AND a.userId = %d )
-								ORDER BY q.answerBeforeDate ASC",
+									ON ( a.question_id = q.id AND a.user_id = %d )
+								ORDER BY q.answer_before_date ASC",
 							$user_id
 						);
 		
@@ -444,7 +444,7 @@ class Football_Pool_Pool {
 			$i = 0;
 			foreach ( $rows as $row ) {
 				$questions[$i] = $row;
-				$ts = new DateTime( $row['questionDate'] );
+				$ts = new DateTime( $row['question_date'] );
 				$ts = $ts->format( 'U' );
 				$questions[$i]['question_date'] = $ts;
 				$i++;
@@ -463,37 +463,38 @@ class Football_Pool_Pool {
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 			$sql = "SELECT 
-						q.id, q.question, q.answer, q.points, q.answerBeforeDate AS questionDate, 
-						DATE_FORMAT( q.scoreDate,'%Y-%m-%d %H:%i' ) AS scoreDate, 
-						DATE_FORMAT( q.answerBeforeDate,'%Y-%m-%d %H:%i' ) AS answerBeforeDate, q.matchNr,
+						q.id, q.question, q.answer, q.points, q.answer_before_date AS question_date, 
+						DATE_FORMAT( q.score_date,'%Y-%m-%d %H:%i' ) AS score_date, 
+						DATE_FORMAT( q.answer_before_date,'%Y-%m-%d %H:%i' ) AS answer_before_date, q.match_id,
 						qt.type, qt.options, qt.image, qt.max_answers
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
 						ON ( q.id = qt.question_id )
-					ORDER BY q.answerBeforeDate ASC";
+					ORDER BY q.answer_before_date ASC";
 		
-			$rows = $wpdb->get_results( $sql );
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			$this->has_bonus_questions = ( count( $rows ) > 0 );
 			
 			$question_info = array();
 			foreach ( $rows as $row ) {
-				$i = $row->id;
-				$question_date = new DateTime( $row->questionDate );
+				$i = $row['id'];
+				$question_date = new DateTime( $row['question_date'] );
 				$ts = $question_date->format( 'U' );
 				
 				$question_info[$i] = array();
 				$question_info[$i]['id'] = $i;
-				$question_info[$i]['question'] = $row->question;
-				$question_info[$i]['answer'] = $row->answer;
-				$question_info[$i]['points'] = $row->points;
+				$question_info[$i]['question'] = $row['question'];
+				$question_info[$i]['answer'] = $row['answer'];
+				$question_info[$i]['points'] = $row['points'];
 				$question_info[$i]['question_date'] = $ts;
-				$question_info[$i]['score_date'] = $row->scoreDate;
-				$question_info[$i]['answer_before_date'] = $row->answerBeforeDate;
-				$question_info[$i]['match_nr'] = $row->matchNr;
-				$question_info[$i]['type'] = $row->type;
-				$question_info[$i]['options'] = $row->options;
-				$question_info[$i]['image'] = $row->image;
-				$question_info[$i]['max_answers'] = $row->max_answers;
+				$question_info[$i]['question_timestamp'] = $ts;
+				$question_info[$i]['score_date'] = $row['score_date'];
+				$question_info[$i]['answer_before_date'] = $row['answer_before_date'];
+				$question_info[$i]['match_id'] = $row['match_id'];
+				$question_info[$i]['type'] = $row['type'];
+				$question_info[$i]['options'] = $row['options'];
+				$question_info[$i]['image'] = $row['image'];
+				$question_info[$i]['max_answers'] = $row['max_answers'];
 			}
 			
 			wp_cache_set( FOOTBALLPOOL_CACHE_QUESTIONS, $question_info );
@@ -511,7 +512,7 @@ class Football_Pool_Pool {
 		$questions = $this->get_bonus_questions();
 		if ( is_array( $questions ) && array_key_exists( $id, $questions ) ) {
 			$info = $questions[$id];
-			$info['bonus_is_editable'] = $this->bonus_is_editable( $info['question_date'] );
+			$info['question_is_editable'] = $this->question_is_editable( $info['question_date'] );
 		}
 		return $info;
 	}
@@ -626,17 +627,17 @@ class Football_Pool_Pool {
 						);
 		}
 		
-		$lock_time = ( $this->force_lock_time ) ? $this->lock_datestring : $question['answerBeforeDate'];
+		$lock_time = ( $this->force_lock_time ) ? $this->lock_datestring : $question['answer_before_date'];
 		// to local time
 		$lock_time = Football_Pool_Utils::date_from_gmt( $lock_time );
 		
-		if ( $this->bonus_is_editable( $question['question_date'] ) ) {
+		if ( $this->question_is_editable( $question['question_date'] ) ) {
 			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
 			
 			$output .= '<p>';
 			
 			// remind a player if there is only 1 day left to answer the question.
-			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['questionDate'] );
+			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['question_date'] );
 			if ( ( $timestamp - current_time( 'timestamp' ) ) <= ( 24 * 60 * 60 ) ) {
 				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
@@ -707,10 +708,10 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		foreach ( $questions as $question ) {
-			if ( $this->bonus_is_editable( $question['question_date'] ) && $answers[ $question['id'] ] != '') {
+			if ( $this->question_is_editable( $question['question_date'] ) && $answers[ $question['id'] ] != '') {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
-										SET userId = %d,
-											questionId = %d,
+										SET user_id = %d,
+											question_id = %d,
 											answer = %s,
 											points = 0",
 										$user, $question['id'], $answers[ $question['id'] ]
@@ -731,10 +732,9 @@ class Football_Pool_Pool {
 		$joker = 0;
 		
 		// only allow setting of joker if it wasn't used before on a played match
-		$sql = $wpdb->prepare( "SELECT m.playDate AS match_timestamp
+		$sql = $wpdb->prepare( "SELECT m.play_date
 								FROM {$prefix}predictions p, {$prefix}matches m 
-								WHERE p.matchNr = m.nr 
-									AND p.hasJoker = 1 AND p.userId = %d" 
+								WHERE p.match_id = m.id AND p.has_joker = 1 AND p.user_id = %d" 
 								, $user
 							);
 		$play_date = $wpdb->get_var( $sql );
@@ -753,25 +753,25 @@ class Football_Pool_Pool {
 		
 		// update predictions for all matches
 		foreach ( $rows as $row ) {
-			$match = $row['nr'];
+			$match = $row['id'];
 			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
 			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
 			
 			if ( $matches->match_is_editable( $row['match_timestamp'] ) ) {
 				if ( is_integer( $home ) && is_integer( $away ) ) {
 					$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
-											SET userId = %d, 
-												matchNr = %d, 
-												homeScore = %d, 
-												awayScore = %d, 
-												hasJoker = %d"
+											SET user_id = %d, 
+												match_id = %d, 
+												home_score = %d, 
+												away_score = %d, 
+												has_joker = %d"
 											, $user, $match, $home, $away, ( $joker == $match ? 1 : 0 )
 									);
 				} else {
 					// fix for the multiple-joker-bug
 					$sql = $wpdb->prepare( "UPDATE {$prefix}predictions
-											SET hasJoker = %d
-											WHERE userId = %d AND matchNr = %d"
+											SET has_joker = %d
+											WHERE user_id = %d AND match_id = %d"
 											, ( $joker == $match ? 1 : 0 ), $user, $match
 									);
 				}
@@ -891,16 +891,16 @@ class Football_Pool_Pool {
 		$statspage = Football_Pool::get_page_link( 'statistics' );
 		
 		foreach ( $questions as $question ) {
-			if ( $this->always_show_predictions || ! $this->bonus_is_editable( $question['question_date'] ) ) {
+			if ( $this->always_show_predictions || ! $this->question_is_editable( $question['question_date'] ) ) {
 				$output .= '<div class="bonus userview">';
 				$output .= sprintf( '<p class="question"><span class="nr">%d.</span> %s</p>'
 									, $nr++
 									, $question['question'] 
 							);
 				$output .= '<span class="bonus points">';
-				if ( $question['scoreDate'] ) {
+				if ( $question['score_date'] ) {
 					// standard points or alternate points as reward for question?
-					$points = ( $question['userPoints'] != 0 ) ? $question['userPoints'] : $question['points'];
+					$points = ( $question['user_points'] != 0 ) ? $question['user_points'] : $question['points'];
 					$output .= sprintf( '%d %s ', 
 										( $question['correct'] * $points ),
 										__( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -929,7 +929,7 @@ class Football_Pool_Pool {
 		return $output;
 	}
 	
-	public function bonus_is_editable( $ts ) {
+	public function question_is_editable( $ts ) {
 		if ( $this->force_lock_time ) {
 			$editable = ( current_time( 'timestamp' ) < $this->lock_timestamp );
 		} else {
@@ -946,16 +946,16 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT u.ID AS userId, u.display_name AS name, a.answer, a.correct, a.points
+		$sql = "SELECT u.ID AS user_id, u.display_name AS name, a.answer, a.correct, a.points
 				FROM {$prefix}bonusquestions_useranswers a 
 				RIGHT OUTER JOIN {$wpdb->users} u
-					ON ( a.questionId = %d AND a.userId = u.ID ) ";
+					ON ( a.question_id = %d AND a.user_id = u.ID ) ";
 		if ( $this->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.userId ) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			$sql .= "WHERE ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			$sql .= "WHERE ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 		}
 		$sql .= "ORDER BY u.display_name ASC";
 		$sql = $wpdb->prepare( $sql, $question );

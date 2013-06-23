@@ -233,13 +233,13 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						}
 						
 						// add the match
-						$nr = self::update_match( 
+						$id = self::update_match( 
 													0, $home_team_id, $away_team_id, null, null, 
 													$play_date, $stadium_id, $match_type_id
 												);
 						$msg[] = sprintf( 
 										__( 'Match %d imported: %s - %s for date "%s"', FOOTBALLPOOL_TEXT_DOMAIN )
-										, $nr, $home_team->name, $away_team->name, $play_date
+										, $id, $home_team->name, $away_team->name, $play_date
 								);
 					}
 				}
@@ -447,24 +447,24 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		// delete match, corresponding predictions and linked bonus questions
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE nr = %d", $item_id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE id = %d", $item_id );
 		$success = ( $wpdb->query( $sql ) !== false );
 		if ( $success ) {
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE matchNr = %d", $item_id );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE match_id = %d", $item_id );
 			$success = ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
 									WHERE question_id IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE matchNr = %d
+										SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
 									)"
 								, $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
-									WHERE questionId IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE matchNr = %d
+									WHERE question_id IN (
+										SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
 									)"
 								, $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE matchNr = %d", $item_id );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
@@ -563,7 +563,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		// update scores for all matches
 		foreach( $rows as $row ) {
-			$match = $row['nr'];
+			$match = $row['id'];
 			$home_score = Football_Pool_Utils::post_integer( '_home_score_' . $match, 'NULL' );
 			$away_score = Football_Pool_Utils::post_integer( '_away_score_' . $match, 'NULL' );
 			$home_team = Football_Pool_Utils::post_integer( '_home_team_' . $match, -1 );
@@ -595,7 +595,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				echo '<tr><td class="sidebar-name" colspan="10"><h3>', $matchtype, '</h3></td></tr>';
 			}
 			
-			$matchdate = new DateTime( $row['playDate'] );
+			$matchdate = new DateTime( $row['play_date'] );
 			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -614,21 +614,21 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			$page = wp_nonce_url( sprintf( '?page=%s&amp;item_id=%d'
 											, Football_Pool_Utils::get_string( 'page' )
-											, $row['nr'] )
+											, $row['id'] )
 									, FOOTBALLPOOL_NONCE_ADMIN );
 			$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $row['nr'] 
+								, $row['id'] 
 							);
 			$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
 			echo '<tr>',
-					'<td class="time">', $row['nr'], '</td>',
+					'<td class="time">', $row['id'], '</td>',
 					'<td class="time local">', $localdate->format( 'Y-m-d H:i' ), '</td>',
-					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
-					'<td class="home">', self::teamname_input( (int) $row['homeTeamId'], '_home_team_'.$row['nr'] ), '</td>',
-					'<td class="score">', self::show_input( '_home_score_' . $row['nr'], $row['homeScore'] ), '</td>',
+					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['id'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
+					'<td class="home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
+					'<td class="score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',
 					'<td>-</td>',
-					'<td class="score">', self::show_input( '_away_score_' . $row['nr'], $row['awayScore'] ), '</td>',
-					'<td class="away">', self::teamname_input( (int) $row['awayTeamId'], '_away_team_' . $row['nr'] ), '</td>',
+					'<td class="score">', self::show_input( '_away_score_' . $row['id'], $row['away_score'] ), '</td>',
+					'<td class="away">', self::teamname_input( (int) $row['away_team_id'], '_away_team_' . $row['id'] ), '</td>',
 					'<td><a href="', $page, '&amp;action=edit">', __( 'edit' ), '</a></td>',
 					'<td><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'delete' ), '</a></td>',
 					'</tr>';
@@ -666,16 +666,16 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $select;
 	}
 	
-	private function update_match( $nr, $home_team, $away_team, $home_score, $away_score, 
+	private function update_match( $id, $home_team, $away_team, $home_score, $away_score, 
 									$match_date, $stadium_id = null, $match_type_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		if ( $nr == 0 ) {
+		if ( $id == 0 ) {
 			if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}matches 
-											( homeTeamId, awayTeamId, homeScore, awayScore, 
-												playDate, stadiumId, matchtypeId )
+											( home_team_id, away_team_id, home_score, away_score, 
+												play_date, stadium_id, matchtype_id )
 										VALUES ( %d, %d, NULL, NULL, %s, %d, %d )"
 									, $home_team, $away_team, $match_date, $stadium_id, $match_type_id
 								);
@@ -683,8 +683,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				self::update_ranking_log( 1, null, null, 
 									__( 'match with end score added to pool', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}matches 
-											( homeTeamId, awayTeamId, homeScore, awayScore, 
-												playDate, stadiumId, matchtypeId )
+											( home_team_id, away_team_id, home_score, away_score, 
+												play_date, stadium_id, matchtype_id )
 										VALUES ( %d, %d, %d, %d, %s, %d, %d )"
 									, $home_team, $away_team, $home_score, $away_score
 									, $match_date, $stadium_id, $match_type_id
@@ -692,7 +692,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			}
 		} else {
 			$matches = new Football_Pool_Matches;
-			$match = $matches->matches[ $nr ];
+			$match = $matches->matches[$id];
 			$old_home_score = $match['home_score'];
 			$old_away_score = $match['away_score'];
 			$old_date = new DateTime( $match['date'] );
@@ -706,39 +706,39 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			
 			if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
-											homeTeamId = %d, awayTeamId = %d, 
-											homeScore = NULL, awayScore = NULL,
-											playDate = %s, stadiumId = %d, matchtypeId = %d
-										WHERE nr = %d",
-									$home_team, $away_team, $match_date, $stadium_id, $match_type_id, $nr
+											home_team_id = %d, away_team_id = %d, 
+											home_score = NULL, away_score = NULL,
+											play_date = %s, stadium_id = %d, matchtype_id = %d
+										WHERE id = %d",
+									$home_team, $away_team, $match_date, $stadium_id, $match_type_id, $id
 								);
 			} else {
 				$old_set = array( $old_home_id, $old_away_id, $old_home_score, $old_away_score, $old_date );
 				$new_set = array( $home_team, $away_team, $home_score, $away_score, $match_date );
 				if ( count( array_diff_assoc( $new_set, $old_set ) ) > 0 ) {
 					$sql = $wpdb->prepare( "SELECT DISTINCT( ranking_id ) FROM {$prefix}rankings_matches
-											WHERE match_id = %d", $nr );
+											WHERE match_id = %d", $id );
 					$ranking_ids = $wpdb->get_col( $sql );
 					foreach( $ranking_ids as $ranking_id ) {
 						self::update_ranking_log( $ranking_id, null, null, 
-									sprintf( __( 'match %d changed', FOOTBALLPOOL_TEXT_DOMAIN ), $nr )
+									sprintf( __( 'match %d changed', FOOTBALLPOOL_TEXT_DOMAIN ), $id )
 								);
 					}
 				}
 				$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
-											homeTeamId = %d, awayTeamId = %d, 
-											homeScore = %d, awayScore = %d, 
-											playDate = %s, stadiumId = %d, matchtypeId = %d
-										WHERE nr = %d",
+											home_team_id = %d, away_team_id = %d, 
+											home_score = %d, away_score = %d, 
+											play_date = %s, stadium_id = %d, matchtype_id = %d
+										WHERE id = %d",
 									$home_team, $away_team, $home_score, $away_score, 
-									$match_date, $stadium_id, $match_type_id, $nr
+									$match_date, $stadium_id, $match_type_id, $id
 								);
 			}
 		}
 		
 		$success = ( $wpdb->query( $sql ) !== false );
 		
-		if ( $nr  > 0 ) {
+		if ( $id  > 0 ) {
 			return $success;
 		} else {
 			return $success ? $wpdb->insert_id : 0;

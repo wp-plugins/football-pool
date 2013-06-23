@@ -46,19 +46,19 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 		$sorting = Football_Pool_Matches::get_match_sorting_method();
 		
 		$sql = $wpdb->prepare( "SELECT 
-									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
-									m.homeTeamId, 
-									m.awayTeamId, 
-									m.homeScore, 
-									m.awayScore, 
+									UNIX_TIMESTAMP(m.play_date) AS match_timestamp, 
+									m.home_team_id, 
+									m.away_team_id, 
+									m.home_score, 
+									m.away_score, 
 									s.name, 
-									s.id, 
+									s.id AS stadium_id, 
 									t.name AS matchtype, 
-									m.nr,
-									m.playDate 
+									m.id AS match_id,
+									m.play_date 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-								WHERE m.stadiumId = s.id  AND s.id = %d
-									AND m.matchtypeId = t.id AND t.visibility = 1
+								WHERE m.stadium_id = s.id  AND s.id = %d
+									AND m.matchtype_id = t.id AND t.visibility = 1
 								ORDER BY {$sorting}", 
 							$this->id
 						);

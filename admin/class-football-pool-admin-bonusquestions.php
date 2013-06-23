@@ -135,9 +135,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					$points = $answer['points'] == 0 ? '' : $answer['points'];
 					
 					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
-					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="1" type="radio" ', $correct, ' /></td>';
-					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['userId'], '" value="0" type="radio" ', $wrong, ' /></td>';
-					echo '<td><input name="_user_', $answer['userId'], '_points" id="_user_', $answer['userId'], '_points" title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
+					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="1" type="radio" ', $correct, ' /></td>';
+					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="0" type="radio" ', $wrong, ' /></td>';
+					echo '<td><input name="_user_', $answer['user_id'], '_points" id="_user_', $answer['user_id'], '_points" title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
 			} else {
@@ -293,7 +293,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers 
-								WHERE questionId = %d", $id );
+								WHERE question_id = %d", $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
 		$wpdb->query( $sql );
@@ -332,15 +332,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$options = $input[7];
 		$image = $input[8];
 		$max_answers = $input[9];
-		$matchNr = 0;
+		$match_id = 0;
 		
 		$new_set = array( $points, $scoredate );
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
-										(question, points, answerBeforeDate, scoreDate, answer, matchNr)
+										( question, points, answer_before_date, score_date, answer, match_id )
 									VALUES (%s, %d, %s, %s, %s, %d)",
-							$question, $points, $date, $scoredate, $answer, $matchNr
+							$question, $points, $date, $scoredate, $answer, $match_id
 						);
 			$wpdb->query( $sql );
 			$id = $wpdb->insert_id;
@@ -368,12 +368,12 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET
 										question = %s,
 										points = %d,
-										answerBeforeDate = %s,
-										scoreDate = %s,
+										answer_before_date = %s,
+										score_date = %s,
 										answer = %s,
-										matchNr = %d
+										match_id = %d
 									WHERE id = %d",
-							$question, $points, $date, $scoredate, $answer, $matchNr, $id
+							$question, $points, $date, $scoredate, $answer, $match_id, $id
 						);
 			$wpdb->query( $sql );
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_type 
@@ -384,8 +384,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 		
 		// quick & dirty work-around for prepare's lack of null value support
-		$wpdb->query( "UPDATE {$prefix}bonusquestions SET scoreDate = NULL 
-						WHERE scoreDate = '0000-00-00 00:00'" );
+		$wpdb->query( "UPDATE {$prefix}bonusquestions SET score_date = NULL 
+						WHERE score_date = '0000-00-00 00:00'" );
 		
 		wp_cache_delete( FOOTBALLPOOL_CACHE_QUESTIONS );
 		return $id;
@@ -403,7 +403,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
 											SET correct = %d, 
 												points = %d 
-											WHERE userId = %d AND questionId = %d", 
+											WHERE user_id = %d AND question_id = %d", 
 										$correct, $points, $user->ID, $question
 								);
 				$wpdb->query( $sql );
@@ -415,8 +415,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$now = $now->setTimestamp( time() );
 		$now = $now->format( 'Y-m-d H:i' );
 		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions
-								SET scoreDate = %s
-								WHERE scoreDate IS NULL AND id = %d"
+								SET score_date = %s
+								WHERE score_date IS NULL AND id = %d"
 								, $now, $question
 						);
 		$wpdb->query( $sql );

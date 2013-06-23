@@ -99,8 +99,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$output = array();
 		foreach ( $leagues as $league ) {
 			$output[] = array(
-							'id' => $league['leagueId'], 
-							'name' => $league['leagueName'], 
+							'id' => $league['league_id'], 
+							'name' => $league['league_name'], 
 							'image' => $league['image']
 						);
 		}
@@ -158,9 +158,9 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE leagueId=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE league_id = %d", $id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}leagues WHERE id=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}leagues WHERE id = %d", $id );
 		$wpdb->query( $sql );
 	}
 	
@@ -171,20 +171,20 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$id = $input[0];
 		$name = $input[1];
 		$image = $input[2];
-		$userDefined = 1;
+		$user_defined = 1;
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}leagues (name, userDefined, image)
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}leagues ( name, user_defined, image )
 									VALUES (%s, %d, %s)",
-									$name, $userDefined, $image
+									$name, $user_defined, $image
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}leagues SET
 										name = %s,
-										userDefined = %d,
+										user_defined = %d,
 										image = %s
 									WHERE id = %d",
-									$name, $userDefined, $image, $id
+									$name, $user_defined, $image, $id
 								);
 		}
 		

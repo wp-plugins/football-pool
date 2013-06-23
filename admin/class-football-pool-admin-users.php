@@ -109,9 +109,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$sql = "SELECT * FROM {$prefix}league_users";
 		$users = $wpdb->get_results( $sql, ARRAY_A );
 		foreach ( $users as $user ) {
-			$league_users[$user['userId']] = $user['leagueId'];
-			if ( $user['leagueId'] == 0 )
-				$excluded_players[] = $user['userId'];
+			$league_users[$user['user_id']] = $user['league_id'];
+			if ( $user['league_id'] == 0 )
+				$excluded_players[] = $user['user_id'];
 		}
 		
 		$users = get_users( 'orderby=ID&order=ASC' );
@@ -267,7 +267,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			update_user_meta( $id, 'footballpool_league', 0 );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d", $id );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE user_id = %d", $id );
 			$wpdb->query( $sql );
 		} else {
 			$pool->update_league_for_user( $id, 0 );
@@ -297,8 +297,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			// if user is in a non-existing league, then force the update
 			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu 
 									LEFT OUTER JOIN {$prefix}leagues l
-										ON ( lu.leagueId = l.id )
-									WHERE lu.userId = %d AND l.id IS NULL"
+										ON ( lu.league_id = l.id )
+									WHERE lu.user_id = %d AND l.id IS NULL"
 									, $id
 							);
 			$non_existing_league = ( $wpdb->get_var( $sql ) == 1 );
@@ -307,7 +307,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			else
 				$pool->update_league_for_user( $id, $default_league, 'no update' );
 		} else {
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d AND leagueId = 0", $id );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE user_id = %d AND league_id = 0", $id );
 			$wpdb->query( $sql );
 		}
 	}
@@ -467,7 +467,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT DISTINCT( ranking_id ) FROM {$prefix}scorehistory
-								WHERE userId = %d", $user_id );
+								WHERE user_id = %d", $user_id );
 		return $wpdb->get_col( $sql );
 	}
 	
@@ -492,13 +492,13 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		
 		// delete all references in the pool tables
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE userId = %d", $user_id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE userId = %d", $user_id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE userId = %d", $user_id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE userId = %d", $user_id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
 	}
 	

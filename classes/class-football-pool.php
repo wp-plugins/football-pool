@@ -55,7 +55,7 @@ class Football_Pool {
 		
 		// $matches = new Football_Pool_Matches();
 		// $first_match = $matches->get_first_match_info();
-		// $matchdate = new DateTime( $first_match['playDate'] );
+		// $matchdate = new DateTime( $first_match['play_date'] );
 		// $date = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 		// $date = new DateTime( $matches->format_match_time( $matchdate, 'Y-m-d H:i' ) );
 		$date = new DateTime();
@@ -119,7 +119,7 @@ class Football_Pool {
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
-			$sql = "INSERT INTO `{$prefix}leagues` ( `name`, `userDefined`, `image` ) VALUES
+			$sql = "INSERT INTO `{$prefix}leagues` ( `name`, `user_defined`, `image` ) VALUES
 					( '" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, '' ),
 					( '" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png' ),
 					( '" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '' );";
@@ -410,9 +410,9 @@ class Football_Pool {
 		
 		$pool = new Football_Pool_Pool;
 		if ( $pool->has_leagues ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( user_id, league_id ) 
 									VALUES ( %d, %d )
-									ON DUPLICATE KEY UPDATE leagueId = %d" 
+									ON DUPLICATE KEY UPDATE league_id = %d" 
 									, $user_id
 									, $league_id
 									, $league_id

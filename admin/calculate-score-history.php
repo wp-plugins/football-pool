@@ -182,41 +182,41 @@ switch ( $step ) {
 	case 2:
 		// check predictions with actual match result (score type = 0)
 		$sql = "INSERT INTO {$prefix}scorehistory
-										( type, scoreDate, scoreOrder, userId
+										( type, score_date, score_order, user_id
 										, score, full, toto, goal_bonus
 										, ranking, ranking_id )
 				SELECT 
-					%d AS score_type, m.playDate AS score_date, m.nr AS match_id, u.ID AS user_id, 
-					IF ( p.hasJoker = 1, 2, 1 ) AS score,
-					IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, 1, NULL ) AS full,
-					IF ( m.homeScore = p.homeScore AND m.awayScore = p.awayScore, NULL, 
+					%d AS score_type, m.play_date AS score_date, m.id AS match_id, u.ID AS user_id, 
+					IF ( p.has_joker = 1, 2, 1 ) AS score,
+					IF ( m.home_score = p.home_score AND m.away_score = p.away_score, 1, NULL ) AS full,
+					IF ( m.home_score = p.home_score AND m.away_score = p.away_score, NULL, 
 						IF (
-							IF ( m.homeScore > m.awayScore, 1, IF ( m.homeScore = m.awayScore, 3, 2 ) )
+							IF ( m.home_score > m.away_score, 1, IF ( m.home_score = m.away_score, 3, 2 ) )
 							=
-							IF ( p.homeScore > p.awayScore, 1, IF (p.homeScore = p.awayScore, 3, 2) )
-							, IF ( p.homeScore IS NULL OR p.awayScore IS NULL, NULL, 1 )
+							IF ( p.home_score > p.away_score, 1, IF ( p.home_score = p.away_score, 3, 2 ) )
+							, IF ( p.home_score IS NULL OR p.away_score IS NULL, NULL, 1 )
 							, NULL 
 							)
 					) AS toto,
-					IF ( m.homeScore = p.homeScore, 
-							IF ( m.awayScore = p.awayScore, 2, 1 ),
-							IF ( m.awayScore = p.awayScore, 1, NULL )
+					IF ( m.home_score = p.home_score, 
+							IF ( m.away_score = p.away_score, 2, 1 ),
+							IF ( m.away_score = p.away_score, 1, NULL )
 					) AS goal_bonus,
 					0 AS ranking,
 					%d AS ranking_id
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}predictions p
-					ON ( p.matchNr = m.nr AND ( p.userId = u.ID OR p.userId IS NULL ) )
-				WHERE m.homeScore IS NOT NULL AND m.awayScore IS NOT NULL ";
-		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
-		if ( $is_single_ranking ) $sql .= "AND m.nr IN ( " . $ranking_matches . " ) ";
+					ON ( p.match_id = m.id AND ( p.user_id = u.ID OR p.user_id IS NULL ) )
+				WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL ";
+		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
+		if ( $is_single_ranking ) $sql .= "AND m.id IN ( " . $ranking_matches . " ) ";
 		$sql .= "ORDER BY 1, 2, 3, 4 LIMIT %d, %d";
 		
 		$offset = FOOTBALLPOOL_RECALC_STEP2_DIV * ( $sub_step - 1 );
@@ -245,8 +245,8 @@ switch ( $step ) {
 											+ ( toto * {$toto} ) 
 											+ ( goal_bonus * {$goal} ) ) 
 								WHERE type = %d AND ranking_id = %d 
-								AND userId >= %d AND userId < %d
-								ORDER BY type ASC, scoreDate ASC, scoreOrder ASC, userId ASC"
+								AND user_id >= %d AND user_id < %d
+								ORDER BY type ASC, score_date ASC, score_order ASC, user_id ASC"
 								, FOOTBALLPOOL_TYPE_MATCH, FOOTBALLPOOL_RANKING_DEFAULT
 								, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
 		$result = $wpdb->query( $sql );
@@ -265,27 +265,27 @@ switch ( $step ) {
 		// make sure to take the userpoints into account (we can set an alternate score for an 
 		// individual user in the admin)
 		$sql = "INSERT INTO {$prefix}scorehistory 
-					( type, scoreDate, scoreOrder, userId, 
+					( type, score_date, score_order, user_id, 
 					  score, full, toto, goal_bonus, ranking, ranking_id ) 
 				SELECT 
-					%d AS score_type, q.scoreDate AS score_date, q.id AS question_id,
+					%d AS score_type, q.score_date AS score_date, q.id AS question_id,
 					u.ID AS user_id, 
 					IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) AS score, 
 					NULL, NULL, NULL, 
 					0 AS ranking, %d AS ranking_id 
 				FROM {$wpdb->users} u ";
 		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.leagueId = l.ID ) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.userId = u.ID ) ";
+			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
 					ON ( 1 = 1 )
 				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-					ON ( a.questionId = q.id AND ( a.userId = u.ID OR a.userId IS NULL ) )
-				WHERE q.scoreDate IS NOT NULL ";
-		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.leagueId <> 0 OR lu.leagueId IS NULL ) ";
+					ON ( a.question_id = q.id AND ( a.user_id = u.ID OR a.user_id IS NULL ) )
+				WHERE q.score_date IS NOT NULL ";
+		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 		if ( $is_single_ranking ) $sql .= "AND q.id IN ( " . $ranking_questions . " ) ";
 		$sql .= "ORDER BY 1, 2, 3, 4 LIMIT %d, %d";
 		
@@ -308,21 +308,21 @@ switch ( $step ) {
 		// update score incrementally once for every ranking, start with the default one
 		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 			$sql_user_scores = sprintf( "SELECT * FROM {$prefix}scorehistory 
-										WHERE userId = %%d AND ranking_id = %d
-										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
+										WHERE user_id = %%d AND ranking_id = %d
+										ORDER BY score_date ASC, type ASC, score_order ASC"
 										, $ranking_id
 								);
 		} else {
 			$sql_user_scores = sprintf( "SELECT s.* FROM {$prefix}scorehistory s
 										LEFT OUTER JOIN {$prefix}rankings_matches rm
-										  ON ( s.scoreOrder = rm.match_id 
+										  ON ( s.score_order = rm.match_id 
 												AND rm.ranking_id = %d AND s.type = %d )
 										LEFT OUTER JOIN {$prefix}rankings_bonusquestions rq
-										  ON ( s.scoreOrder = rq.question_id 
+										  ON ( s.score_order = rq.question_id 
 												AND rq.ranking_id = %d AND s.type = %d )
-										WHERE s.userId = %%d AND s.ranking_id = %d 
+										WHERE s.user_id = %%d AND s.ranking_id = %d 
 										AND ( rm.ranking_id IS NOT NULL OR rq.ranking_id IS NOT NULL )
-										ORDER BY scoreDate ASC, type ASC, scoreOrder ASC"
+										ORDER BY score_date ASC, type ASC, score_order ASC"
 										, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
 										, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
 										, FOOTBALLPOOL_RANKING_DEFAULT
@@ -339,7 +339,7 @@ switch ( $step ) {
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory 
-									WHERE userId = %d AND ranking_id = %d", $user->ID, $ranking_id );
+									WHERE user_id = %d AND ranking_id = %d", $user->ID, $ranking_id );
 			$result = $wpdb->query( $sql );
 			$check = ( $result !== false ) && $check;
 			
@@ -347,16 +347,16 @@ switch ( $step ) {
 			foreach ( $rows as $row ) {
 				$score += $row['score'];
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}scorehistory 
-											( type, scoreDate, scoreOrder, userId, 
-											  score, full, toto, goal_bonus, totalScore, 
+											( type, score_date, score_order, user_id, 
+											  score, full, toto, goal_bonus, total_score, 
 											  ranking, ranking_id ) 
 										VALUES 
 											( %d, %s, %d, 
 											  %d, %d, 
 											  %d, %d, %d, 
 											  %d, 0, %d )",
-										$row['type'], $row['scoreDate'], $row['scoreOrder'], 
-										$row['userId'], $row['score'], 
+										$row['type'], $row['score_date'], $row['score_order'], 
+										$row['user_id'], $row['score'], 
 										$row['full'], $row['toto'], $row['goal_bonus'], 
 										$score, $ranking_id
 								);
@@ -374,8 +374,8 @@ switch ( $step ) {
 	case 6:
 		// update ranking order for users
 		$offset = FOOTBALLPOOL_RECALC_STEP6_DIV * ( $sub_step - 1 );
-		$sql = $wpdb->prepare( "SELECT scoreDate, type FROM {$prefix}scorehistory 
-								WHERE ranking_id = %d GROUP BY scoreDate, type
+		$sql = $wpdb->prepare( "SELECT score_date, type FROM {$prefix}scorehistory 
+								WHERE ranking_id = %d GROUP BY score_date, type
 								LIMIT %d, %d"
 								, $ranking_id
 								, $offset, FOOTBALLPOOL_RECALC_STEP6_DIV );
@@ -387,18 +387,18 @@ switch ( $step ) {
 			
 			foreach ( $ranking_dates as $ranking_date ) {
 				$sql = $pool->get_ranking_from_score_history( 0, $ranking_id, 
-																$ranking_date['scoreDate'] 
+																$ranking_date['score_date'] 
 															);
 				$ranking_result = $wpdb->get_results( $sql, ARRAY_A );
 				$rank = 1;
 				foreach ( $ranking_result as $ranking_row ) {
 					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
-											WHERE userId = %d AND type = %d AND scoreDate = %s 
+											WHERE user_id = %d AND type = %d AND score_date = %s 
 											AND ranking_id = %d"
 											, $rank++
-											, $ranking_row['userId']
+											, $ranking_row['user_id']
 											, $ranking_date['type']
-											, $ranking_date['scoreDate']
+											, $ranking_date['score_date']
 											, $ranking_id
 									);
 					$result = $wpdb->query( $sql );

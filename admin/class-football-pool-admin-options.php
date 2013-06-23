@@ -347,7 +347,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				
 				// check if ranking log should be updated
 				if ( in_array( $option[2], $log_options ) && self::get_value( $option[2] ) != $value ) {
-					Football_Pool_Utils::debug(self::get_value( $option[2] ) .' : '. $value);
+					// Football_Pool_Utils::debug(self::get_value( $option[2] ) .' : '. $value);
 					$update_log = true;
 				}
 				

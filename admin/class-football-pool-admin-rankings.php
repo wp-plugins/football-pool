@@ -157,26 +157,26 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					$matchtype = $row['matchtype'];
 					printf( '<div class="matchtype"><label><input type="checkbox" id="matchtype-%d">
 								%s</label></div>'
-							, $row['typeId']
+							, $row['type_id']
 							, $matchtype
 					);
 				}
 				
-				// $matchdate = new DateTime( $row['playDate'] );
+				// $matchdate = new DateTime( $row['play_date'] );
 				// $localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 				// $localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 				// $localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 												// , $localdate->format( 'U' ) );
 				
-				$checked = ( in_array( $row['nr'], $ranking_matches ) );
+				$checked = ( in_array( $row['id'], $ranking_matches ) );
 				$checked = $checked ? 'checked="checked"' : '';
 				printf( '<div class="match matchtype-%d"><label><input type="checkbox" name="match-%d" value="1" %s>
 							%s - %s</label></div>'
-						, $row['typeId']
-						, $row['nr']
+						, $row['type_id']
+						, $row['id']
 						, $checked
-						, $teams->team_names[$row['homeTeamId']]
-						, $teams->team_names[$row['awayTeamId']]
+						, $teams->team_names[$row['home_team_id']]
+						, $teams->team_names[$row['away_team_id']]
 				);
 			}
 		} else {
@@ -199,9 +199,9 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->get_info();
 		foreach ( $rows as $row ) {
-			$checked = Football_Pool_Utils::post_int( 'match-' . $row['nr'], 0 );
+			$checked = Football_Pool_Utils::post_int( 'match-' . $row['id'], 0 );
 			if ( $checked == 1 ) {
-				$new_set[] = $row['nr'];
+				$new_set[] = $row['id'];
 			}
 		}
 		

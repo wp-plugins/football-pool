@@ -72,11 +72,11 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 			echo '<table class="pool-ranking">';
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
+				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
 				
-				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
+				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
 				echo '<tr class="', $class, '"><td>', $i++, '.</td>',
-					'<td><a href="', $url, '">', $pool->get_avatar( $row['userId'], 'small' ), $row["userName"], '</a></td>',
+					'<td><a href="', $url, '">', $pool->get_avatar( $row['user_id'], 'small' ), $row["user_name"], '</a></td>',
 					'<td class="score">', $row['points'], '</td></tr>';
 			}
 			echo '</table>';
@@ -100,7 +100,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 			$leagues = $pool->get_leagues();
 			$options = array();
 			foreach ( $leagues as $league ) {
-				$options[$league['leagueId']] = $league['leagueName'];
+				$options[$league['league_id']] = $league['league_name'];
 			}
 			$this->widget['fields'][3]['options'] = $options;
 		}

@@ -40,13 +40,13 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$teams = new Football_Pool_Teams;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
-		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['nr'];
+		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['id'];
 		
 		if ( $title != '' ) {
 			echo $before_title, $title, $after_title;
 		}
 		
-		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['playDate'] ) );
+		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['play_date'] ) );
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
 		$day   = $countdown_date->format( 'd' );

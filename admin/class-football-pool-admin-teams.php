@@ -194,11 +194,11 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		// delete all teams, matches for that team and predictions made for those matches
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions 
-								WHERE matchNr IN 
-									( SELECT nr FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d )"
+								WHERE match_id IN 
+									( SELECT id FROM {$prefix}matches WHERE home_team_id = %d OR away_team_id = %d )"
 								, $id, $id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d"
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE home_team_id = %d OR away_team_id = %d"
 								, $id, $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}teams WHERE id = %d", $id );
@@ -214,15 +214,15 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}teams 
-										( name, photo, flag, link, groupId, groupOrder, is_real, is_active, comments )
+										( name, photo, flag, link, group_id, group_order, is_real, is_active, comments )
 									VALUES 
 										( %s, %s, %s, %s, %d, %d, %d, %d, %s )",
 									$name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET
-										name = %s, photo = %s, flag = %s, link = %s, groupId = %d, 
-										groupOrder = %d, is_real = %d, is_active = %d, comments = %s
+										name = %s, photo = %s, flag = %s, link = %s, group_id = %d, 
+										group_order = %d, is_real = %d, is_active = %d, comments = %s
 									WHERE id = %d",
 									$name, $photo, $flag, $link, $group_id, 
 									$group_order, $is_real, $is_active, $comments,

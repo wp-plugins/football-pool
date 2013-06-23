@@ -130,6 +130,9 @@ The following plugins have been reported as not compatible with the Football Poo
 
 == Upgrade Notice ==
 
+= 2.3.0 =
+Please back up your database before updating! 
+
 = 2.2.0 =
 Please back up your database before updating! 
 Plugin styling of widgets has changed to be a little less 'dominant' over the styling of your theme.
@@ -151,6 +154,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 = 2.3.0 =
 * New feature: multiple joker support, or disable jokers.
 * New shortcode: display the score of a single user with [fp-user-score].
+* New shortcode: display the predictions for a match or question with [fp-predictions].
 * Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up.
 * Some additions to the custom rankings admin screen.
 * New options for points a team gets for a win or draw (for the Groups page). This makes the plugin more suitable for sports that don't use the 3-point rule for wins.
@@ -158,6 +162,8 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * New option to show venue photos on venue listing page.
 * Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5.
 * Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).
+* Added image for wrong answers to prediction table for questions.
+* Changed database table structure so naming convention is the same for all tables.
 * Bug fix: old values were shown after a save of a match or a question in the admin (cache is now flushed after a save).
 * Bug fix: prediction form shortcode did not update values when used in a post (thanks BruceFeuillette for reporting the bug).
 * Bug fix: user selector widget did not work in WordPress installs with default permalink setting (thanks Tomas Jonsson to for reporting this).

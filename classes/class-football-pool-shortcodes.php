@@ -1,5 +1,6 @@
 <?php
 // shortcodes
+add_shortcode( 'fp-predictions', array( 'Football_Pool_Shortcodes', 'shortcode_predictions' ) );
 add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
 add_shortcode( 'fp-predictionform', array( 'Football_Pool_Shortcodes', 'shortcode_predictionform' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
@@ -37,6 +38,55 @@ class Football_Pool_Shortcodes {
 		}
 		
 		return $the_date;
+	}
+	
+	//[fp-predictions] 
+	//  Displays the prediction and score table for a given match or question. 
+	//  If an invalid match or question is given, the shortcode returns the default text.
+	//
+	//    match    : match Id
+	//    question : question Id
+	//    text     : a text to show if no prediction table can be displayed, defaults to no text
+	public function shortcode_predictions( $atts ) {
+		extract( shortcode_atts( array(
+					'match' => null,
+					'question' => null,
+					'text' => '',
+				), $atts ) );
+		
+		$output = '';
+		
+		if ( is_numeric( $match ) || is_numeric( $question ) ) {
+			$stats = new Football_Pool_Statistics;
+			
+			$match = (int) $match;
+			if ( $match > 0 ) {
+				$matches = new Football_Pool_Matches;
+				$match_info = $matches->get_match_info( $match );
+				if ( count( $match_info ) > 0 ) {
+					if ( $matches->always_show_predictions || $match_info['match_is_editable'] == false ) {
+						$output .= $stats->show_predictions_for_match( $match_info );
+					}
+				}
+			}
+			
+			$question = (int) $question;
+			if ( $question > 0 ) {
+				$pool = new Football_Pool_Pool;
+				$question_info = $pool->get_bonus_question_info( $question );
+				if ( $question_info ) {
+					if ( $pool->always_show_predictions || $question_info['question_is_editable'] == false ) {
+						$output .= $stats->show_answers_for_bonus_question( $question );
+					}
+				}
+			}
+			
+			if ( $output == '' ) {
+				$output = $text;
+			}
+		}
+		
+		return $output;
 	}
 	
 	//[fp-user-score] 
@@ -177,12 +227,12 @@ class Football_Pool_Shortcodes {
 			$output .= '<table class="pool-ranking ranking-shortcode">';
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['userId'] == $current_user->ID ) $class .= ' currentuser';
+				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
 				
-				$url = esc_url( add_query_arg( array( 'user' => $row['userId'] ), $userpage ) );
+				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
 				$output .= '<tr class="' . $class . '"><td>' . $i++ . '.</td>'
-						. '<td><a href="' . $url . '">' . $row['userName']
-						. '</a>' . Football_Pool::user_name( $row['userId'], 'label' ) . '</td>' . '<td class="score">' . $row['points'] . '</td></tr>';
+						. '<td><a href="' . $url . '">' . $row['user_name']
+						. '</a>' . Football_Pool::user_name( $row['user_id'], 'label' ) . '</td>' . '<td class="score">' . $row['points'] . '</td></tr>';
 			}
 			$output .= '</table>';
 		} else {
@@ -208,8 +258,8 @@ class Football_Pool_Shortcodes {
 		$countdown_date = 0;
 		if ( (int) $match > 0 ) {
 			$match_info = $matches->get_match_info( (int) $match );
-			if ( array_key_exists( 'playDate', $match_info ) )
-				$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match_info['playDate'] ) );
+			if ( array_key_exists( 'play_date', $match_info ) )
+				$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match_info['play_date'] ) );
 		}
 		
 		if ( ! is_object( $countdown_date ) ) {
@@ -217,7 +267,7 @@ class Football_Pool_Shortcodes {
 			if ( $date == '' || $countdown_date === false ) {
 				$first_match = $matches->get_first_match_info();
 				$countdown_date = new DateTime(
-											Football_Pool_Utils::date_from_gmt( $first_match['playDate'] ) 
+											Football_Pool_Utils::date_from_gmt( $first_match['play_date'] ) 
 										);
 			}
 		}
