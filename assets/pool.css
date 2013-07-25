@@ -21,6 +21,8 @@
 .widget div.football-pool-widget input.text, .widget input.textarea { width: 80%; }
 .widget div.football-pool-widget { padding: 0; margin: 0; }
 
+#sidebar ul .widget_footballpoolnextpredictionwidget p a { display: inline; }
+
 img.flag { width: 18px; height: 18px; border: 0; }
 img.fp-joker { width: 13px;  height: 13px; }
 

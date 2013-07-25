@@ -7,12 +7,17 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Ranking_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Ranking Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays the top X players in the pool.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'standing', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Number of users to show', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Show players from this league', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Ranking Widget',
-		'description' => 'Football pool plugin: this widget displays the top X players in the pool.',
+		'description' => 'this widget displays the top X players in the pool.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(

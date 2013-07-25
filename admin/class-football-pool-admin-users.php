@@ -6,21 +6,26 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add or remove users from the pool.</p><p>Use the bulk actions to add or remove more players at once.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add or remove users from the pool.</p><p>Use the bulk actions to add or remove more players at once.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'leagues',
-						'title' => 'Leagues',
-						'content' => '<p>The plugin can use leagues (a league is a group of players in your pool) to group players together. If you are using leagues in the pool an admin has to acknowledge the league for which a player subscribed.</p><p>The <em>\'plays in league\'</em> column shows the league where the user is currently added to; you may change that value. The column <em>\'registered for league\'</em> shows the league the user wants to play in (the user chose this value upon subscribing for the pool).</p>'
+						'title' => __( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The plugin can use leagues (a league is a group of players in your pool) to group players together. If you are using leagues in the pool an admin has to acknowledge the league for which a player subscribed.</p><p>The <em>\'plays in league\'</em> column shows the league where the user is currently added to; you may change that value. The column <em>\'registered for league\'</em> shows the league the user wants to play in (the user chose this value upon subscribing for the pool).</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'other',
-						'title' => 'Other options',
-						'content' => '<p>The <em>\'payed?\'</em> option has no function in the pool, but can be a help for the admin to remember which of the players have payed if you are using a fee for competing in the pool.</p>'
+						'title' => __( 'Other options', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The <em>\'payed?\'</em> option has no function in the pool, but can be a help for the admin to remember which of the players have payed if you are using a fee for competing in the pool.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-options">Change league settings</a></p><p><a href="?page=footballpool-help#players">Help section about players</a></p><p><a href="?page=footballpool-help#leagues">Help section about leagues</a>';
+		$help_sidebar = '</a>Help section about leagues</a>';
+		$help_sidebar = sprintf( '<a href="?page=footballpool-options">%s</a></p><p><a href="?page=footballpool-help#players">%s</a></p><p><a href="?page=footballpool-help#leagues">%s</a>'
+								, __( 'Change league settings', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Help section about players', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Help section about leagues', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 	
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
@@ -118,7 +123,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			if ( array_key_exists( $league_id, $pool->leagues ) ) {
-				$league_name = $pool->leagues[$league_id]['leagueName'];
+				$league_name = $pool->leagues[$league_id]['league_name'];
 			} else {
 				$league_name = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
@@ -439,7 +444,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			
 			$league = get_the_author_meta( 'footballpool_league', $user->ID );
 			if ( $league > 1 && array_key_exists( $league, $pool->leagues ) ) {
-				$league = $pool->leagues[$league]['leagueName'];
+				$league = $pool->leagues[$league]['league_name'];
 			} else {
 				$league = __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 			}

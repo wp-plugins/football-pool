@@ -7,15 +7,17 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_Next_Prediction_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Countdown Next Prediction Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays the time that is left to predict the next match (optionally only for a given team).', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'countdown', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Team', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Also show when not logged in?', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	protected $match;
 	protected $widget = array(
 		'name' => 'Countdown Next Prediction Widget',
-		
-		'description' => 'Football pool plugin: this widget displays the time that is left to predict the next match.',
-		
+		'description' => 'this widget displays the time that is left to predict the next match (optionally only for a given team).',
 		'do_wrapper' => true, 
 		
 		'fields' => array(
@@ -25,6 +27,13 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				'id' => 'title',
 				'type' => 'text',
 				'std' => 'countdown'
+			),
+			array(
+				'name' => 'Team',
+				'desc' => '',
+				'id' => 'team_id',
+				'type' => 'select',
+				'options' => array() // get data from the database later on
 			),
 			array(
 				'name' => 'Also show when not logged in?',
@@ -73,7 +82,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				, $id
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
-		echo "<script type='text/javascript'>
+		echo "<script>
 				footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
 				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
 				</script>";
@@ -97,6 +106,18 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	}
 	
 	public function __construct() {
+		if ( is_admin() ) {
+			$teams = new Football_Pool_Teams;
+			// get the team options from the database
+			$teams = $teams->team_names;
+			$options = array();
+			$options[0] = '';
+			foreach ( $teams as $team_id => $team_name ) {
+				$options[$team_id] = $team_name;
+			}
+			$this->widget['fields'][1]['options'] = $options;
+		}
+		
 		$classname = str_replace( '_', '', get_class( $this ) );
 		
 		parent::__construct( 
@@ -110,9 +131,13 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		// only for logged in users?
 		if ( $instance['all_users'] != 'on' && ! is_user_logged_in() ) return;
 		
-		// do not output a widget if there is no next match
 		$matches = new Football_Pool_Matches;
-		$match = $matches->get_next_match();
+		if ( $instance['team_id'] > 0 ) {
+			$match = $matches->get_next_match( null, $instance['team_id'] );
+		} else {
+			$match = $matches->get_next_match();
+		}
+		// do not output a widget if there is no next match
 		if ( $match != null ) {
 			$this->match = $match;
 			

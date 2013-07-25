@@ -99,7 +99,7 @@ class Football_Pool_Team extends Football_Pool_Teams {
 									s.id AS stadium_id, 
 									s.name, 
 									t.name AS matchtype, 
-									m.id AS match_id, 
+									m.id AS id, 
 									m.play_date 
 								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
 								WHERE m.stadium_id = s.id 

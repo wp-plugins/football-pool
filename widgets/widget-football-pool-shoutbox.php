@@ -7,12 +7,15 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Shoutbox_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Shoutbox Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'a shoutbox for your players. Leave short messages.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'shoutbox', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Number of messages to display', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Shoutbox Widget',
-		'description' => 'Football pool plugin: a shoutbox for your players. Leave short messages.',
+		'description' => 'a shoutbox for your players. Leave short messages.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(

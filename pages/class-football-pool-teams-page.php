@@ -3,8 +3,8 @@ class Football_Pool_Teams_Page {
 	public function page_content() {
 		$output = '';
 		
-		$team_ID = Football_Pool_Utils::get_integer( 'team' );
-		$team = new Football_Pool_Team( $team_ID );
+		$team_id = Football_Pool_Utils::get_integer( 'team' );
+		$team = new Football_Pool_Team( $team_id );
 		
 		// show details for team or show links for all teams
 		if ( $team->id != 0 && $team->is_real == 1 && $team->is_active == 1 ) {

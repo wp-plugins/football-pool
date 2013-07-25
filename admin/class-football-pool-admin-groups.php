@@ -6,12 +6,14 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete groups.</p><p>Groups are used in a typical tournament setting to group teams for a group phase. After the group phase some teams advance to the final rounds.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete groups.</p><p>Groups are used in a typical tournament setting to group teams for a group phase. After the group phase some teams advance to the final rounds.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about groups</a>';
-	
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#teams-groups-and-matches">%s</a>'
+							, __( 'Help section about groups', FOOTBALLPOOL_TEXT_DOMAIN )
+					);
+
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	

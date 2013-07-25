@@ -6,8 +6,8 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete match types.</p><p>Match types are used to group matches together on the match schedule screen (e.g. Group Phase, Quarter Finals).</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete match types.</p><p>Match types are used to group matches together on the match schedule screen (e.g. Group Phase, Quarter Finals).</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = '';

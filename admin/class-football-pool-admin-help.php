@@ -423,7 +423,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-user-score user=5 date="2013-06-01 12:00"]</span><br />
 		</p>
 		
-		<h3>[fp-groups]</h3>
+		<h3>[fp-group]</h3>
 		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
 		ommited, or not a valid group id, then nothing will be returned.</p>
 		<p>
@@ -438,7 +438,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>example:<br />
-		<span class="code">[fp-groups id=2]</span><br />
+		<span class="code">[fp-group id=2]</span><br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
 		</p>
 		

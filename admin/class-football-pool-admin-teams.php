@@ -6,13 +6,13 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete teams.</p><p>Only <em>\'Active\'</em> teams are shown on the teams page in the blog. The <em>\'real\'</em> column indicates if the team is a real team in the tournament or a temporary placeholder for a match that is not yet set (e.g. Winner Group A).</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete teams.</p><p>Only <em>\'Active\'</em> teams are shown on the teams page in the blog. The <em>\'real\'</em> column indicates if the team is a real team in the tournament or a temporary placeholder for a match that is not yet set (e.g. Winner Group A).</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'details',
-						'title' => 'Team details',
-						'content' => '<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is used in the standing table and the match overview.</li><li>If <em>link</em> is filled the team name on the team\'s page will link to this address.</li><li>The <em>comments</em> field can be used to add some extra info about the team. The info is shown on the team\'s page.</li></ul>'
+						'title' => __( 'Team details', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is used in the standing table and the match overview.</li><li>If <em>link</em> is filled the team name on the team\'s page will link to this address.</li><li>The <em>comments</em> field can be used to add some extra info about the team. The info is shown on the team\'s page.</li></ul>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about teams</a>';
@@ -75,12 +75,10 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 				if ( $item_id > 0 ) {
 					self::delete( $item_id );
 					self::notice( sprintf( __( 'Team id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
-					self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::delete( $bulk_ids );
 					self::notice( sprintf( __( '%s teams deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
-					self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				}
 			default:
 				self::view();

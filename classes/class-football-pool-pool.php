@@ -4,7 +4,7 @@ class Football_Pool_Pool {
 	public $has_bonus_questions = false;
 	public $has_matches = false;
 	public $has_leagues;
-	public $force_lock_time = false;
+	private $force_lock_time = false;
 	private $lock_timestamp;
 	private $lock_datestring;
 	public $always_show_predictions = 0;
@@ -23,7 +23,6 @@ class Football_Pool_Pool {
 			( Football_Pool_Utils::get_fp_option( 'stop_time_method_questions', 0, 'int' ) == 1 )
 			&& ( $this->lock_datestring != '' );
 		if ( $this->force_lock_time ) {
-			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $this->lock_datestring );
 			$date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->lock_datestring ) );
 			$this->lock_timestamp = $date->format( 'U' );
 		} else {
@@ -269,8 +268,8 @@ class Football_Pool_Pool {
 			$img = sprintf( '<td><img src="%sassets/images/site/%s" alt="%s" title="%s" /></td>',
 							FOOTBALLPOOL_PLUGIN_URL,
 							$this->leagues[$id]['image'],
-							$this->leagues[$id]['leagueName'],
-							$this->leagues[$id]['leagueName']
+							$this->leagues[$id]['league_name'],
+							$this->leagues[$id]['league_name']
 						);
 		} else {
 			$img = '<td></td>';
@@ -408,7 +407,7 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_bonus_questions_for_user( $user_id = 0, $question_ids = array() ) {
-		if ( $user_id == 0 ) return false;
+		if ( $user_id == 0 ) return array();
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -477,7 +476,7 @@ class Football_Pool_Pool {
 			
 			$question_info = array();
 			foreach ( $rows as $row ) {
-				$i = $row['id'];
+				$i = (int) $row['id'];
 				$question_date = new DateTime( $row['question_date'] );
 				$ts = $question_date->format( 'U' );
 				
@@ -490,8 +489,8 @@ class Football_Pool_Pool {
 				$question_info[$i]['question_timestamp'] = $ts;
 				$question_info[$i]['score_date'] = $row['score_date'];
 				$question_info[$i]['answer_before_date'] = $row['answer_before_date'];
-				$question_info[$i]['match_id'] = $row['match_id'];
-				$question_info[$i]['type'] = $row['type'];
+				$question_info[$i]['match_id'] = (int) $row['match_id'];
+				$question_info[$i]['type'] = (int) $row['type'];
 				$question_info[$i]['options'] = $row['options'];
 				$question_info[$i]['image'] = $row['image'];
 				$question_info[$i]['max_answers'] = $row['max_answers'];
@@ -616,7 +615,10 @@ class Football_Pool_Pool {
 	
 	public function print_bonus_question( $question, $nr ) {
 		// the question with optional image
-		$output = sprintf( '<div class="bonus" id="q%d"><p><span class="nr">%d.</span> %s</p>'
+		if ( is_int( $nr ) ) {
+			$nr = sprintf( '<span class="nr">%d.</span> ', $nr );
+		}
+		$output = sprintf( '<div class="bonus" id="q%d"><p>%s%s</p>'
 							, $question['id']
 							, $nr, $question['question'] 
 					);
@@ -708,13 +710,13 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		foreach ( $questions as $question ) {
-			if ( $this->question_is_editable( $question['question_date'] ) && $answers[ $question['id'] ] != '') {
+			if ( $this->question_is_editable( $question['question_date'] ) && $answers[$question['id']] != '') {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
 										SET user_id = %d,
 											question_id = %d,
 											answer = %s,
 											points = 0",
-										$user, $question['id'], $answers[ $question['id'] ]
+										$user, $question['id'], $answers[$question['id']]
 									);
 				$wpdb->query( $sql );
 			}
@@ -727,7 +729,7 @@ class Football_Pool_Pool {
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-
+		
 		$matches = new Football_Pool_Matches;
 		$joker = 0;
 		
@@ -748,16 +750,13 @@ class Football_Pool_Pool {
 			$joker = $this->get_joker();
 		}
 		
-		// get matches
-		$rows = $matches->get_info();
-		
 		// update predictions for all matches
-		foreach ( $rows as $row ) {
+		foreach ( $matches->matches as $row ) {
 			$match = $row['id'];
 			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
 			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
 			
-			if ( $matches->match_is_editable( $row['match_timestamp'] ) ) {
+			if ( $row['match_is_editable'] ) {
 				if ( is_integer( $home ) && is_integer( $away ) ) {
 					$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
 											SET user_id = %d, 
@@ -791,22 +790,22 @@ class Football_Pool_Pool {
 						if ( $question['max_answers'] > 0 && count( $user_answers ) > $question['max_answers'] ) {
 							// remove answers from the end of the array
 							// (user is cheating or admin changed the max possible answers)
-							while ( count( $user_answers ) > $question['max_answers'] ) 
+							while ( count( $user_answers ) > $question['max_answers'] ) {
 								array_pop( $user_answers );
+							}
 						}
 						$answers[ $question['id'] ] = implode( ';', $user_answers );
 						break;
 					case 1: // text
 					case 2: // multiple 1
 					default:
-						$bonus_input = '_bonus_' . $question['id'];
-						$answers[ $question['id'] ] = Football_Pool_Utils::post_string( $bonus_input );
+						$answers[$question['id']] = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] );
 				}
 				
 				// add user input to answer (for multiple choice questions) if there is some input
 				$user_input = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] . '_userinput' );
 				if ( $user_input != '' )
-					$answers[ $question['id'] ] .= " {$user_input}";
+					$answers[$question['id']] .= " {$user_input}";
 			}
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}
@@ -828,10 +827,12 @@ class Football_Pool_Pool {
 			
 			$nr = $start_at_nr;
 			foreach ( $questions as $question ) {
-				$output .= $this->print_bonus_question( $question, $nr++ );
+				if ( $question['match_id'] == 0 ) {
+					$output .= $this->print_bonus_question( $question, $nr++ );
+				}
 			}
 			
-			if ( count( $questions ) > 0 ) {
+			if ( $nr > $start_at_nr ) {
 				$output .= $this->save_button();
 			}
 			
@@ -842,6 +843,7 @@ class Football_Pool_Pool {
 	}
 	
 	// outputs a prediction form for matches.
+	// also includes linked questions (if any).
 	//    wrap:        (optional) if true, wrap the matches in its own form
 	//    id:          unique form id
 	public function prediction_form_matches( $matches, $wrap = false, $id = 1 ) {
@@ -854,7 +856,7 @@ class Football_Pool_Pool {
 			get_currentuserinfo();
 			
 			$m = new Football_Pool_Matches;
-			$output .= $m->print_matches_for_input( $matches, $id );
+			$output .= $m->print_matches_for_input( $matches, $id, $current_user->ID );
 			
 			if ( $this->pool_has_jokers ) {
 				$joker = $m->joker_value;

@@ -6,8 +6,8 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete venues.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete venues.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = '';

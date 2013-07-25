@@ -6,8 +6,8 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete shoutbox messages. Shoutbox messages are displayed in the plugin\'s Shoutbox widget.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete shoutbox messages. Shoutbox messages are displayed in the plugin\'s Shoutbox widget.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = '';
@@ -95,7 +95,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
-					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', '' ),
+					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'shouttext', '' ),
 					array( 'text', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', '' )
 				);
 		

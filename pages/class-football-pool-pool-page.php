@@ -38,7 +38,9 @@ class Football_Pool_Pool_Page {
 				$nr = 1;
 				$output .= sprintf( '<h2 id="bonus">%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				foreach ( $questions as $question ) {
-					$output .= $pool->print_bonus_question( $question, $nr++ );
+					if ( $question['match_id'] == 0 ) {
+						$output .= $pool->print_bonus_question( $question, $nr++ );
+					}
 				}
 				$output .= $this->save_button();
 			}

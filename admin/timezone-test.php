@@ -29,7 +29,6 @@ function match_options() {
 								, $match['id']
 								, $match['home_team']
 								, $match['away_team']
-								// , $match['match_datetime']
 								, Football_Pool_Utils::date_from_gmt( $match['date'] )
 						);
 		printf( '<option value="%d">%s</option>', $match['id'], $option_text );
@@ -66,14 +65,14 @@ function debug_line( $info, $value ) {
 <p>Select a match:</p>
 <p>
 	<select name="match">
-		<option>select a match</option>
+		<option value="">select a match</option>
 		<?php match_options(); ?>
 	</select>
 </p>
 <p>Or, select a question:</p>
 <p>
 	<select name="question">
-		<option>select a question</option>
+		<option valeu="">select a question</option>
 		<?php bonusquestion_options(); ?>
 	</select>
 </p>
@@ -93,36 +92,69 @@ $mysql_datetime = $row['mysql_utc_ts'];
 $mysql_timestamp = $row['mysql_unix_ts'];
 $mysql_now = $row['mysql_now'];
 
+// Match info
 if ( $match > 0 ) {
 	$match = $matches->get_match_info( $match );
-	$match_info = "({$match['id']}) {$match['home_team']} - {$match['away_team']}";
-	debug_line( 'Match', $match_info );
-	debug_line( 'Match date (database, should be UTC)', $match['play_date'] );
-	debug_line( 'Match date (local)', 
-				$matches->format_match_time( new DateTime( $match['play_date'] ), 'Y-m-d H:i' ) );
-	debug_line( 'Match timestamp (database, should be UTC)', $match['match_timestamp'] );
-	debug_line( 'Match is locked', ( ! $match['match_is_editable'] ? 'true' : 'false' ) );
+	if ( isset( $match['id'] ) ) {
+		$match_info = "({$match['id']}) {$match['home_team']} - {$match['away_team']}";
+
+		$datetime = Football_Pool_Utils::get_fp_option( 'matches_locktime', '' );
+		if ( Football_Pool_Utils::get_fp_option( 'stop_time_method_matches', 0, 'int' ) == 1 
+			&& $datetime != '' ) {
+			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime ) );
+		} else {
+			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match['play_date'] ) );
+			$offset = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
+			$lock_date->modify( '-' . $offset . ' seconds' );
+		}
+		$lock_date = $lock_date->format( 'Y-m-d H:i' );
+
+		debug_line( 'Match', $match_info );
+		debug_line( 'Match date (database, should be UTC)', $match['play_date'] );
+		debug_line( 'Match date (local)', 
+					$matches->format_match_time( new DateTime( $match['play_date'] ), 'Y-m-d H:i' ) );
+		debug_line( 'Match timestamp (database, should be UTC)', $match['match_timestamp'] );
+		debug_line( 'Match is locked', ( ! $match['match_is_editable'] ? 'true' : 'false' ) );
+		debug_line( 'Match was/will be locked at time (local)', $lock_date );
+	}
 }
+// Question info
 if ( $question > 0 ) {
 	$question = $pool->get_bonus_question_info( $question );
-	$question_info = "({$question['id']}) {$question['question']}";
-	debug_line( 'Question', $question_info );
-	debug_line( 'Question date (database, should be local)', $question['answer_before_date'] );
-	debug_line( 'Question timestamp (database, should be local)', $question['question_timestamp'] );
-	debug_line( 'Question is locked', ( ! $question['question_is_editable'] ? 'true' : 'false' ) );
+	if ( isset( $question['id'] ) ) {
+		$question_info = "({$question['id']}) {$question['question']}";
+		
+		if ( Football_Pool_Utils::get_fp_option( 'stop_time_method_questions', 0, 'int' ) == 1 ) {
+			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( Football_Pool_Utils::get_fp_option( 'bonus_question_locktime', '' ) ) );
+		} else {
+			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $question['answer_before_date'] ) );
+		}
+		$lock_date = $lock_date->format( 'Y-m-d H:i' );
+
+		debug_line( 'Question', $question_info );
+		debug_line( 'Question date (database, should be UTC)', $question['answer_before_date'] );
+		debug_line( 'Question date (local)', Football_Pool_Utils::date_from_gmt( $question['answer_before_date'] ) );
+		debug_line( 'Question timestamp (UTC)', $question['question_timestamp'] );
+		debug_line( 'Question is locked', ( ! $question['question_is_editable'] ? 'true' : 'false' ) );
+		debug_line( 'Question was/will be locked at time (local)', $lock_date );
+	}
 }
+// WordPress
 debug_line( 'WordPress timezone offset', get_option( 'gmt_offset' ) );
 debug_line( 'WordPress current date (local)', current_time( 'mysql' ) );
 debug_line( 'WordPress current timestamp (local)', current_time( 'timestamp' ) );
 debug_line( 'WordPress current date (UTC)', current_time( 'mysql', true ) );
 debug_line( 'WordPress current timestamp (UTC)', current_time( 'timestamp', true ) );
+// Plugin
 debug_line( 'Plugin prediction stop method matches', get_fp_option( 'stop_time_method_matches' ) );
 debug_line( 'Plugin dynamic stop threshold (in seconds) for matches', get_fp_option( 'maxperiod' ) );
 debug_line( 'Plugin prediction stop date for matches', get_fp_option( 'matches_locktime' ) );
 debug_line( 'Plugin prediction stop method questions', get_fp_option( 'stop_time_method_questions' ) );
 debug_line( 'Plugin match time display setting', get_fp_option( 'match_time_display' ) );
+// PHP/web server
 debug_line( 'PHP current date and time (UTC)', $date->format( 'Y-m-d H:i' ) );
 debug_line( 'PHP current timestamp (UTC)', $date->format( 'U' ) );
+// MySQL/database server
 debug_line( 'MySQL current date and time (UTC)', $mysql_datetime );
 debug_line( 'MySQL current timestamp (UTC)', $mysql_timestamp );
 debug_line( 'MySQL current date and time (local)', $mysql_now );
@@ -134,27 +166,29 @@ debug_line( 'MySQL current date and time (local)', $mysql_now );
 
 <script>
 $( document ).ready( function() {
-	var clip = new ZeroClipboard( $( "#copy-to-clipboard-button" ), {
-									moviePath: "../assets/admin/ZeroClipboard/ZeroClipboard.swf"
-								} );
+	try {
+		var clip = new ZeroClipboard( $( "#copy-to-clipboard-button" ), {
+										moviePath: "../assets/admin/ZeroClipboard/ZeroClipboard.swf"
+									} );
 
-	clip.on( 'load', function ( client ) {
-		$( '#copy-to-clipboard-button' ).show();
-	} );
-	
-	clip.on( 'noFlash', function ( client ) {
-		$( '#copy-to-clipboard-button' ).hide();
-	} );
-	
-	clip.on( 'wrongFlash', function ( client, args ) {
-		$( '#copy-to-clipboard-button' ).hide();
-		// debugstr("Flash 10.0.0+ is required but you are running Flash " + args.flashVersion.replace(/,/g, "."));
-	} );
-	
-	clip.on( 'complete', function ( client, args ) {
-		// debugstr("Copied text to clipboard: " + args.text);
-		// $( "#debug-info" ).effects( "shake" );
-	} );
+		clip.on( 'load', function ( client ) {
+			$( '#copy-to-clipboard-button' ).show();
+		} );
+		
+		clip.on( 'noFlash', function ( client ) {
+			$( '#copy-to-clipboard-button' ).hide();
+		} );
+		
+		clip.on( 'wrongFlash', function ( client, args ) {
+			$( '#copy-to-clipboard-button' ).hide();
+			// debugstr("Flash 10.0.0+ is required but you are running Flash " + args.flashVersion.replace(/,/g, "."));
+		} );
+		
+		clip.on( 'complete', function ( client, args ) {
+			// debugstr("Copied text to clipboard: " + args.text);
+			// $( "#debug-info" ).effects( "shake" );
+		} );
+	} catch( err ) {}
 } );
 </script>
 </body>

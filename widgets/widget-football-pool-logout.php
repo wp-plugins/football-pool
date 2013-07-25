@@ -6,10 +6,14 @@
 defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget("Football_Pool_Logout_Widget");'));
 
+// dummy var for translation files
+$fp_translate_this = __( 'Log out Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'add a log out/log in button.', FOOTBALLPOOL_TEXT_DOMAIN );
+
 class Football_Pool_Logout_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Log out Widget',
-		'description' => 'Football pool plugin: add a log out/log in button.',
+		'description' => 'add a log out/log in button.',
 		'do_wrapper' => false, 
 		
 		'fields' => array(

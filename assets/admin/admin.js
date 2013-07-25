@@ -12,15 +12,17 @@ jQuery( document ).ready( function() {
 		}
 	} );
 	
-	jQuery( 'a.ranking-log-summary' ).colorbox( { 
-		html: function() {
-				return '<div class="ranking-log">' 
-						+ jQuery( 'div.ranking-log-summary', jQuery( this ).parent() ).html() 
-						+ jQuery( 'div.ranking-log-rest', jQuery( this ).parent() ).html() + '</div>';
-			},
-		innerWidth: "600px",
-		innerHeight: "400px",
-	} );
+	try {
+		jQuery( 'a.ranking-log-summary' ).colorbox( { 
+			html: function() {
+					return '<div class="ranking-log">' 
+							+ jQuery( 'div.ranking-log-summary', jQuery( this ).parent() ).html() 
+							+ jQuery( 'div.ranking-log-rest', jQuery( this ).parent() ).html() + '</div>';
+				},
+			innerWidth: "600px",
+			innerHeight: "400px",
+		} );
+	} catch( err ) { }
 } );
 
 function close_calculation_iframe() {

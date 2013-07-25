@@ -7,12 +7,15 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( 'widgets_init', create_function( '', 'register_widget("Football_Pool_User_Selector_Widget");' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'User Selector Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'players', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'height (px)', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'User Selector Widget',
-		'description' => 'Football pool plugin: this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.',
+		'description' => 'this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(

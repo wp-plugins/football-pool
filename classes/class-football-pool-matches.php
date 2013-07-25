@@ -52,7 +52,7 @@ class Football_Pool_Matches {
 		$this->matches_are_editable = true;
 	}
 	
-	public function get_next_match( $ts = -1 ) {
+	public function get_next_match( $ts = -1, $team_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -60,7 +60,7 @@ class Football_Pool_Matches {
 		
 		$next_match = null;
 		foreach ( $this->matches as $match ) {
-			if ( $match['match_timestamp'] > $ts ) {
+			if ( $match['match_timestamp'] > $ts && ( $team_id == null || $team_id == $match['home_team_id'] || $team_id == $match['away_team_id'] ) ) {
 				$next_match = $match;
 				break;
 			}
@@ -109,8 +109,12 @@ class Football_Pool_Matches {
 					m.home_score, m.away_score, 
 					s.name AS stadium_name, s.id AS stadium_id,
 					t.name AS matchtype, t.id AS type_id
-				FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-				WHERE m.stadium_id = s.id AND m.matchtype_id = t.id AND t.visibility = 1 {$where_clause}
+				FROM {$prefix}matches m
+				JOIN {$prefix}stadiums s
+					ON ( m.stadium_id = s.id )
+				JOIN {$prefix}matchtypes t 
+					ON ( m.matchtype_id = t.id AND t.visibility = 1 )
+				{$where_clause}
 				ORDER BY {$sorting}";
 	}
 	
@@ -121,7 +125,7 @@ class Football_Pool_Matches {
 	public function get_info( $type = null ) {
 		global $wpdb;
 		if ( is_array( $type ) && count( $type ) > 0 ) {
-			$sql = $this->matches_query( ' AND t.id IN ( ' . implode( ',', $type ) . ' ) ' );
+			$sql = $this->matches_query( 'WHERE t.id IN ( ' . implode( ',', $type ) . ' ) ' );
 		} else {
 			$sql = $this->matches_query();
 		}
@@ -133,12 +137,19 @@ class Football_Pool_Matches {
 		
 		if ( $match_info === false ) {
 			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
 			$match_info = array();
 			$teams = new Football_Pool_Teams;
 			
+			$linked_questions = array();
+			$sql = "SELECT COUNT( * ) FROM {$prefix}bonusquestions WHERE match_id > 0";
+			$linked_questions_present = ( $wpdb->get_var( $sql ) > 0 );
+			
 			$rows = $wpdb->get_results( $this->matches_query(), ARRAY_A );
+			
 			foreach ( $rows as $row ) {
-				$i = $row['id'];
+				$i = (int) $row['id'];
 				$matchdate = new DateTime( $row['play_date'] );
 				$ts = $matchdate->format( 'U' );
 				
@@ -147,26 +158,32 @@ class Football_Pool_Matches {
 				$match_info[$i]['match_timestamp'] = $ts;
 				$match_info[$i]['play_date'] = $row['play_date'];
 				$match_info[$i]['date'] = $row['play_date'];
-				$match_info[$i]['home_score'] = $row['home_score'];
-				$match_info[$i]['away_score'] = $row['away_score'];
+				$match_info[$i]['home_score'] = (int) $row['home_score'];
+				$match_info[$i]['away_score'] = (int) $row['away_score'];
 				$match_info[$i]['home_team'] = ( 
 						isset( $teams->team_names[(integer) $row['home_team_id'] ] ) ? 
 							$teams->team_names[(integer) $row['home_team_id'] ] : 
 							'' 
 						);
 				$match_info[$i]['away_team'] = ( 
-						isset( $teams->team_names[(integer) $row['away_team_id'] ] ) ? 
-							$teams->team_names[(integer) $row['away_team_id'] ] : 
+						isset( $teams->team_names[(int) $row['away_team_id'] ] ) ? 
+							$teams->team_names[(int) $row['away_team_id'] ] : 
 							'' 
 						);
-				$match_info[$i]['home_team_id'] = $row['home_team_id'];
-				$match_info[$i]['away_team_id'] = $row['away_team_id'];
+				$match_info[$i]['home_team_id'] = (int) $row['home_team_id'];
+				$match_info[$i]['away_team_id'] = (int) $row['away_team_id'];
 				$match_info[$i]['match_is_editable'] = $this->match_is_editable( $ts );
-				$match_info[$i]['id'] = $row['id'];
-				$match_info[$i]['stadium_id'] = $row['stadium_id'];
+				$match_info[$i]['id'] = (int) $row['id'];
+				$match_info[$i]['stadium_id'] = (int) $row['stadium_id'];
 				$match_info[$i]['stadium_name'] = $row['stadium_name'];
-				$match_info[$i]['match_type_id'] = $row['type_id'];
+				$match_info[$i]['match_type_id'] = (int) $row['type_id'];
 				$match_info[$i]['match_type'] = $row['matchtype'];
+				
+				if ( $linked_questions_present ) {
+					$sql = $wpdb->prepare( "SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d", $row['id'] );
+					$linked_questions = $wpdb->get_col( $sql );
+				}
+				$match_info[$i]['linked_questions'] = $linked_questions;
 			}
 			
 			wp_cache_set( FOOTBALLPOOL_CACHE_MATCHES, $match_info );
@@ -378,8 +395,9 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	public function print_matches_for_input( $matches, $form_id ) {
+	public function print_matches_for_input( $matches, $form_id, $user_id ) {
 		$teams = new Football_Pool_Teams;
+		$pool = new Football_Pool_Pool;
 		$date_title = '';
 		$matchtype = '';
 		$joker = '';
@@ -449,6 +467,17 @@ class Football_Pool_Matches {
 									),
 							$this->show_users_link( $info['id'], $info['match_timestamp'] )
 						);
+					if ( is_array( $info['linked_questions'] ) && count( $info['linked_questions'] ) > 0 ) {
+						$questions = $pool->get_bonus_questions_for_user( $user_id, $info['linked_questions'] );
+						foreach( $questions as $question ) {
+							$output .= sprintf( '<tr id="match-%d-%d-question-%d" class="linked-question"><td colspan="11">%s</td><tr>'
+												, $info['id']
+												, $form_id
+												, $question['id']
+												, $pool->print_bonus_question( $question, '' )
+										);
+						}
+					}
 		}
 		$output .= '</table>';
 		
@@ -562,17 +591,6 @@ class Football_Pool_Matches {
 			$diff = $ts - time();
 			$editable = ( $diff > $this->lock );
 		}
-		
-		// $d = new DateTime;
-		// $time = time();
-		// $d = $d->setTimestamp( $time );
-		// $timestr = $d->format('Y-m-d H:i');
-		// $d = $d->setTimestamp( $ts );
-		// $matchstr = $d->format('Y-m-d H:i');
-		// $lock = $this->lock;
-		// $edit = $editable ? 'true':'false';
-		// $diffhr = $diff / 3600;
-		// Football_Pool_Utils::debug( "inside match_is_editable function\nts: {$ts}\nmatch: {$matchstr}\ntime: {$time} ( {$timestr} )\ndiff: {$ts} - {$time} = {$diff} ( {$diffhr} hr )\nlock: {$lock}\neditable: {$edit}", "file" );
 		
 		return $editable;
 	}

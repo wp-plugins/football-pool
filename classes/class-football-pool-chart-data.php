@@ -148,7 +148,7 @@ class Football_Pool_Chart_Data {
 								$user, $ranking_id
 							);
 		$data = $wpdb->get_var( $sql );
-		$output['totalScore'] = ( $data != null ) ? $data : 0;
+		$output['total_score'] = ( $data != null ) ? $data : 0;
 		// get the number of matches for which there are results
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory
 								WHERE type = 0 AND user_id = %d AND ranking_id = %d", $user, $ranking_id );
@@ -158,8 +158,8 @@ class Football_Pool_Chart_Data {
 		// on a full score you get the fullpoints and two times the goal bonus
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
 				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
-		$output['maxScore'] = $full * 2; // count first match with joker
-		$output['maxScore'] += ( (int) $num_matches - 1 ) * $full; // all other matches
+		$output['max_score'] = $full * 2; // count first match with joker
+		$output['max_score'] += ( (int) $num_matches - 1 ) * $full; // all other matches
 		// add the bonusquestions
 		$sql = "SELECT SUM( q.points ) FROM {$prefix}bonusquestions q ";
 		if ( $ranking_id != FOOTBALLPOOL_RANKING_DEFAULT ) {
@@ -170,13 +170,13 @@ class Football_Pool_Chart_Data {
 		$sql .= "WHERE q.score_date IS NOT NULL";
 		$data = $wpdb->get_var( $sql );
 		$max_points = ( $data != null ) ? $data : 0;
-		$output['maxScore'] += (int) $max_points;
+		$output['max_score'] += (int) $max_points;
 		
 		return $output;
 	}
 	
 	public function score_per_match_line_chart_data( $users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
-		return $this->per_match_line_chart_data( $users, 'totalScore', $ranking_id );
+		return $this->per_match_line_chart_data( $users, 'total_score', $ranking_id );
 	}
 	
 	public function ranking_per_match_line_chart_data( $users, 
@@ -249,8 +249,8 @@ class Football_Pool_Chart_Data {
 	
 	public function points_total_pie_series( $row ) {
 		$data = array(
-					array( __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['totalScore'] ),
-					array( __( 'points missed', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['maxScore'] - $row['totalScore'] )
+					array( __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['total_score'] ),
+					array( __( 'points missed', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['max_score'] - $row['total_score'] )
 				);
 		return $data;
 	}

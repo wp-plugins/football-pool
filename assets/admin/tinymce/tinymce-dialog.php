@@ -12,7 +12,9 @@ function bonusquestion_options() {
 	global $pool;
 	$questions = $pool->get_bonus_questions();
 	foreach( $questions as $question ) {
-		printf( '<option value="%d">%d: %s</option>', $question['id'], $question['id'], $question['question'] );
+		if ( $question['match_id'] == 0 ) {
+			printf( '<option value="%d">%d: %s</option>', $question['id'], $question['id'], $question['question'] );
+		}
 	}
 }
 
@@ -223,7 +225,7 @@ function match_options() {
 					<label for="user-predictions-text"><?php _e( 'Text', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
-					<input type="text" id="user-predictions-text" />
+					<input type="text" id="user-predictions-text" style="width:100%" placeholder="<?php _e( 'Text to display if there is nothing to show', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
 				</td>
 			</tr>
 			<tr class="tr-user-score atts">

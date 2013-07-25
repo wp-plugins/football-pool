@@ -6,21 +6,24 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the <em>\'edit\'</em> link.</p><p>After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while. You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the <em>\'edit\'</em> link.</p><p>After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while. You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'import',
-						'title' => 'Import & Export',
-						'content' => '<p>Matches can be imported into the plugin using the import function (<em>\'Bulk change game schedule\'</em>). See the help page for more information about the required format.</p><p>On the import screen you can choose one of the already uploaded schedules or upload a new one (if write is enabled on the upload directory).</p><p>The import can add matches to your schedule, or completely overwrite the existing schedule. Please beware that when overwriting the schedule all existing predictions and rankings will be lost.</p><p>Existing matches can be exported using the <em>\'Download game schedule\'</em> button.</p>'
+						'title' => __( 'Import & Export', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>Matches can be imported into the plugin using the import function (<em>\'Bulk change game schedule\'</em>). See the help page for more information about the required format.</p><p>On the import screen you can choose one of the already uploaded schedules or upload a new one (if write is enabled on the upload directory).</p><p>The import can add matches to your schedule, or completely overwrite the existing schedule. Please beware that when overwriting the schedule all existing predictions and rankings will be lost.</p><p>Existing matches can be exported using the <em>\'Download game schedule\'</em> button.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'details',
-						'title' => 'Match details',
-						'content' => '<ul><li><em>match date</em> must be in UTC format.</li></ul>'
+						'title' => __( 'Match details', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<ul><li><em>match date</em> must be in UTC format.</li></ul>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about matches and the import</a></p><p><a href="?page=footballpool-options">Plugin options page</a>';
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#teams-groups-and-matches">%s</a></p><p><a href="?page=footballpool-options">%s</a>'
+								, __( 'Help section about matches and the import', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Plugin options page', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 	
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
@@ -446,25 +449,26 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					);
 		}
 		
-		// delete match, corresponding predictions and linked bonus questions
+		// delete match, corresponding predictions and update linked bonus questions
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE id = %d", $item_id );
 		$success = ( $wpdb->query( $sql ) !== false );
 		if ( $success ) {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE match_id = %d", $item_id );
 			$success = ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
-									WHERE question_id IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
-									)"
-								, $item_id );
-			$success &= ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
-									WHERE question_id IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
-									)"
-								, $item_id );
-			$success &= ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE match_id = %d", $item_id );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
+									// WHERE question_id IN (
+										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
+									// )"
+								// , $item_id );
+			// $success &= ( $wpdb->query( $sql ) !== false );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
+									// WHERE question_id IN (
+										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
+									// )"
+								// , $item_id );
+			// $success &= ( $wpdb->query( $sql ) !== false );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE match_id = %d", $item_id );
+			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET match_id = 0 WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );

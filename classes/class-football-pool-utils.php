@@ -1,5 +1,19 @@
 <?php
 class Football_Pool_Utils {
+	// Replace placeholders in a string with a text.
+	//     input:              the string with %placeholders%
+	//     params:             array of placeholders and texts, format: array( 'placeholder' => 'text', ... )
+	//     placeholder_delim:  the char that identifies a placeholder, defaults to '%'
+	public function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
+		if ( count( $params ) > 0 ) {
+			foreach ( $params as $key => $val ) {
+				$input = str_replace( "{$placeholder_delim}{$key}{$placeholder_delim}", $val, $input );
+			}
+		}
+		
+		return $input;
+	}
+
 	public function select( $id, $options, $selected_val, $name = '' ) {
 		if ( $name == '' ) $name = $id;
 		

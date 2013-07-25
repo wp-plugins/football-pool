@@ -6,8 +6,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete leagues.</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete leagues.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = '<a href="?page=footballpool-help#leagues">Help section about leagues</a></p><p><a href="?page=footballpool-help#players">Help section about players</a>';
@@ -83,7 +83,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$leagues = $pool->leagues;
 		if ( array_key_exists( $id, $leagues ) ) {
 			$output = array(
-							'name' => $leagues[$id]['leagueName'],
+							'name' => $leagues[$id]['league_name'],
 							'image' => $leagues[$id]['image']
 							);
 		} else {

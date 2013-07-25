@@ -6,17 +6,25 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
-						'title' => 'Overview',
-						'content' => '<p>On this page you can add, change or delete bonus questions.</p><p>The <em>\'User Answers\'</em> link in the table view, or <em>\'Edit User Answers\'</em> button in the detail view, is used to check answers from your players.</p><p><strong>Important:</strong> points are only rewarded <em>after</em> the admin has checked the user answers!</p>'
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete bonus questions.</p><p>The <em>\'User Answers\'</em> link in the table view, or <em>\'Edit User Answers\'</em> button in the detail view, is used to check answers from your players.</p><p><strong>Important:</strong> points are only rewarded <em>after</em> the admin has checked the user answers!</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array(
 						'id' => 'calculation',
-						'title' => 'Score calculation',
-						'content' => '<p>The score for a bonus question will be added to the players total score after an admin has \'approved\' the answer (<em>\'Edit user answers\'</em>) and when the Score Date is filled. The Score Date is the point in time where the points are added to the total (needed for the charts and/or a ranking for a given date).</p>
-						<p>You can give a user more points (or less) for a question. Use the field <em>\'points\'</em> in the Edit User Answers screen for this; leave the field empty for standard points.</p>'
+						'title' => __( 'Score calculation', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The score for a bonus question will be added to the players total score after an admin has \'approved\' the answer (<em>\'Edit user answers\'</em>) and when the Score Date is filled. The Score Date is the point in time where the points are added to the total (needed for the charts and/or a ranking for a given date).</p>
+						<p>You can give a user more points (or less) for a question. Use the field <em>\'points\'</em> in the Edit User Answers screen for this; leave the field empty for standard points.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+					array(
+						'id' => 'linkedquestions',
+						'title' => __( 'Linked questions', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>If a question is linked to a match it will be shown beneath that match in the prediction screen. Linked questions cannot be shown separately on a prediction form for questions, but are always shown with the linked match.</p><p>When the linked match is deleted the question will be unlinked, but will still be available in the prediction form.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
-		$help_sidebar = '<a href="?page=footballpool-help#bonusquestions">Help section about bonus questions</a></p><p><a href="?page=footballpool-help#rankings">Help section about ranking calculation</a>';
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#bonusquestions">%s</a></p><p><a href="?page=footballpool-help#rankings">%s</a>'
+								, __( 'Help section about bonus questions', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Help section about ranking calculation', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 	
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
@@ -171,6 +179,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						'options'				=> '',
 						'max_answers'			=> '',
 						'image'					=> '',
+						'match_id'				=> 0,
 					);
 		
 		$pool = new Football_Pool_Pool();
@@ -185,12 +194,31 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						array( 'value' => '2', 'text' => __( 'multiple choice (1 answer)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 						array( 'value' => '3', 'text' => __( 'multiple choice (one or more answers)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 					);
+		// matches
+		$matches = new Football_Pool_Matches;
+		$matches = $matches->matches;
+		$options = array( array( 'value' => 0, 'text' => __( 'not linked', FOOTBALLPOOL_TEXT_DOMAIN ) ) );
+		foreach( $matches as $match ) {
+			$options[] = array(
+							'value' => $match['id'],
+							'text' => sprintf( '%d: %s - %s', $match['id'], $match['home_team'], $match['away_team'] )
+						);
+		}
+		$matches = $options;
 		
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 
+						'select', 
+						__( 'link to match', FOOTBALLPOOL_TEXT_DOMAIN ), 
+						'match_id', 
+						$values['match_id'], 
+						$matches,
+						__( 'Linked questions are shown beneath the match in the prediction form.', FOOTBALLPOOL_TEXT_DOMAIN ) 
+					),
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
 						'radiolist', 
@@ -311,6 +339,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'options' ),
 						Football_Pool_Utils::post_string( 'image' ),
 						Football_Pool_Utils::post_int( 'max_answers', 0 ),
+						Football_Pool_Utils::post_int( 'match_id', 0 ),
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -332,14 +361,14 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$options = $input[7];
 		$image = $input[8];
 		$max_answers = $input[9];
-		$match_id = 0;
+		$match_id = $input[10];
 		
 		$new_set = array( $points, $scoredate );
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
 										( question, points, answer_before_date, score_date, answer, match_id )
-									VALUES (%s, %d, %s, %s, %s, %d)",
+									VALUES ( %s, %d, %s, %s, %s, %d )",
 							$question, $points, $date, $scoredate, $answer, $match_id
 						);
 			$wpdb->query( $sql );

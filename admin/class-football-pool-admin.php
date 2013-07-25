@@ -201,7 +201,7 @@ class Football_Pool_Admin {
 	// use type 'updated' for yellow message and type 'error' or 'important' for the red one
 	public function notice( $msg, $type = 'updated', $fade = true ) {
 		if ( $type == 'important' ) $type = 'error';
-		echo '<div class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
+		echo '<div id="message" class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
 	private function image_input_WP3_5( $label, $key, $value, $description, $type ) {
@@ -743,7 +743,7 @@ class Football_Pool_Admin {
 			</th>';
 		
 		foreach ( $cols as $col ) {
-			echo '<th id="', esc_attr( $col[2] ), '" class="manage-column column-', esc_attr( $col[2] ), '" scope="col">', $col[1], '</th>';
+			echo '<th id="', esc_attr( $col[2] ), '-', $tag, '" class="manage-column column-', esc_attr( $col[2] ), '" scope="col">', $col[1], '</th>';
 		}
 		echo "</tr></t{$tag}>";
 	}
@@ -997,7 +997,7 @@ class Football_Pool_Admin {
 		
 		$action_val = "location.href='{$action_val}'";
 		$button = sprintf( '<input type="button" onclick="%s;%s" 
-									class="button-%s" value="%s" %s/>'
+									class="button button-%s" value="%s" %s/>'
 							, $action_val
 							, $onclick_val
 							, $type

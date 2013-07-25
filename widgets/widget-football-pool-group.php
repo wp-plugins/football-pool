@@ -7,12 +7,16 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Group_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Group Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays the tournament standing for a group.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'standing', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Show this group', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Layout of the widget', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Group_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Group Widget',
-		'description' => 'Football pool plugin: this widget displays the tournament standing for a group.',
+		'description' => 'this widget displays the tournament standing for a group.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(

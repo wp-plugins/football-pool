@@ -9,13 +9,14 @@ check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC );
 <html>
 <head>
 	<meta charset="utf-8">
+	<link rel='stylesheet' href='../../../../wp-includes/css/buttons.min.css' type='text/css'>
 	<link rel="stylesheet" href="../assets/admin/jquery-ui/css/start/jquery-ui-1.10.0.custom.min.css">
 	<link rel="stylesheet" href="../assets/admin/calculate-score-history.css">
 	<script src="../assets/admin/jquery-ui/js/jquery-1.9.0.js"></script>
 	<script src="../assets/admin/jquery-ui/js/jquery-ui-1.10.0.custom.min.js"></script>
 	<script> $( parent.document ).find( "#cboxClose" ).hide(); </script>
 </head>
-<body>
+<body class="wp-core-ui">
 <?php
 global $wpdb;
 $prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -121,7 +122,7 @@ if ( $step > 0 ) {
 		$users = get_users( 'orderby=ID&order=ASC' );
 		$total_users = count( $users );
 		$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
-		$total_steps = count( $msg ) + ( $rankings * 3 )
+		$total_steps = count( $msg ) + ( $rankings * 3 ) 
 						+ ( ( $rankings + 1 ) * $total_user_sets );
 	}
 
@@ -152,7 +153,8 @@ switch ( $step ) {
 		if ( $acknowledge == 'yes' ) {
 			$params['step'] = 1;
 		} else {
-			echo '<p>sure?</p>';
+			printf( '<p>%s</p>', __( 'You are about to recalculate the score table for the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			printf( '<p>%s</p>', __( 'Are you sure?', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			echo '<p>';
 			Football_Pool_Admin::secondary_button( 
 										__( 'Yes', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -160,6 +162,7 @@ switch ( $step ) {
 										false, 
 										'js-button' 
 									);
+			echo '&nbsp;';
 			Football_Pool_Admin::secondary_button( 
 										__( 'No', FOOTBALLPOOL_TEXT_DOMAIN ), 
 										array( '', 'parent.jQuery.fn.colorbox.close()' ), 
@@ -170,6 +173,8 @@ switch ( $step ) {
 		}
 		break;
 	case 1:
+		Football_Pool_Utils::debug("total steps: {$total_steps}");
+		break;
 		// empty table
 		if ( $is_single_ranking ) {
 			$check = Football_Pool_Admin::empty_scorehistory( $ranking_id );
