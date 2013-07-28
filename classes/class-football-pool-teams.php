@@ -99,7 +99,7 @@ class Football_Pool_Teams {
 	public function get_group_order( $team ) {
 		if ( ! is_integer( $team ) ) return 0;
 		
-		$cach_key = 'fp_group_order_' . $team;
+		$cache_key = 'fp_group_order_' . $team;
 		$group_order = wp_cache_get( $cache_key );
 		
 		if ( $group_order === false ) {

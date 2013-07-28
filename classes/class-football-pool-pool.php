@@ -12,6 +12,9 @@ class Football_Pool_Pool {
 	private $pool_has_jokers;
 	
 	public function __construct() {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
 		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
 		$this->pool_has_jokers = ( $this->num_jokers > 0 );
 		
@@ -34,6 +37,9 @@ class Football_Pool_Pool {
 		
 		$matches = new Football_Pool_Matches;
 		$this->has_matches = $matches->has_matches;
+		
+		$sql = "SELECT COUNT( * ) FROM {$prefix}bonusquestions";
+		$this->has_bonus_questions = ( $wpdb->get_var( $sql ) > 0 );
 		
 		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 	}

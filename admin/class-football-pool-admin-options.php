@@ -305,7 +305,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						// 'number_of_jokers' => 
 							// array( 'text', __( 'Number of jokers *', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'number_of_jokers' => 
-							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'If checked the joker is enabled. Users can add 1 joker to a prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'When checked the joker is enabled and users can add the joker to one prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'

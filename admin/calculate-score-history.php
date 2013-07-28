@@ -24,6 +24,7 @@ $pool = new Football_Pool_Pool;
 $params = array();
 $check = true;
 $nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+$result = 0;
 
 //@todo: fix problem of multiple recalcs on options page. add recalc-all option?
 
@@ -35,6 +36,7 @@ $user_set = Football_Pool_Utils::get_int( 'user_set', 0 );
 $total_user_sets = Football_Pool_Utils::get_int( 'total_user_sets', 0 );
 $total_users = Football_Pool_Utils::get_int( 'total_users', 0 );
 $total_steps = Football_Pool_Utils::get_int( 'total_steps', 0 );
+$calculation_type = Football_Pool_Utils::get_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 
 // is this a single ranking calculation?
 $ranking_id = Football_Pool_Utils::get_int( 'single_ranking', 0 );
@@ -111,11 +113,11 @@ if ( $step > 0 ) {
 			$rankings = 0;
 		} else {
 			// get number of unique ranking ids from update log
-			$sql = "SELECT COUNT( * ) FROM {$prefix}rankings r
-					JOIN {$prefix}rankings_updatelog l
-						ON ( r.id = l.ranking_id )
-					WHERE r.user_defined = 1
-					GROUP BY r.id";
+			$sql = "SELECT COUNT( * ) FROM {$prefix}rankings r ";
+			if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
+				$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+			}
+			$sql .= "WHERE r.user_defined = 1 GROUP BY r.id";
 			$rankings = $wpdb->get_var( $sql );
 		}
 		
@@ -151,25 +153,38 @@ switch ( $step ) {
 	case 0:
 		$acknowledge = Football_Pool_Utils::get_string( 'acknowledge' );
 		if ( $acknowledge == 'yes' ) {
+			Football_Pool_Utils::set_fp_option( 'calculation_type_preference', $calculation_type );
 			$params['step'] = 1;
 		} else {
+			$calculation_type_preference = Football_Pool_Utils::get_fp_option( 'calculation_type_preference', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
+			
+			echo '<form method="get">';
+			if ( $is_single_ranking ) Football_Pool_Admin::hidden_input( 'single_ranking', $ranking_id );
+			Football_Pool_Admin::hidden_input( 'acknowledge', 'yes' );
 			printf( '<p>%s</p>', __( 'You are about to recalculate the score table for the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			printf( '<p>%s</p>', __( 'Are you sure?', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			echo '<p>';
-			Football_Pool_Admin::secondary_button( 
-										__( 'Yes', FOOTBALLPOOL_TEXT_DOMAIN ), 
-										"?acknowledge=yes&_wpnonce={$nonce}", 
-										false, 
-										'js-button' 
-									);
+			echo '<p class="calculation-type-select">';
+			printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
+					, FOOTBALLPOOL_RANKING_CALCULATION_SMART
+					, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_SMART ? 'checked="checked" ' : '' )
+					, __( 'Smart calculation', FOOTBALLPOOL_TEXT_DOMAIN )
+					, __( 'A smart calculation tries to determine which rankings need an update. A smart calculation is faster than a full calculation, but is not accurate in all circumstances.', FOOTBALLPOOL_TEXT_DOMAIN )
+			);
+			printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
+					, FOOTBALLPOOL_RANKING_CALCULATION_FULL
+					, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_FULL ? 'checked="checked" ' : '' )
+					, __( 'Full calculation', FOOTBALLPOOL_TEXT_DOMAIN )
+					, __( 'A full calculation recalculates all rankings.', FOOTBALLPOOL_TEXT_DOMAIN )
+			);
+			echo '</p><p class="submit">';
+			printf( '<input type="submit" class="button button-primary" value="%s" />', __( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			echo '&nbsp;';
 			Football_Pool_Admin::secondary_button( 
-										__( 'No', FOOTBALLPOOL_TEXT_DOMAIN ), 
+										__( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 
 										array( '', 'parent.jQuery.fn.colorbox.close()' ), 
 										false, 
 										'js-button' 
 									);
-			echo '</p>';
+			echo '</p></form>';
 		}
 		break;
 	case 1:
@@ -269,37 +284,39 @@ switch ( $step ) {
 		// add bonusquestion scores (score type = 1)
 		// make sure to take the userpoints into account (we can set an alternate score for an 
 		// individual user in the admin)
-		$sql = "INSERT INTO {$prefix}scorehistory 
-					( type, score_date, score_order, user_id, 
-					  score, full, toto, goal_bonus, ranking, ranking_id ) 
-				SELECT 
-					%d AS score_type, q.score_date AS score_date, q.id AS question_id,
-					u.ID AS user_id, 
-					IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) AS score, 
-					NULL, NULL, NULL, 
-					0 AS ranking, %d AS ranking_id 
-				FROM {$wpdb->users} u ";
-		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+		if ( $pool->has_bonus_questions ) {
+			$sql = "INSERT INTO {$prefix}scorehistory 
+						( type, score_date, score_order, user_id, 
+						  score, full, toto, goal_bonus, ranking, ranking_id ) 
+					SELECT 
+						%d AS score_type, q.score_date AS score_date, q.id AS question_id,
+						u.ID AS user_id, 
+						IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) AS score, 
+						NULL, NULL, NULL, 
+						0 AS ranking, %d AS ranking_id 
+					FROM {$wpdb->users} u ";
+			if ( $pool->has_leagues ) {
+				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
+			} else {
+				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
+			}
+			$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
+						ON ( 1 = 1 )
+					LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
+						ON ( a.question_id = q.id AND ( a.user_id = u.ID OR a.user_id IS NULL ) )
+					WHERE q.score_date IS NOT NULL ";
+			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
+			if ( $is_single_ranking ) $sql .= "AND q.id IN ( " . $ranking_questions . " ) ";
+			$sql .= "ORDER BY 1, 2, 3, 4 LIMIT %d, %d";
+			
+			$offset = FOOTBALLPOOL_RECALC_STEP4_DIV * ( $sub_step - 1 );
+			
+			$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, FOOTBALLPOOL_RANKING_DEFAULT
+										, $offset, FOOTBALLPOOL_RECALC_STEP4_DIV );
+			$result = $wpdb->query( $sql );			
+			$check = ( $result !== false );
 		}
-		$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
-					ON ( 1 = 1 )
-				LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
-					ON ( a.question_id = q.id AND ( a.user_id = u.ID OR a.user_id IS NULL ) )
-				WHERE q.score_date IS NOT NULL ";
-		if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
-		if ( $is_single_ranking ) $sql .= "AND q.id IN ( " . $ranking_questions . " ) ";
-		$sql .= "ORDER BY 1, 2, 3, 4 LIMIT %d, %d";
-		
-		$offset = FOOTBALLPOOL_RECALC_STEP4_DIV * ( $sub_step - 1 );
-		
-		$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, FOOTBALLPOOL_RANKING_DEFAULT
-									, $offset, FOOTBALLPOOL_RECALC_STEP4_DIV );
-		$result = $wpdb->query( $sql );			
-		$check = ( $result !== false );
 		
 		if ( $result > 0 ) {
 			$params['step'] = 4;
@@ -415,9 +432,17 @@ switch ( $step ) {
 			$params['step'] = 7;
 			// this ranking is finished, so clear the update log for this ranking
 			if ( $check === true ) {
-				$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_updatelog 
-										WHERE ranking_id = %d", $ranking_id );
+				$sql = "DELETE FROM {$prefix}rankings_updatelog WHERE ranking_id = %d ";
+				if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
+					$sql .= "AND is_single_calculation = 0";
+				}
+				$sql = $wpdb->prepare( $sql, $ranking_id );
 				$wpdb->query( $sql );
+			
+				// if this was a single ranking calculation log this in the update log
+				if ( $is_single_ranking ) {
+					Football_Pool_Admin::update_ranking_log( $ranking_id, null, null, 'single ranking calculation', null, 1 );
+				}
 			}
 		}
 		
@@ -428,19 +453,19 @@ switch ( $step ) {
 			$ranking_id = null;
 		} else {
 			// handle user defined rankings
-			// only process rankings that have changes logged
 			if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-				$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r
-						JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id )
-						WHERE r.user_defined = 1
-						ORDER BY r.id ASC LIMIT 1";
+				$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
+				if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
+					$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+				}
+				$sql .= "WHERE r.user_defined = 1 ORDER BY r.id ASC LIMIT 1";
 			} else {
-				$sql = $wpdb->prepare( "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r
-										JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id )
-										WHERE r.user_defined = 1 AND r.id > %d
-										ORDER BY r.id ASC LIMIT 1"
-										, $ranking_id
-								);
+				$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
+				if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
+					$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+				}
+				$sql .= "WHERE r.user_defined = 1 AND r.id > %d ORDER BY r.id ASC LIMIT 1";
+				$sql = $wpdb->prepare( $sql, $ranking_id );
 			}
 			$ranking_id = $wpdb->get_var( $sql );
 		}
@@ -464,6 +489,7 @@ if ( $check === true ) {
 		$params['total_users'] = $total_users;
 		if ( $is_single_ranking ) $params['single_ranking'] = $ranking_id;
 		$params['_wpnonce'] = $nonce;
+		$params['calculation_type'] = $calculation_type;
 		$url = add_query_arg( $params, $_SERVER['PHP_SELF'] );
 		printf( $js, sprintf( 'location.href = "%s";', $url ) );
 	} else {

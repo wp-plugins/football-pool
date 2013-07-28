@@ -279,7 +279,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = $wpdb->prepare( "SELECT log_date, log_message FROM {$prefix}rankings_updatelog 
-								WHERE ranking_id = %d ORDER BY log_date DESC"
+								WHERE ranking_id = %d AND is_single_calculation = 0 ORDER BY log_date DESC"
 								, $id );
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}

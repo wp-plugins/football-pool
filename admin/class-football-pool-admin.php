@@ -936,7 +936,7 @@ class Football_Pool_Admin {
 	}
 	
 	public function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
-										, $preserve_keys = 'no' ) {
+										, $preserve_keys = 'no', $is_single_calculation = 0 ) {
 		if ( $new_set == null || $old_set == null ) {
 			$log = true;
 		} elseif ( is_array( $new_set ) && is_array( $old_set ) ) {
@@ -955,9 +955,9 @@ class Football_Pool_Admin {
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_updatelog 
-										( ranking_id, log_message, log_date )
-									VALUES ( %d, %s, NOW() )"
-									, $ranking_id, $log_message
+										( ranking_id, log_message, log_date, is_single_calculation )
+									VALUES ( %d, %s, NOW(), %d )"
+									, $ranking_id, $log_message, $is_single_calculation
 							);
 			
 			$wpdb->query( $sql );

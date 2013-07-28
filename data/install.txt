@@ -108,8 +108,10 @@ CREATE TABLE IF NOT EXISTS `{$prefix}rankings_updatelog` (
   `ranking_id` int(10) unsigned NOT NULL,
   `log_date` datetime NOT NULL,
   `log_message` varchar(200) CHARACTER SET latin1 NOT NULL,
+  `is_single_calculation` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `ixRankingId` (`ranking_id`)
+  KEY `ixRankingId` (`ranking_id`),
+  KEY `is_single_calculation` (`is_single_calculation`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (

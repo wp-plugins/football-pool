@@ -109,6 +109,7 @@ class Football_Pool {
 		$options['listing_show_team_comments'] = 1; // 1: yes, 0: no
 		$options['listing_show_venue_comments'] = 1; // 1: yes, 0: no
 		$options['number_of_jokers'] = FOOTBALLPOOL_DEFAULT_JOKERS;
+		$options['calculation_type_preference'] = FOOTBALLPOOL_RANKING_CALCULATION_SMART;
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
