@@ -846,6 +846,11 @@ class Football_Pool_Admin {
 		
 		if ( $ranking_id == 'all' ) {
 			$check = self::empty_table( 'scorehistory' );
+		} elseif ( $ranking_id == 'smart set' ) {
+			$sql = "SELECT ranking_id FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 1";
+			$do_not_delete_these = implode( ',', array_merge( $wpdb->get_col( $sql ), array( 0 ) ) );
+			$sql = "DELETE FROM {$prefix}scorehistory WHERE ranking_id NOT IN ( {$do_not_delete_these} )";
+			$check = ( $wpdb->query( $sql ) !== false );
 		} elseif ( is_int( $ranking_id ) && $ranking_id > 0 ) {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE ranking_id = %d", $ranking_id );
 			$check = ( $wpdb->query( $sql ) !== false );

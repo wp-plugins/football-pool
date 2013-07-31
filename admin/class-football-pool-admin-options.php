@@ -232,6 +232,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								array( 
 									array( 'value' => 0, 'text' => __( 'Date ascending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 									array( 'value' => 1, 'text' => __( 'Date descending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 2, 'text' => __( 'Match types descending, matches date ascending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 3, 'text' => __( 'Match types ascending, matches date descending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 								),
 								__( 'Select the order in which matches must be displayed on the matches page and the prediction page..', FOOTBALLPOOL_TEXT_DOMAIN ),
 							),

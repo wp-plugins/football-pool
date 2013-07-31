@@ -87,6 +87,12 @@ class Football_Pool_Matches {
 	public function get_match_sorting_method() {
 		$order = Football_Pool_Utils::get_fp_option( 'match_sort_method', FOOTBALLPOOL_MATCH_SORT, 'int' );
 		switch ( $order ) {
+			case 3:
+				$order = 'matchtype ASC, m.play_date DESC, m.id DESC';
+				break;
+			case 2:
+				$order = 'matchtype DESC, m.play_date ASC, m.id ASC';
+				break;
 			case 1:
 				$order = 'm.play_date DESC, m.id DESC';
 				break;

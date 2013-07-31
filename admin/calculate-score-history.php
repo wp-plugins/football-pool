@@ -26,8 +26,6 @@ $check = true;
 $nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
 $result = 0;
 
-//@todo: fix problem of multiple recalcs on options page. add recalc-all option?
-
 // get step number and other parameters
 $step = Football_Pool_Utils::get_int( 'step', 0 );
 $sub_step = Football_Pool_Utils::get_int( 'sub_step', 1 );
@@ -112,12 +110,16 @@ if ( $step > 0 ) {
 			// only one loop through the steps, no pre-calculation of the default ranking
 			$rankings = 0;
 		} else {
-			// get number of unique ranking ids from update log
-			$sql = "SELECT COUNT( * ) FROM {$prefix}rankings r ";
 			if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
-				$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+				// get number of unique ranking ids from update log
+				$sql = "SELECT COUNT( DISTINCT( r.id ) ) 
+						FROM {$prefix}rankings r
+						JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) 
+						WHERE r.user_defined = 1";
+			} else {
+				// get all user defined rankings
+				$sql = "SELECT COUNT( * ) FROM {$prefix}rankings WHERE user_defined = 1";
 			}
-			$sql .= "WHERE r.user_defined = 1 GROUP BY r.id";
 			$rankings = $wpdb->get_var( $sql );
 		}
 		
@@ -126,7 +128,10 @@ if ( $step > 0 ) {
 		$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
 		$total_steps = count( $msg ) + ( $rankings * 3 ) 
 						+ ( ( $rankings + 1 ) * $total_user_sets );
-	}
+// $a = count( $msg ); $b = $rankings * 3; $c = ( $rankings + 1 ) * $total_user_sets;
+// Football_Pool_Utils::debug("users: {$total_users}\nuser_sets: {$total_user_sets}\ncount msg: {$a}\nrankings: {$rankings}\ntotal steps: {$total_steps}");
+// die();
+		}
 
 	// print status messages
 	printf( '<h3>%s</h3>', __( 'Please do not interrupt this process.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -159,23 +164,28 @@ switch ( $step ) {
 			$calculation_type_preference = Football_Pool_Utils::get_fp_option( 'calculation_type_preference', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 			
 			echo '<form method="get">';
-			if ( $is_single_ranking ) Football_Pool_Admin::hidden_input( 'single_ranking', $ranking_id );
+			wp_nonce_field( FOOTBALLPOOL_NONCE_SCORE_CALC );
 			Football_Pool_Admin::hidden_input( 'acknowledge', 'yes' );
 			printf( '<p>%s</p>', __( 'You are about to recalculate the score table for the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			echo '<p class="calculation-type-select">';
-			printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
-					, FOOTBALLPOOL_RANKING_CALCULATION_SMART
-					, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_SMART ? 'checked="checked" ' : '' )
-					, __( 'Smart calculation', FOOTBALLPOOL_TEXT_DOMAIN )
-					, __( 'A smart calculation tries to determine which rankings need an update. A smart calculation is faster than a full calculation, but is not accurate in all circumstances.', FOOTBALLPOOL_TEXT_DOMAIN )
-			);
-			printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
-					, FOOTBALLPOOL_RANKING_CALCULATION_FULL
-					, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_FULL ? 'checked="checked" ' : '' )
-					, __( 'Full calculation', FOOTBALLPOOL_TEXT_DOMAIN )
-					, __( 'A full calculation recalculates all rankings.', FOOTBALLPOOL_TEXT_DOMAIN )
-			);
-			echo '</p><p class="submit">';
+			if ( $is_single_ranking ) {
+				Football_Pool_Admin::hidden_input( 'single_ranking', $ranking_id );
+			} else {
+				echo '<p class="calculation-type-select">';
+				printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
+						, FOOTBALLPOOL_RANKING_CALCULATION_SMART
+						, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_SMART ? 'checked="checked" ' : '' )
+						, __( 'Smart calculation', FOOTBALLPOOL_TEXT_DOMAIN )
+						, __( 'A smart calculation tries to determine which rankings need an update. A smart calculation is faster than a full calculation, but is not accurate in all circumstances.', FOOTBALLPOOL_TEXT_DOMAIN )
+				);
+				printf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
+						, FOOTBALLPOOL_RANKING_CALCULATION_FULL
+						, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_FULL ? 'checked="checked" ' : '' )
+						, __( 'Full calculation', FOOTBALLPOOL_TEXT_DOMAIN )
+						, __( 'A full calculation recalculates all rankings.', FOOTBALLPOOL_TEXT_DOMAIN )
+				);
+				echo '</p>';
+			}
+			echo '<p class="submit">';
 			printf( '<input type="submit" class="button button-primary" value="%s" />', __( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			echo '&nbsp;';
 			Football_Pool_Admin::secondary_button( 
@@ -188,12 +198,14 @@ switch ( $step ) {
 		}
 		break;
 	case 1:
-		Football_Pool_Utils::debug("total steps: {$total_steps}");
-		break;
+		// Football_Pool_Utils::debug("total steps: {$total_steps}");
+		// break;
 		// empty table
 		if ( $is_single_ranking ) {
 			$check = Football_Pool_Admin::empty_scorehistory( $ranking_id );
-		} else {
+		} elseif ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
+			$check = Football_Pool_Admin::empty_scorehistory( 'smart set' );
+		} else { // full calc, so delete all
 			$check = Football_Pool_Admin::empty_scorehistory( 'all' );
 		}
 		
@@ -481,7 +493,7 @@ $close_calculation = '$( parent.document ).find( "#cboxClose" ).show();';
 
 if ( $check === true ) {
 	if ( count( $params ) > 0 ) {
-		if ( $sub_step == 1 ) $progress++;
+		if ( $sub_step == 1 && $params['step'] < 8 ) $progress++;
 		$params['progress'] = $progress;
 		$params['sub_step'] = $sub_step;
 		$params['total_steps'] = $total_steps;

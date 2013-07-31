@@ -161,6 +161,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * New options for points a team gets for a win or draw (for the Groups page). This makes the plugin more suitable for sports that don't use the 3-point rule for wins.
 * New option to show team photos on team listing page.
 * New option to show venue photos on venue listing page.
+* New sorting option for matches to be able to include match types in the sorting.
 * "Next prediction countdown" widget has a new option to countdown to the next match of a particular team.
 * Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5.
 * Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).

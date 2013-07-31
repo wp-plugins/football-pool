@@ -86,11 +86,15 @@ $date = new DateTime();
 $sql = "SELECT 
 			UTC_TIMESTAMP() AS mysql_utc_ts, 
 			UNIX_TIMESTAMP() AS mysql_unix_ts, 
-			NOW() AS mysql_now";
-$row = $wpdb->get_row( $sql, ARRAY_A );
+			NOW() AS mysql_now,
+			@@global.time_zone AS mysql_global_timezone,
+			@@session.time_zone AS mysql_session_timezone";
+			$row = $wpdb->get_row( $sql, ARRAY_A );
 $mysql_datetime = $row['mysql_utc_ts'];
 $mysql_timestamp = $row['mysql_unix_ts'];
 $mysql_now = $row['mysql_now'];
+$mysql_global_timezone = $row['mysql_global_timezone'];
+$mysql_session_timezone = $row['mysql_session_timezone'];
 
 // Match info
 if ( $match > 0 ) {
@@ -154,10 +158,13 @@ debug_line( 'Plugin match time display setting', get_fp_option( 'match_time_disp
 // PHP/web server
 debug_line( 'PHP current date and time (UTC)', $date->format( 'Y-m-d H:i' ) );
 debug_line( 'PHP current timestamp (UTC)', $date->format( 'U' ) );
+debug_line( 'PHP default timezone setting', date_default_timezone_get() );
 // MySQL/database server
 debug_line( 'MySQL current date and time (UTC)', $mysql_datetime );
 debug_line( 'MySQL current timestamp (UTC)', $mysql_timestamp );
 debug_line( 'MySQL current date and time (local)', $mysql_now );
+debug_line( 'MySQL global timezone setting', $mysql_global_timezone );
+debug_line( 'MySQL session timezone setting', $mysql_session_timezone );
 ?>
 </pre>
 <input type="button" id="copy-to-clipboard-button" data-clipboard-target="debug-info" value="Copy To Clipboard">
