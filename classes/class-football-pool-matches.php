@@ -184,6 +184,7 @@ class Football_Pool_Matches {
 				$match_info[$i]['stadium_name'] = $row['stadium_name'];
 				$match_info[$i]['match_type_id'] = (int) $row['type_id'];
 				$match_info[$i]['match_type'] = $row['matchtype'];
+				$match_info[$i]['matchtype'] = $row['matchtype'];
 				
 				if ( $linked_questions_present ) {
 					$sql = $wpdb->prepare( "SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d", $row['id'] );

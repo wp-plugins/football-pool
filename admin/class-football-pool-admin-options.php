@@ -7,7 +7,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 					array(
 						'id' => 'overview',
 						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
-						'content' => __( '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), if changing such a setting you can recalculate the ranking on this page with the <em>\'Recalculate scores\'</em> button.</p><p>You have to click <em>Save Changes</em> for the new settings to take effect.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+						'content' => __( '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), when changing such a setting you can recalculate the ranking on this page with the <em>\'Recalculate scores\'</em> button.</p><p>You have to click <em>Save Changes</em> for the new settings to take effect.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 				);
 		$help_sidebar = sprintf( '<a href="?page=footballpool-help#rankings">%s</a>'
@@ -385,7 +385,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -403,7 +407,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'League Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -414,7 +422,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );

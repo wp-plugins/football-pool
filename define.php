@@ -20,7 +20,8 @@ define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
 define( 'FOOTBALLPOOL_ASSETS_URL', FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
 define( 'FOOTBALLPOOL_HIGHCHARTS_API', '/highcharts-js/highcharts.js' );
 
-define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . 'error_log.txt' );
+define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_error_log.txt' );
+define( 'FOOTBALLPOOL_SQL_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_sql_log.sql' );
 
 // leagues
 define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );

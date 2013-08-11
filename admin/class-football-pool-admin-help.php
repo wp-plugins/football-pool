@@ -520,6 +520,40 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-predictionform matchtype="1"]</span><br />
 		</p>
 
+		<h3>[fp-matches]</h3>
+		<p>Shows the info table for the selected matches and/or matches in a matchtype. All parameters are cumulative, so all given matches and matches in a matchtype are put together in one table.</p>
+		<p>All arguments can be entered in the following formats (example for matches):
+		<table>
+			<tr><td>match 1</td><td>&rarr;</td><td>match="1"</td></tr>
+			<tr><td>matches 1 to 5</td><td>&rarr;</td><td>match="1-5"</td></tr>
+			<tr><td>matches 1, 3 and 6</td><td>&rarr;</td><td>match="1,3,6"</td></tr>
+			<tr><td>matches 1 to 5 and 10</td><td>&rarr;</td><td>match="1-5,10"</td></tr>
+		</table>
+		</p>
+		<p>If an argument is left empty it is ignored.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>Collection of <a href="?page=footballpool-games">match ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+			<tr class="">
+				<td class="row-title">matchtype</td>
+				<td>Collection of <a href="?page=footballpool-matchtypes">match type ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-matches match="1-5"]</span><br />
+		<span class="code">[fp-matches match="1-4,9-12" matchtype="2"]</span><br />
+		<span class="code">[fp-matches matchtype="1"]</span><br />
+		</p>
+
 		<h3>[fp-register]link text[/fp-register]</h3>
 		<p>Shows a link to the register page of WordPress. Text between the tags will be the text for the link. If no content is given, then a default text is shown as the link text. A redirect link to the post or page is automatically added if the get_permalink function does not return false.</p>
 		<p>

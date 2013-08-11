@@ -1,9 +1,9 @@
 <?php
 class Football_Pool_Utils {
 	// Replace placeholders in a string with a text.
-	//     input:              the string with %placeholders%
-	//     params:             array of placeholders and texts, format: array( 'placeholder' => 'text', ... )
-	//     placeholder_delim:  the char that identifies a placeholder, defaults to '%'
+	//	 input:			  the string with %placeholders%
+	//	 params:			 array of placeholders and texts, format: array( 'placeholder' => 'text', ... )
+	//	 placeholder_delim:  the char that identifies a placeholder, defaults to '%'
 	public function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
 		if ( count( $params ) > 0 ) {
 			foreach ( $params as $key => $val ) {
@@ -281,5 +281,16 @@ class Football_Pool_Utils {
 		if ( is_int( $sleep ) && $sleep > 0 ) usleep( $sleep );
 	}
 
+	// http://stackoverflow.com/questions/4660692/is-it-possible-to-print-a-log-of-all-database-queries-for-a-page-request-in-word
+	function sql_logger() {
+		global $wpdb;
+		$log_file = fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
+		fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );
+		foreach( $wpdb->queries as $q ) {
+			fwrite( $log_file, $q[0] . " - ({$q[1]} s)" . "\n\n" );
+		}
+		fclose( $log_file );
+	}
+	
 }
 ?>

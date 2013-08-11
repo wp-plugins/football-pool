@@ -24,6 +24,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Import or export the game schedule.
 * Automatic calculation of championship standing.
 * Configurable scoring options.
+* Use the built in pages and/or shortcodes to add the pool to your blog.
 * Use different leagues for your users (optional).
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
@@ -155,15 +156,16 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * New feature: link a question to a match. Linked questions are displayed beneath the match on the prediction form.
 * New shortcode: display the score of a single user with [fp-user-score].
 * New shortcode: display the predictions for a match or question with [fp-predictions].
-* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up.
+* New shortcode: display a table of matches with [fp-matches].
+* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
 * Some additions to the custom rankings admin screen.
 * New option: disable jokers.
 * New options for points a team gets for a win or draw (for the Groups page). This makes the plugin more suitable for sports that don't use the 3-point rule for wins.
 * New option to show team photos on team listing page.
 * New option to show venue photos on venue listing page.
 * New sorting option for matches to be able to include match types in the sorting.
-* "Next prediction countdown" widget has a new option to countdown to the next match of a particular team.
-* Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5.
+* Widget "Next prediction countdown" has a new option to countdown to the next match of a particular team.
+* Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5+.
 * Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).
 * Added image for wrong answers to prediction table for questions.
 * Changed database table structure so naming convention is the same for all tables.

@@ -392,8 +392,18 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description, $depends_on, $label_extra );
 	}
 	
-	public function hidden_input( $key, $value ) {
-		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '">';
+	public function hidden_input( $key, $value, $return = 'echo' ) {
+		$output = sprintf( '<input type="hidden" name="%s" id="%s" value="%s">'
+						, esc_attr( $key )
+						, esc_attr( $key )
+						, esc_attr( $value )
+					);
+		
+		if ( $return == 'echo' ) {
+			echo $output;
+		} else {
+			return $output;
+		}
 	}
 	
 	public function no_input( $label, $value, $description ) {
@@ -847,9 +857,17 @@ class Football_Pool_Admin {
 		if ( $ranking_id == 'all' ) {
 			$check = self::empty_table( 'scorehistory' );
 		} elseif ( $ranking_id == 'smart set' ) {
-			$sql = "SELECT ranking_id FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 1";
+			$sql = "SELECT DISTINCT( ranking_id ) 
+					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 0";
+			$delete_these = implode( 
+								',', 
+								array_merge( $wpdb->get_col( $sql ), array( FOOTBALLPOOL_RANKING_DEFAULT ) ) 
+							);
+			$sql = "SELECT DISTINCT( ranking_id ) 
+					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 1";
 			$do_not_delete_these = implode( ',', array_merge( $wpdb->get_col( $sql ), array( 0 ) ) );
-			$sql = "DELETE FROM {$prefix}scorehistory WHERE ranking_id NOT IN ( {$do_not_delete_these} )";
+			$sql = "DELETE FROM {$prefix}scorehistory 
+					WHERE ranking_id IN ( {$delete_these} ) AND ranking_id NOT IN ( {$do_not_delete_these} )";
 			$check = ( $wpdb->query( $sql ) !== false );
 		} elseif ( is_int( $ranking_id ) && $ranking_id > 0 ) {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE ranking_id = %d", $ranking_id );
@@ -889,41 +907,18 @@ class Football_Pool_Admin {
 		return $check;
 	}
 	
-	public function recalculate_scorehistory_iframe( $ranking_id = 0 ) {
-		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
-		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
-		if ( $ranking_id > 0 ) { // it's a single ranking calc
-			$url = add_query_arg( 'single_ranking', $ranking_id, $url );
-		}
-		
-		printf( '<script>
-					jQuery.colorbox( { 
-										iframe: true, 
-										href: "%s", 
-										overlayClose: false, 
-										escKey: false, 
-										arrowKey: false,
-										close: "%s",
-										innerWidth: "500px",
-										innerHeight: "250px",
-									} ); 
-				</script>'
-				, $url
-				, __( 'close', FOOTBALLPOOL_TEXT_DOMAIN )
-		);
+	private function recalculate_scorehistory_lightbox( $ranking_id = 0 ) {
+		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
+		echo "<script> calculate_score_history({$single_ranking}) </script>";
 	}
 	
 	private function recalculate_manual( $ranking_id = 0 ) {
-		$url = wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN );
-		if ( $ranking_id > 0 ) { // it's a single ranking calc
-			$url = add_query_arg( 'single_ranking', $ranking_id, $url );
-		}
+		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
 		
-		self::secondary_button( 
-			__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			$url, 
-			true, 
-			'link' 
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', "calculate_score_history({$single_ranking})" )
+								, false
+								, 'js-button' 
 		);
 	}
 	
@@ -933,7 +928,7 @@ class Football_Pool_Admin {
 														, 'int' );
 		
 		if ( $auto_calc == 1 || $force == 'force' ) {
-			self::recalculate_scorehistory_iframe( $ranking_id );
+			self::recalculate_scorehistory_lightbox( $ranking_id );
 		} else {
 			self::recalculate_manual( $ranking_id );
 		}
@@ -1000,8 +995,8 @@ class Football_Pool_Admin {
 			$attributes = $other_attributes;
 		}
 		
-		$action_val = "location.href='{$action_val}'";
-		$button = sprintf( '<input type="button" onclick="%s;%s" 
+		if ( $action_val != '' ) $action_val = "location.href='{$action_val}';";
+		$button = sprintf( '<input type="button" onclick="%s%s" 
 									class="button button-%s" value="%s" %s/>'
 							, $action_val
 							, $onclick_val

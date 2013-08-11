@@ -15,6 +15,7 @@ add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_cou
 add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
+add_shortcode( 'fp-matches', array( 'Football_Pool_Shortcodes', 'shortcode_matches' ) );
 
 // deprecated shortcodes
 add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
@@ -38,6 +39,42 @@ class Football_Pool_Shortcodes {
 		}
 		
 		return $the_date;
+	}
+	
+	//[fp-matches] 
+	//    Displays a matches table for a given collection of matches or match types. 
+	//    All arguments can be entered in the following formats (example for matches:
+	//        match 1               -> match="1"
+	//        matches 1 to 5        -> match="1-5"
+	//        matches 1, 3 and 6    -> match="1,3,6"
+	//        matches 1 to 5 and 10 -> match="1-5,10"
+	//    If an argument is left empty it is ignored.
+	//
+	//    match     : collection of match ids 
+	//    matchtype : collection of match type ids
+	public function shortcode_matches( $atts ) {
+		extract( shortcode_atts( array(
+					'match' => null,
+					'matchtype' => null,
+				), $atts ) );
+		
+		$output = '';
+		
+		$matches = new Football_Pool_Matches;
+		
+		// extract all ids from the arguments
+		$match_ids = Football_Pool_Utils::extract_ids( $match );
+		$matchtype_ids = Football_Pool_Utils::extract_ids( $matchtype );
+		// add all matches in the match types collection to the match_ids
+		$match_ids = array_merge( $match_ids, $matches->get_matches_for_match_type( $matchtype_ids ) );
+		
+		$the_matches = array();
+		foreach ( $matches->matches as $match ) {
+			if ( in_array( $match['id'], $match_ids ) ) $the_matches[] = $match;
+		}
+		
+		if ( count( $the_matches ) > 0 ) $output .= $matches->print_matches( $the_matches );
+		return $output;
 	}
 	
 	//[fp-predictions] 
@@ -279,7 +316,7 @@ class Football_Pool_Shortcodes {
 		if ( is_array( $texts ) && count( $texts ) == 4 ) {
 			$extra_text = "{'pre_before':'{$texts[0]}', 'post_before':'{$texts[1]}', 'pre_after':'{$texts[2]}', 'post_after':'{$texts[3]}'}";
 		} else {
-			$extra_text = 'footballpool_countdown_extra_text';
+			$extra_text = 'null';
 		}
 		
 		$year  = $countdown_date->format( 'Y' );
@@ -297,8 +334,8 @@ class Football_Pool_Shortcodes {
 		}
 		
 		$output .= "<script type='text/javascript'>
-					footballpool_do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
-					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', footballpool_countdown_time_text, {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
+					footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
+					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
 					</script>";
 		
 		return $output;

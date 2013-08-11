@@ -17,17 +17,14 @@ jQuery( document ).ready( function() {
 			html: function() {
 					return '<div class="ranking-log">' 
 							+ jQuery( 'div.ranking-log-summary', jQuery( this ).parent() ).html() 
-							+ jQuery( 'div.ranking-log-rest', jQuery( this ).parent() ).html() + '</div>';
+							+ jQuery( 'div.ranking-log-rest', jQuery( this ).parent() ).html() 
+							+ '</div>';
 				},
 			innerWidth: "600px",
 			innerHeight: "400px",
 		} );
 	} catch( err ) { }
 } );
-
-function close_calculation_iframe() {
-	jQuery( '#fp-calculation-iframe' ).hide( 'slow', function() { jQuery(this).remove() } );
-}
 
 function bulk_action_warning( id ) {
 	var bulk_select = jQuery( '#' + id );
@@ -278,6 +275,12 @@ function tinymce_insert_shortcode() {
 			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
 			if ( questions.length > 0 ) atts += ' question="' + questions.join( ',' ) + '"';
 			break;
+		case 'fp-matches':
+			var matches = jQuery( '#matches-match-id' ).val() || [];
+			var matchtypes = jQuery( '#matches-matchtype-id' ).val() || [];
+			if ( matches.length > 0 ) atts += ' match="' + matches.join( ',' ) + '"';
+			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
+			break;
 		default:
 			if ( selected_val == '' ) tinyMCEPopup.close();
 	}
@@ -302,3 +305,102 @@ function tinymce_insert_shortcode() {
 	return;
 }
 // end tinymce extension
+
+// score calculation handling
+function calculate_score_history() {
+	var post_data;
+	var data = arguments[0] || 0;
+	var ranking = arguments[1] || 0;
+	var ajax_action = 'footballpool_calculate_scorehistory';
+	
+	if ( data === 0 ) {
+		post_data = {
+			action: ajax_action,
+			fp_recalc_nonce: FootballPoolAjax.fp_recalc_nonce,
+			step: 0,
+			single_ranking: ranking,
+		}
+		
+		try {
+			var jqhxr = jQuery.post( ajaxurl, post_data, function( response ) {
+							jQuery.colorbox( { 
+												html: response.colorbox_html,
+												overlayClose: false, 
+												escKey: false, 
+												arrowKey: false,
+												close: FootballPoolAjax.colorbox_close,
+												innerWidth: "500px",
+												innerHeight: "250px",
+											} );
+							jQuery( "#cboxClose" ).hide();
+						}, 'json' )
+			.fail( function( jqXHR, textStatus, errorThrown ) { alert( "Error message:\n" + errorThrown ); } );
+		} catch( e ) {
+			alert( FootballPoolAjax.error_label + ":\n" + e );
+		}
+	} else {
+		if ( data === 1 ) {
+			// get data from the form in step 0
+			data = jQuery.parseJSON( jQuery( '#step-0-data' ).val() );
+			data.calculation_type = jQuery( 'input[name=calculation_type]:checked', '.calculation-type-select' ).val();
+			// hide the form and show the progress bar
+			jQuery( '#step-0-form' ).hide();
+			jQuery( '#progress' ).show();
+			jQuery( '#progressbar' ).progressbar( { max: 0 } );
+		}
+		
+		post_data = {
+			action: ajax_action,
+			fp_recalc_nonce: data.fp_recalc_nonce,
+			step: data.step,
+			sub_step: data.sub_step,
+			single_ranking: data.single_ranking,
+			ranking: data.ranking,
+			progress: data.progress,
+			total_steps: data.total_steps,
+			total_user_sets: data.total_user_sets,
+			total_users: data.total_users,
+			calculation_type: data.calculation_type,
+		}
+		
+		jQuery( '#ajax-loader' ).show();
+		try {
+			var jqhxr = jQuery.post( ajaxurl, post_data, function( response ) {
+							// update progress bar and status message
+							var bar = jQuery( '#progressbar' );
+							if ( bar.progressbar( 'option', 'max' ) == 0 ) {
+								bar.progressbar( 'option', 'max', response.total_steps );
+							}
+							bar.progressbar( 'option', 'value', response.progress );
+							jQuery( '#calculation-message' ).html( response.message );
+							
+							// continue or stop?
+							if ( response.error === false ) {
+								if ( response.step == 9 ) {
+									jQuery( '#ajax-loader' ).hide();
+									jQuery( '#cboxClose' ).show();
+									jQuery( '#button-calculate-single-ranking-' + response.single_ranking ).hide();
+									jQuery( '#log-ranking-' + response.single_ranking ).hide();
+								} else {
+									calculate_score_history( response );
+								}
+							} else {
+								score_calculation_error( response.error );
+							}
+						}, 'json' )
+			.fail( function( jqXHR, textStatus, errorThrown ) { score_calculation_error(); } );
+		} catch( e ) {
+			alert( FootballPoolAjax.error_label + ":\n" + e );
+		}
+	}
+}
+
+function score_calculation_error() {
+	var msg = arguments[0] || FootballPoolAjax.error_message;
+	jQuery( '#ajax-loader' ).hide();
+	jQuery( "#cboxClose" ).show();
+	jQuery( '#step-0-form' ).hide();
+	jQuery( '#progress' ).show();
+	jQuery( '#calculation-message' ).html( '<span class="error">' + msg + '</span>' );
+}
+// end score calculation handler

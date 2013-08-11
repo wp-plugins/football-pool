@@ -96,6 +96,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-matchtypes.php';
 	require_once 'admin/class-football-pool-admin-groups.php';
 	require_once 'admin/class-football-pool-admin-rankings.php';
+	require_once 'admin/class-football-pool-admin-score-calculation.php';
 	
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	// add_action( 'user_deleted', array( 'Football_Pool_Admin_Users', 'admin_notice' ) );
@@ -114,5 +115,11 @@ if ( is_admin() ) {
 	}
 	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );
 	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
+	add_action('wp_ajax_footballpool_calculate_scorehistory', array( 'Football_Pool_Admin_Score_Calculation', 'process' ) );
+}
+
+if ( FOOTBALLPOOL_ENABLE_DEBUG && defined( 'SAVE_QUERIES' ) && constant( 'SAVE_QUERIES' ) == true ) {
+	// save db queries to file
+	add_action( 'shutdown', array( 'Football_Pool_Utils', 'sql_logger' ) );
 }
 ?>

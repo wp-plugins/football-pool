@@ -354,18 +354,16 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		
 		$link = self::link_button( 
 					__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
-					, add_query_arg( 'single_ranking'
-									, '%d'
-									, wp_nonce_url( '?page=footballpool-options&amp;recalculate=yes'
-													, FOOTBALLPOOL_NONCE_ADMIN ) )
+					, array( '', 'calculate_score_history( 0, %d )' )
 					, false
+					, array( 'id' => 'button-calculate-single-ranking-%d' )
 				);
 		$rows = array();
 		foreach( $items as $item ) {
 			$rows[] = array(
 						$item['name'], 
-						$item['log'], 
-						( $item['log'] != '' ) ? sprintf( $link, $item['id'] ) : '', 
+						sprintf( '<div id="log-ranking-%d">%s</div>', $item['id'], $item['log'] ),
+						( $item['log'] != '' ) ? sprintf( $link, $item['id'], $item['id'] ) : '', 
 						// $item['active'], 
 						$item['id'],
 					);

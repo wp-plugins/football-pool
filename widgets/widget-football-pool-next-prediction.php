@@ -83,8 +83,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
 		echo "<script>
-				footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
-				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', footballpool_countdown_time_text, {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
+				footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
+				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
 				</script>";
 		if ( $teams->show_team_links ) {
 			$teampage = Football_Pool::get_page_link( 'teams' );
