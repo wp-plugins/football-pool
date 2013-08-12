@@ -163,7 +163,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 				}
 				
 				// $matchdate = new DateTime( $row['play_date'] );
-				// $localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+				// $localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 				// $localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 				// $localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 												// , $localdate->format( 'U' ) );

@@ -11,7 +11,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		$check = true;
 		$result = 0;
 		$output = '';
-
+		
 		// get step number and other parameters
 		$step = Football_Pool_Utils::post_int( 'step', 0 );
 		$sub_step = Football_Pool_Utils::post_int( 'sub_step', 1 );
@@ -199,9 +199,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			case 2:
 				// check predictions with actual match result (score type = 0)
 				$sql = "INSERT INTO {$prefix}scorehistory
-												( type, score_date, score_order, user_id
-												, score, full, toto, goal_bonus
-												, ranking, ranking_id )
+							( type, score_date, score_order, user_id, score, full, toto, goal_bonus
+							, ranking, ranking_id )
 						SELECT 
 							%d AS score_type, m.play_date AS score_date, m.id AS match_id, u.ID AS user_id, 
 							IF ( p.has_joker = 1, 2, 1 ) AS score,
@@ -335,6 +334,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 												, $ranking_id
 										);
 				} else {
+					$base_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
 					$sql_user_scores = sprintf( "SELECT s.* FROM {$prefix}scorehistory s
 												LEFT OUTER JOIN {$prefix}rankings_matches rm
 												  ON ( s.score_order = rm.match_id 
@@ -347,7 +347,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 												ORDER BY score_date ASC, type ASC, score_order ASC"
 												, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
 												, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
-												, FOOTBALLPOOL_RANKING_DEFAULT
+												, $base_ranking
 										);
 				}
 				
@@ -471,8 +471,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					}
 					$ranking_id = $wpdb->get_var( $sql );
 				}
-				// back to step 5 in case there are rankings left to be calculated
-				// (and not in single ranking mode), otherwise (re)calculation is finished.
+				// back to step 5 in case there are rankings left to be calculated (and not in single ranking mode),
+				// otherwise (re)calculation is finished.
 				$params['step'] = ( $ranking_id != null ) ? 5 : 8;
 				$params['ranking'] = $ranking_id;
 				break;

@@ -340,7 +340,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				if ( $value_type == 'text' || $value_type == 'string' ) {
 					$value = Football_Pool_Utils::post_string( $option[2] );
 				} elseif ( $value != '' && $value_type == 'date' || $value_type == 'datetime' ) {
-					$value = self::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
+					$value = Football_Pool_Utils::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
 				} elseif ( $value_type == 'integer array' ) {
 					$value = Football_Pool_Utils::post_integer_array( $option[2] );
 				} elseif ( $value_type == 'string array' ) {

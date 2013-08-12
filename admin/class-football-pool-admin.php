@@ -414,16 +414,6 @@ class Football_Pool_Admin {
 			</tr>';
 	}
 	
-	// accepts a date in Y-m-d H:i format and changes it to UTC
-	public function gmt_from_date( $date_string ) {
-		return Football_Pool_Utils::gmt_from_date( $date_string );
-	}
-	
-	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
-	public function date_from_gmt( $date_string ) {
-		return Football_Pool_Utils::date_from_gmt( $date_string );
-	}
-	
 	// helper function for the date_time input. 
 	// returns the combined date(time) string from the individual inputs
 	public function make_date_from_input( $input_name, $type = 'datetime' ) {
@@ -445,7 +435,7 @@ class Football_Pool_Admin {
 									, $depends_on = '' ) {
 		if ( $value != '' ) {
 			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
-			$date = new DateTime( self::date_from_gmt ( $value ) );
+			$date = new DateTime( Football_Pool_Utils::date_from_gmt ( $value ) );
 			$year = $date->format( 'Y' );
 			$month = $date->format( 'm' );
 			$day = $date->format( 'd');

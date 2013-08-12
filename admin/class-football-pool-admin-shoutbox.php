@@ -67,7 +67,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$message = self::get_message( $id );
 		if ( $message && $id > 0 ) {
 			$values = $message;
-			$values['shout_date'] = self::date_from_gmt( $values['shout_date'] );
+			$values['shout_date'] = Football_Pool_Utils::date_from_gmt( $values['shout_date'] );
 		}
 		$cols = array(
 					array( 'no_input', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['user_name'], '' ),
@@ -104,7 +104,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 			$rows[] = array(
 						$message['user_name'], 
 						$message['shout_text'],
-						self::date_from_gmt( $message['shout_date'] ),
+						Football_Pool_Utils::date_from_gmt( $message['shout_date'] ),
 						$message['id']
 					);
 		}

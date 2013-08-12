@@ -527,7 +527,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		$matchdate = new DateTime( $values['date'] );
 		$matchdate = $matchdate->format( 'Y-m-d H:i' );
-		$matchdate_local = self::date_from_gmt( $matchdate );
+		$matchdate_local = Football_Pool_Utils::date_from_gmt( $matchdate );
 		$cols = array(
 					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_date', $matchdate, sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ),
 					array( 'dropdown', __( 'home team', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_team_id', $values['home_team_id'], $teams, '' ),
@@ -600,7 +600,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			}
 			
 			$matchdate = new DateTime( $row['play_date'] );
-			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+			$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 											, $localdate->format( 'U' ) );

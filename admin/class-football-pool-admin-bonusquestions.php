@@ -283,8 +283,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				$rows[] = array(
 							$question['question'], 
 							$question['points'], 
-							self::date_from_gmt( $question['answer_before_date'] ), 
-							self::date_from_gmt( $question['score_date'] ), 
+							Football_Pool_Utils::date_from_gmt( $question['answer_before_date'] ), 
+							Football_Pool_Utils::date_from_gmt( $question['score_date'] ), 
 							$question['answer'],
 							$question['id']
 						);
@@ -333,8 +333,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'question' ),
 						Football_Pool_Utils::post_string( 'answer' ),
 						Football_Pool_Utils::post_int( 'points' ),
-						self::gmt_from_date( self::make_date_from_input( 'lastdate' ) ),
-						self::gmt_from_date( self::make_date_from_input( 'scoredate' ) ),
+						Football_Pool_Utils::gmt_from_date( self::make_date_from_input( 'lastdate' ) ),
+						Football_Pool_Utils::gmt_from_date( self::make_date_from_input( 'scoredate' ) ),
 						Football_Pool_Utils::post_int( 'type', 1 ),
 						Football_Pool_Utils::post_string( 'options' ),
 						Football_Pool_Utils::post_string( 'image' ),
