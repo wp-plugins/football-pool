@@ -1,7 +1,7 @@
 <?php
 /**
- * Based on Empty Widget template
- * https://gist.github.com/1229641
+ * Based on a prehistoric version of the Empty Widget template (https://gist.github.com/1229641), 
+ * nowadays a more powerful widget plugin, but I haven't had time to look into its new features yet :)
  */
 
 /**
@@ -179,6 +179,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 			if ( isset( $field['id'] ) && array_key_exists( $field['id'], $instance ) ) {
 				@$meta = attribute_escape( $instance[ $field['id'] ] );
 			}
+			
 			if ( $field['type'] != 'custom' && $field['type'] != 'metabox' ) {
 				echo '<p><label for="', $this->get_field_id(  $field['id'] ), '">';
 			}

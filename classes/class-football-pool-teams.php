@@ -23,7 +23,7 @@ class Football_Pool_Teams {
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-//@todo: extra testing
+		//@TODO: extra testing
 		$sql = $wpdb->prepare( "SELECT 
 									t.id, t.name, t.photo, t.flag, t.link, g.id AS group_id, 
 									g.name AS group_name, t.group_order, 

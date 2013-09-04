@@ -122,27 +122,32 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</tr>
 		</table>
 		
-		<h3>The golden ball</h3>
+		<h3>The golden ball (joker)</h3>
 		<p>
 		A player in the pool gets <strong>one</strong> golden ball. This golden ball can be placed next to a match to double the points for that match.<br />
 		The golden ball may be placed and/or moved to other matches as long the matches are still changeable. A golden ball is activated at the moment the match it is placed on is no longer changeable. And once activated the golden ball cannot be moved.
 		</p>
+		<p>The plugin has an option on the settings page to disable the golden ball functionality.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="rankings">Rankings & Scoring</h2>
 		<p>
-		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
+		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (this is called the default ranking). <br />
 		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). If you want to use this feature make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions; this is the ranking definition. The custom rankings can be used with the ranking shortcode, in a ranking widget or on the ranking and charts page.
 		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
 		<h3>Ranking calculation</h3>
-		<p>By default all rankings will be automatically (re)calculated when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a> and do a manual recalculation when you're finished editing.
+		<p>By default an admin will be automatically notified for a (re)calculation of the rankings when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a> and do a manual recalculation when you're finished editing.
 		</p>
 		<div class="help important">
-			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So, once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
+			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So, once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for the ranking calculations to finish.</p>
 		</div>
+		<h3>Smart vs. full vs. single calculations</h3>
+		<p>The plugin has 3 different kind of recalculations. The easiest to explain is the full calculation: everything is recalculated. If you have a small competition (e.g. World Cup), one ranking and not too many users (say 50 to 100) you can use this calculation. Success guaranteed, when in doubt, use this one.</p>
+		<p>A smart calculation keeps track of changes you make in the plugin that might affect a ranking. For example: if you change the score or date for a match, this will affect rankings that include this match, or if you add users this will affect all rankings. When doing a smart calculation only the ranking that are marked as 'should get an update' will be recalculated. Always including the default ranking, that one is the base ranking and will always be updated in a smart recalculation. On the rankings admin page you can see which rankings will be updated.</p>
+		<p>A single ranking can be done on the ranking admin page. Only this ranking will be updated. Nothing else.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
@@ -194,7 +199,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<h3>csv file import</h3>
 		<p>
-		The csv file can be uploaded in one of the following formats:
+		The csv file (must be in <a href="http://superuser.com/questions/479756/eol-in-notepad-and-notepad" title="tip: use Notepad++ to convert to the correct EOL format">UNIX or Windows/DOS EOL format</a>) can be uploaded in one of the following formats:
 		<ol>
 			<li>minimal data (only the basic information about teams);</li>
 			<li>full data (all information).</li>
@@ -471,10 +476,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
 				<td></td>
 			</tr>
+			<tr class="alternate">
+				<td class="row-title">show_num_predictions</td>
+				<td>If set to true also the number of predictions a user saved (matches and answers to questions) is shown in the ranking.</td>
+				<td>1 = true<br/>0 = false</td>
+				<td>depends on the 'Show number of predictions?' setting on the <a href="?page=footballpool-options">options page</a></td>
+			</tr>
 		</table>
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-ranking num=5 ranking=4]</span><br />
+		<span class="code">[fp-ranking num=5 show_num_predictions=1]</span><br />
 		<span class="code">[fp-ranking num=5 date="postdate"]</span><br />
 		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />

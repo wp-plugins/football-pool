@@ -176,20 +176,20 @@ function match_options() {
 			</tr>
 			<tr class="tr-ranking">
 				<td>
+					<label for="ranking-show-num-predictions"><?php _e( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<input type="checkbox" id="ranking-show-num-predictions" <?php echo ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 ? 'checked="checked" ' : '' ); ?>/>
+				</td>
+			</tr>
+			<tr class="tr-ranking">
+				<td>
 					<label><a href="//php.net/manual/en/function.date.php" title="<?php _e( 'information about PHP\'s date format', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" target="_blank"><?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
 				</td>
 				<td>
-					<label><input type="radio" id="ranking-date-now" name="ranking-date" value="now" checked="checked" onclick="toggle_linked_radio_options( '', '#tr-ranking-date' )" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="ranking-date-postdate" name="ranking-date" value="postdate" onclick="toggle_linked_radio_options( '', '#tr-ranking-date' )" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="ranking-date-custom" name="ranking-date" value="custom" onclick="toggle_linked_radio_options( '#tr-ranking-date', '' )" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-				</td>
-			</tr>
-			<tr id="tr-ranking-date" class="tr-ranking-date atts">
-				<td>
-					<label></label>
-				</td>
-				<td>
-					<span style="padding-left:24px"><input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" /></span>
+					<label><input type="radio" id="ranking-date-now" name="ranking-date" value="now" checked="checked" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="ranking-date-postdate" name="ranking-date" value="postdate" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="ranking-date-custom" name="ranking-date" value="custom" onclick="jQuery( '#ranking-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#ranking-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
 			<tr class="tr-user-predictions atts">
@@ -282,17 +282,9 @@ function match_options() {
 					<label><a href="//php.net/manual/en/function.date.php" title="<?php _e( 'information about PHP\'s date format', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" target="_blank"><?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
 				</td>
 				<td>
-					<label><input type="radio" id="user-score-date-now" name="user-score-date" value="now" checked="checked" onclick="toggle_linked_radio_options( '', '#tr-user-score-date' )" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="user-score-date-postdate" name="user-score-date" value="postdate" onclick="toggle_linked_radio_options( '', '#tr-user-score-date' )" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="user-score-date-custom" name="user-score-date" value="custom" onclick="toggle_linked_radio_options( '#tr-user-score-date', '' )" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-				</td>
-			</tr>
-			<tr id="tr-user-score-date" class="tr-user-score atts">
-				<td>
-					<label></label>
-				</td>
-				<td>
-					<span style="padding-left:24px"><input type="text" id="user-score-date-custom-value" placeholder="Y-m-d H:i" /></span>
+					<label><input type="radio" id="user-score-date-now" name="user-score-date" value="now" checked="checked" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-postdate" name="user-score-date" value="postdate" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-custom" name="user-score-date" value="custom" onclick="jQuery( '#user-score-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="user-score-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#user-score-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
 			<tr class="tr-group atts">

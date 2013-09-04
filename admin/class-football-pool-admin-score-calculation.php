@@ -155,7 +155,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 										, FOOTBALLPOOL_RANKING_CALCULATION_SMART
 										, ( $calculation_type_preference == FOOTBALLPOOL_RANKING_CALCULATION_SMART ? 'checked="checked" ' : '' )
 										, __( 'Smart calculation', FOOTBALLPOOL_TEXT_DOMAIN )
-										, __( 'A smart calculation tries to determine which rankings need an update. A smart calculation is faster than a full calculation.', FOOTBALLPOOL_TEXT_DOMAIN )
+										, __( 'A smart calculation tries to determine which rankings need an update. A smart calculation will in most cases be faster than a full calculation.', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 					$output .= sprintf( '<label><input type="radio" name="calculation_type" value="%s" %s/>%s<br /><span>%s</span></label>'
 										, FOOTBALLPOOL_RANKING_CALCULATION_FULL

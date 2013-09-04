@@ -19,7 +19,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	
 	public function admin() {
 		$action = Football_Pool_Utils::post_string( 'action' );
-		
 		$date = date_i18n( 'Y-m-d H:i' );
 		
 		$match_time_offsets = array();
@@ -72,7 +71,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		// definition of all configurable options
 		$options = array(
-						//array( 'text', __( 'Remove data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'remove_data_on_uninstall', __( '', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'keep_data_on_uninstall' =>
+							array( 'checkbox', __( 'Keep data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'keep_data_on_uninstall', __( 'If checked the options and pool data (teams, matches, predictions, etc.) are not removed when deactivating the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'webmaster' => 
 							array( 'text', __( 'Webmaster', FOOTBALLPOOL_TEXT_DOMAIN ), 'webmaster', __( 'This value is used for the shortcode [fp-webmaster].', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'money' => 
@@ -268,30 +268,30 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								'',
 								$ranking_switch,
 							),
-						'prediction_type' =>
-							array( 
-								'radiolist', 
-								__( 'Prediction type', FOOTBALLPOOL_TEXT_DOMAIN ), 
-								'prediction_type', 
-								array( 
-									array( 'value' => 0, 'text' => __( 'Scores', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-									array( 'value' => 1, 'text' => __( 'Match winner', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-								),
-								__( 'Select the prediction method for matches. Possible choices are \'Scores\' for the prediction of the match result in goals/points and \'Match winner\' for picking the winner of the match', FOOTBALLPOOL_TEXT_DOMAIN ),
-								array(
-									'onclick="toggle_linked_radio_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
-									'onclick="toggle_linked_radio_options( \'#r-prediction_type_draw\', null )"',
-								),
-							),
-						'prediction_type_draw' => 
-							array( 
-								'checkbox', 
-								__( 'Include \'Draw\' as prediction option', FOOTBALLPOOL_TEXT_DOMAIN ), 
-								'prediction_type_draw', 
-								__( 'If checked users may also predict a draw as outcome of a match. If unchecked only home team and away team are selectable options.', FOOTBALLPOOL_TEXT_DOMAIN ),
-								'',
-								array( 'prediction_type' => 0 )
-							),
+						// 'prediction_type' =>
+							// array( 
+								// 'radiolist', 
+								// __( 'Prediction type', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								// 'prediction_type', 
+								// array( 
+									// array( 'value' => 0, 'text' => __( 'Scores', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									// array( 'value' => 1, 'text' => __( 'Match winner', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+								// ),
+								// __( 'Select the prediction method for matches. Possible choices are \'Scores\' for the prediction of the match result in goals/points and \'Match winner\' for picking the winner of the match', FOOTBALLPOOL_TEXT_DOMAIN ),
+								// array(
+									// 'onclick="toggle_linked_radio_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
+									// 'onclick="toggle_linked_radio_options( \'#r-prediction_type_draw\', null )"',
+								// ),
+							// ),
+						// 'prediction_type_draw' => 
+							// array( 
+								// 'checkbox', 
+								// __( 'Include \'Draw\' as prediction option', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								// 'prediction_type_draw', 
+								// __( 'If checked users may also predict a draw as outcome of a match. If unchecked only home team and away team are selectable options.', FOOTBALLPOOL_TEXT_DOMAIN ),
+								// '',
+								// array( 'prediction_type' => 0 )
+							// ),
 						'team_points_win' => 
 							array( 'text', __( 'Points for win *', FOOTBALLPOOL_TEXT_DOMAIN ), 'team_points_win', __( 'The points a team gets for a win.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'team_points_draw' => 
@@ -308,6 +308,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							// array( 'text', __( 'Number of jokers *', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'number_of_jokers' => 
 							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'When checked the joker is enabled and users can add the joker to one prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'show_num_predictions_in_ranking' => 
+							array( 'checkbox', __( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_num_predictions_in_ranking', __( 'When checked the number of predictions (matches and questions) a user saved is shown on the ranking page. This setting also effects the default value for the ranking widget and the ranking shortcode (but can be changed with their parameters).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -339,7 +341,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				
 				if ( $value_type == 'text' || $value_type == 'string' ) {
 					$value = Football_Pool_Utils::post_string( $option[2] );
-				} elseif ( $value != '' && $value_type == 'date' || $value_type == 'datetime' ) {
+				} elseif ( $value_type == 'date' || $value_type == 'datetime' ) {
 					$value = Football_Pool_Utils::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
 				} elseif ( $value_type == 'integer array' ) {
 					$value = Football_Pool_Utils::post_integer_array( $option[2] );
@@ -394,8 +396,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['prediction_type'],
-									$options['prediction_type_draw'],
+									// $options['prediction_type'],
+									// $options['prediction_type_draw'],
 									$options['stop_time_method_matches'],
 									$options['maxperiod'],
 									$options['matches_locktime'],
@@ -433,6 +435,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::options_form( array( 
 									$options['ranking_display'],
 									$options['show_ranking'],
+									$options['show_num_predictions_in_ranking'],
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],
@@ -456,8 +459,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['dashboard_image'], 
 									$options['use_favicon'],
 									$options['use_touchicon'], 
-									$options['hide_admin_bar'], 
-									$options['add_tinymce_button'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );
@@ -481,6 +482,15 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		submit_button( null, 'primary', null, true );
 				
+		self::admin_sectiontitle( __( 'Advanced Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['hide_admin_bar'], 
+									$options['add_tinymce_button'], 
+									$options['keep_data_on_uninstall'],
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		
 		self::admin_footer();
 	}
 }

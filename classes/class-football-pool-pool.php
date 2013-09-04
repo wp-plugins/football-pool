@@ -214,15 +214,69 @@ class Football_Pool_Pool {
 		return $rows;
 	}
 	
+	public function get_prediction_count_per_user( $users, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( is_array( $users ) && count( $users ) > 0 ) {
+			$num_predictions = array();
+			$users = implode( ',', $users );
+			
+			// matches
+			if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
+				$sql = "SELECT user_id, COUNT(*) AS num_predictions 
+						FROM {$prefix}predictions
+						WHERE user_id IN ( {$users} ) GROUP BY user_id";
+			} else {
+				$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
+						FROM {$prefix}predictions p
+						JOIN {$prefix}rankings_matches r 
+							ON ( r.match_id = p.match_id AND r.ranking_id = {$ranking_id} ) 
+						WHERE p.user_id IN ( {$users} ) GROUP BY p.user_id";
+			}
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			foreach ( $rows as $row ) {
+				$num_predictions[$row['user_id']] = $row['num_predictions'];
+			}
+			
+			// questions
+			if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
+				$sql = "SELECT user_id, COUNT(*) AS num_predictions 
+						FROM {$prefix}bonusquestions_useranswers
+						WHERE user_id IN ( {$users} ) GROUP BY user_id";
+			} else {
+				$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
+						FROM {$prefix}bonusquestions_useranswers p
+						JOIN {$prefix}rankings_bonusquestions r 
+							ON ( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
+						WHERE p.user_id IN ( {$users} ) GROUP BY p.user_id";
+			}
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			foreach ( $rows as $row ) {
+				if ( array_key_exists( $row['user_id'], $num_predictions) ) {
+					$num_predictions[$row['user_id']] += $row['num_predictions'];
+				}
+			}
+			
+			// return resulting array of user ids with their total number of predictions
+			return $num_predictions;
+		} else {
+			return false;
+		}
+	}
+	
 	public function print_pool_ranking( $league, $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$output = '';
 		
 		$rows = $this->get_pool_ranking( $league, $ranking_id );
-		$ranking = array();
+		$ranking = $users = array();
 		if ( count( $rows ) > 0 ) {
 			// there are results in the database, so get the ranking
 			foreach ( $rows as $row ) {
 				$ranking[] = $row;
+				$users[] = $row['user_id'];
 			}
 		} else {
 			// no results, show a list of users
@@ -231,6 +285,7 @@ class Football_Pool_Pool {
 				$output .= '<p>' . __( 'No results yet. Below is a list of all users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 				foreach ( $rows as $row ) {
 					$ranking[] = $row;
+					$users[] = $row['user_id'];
 				}
 			} else {
 				$output .= '<p>'. __( 'No users have registered for this pool (yet).', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
@@ -238,19 +293,47 @@ class Football_Pool_Pool {
 		}
 		
 		if ( count( $ranking ) > 0 ) {
+			// get number of predictions per user if option is set
+			$show_num_predictions = ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 );
+			if ( $show_num_predictions ) {
+				$predictions = $this->get_prediction_count_per_user( $users, $ranking_id );
+			}
+			
 			$userpage = Football_Pool::get_page_link( 'user' );
 			$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
 			$i = 1;
 			
 			$output .= '<table class="pool-ranking ranking-page">';
+			if ( $show_num_predictions ) {
+				$output .= sprintf( '<tr>
+										<th></th>
+										<th class="user">%s</th>
+										<th class="num-predictions">%s</th>
+										<th class="score">%s</th>
+										%s</tr>'
+									, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
+									, ( $all_user_view ? '<th></th>' : '' )
+							);
+			}
 			foreach ( $ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
 				if ( $all_user_view ) $class .= ' league-' . $row['league_id'];
 				if ( $row['user_id'] == $user ) $class .= ' currentuser';
+				if ( $show_num_predictions ) {
+					if ( array_key_exists( $row['user_id'], $predictions ) ) {
+						$num_predictions = $predictions[$row['user_id']];
+					} else {
+						$num_predictions = 0;
+					}
+					$num_predictions = sprintf( '<td class="num-predictions">%d</td>', $num_predictions );
+				} else {
+					$num_predictions = '';
+				}
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
 									<td><a href="%s">%s%s</a>%s</td>
-									<td>%d</td>
-									%s
+									%s<td class="ranking score">%d</td>%s
 									</tr>',
 								$class,
 								$i++,
@@ -258,6 +341,7 @@ class Football_Pool_Pool {
 								$this->get_avatar( $row['user_id'], 'medium' ),
 								$row['user_name'],
 								Football_Pool::user_name( $row['user_id'], 'label' ),
+								$num_predictions,
 								$row['points'],
 								( $all_user_view ? $this->league_image( $row['league_id'] ) : '' )
 							);
@@ -547,7 +631,7 @@ class Football_Pool_Pool {
 		
 		if ( $type == 'select' ) {
 			// dropdown
-			// @todo: bonus question select/dropdown
+			// @TODO: bonus question select/dropdown
 			$output .= '<select name=""></select>';
 		} else {
 			// radio or checkbox
@@ -573,7 +657,7 @@ class Football_Pool_Pool {
 						$brackets = '[]';
 						$user_input = '';
 					} else {
-						// @todo: very hacky (and therefore undocumented) feature of adding a text input
+						// @TODO: change this very hacky (and therefore undocumented) feature of adding a text input
 						//        after a radio input
 						if ( substr( $option, -2 ) == '[]' ) {
 							$js = '';
@@ -658,7 +742,7 @@ class Football_Pool_Pool {
 							$question['id'],
 							__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
-			$output .= ( $question['answer'] != '' ? $question['answer'] : '...' );
+			$output .= ( $question['answer'] != '' ? $question['answer'] : '<span class="no-answer"></span>' );
 			$output .= '</p>';
 			
 			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',

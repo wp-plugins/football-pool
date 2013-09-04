@@ -30,6 +30,15 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
+	public function screen_options() {
+		$args = array(
+			'label' => __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ),
+			'default' => 20,
+			'option' => 'users_per_page'
+		);
+		add_screen_option( 'per_page', $args );
+	}
+	
 	public function admin() {
 		self::admin_header( sprintf( '%s %s'
 									, __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -56,6 +65,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		
 		switch ( $action ) {
+			case 'list_email':
+				$users = self::get_users();
+				self::list_email_addresses( $users );
+				self::primary_button( __( 'Back', FOOTBALLPOOL_TEXT_DOMAIN ), '', true );
+				break;
 			case 'save':
 				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				self::update();
@@ -93,16 +107,16 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				break;
 		}
 		
-		if ( $action != 'list' ) {
+		if ( in_array( $action, array( 'add', 'remove', 'save' ) ) ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			self::update_score_history();
 		}
 		
-		self::view();
+		if ( $action != 'list_email' ) self::view();		
 		self::admin_footer();
 	}
 	
-	private function get_users() {
+	private function get_users( $offset = 0, $number = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$pool = new Football_Pool_Pool;
@@ -119,7 +133,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$excluded_players[] = $user['user_id'];
 		}
 		
-		$users = get_users( 'orderby=ID&order=ASC' );
+		$search_string = "orderby=ID&order=ASC";
+		if ( $number > 0 ) $search_string .= "&offset={$offset}&number={$number}";
+		
+		$users = get_users( $search_string );
+		
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
 			if ( array_key_exists( $league_id, $pool->leagues ) ) {
@@ -150,9 +168,19 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	}
 
 	private function view() {
+		global $wpdb;
 		$pool = new Football_Pool_Pool;
 		$has_leagues = $pool->has_leagues;
-		$users = self::get_users();
+		
+		$num_users = $wpdb->get_var( "SELECT COUNT( * ) FROM {$wpdb->users}" );
+		$pagination = new Football_Pool_Pagination( $num_users );
+		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
+		
+		// @TODO: add user search
+		$users = self::get_users( 
+									( $pagination->current_page - 1 ) * $pagination->get_page_size(),
+									$pagination->get_page_size() 
+								);
 		
 		$cols = array();
 		$cols[] = array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' );
@@ -165,7 +193,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$cols[] = array( 'checkbox', __( 'payed?', FOOTBALLPOOL_TEXT_DOMAIN ), 'payed_for_pool', '' );
 
 		$rows = array();
+		$user_list = array();
 		foreach( $users as $user ) {
+			$user_list[] = $user['id'];
 			$temp = array();
 			$temp[] = $user['name'];
 			if ( $has_leagues ) {
@@ -179,16 +209,19 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			
 			$rows[] = $temp;
 		}
-
+		
 		$rowactions[] = array( 'add', __( 'Add', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$rowactions[] = array( 'remove', __( 'Remove', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$bulkactions[] = array( 'add', __( 'Add to football pool', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to add one or more users to the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$bulkactions[] = array( 'remove', __( 'Remove from football pool', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to remove one or more users from the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 		
+		self::list_table( $cols, $rows, $bulkactions, $rowactions, $pagination );
+		
+		self::hidden_input( 'user_list', implode( ',', $user_list ) );
 		submit_button();
 		
-		self::list_email_addresses( $users );
+		// self::list_email_addresses( $users );
+		self::secondary_button( __( 'List player email addresses', FOOTBALLPOOL_TEXT_DOMAIN ), 'list_email', true );
 	}
 
 	private function list_email_addresses( $users ) {
@@ -227,7 +260,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$has_leagues = $pool->has_leagues;
 		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'int' );
 		
-		$users = get_users();
+		$user_list = Football_Pool_Utils::post_string( 'user_list', 0 );
+		$users = get_users( "include={$user_list}" );
 		foreach ( $users as $user ) {
 			$payed = Football_Pool_Utils::post_integer( 'payed_for_pool_' . $user->ID );
 			update_user_meta( $user->ID, 'footballpool_payed', $payed );
@@ -292,7 +326,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 
 		// @TODO: log a recalculation for a ranking if applicable?
-		//        check predictions and bonusquestions an look them up in the rankings table.
+		//        check predictions and bonusquestions and look them up in the rankings table.
 		
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
@@ -317,8 +351,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
-	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
-		parent::bulk_actions( $bulkactions, 'action' );
+	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {
+		parent::bulk_actions( $bulkactions, 'action', $pagination );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed user-list'>";
 		parent::list_table_def( $cols, 'head' );
 		parent::list_table_def( $cols, 'foot' );
@@ -337,7 +371,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			case 'select':
 				$pool = new Football_Pool_Pool;
 				$output = $pool->league_select( $value, $name );
-				//@todo: make a generic method that can be used with different data-sources for the select
+				// @TODO: make a generic method that can be used with different data-sources for the select
 				// if ( is_array( $source ) && count( $source ) > 0 ) {
 					// $output = '<select></select>';
 				// } else {

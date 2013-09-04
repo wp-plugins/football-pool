@@ -2,23 +2,51 @@
 class Football_Pool_Admin {
 	
 	public function adminhook_suffix() {
+		// for debugging
 		global $hook_suffix;
 		echo "<!-- admin hook for current page is: {$hook_suffix} -->";
+	}
+	
+	public function set_screen_options( $status, $option, $value ) {
+		return $value;
+	}
+	
+	public function get_screen_option( $option, $type = 'int' ) {
+		$default_value = false;
+		$screen = get_current_screen();
+		
+		$screen_option = $screen->get_option( $option, 'option' );
+		$option_value = get_user_meta( get_current_user_id(), $screen_option, true );
+		
+		$default_value = empty ( $option_value );
+		if ( ! $default_value && $type == 'int' ) $option_value = (int) $option_value;
+		
+		if ( $default_value ) $option_value = $screen->get_option( $option, 'default' );
+		
+		return $option_value;
 	}
 	
 	private function add_submenu_page( $parent_slug, $page_title, $menu_title
 									, $capability, $menu_slug, $class, $toplevel = false ) {
 		if ( is_array( $class ) ) {
-			$function = $class;
-			$help_class = $class[0];
+			$function = array( $class, 'admin' );
+			$help_class = $screen_options_class = $class['help'];
 		} else {
 			$function = array( $class, 'admin' );
-			$help_class = $class;
+			$help_class = $screen_options_class = $class;
 		}
 		
-		$menu_level = $toplevel ? 'toplevel' : 'football-pool';
-		add_action( "admin_head-{$menu_level}_page_{$menu_slug}", array( $help_class, 'help' ) );
-		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+		$hook = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+		
+		// help tab
+		if ( method_exists( $help_class, 'help' ) ) {
+			$menu_level = $toplevel ? 'toplevel' : 'football-pool';
+			add_action( "admin_head-{$menu_level}_page_{$menu_slug}", array( $help_class, 'help' ) );
+		}
+		// screen options
+		if ( $hook && method_exists( $screen_options_class, 'screen_options' ) ) {
+			add_action( "load-{$hook}", array( $screen_options_class, 'screen_options' ) );
+		}
 	}
 	
 	public function init() {
@@ -434,8 +462,12 @@ class Football_Pool_Admin {
 	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
 									, $depends_on = '' ) {
 		if ( $value != '' ) {
-			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
-			$date = new DateTime( Football_Pool_Utils::date_from_gmt ( $value ) );
+			if ( is_object( $value ) ) {
+				$date = $value;
+			} else {
+				//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
+				$date = new DateTime( Football_Pool_Utils::date_from_gmt ( $value ) );
+			}
 			$year = $date->format( 'Y' );
 			$month = $date->format( 'm' );
 			$day = $date->format( 'd');
@@ -709,9 +741,10 @@ class Football_Pool_Admin {
 		echo '</form></div>';
 	}
 	
-	public function bulk_actions( $actions, $name = 'action' ) {
+	public function bulk_actions( $actions, $name = 'action', $pagination = false ) {
+		echo '<div class="tablenav top">';
 		if ( count($actions) > 0 ) {
-			echo '<div class="tablenav top"><div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
+			echo '<div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
 			echo '<option selected="selected" value="-1">Bulk Actions</option>';
 			foreach ( $actions as $action ) {
 				printf( '<option value="%s" bulk-msg="%s">%s</option>'
@@ -721,12 +754,17 @@ class Football_Pool_Admin {
 				);
 			}
 			echo "</select><input onclick=\"return bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
-			echo '</div><br class="clear"></div>';
+			echo '</div>';
 		}
+		
+		if ( is_object( $pagination ) ) {
+			$pagination->show();
+		}
+		echo '<br class="clear"></div>';
 	}
 	
-	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
-		self::bulk_actions( $bulkactions, 'action' );
+	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {
+		self::bulk_actions( $bulkactions, 'action', $pagination );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
 		self::list_table_def( $cols, 'head' );
 		self::list_table_def( $cols, 'foot' );
@@ -1093,5 +1131,11 @@ class Football_Pool_Admin {
 		return $translated_text;
 	}
 	
+	public function example_date( $gmt = 'false', $offset = -1 ) {
+		if ( $offset == -1 ) $offset = 14 * 24 * 60 * 60;
+		$date = date( 'Y-m-d 18:00', time() + $offset );
+		if ( $gmt == 'gmt' ) $date = Football_Pool_Utils::gmt_from_date( $date );
+		return $date;
+	}
 }
 ?>

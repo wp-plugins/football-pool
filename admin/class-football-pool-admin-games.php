@@ -137,7 +137,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			}
 			
 			// check the columns
-			$full_data = ( count( $header ) != 5 ) ? true : false;
+			$full_data = ( count( $header ) > 5 ) ? true : false;
 			if ( $full_data ) {
 				$column_names = explode(
 									FOOTBALLPOOL_CSV_DELIMITER,	'play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo'
@@ -247,7 +247,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					}
 				}
 			} else {
-				$err[] = sprintf( __( 'Imported csv file should contain %d columns. See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $column_names ) );
+				$column_count = count( $column_names );
+				$header_count = count( $header );
+				$err[] = sprintf( __( 'Imported csv file should contain %d columns (header contains %d columns). See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), $column_count, $header_count );
 			}
 		} else {
 			if ( $file == '' ) 

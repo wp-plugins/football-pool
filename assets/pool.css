@@ -254,3 +254,11 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 }
 .prediction-table-questions td.correct { background-image: url('images/site/correct.png'); }
 .prediction-table-questions td.wrong { background-image: url('images/site/wrong.png'); }
+.prediction-table-questions.statistics { width: 390px; }
+
+p.bonus .no-answer:after { 
+	content: '...';
+	font-weight: normal;
+}
+
+td.num-predictions, td.ranking.score { text-align: right; }

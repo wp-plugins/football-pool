@@ -11,9 +11,9 @@ This plugin adds a fantasy sports pool to your blog. Play against other users, p
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. **Please note that deactivating this plugin also destroys all your pool data** (like predictions, scores and comments on pages that this plugin created). So if you want to keep those, make sure you have a back-up of the database.
+This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin also deletes all the plugin's data from the database (by default), but you may choose to keep the data by setting the 'keep data on uninstall' option on the settings page.
 
-I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship en World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
+I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship and World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
 **Features**
 
@@ -27,8 +27,7 @@ I originally coded this pool in PHP as a standalone site for the UEFA 2000 champ
 * Use the built in pages and/or shortcodes to add the pool to your blog.
 * Use different leagues for your users (optional).
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
-* Widgets: ranking of your players, last matches, shoutbox, group tournament standing, login button.
-* Shortcodes: add a ranking in a post, add game schedule in a post, show a group standing, countdown (e.g. to the first match of the tournament), show a prediction form for a subset of matches or bonus questions, easy integration of some configuration options in your content (e.g. points).
+* Several widgets and shortcodes to display info from the championship or the pool.
 * Extra info pages for venues and teams.
 
 **Translations**
@@ -37,7 +36,7 @@ At the moment the plugin is available in English, Dutch, Spanish, French and (pa
 
 **Other things**
 
-* This plugin requires PHP 5.2 or higher and jQuery 1.4.3 or higher. 
+* This plugin requires WordPress 3.3 or higher, PHP 5.2 or higher and jQuery 1.4.3 or higher.
 * If you want to use the charts feature, please download the Highcharts API from http://www.highcharts.com/download (see "Installation" or Help page in the WordPress admin for details).
 
 If you find bugs, please contact me via the <a href="http://wordpress.org/support/plugin/football-pool">support forum</a>, or at wordpressfootballpool [at] gmail [dot] com. If you like the plugin, please rate it on the <a href="http://wordpress.org/extend/plugins/football-pool/">plugin page</a> on WordPress.org.
@@ -112,6 +111,7 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
+* Danish (`da_DK`) by Morten Bilberg Rasmussen.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher.
 * Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
@@ -153,16 +153,19 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.3.0 =
+* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
+* Added pagination to the user admin page (default is 20 per page but you can change it in the screen options tab).
 * New feature: link a question to a match. Linked questions are displayed beneath the match on the prediction form.
 * New shortcode: display the score of a single user with [fp-user-score].
 * New shortcode: display the predictions for a match or question with [fp-predictions].
 * New shortcode: display a table of matches with [fp-matches].
-* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
 * Some additions to the custom rankings admin screen.
 * New option: disable jokers.
 * New options for points a team gets for a win or draw (for the Groups page). This makes the plugin more suitable for sports that don't use the 3-point rule for wins.
-* New option to show team photos on team listing page.
-* New option to show venue photos on venue listing page.
+* New option: show team photos on team listing page.
+* New option: show venue photos on venue listing page.
+* New option: choose if plugin must keep all data on uninstall.
+* New option: show number of predictions per user in the ranking (match predictions and bonus question anwers are counted); this can be set for the ranking page and for the ranking widget and shortcode.
 * New sorting option for matches to be able to include match types in the sorting.
 * Widget "Next prediction countdown" has a new option to countdown to the next match of a particular team.
 * Changed image selection to WordPress 3.5 Media Uploader for WordPress version 3.5+.
@@ -174,6 +177,8 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Bug fix: user selector widget did not work in WordPress installs with default permalink setting (thanks Tomas Jonsson to for reporting this).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (related to bug in user selector widget).
 * Bug fix: pie charts where not updated correctly for user defined rankings once such a ranking was selected on the charts page.
+* Bug fix: custom date field in the shortcode tinymce popup was behaving strange.
+* New translation: Danish (da_DK).
 
 = 2.2.5 =
 * Bug fix: CSV upload in matches admin was not working (thanks BruceFeuillette for reporting the bug).

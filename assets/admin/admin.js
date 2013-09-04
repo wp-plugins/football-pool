@@ -244,6 +244,8 @@ function tinymce_insert_shortcode() {
 			if ( league > 0 ) atts += ' league="' + league + '"';
 			var num = jQuery( '#ranking-num', panel_id ).val();
 			if ( num > 0 ) atts += ' num="' + num + '"';
+			var show_num_predictions = jQuery( '#ranking-show-num-predictions', panel_id ).is( ':checked' );
+			if ( show_num_predictions ) atts += ' show_num_predictions=1';
 			var date = jQuery( 'input:radio[name=ranking-date]:checked', panel_id ).val();
 			if ( date == 'custom' ) date = jQuery( '#ranking-date-custom-value', panel_id ).val();
 			if ( date != '' ) atts += ' date="' + date + '"';

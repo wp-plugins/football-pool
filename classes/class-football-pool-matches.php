@@ -357,10 +357,12 @@ class Football_Pool_Matches {
 										, $team_name
 								);
 			}
-			$output .= sprintf( '<tr title="%s %s">
+			$output .= sprintf( '<tr id="match-%d" class="%s" title="%s %s">
 									<td class="time">%s</td>
 									<td class="home">%s</td>
 									<td class="flag">%s</td>',
+							$row['id'],
+							( $row['match_is_editable'] ? 'open' : 'closed' ),
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['id'],
 							$localdate->format( $this->time_format ),
@@ -440,7 +442,7 @@ class Football_Pool_Matches {
 			$away_team = isset( $teams->team_names[ (int) $info['away_team_id'] ] ) ?
 							htmlentities( $teams->team_names[ (int) $info['away_team_id'] ], null, 'UTF-8' ) :
 							'';
-			$output .= sprintf( '<tr id="match-%d-%d">
+			$output .= sprintf( '<tr id="match-%d-%d" class="%s">
 								<td class="time">%s</td>
 								<td class="home">%s</td>
 								<td class="flag">%s</td>
@@ -455,6 +457,7 @@ class Football_Pool_Matches {
 								</tr>',
 							$info['id'],
 							$form_id,
+							( $info['match_is_editable'] ? 'open' : 'closed' ),
 							$localdate->format( $this->time_format ),
 							$home_team,
 							$teams->flag_image( (int) $info['home_team_id'] ),

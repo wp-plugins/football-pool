@@ -240,6 +240,7 @@ class Football_Pool_Shortcodes {
 					'num' => $default_num,
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'date' => 'now',
+					'show_num_predictions' => Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ),
 				), $atts ) );
 		
 		global $current_user;
@@ -256,20 +257,59 @@ class Football_Pool_Shortcodes {
 			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
 		}
 		
+		$show_num_predictions = ( $show_num_predictions == 1 );
+		
 		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, self::date_helper( $date ) );
 		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
+			$users = array();
+			foreach ( $rows as $row ) $users[] = $row['user_id'];
+			if ( $show_num_predictions ) {
+				$predictions = $pool->get_prediction_count_per_user( $users, $ranking );
+			}
+
 			$i = 1;
 			$output .= '<table class="pool-ranking ranking-shortcode">';
+			if ( $show_num_predictions ) {
+				$output .= sprintf( '<tr>
+										<th></th>
+										<th class="user">%s</th>
+										<th class="num-predictions">%s</th>
+										<th class="score">%s</th>
+									</tr>'
+									, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
+									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+			}
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
+				if ( $show_num_predictions ) {
+					if ( array_key_exists( $row['user_id'], $predictions ) ) {
+						$num_predictions = $predictions[$row['user_id']];
+					} else {
+						$num_predictions = 0;
+					}
+					$num_predictions = sprintf( '<td class="num-predictions">%d</td>', $num_predictions );
+				} else {
+					$num_predictions = '';
+				}
 				
 				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
-				$output .= '<tr class="' . $class . '"><td>' . $i++ . '.</td>'
-						. '<td><a href="' . $url . '">' . $row['user_name']
-						. '</a>' . Football_Pool::user_name( $row['user_id'], 'label' ) . '</td>' . '<td class="score">' . $row['points'] . '</td></tr>';
+				$output .= sprintf( '<tr class="%s">
+										<td>%d.</td>
+										<td><a href="%s">%s</a>%s</td>
+										%s<td class="score">%d</td></tr>'
+									, $class
+									, $i++
+									, $url
+									, $row['user_name']
+									, Football_Pool::user_name( $row['user_id'], 'label' )
+									, $num_predictions
+									, $row['points']
+							);
 			}
 			$output .= '</table>';
 		} else {

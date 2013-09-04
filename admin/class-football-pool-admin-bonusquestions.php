@@ -168,11 +168,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private function edit( $id ) {
-		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 		$values = array(
 						'question'				=> '',
 						'points'				=> '',
-						'answer_before_date'	=> $exampledate,
+						'answer_before_date'	=> self::example_date( 'gmt' ),
 						'score_date'			=> '',
 						'answer'				=> '',
 						'type'					=> 1,
@@ -209,15 +208,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . $exampledate . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
 						'select', 
 						__( 'link to match', FOOTBALLPOOL_TEXT_DOMAIN ), 
 						'match_id', 
 						$values['match_id'], 
 						$matches,
-						__( 'Linked questions are shown beneath the match in the prediction form.', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						__( 'Linked questions are placed directly beneath the match on the prediction form.', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
@@ -267,13 +266,12 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	private function view() {
 		$pool = new Football_Pool_Pool();
 		$questions = $pool->get_bonus_questions();
-		$exampledate = date( 'Y-m-d 18:00', time() + ( 14 * 24 * 60 * 60 ) );
 
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', '' ), 
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', '' ), 
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'lastdate', ''), 
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . $exampledate . ')</span>', 'scoredate', '' ), 
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . self::example_date() . ')</span>', 'lastdate', ''), 
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . self::example_date() . ')</span>', 'scoredate', '' ), 
 					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
 				);
 		
