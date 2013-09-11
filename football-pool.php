@@ -39,6 +39,7 @@ require_once 'classes/class-football-pool-statistics.php';
 require_once 'classes/class-football-pool-shoutbox.php';
 require_once 'classes/class-football-pool-widget.php';
 require_once 'classes/class-football-pool-shortcodes.php';
+require_once 'classes/class-football-pool-pagination.php';
 
 if ( ! is_admin() ) {
 	// pages, not needed in the admin
@@ -97,7 +98,6 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-groups.php';
 	require_once 'admin/class-football-pool-admin-rankings.php';
 	require_once 'admin/class-football-pool-admin-score-calculation.php';
-	require_once 'admin/class-football-pool-pagination.php';
 	
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	// add_action( 'user_deleted', array( 'Football_Pool_Admin_Users', 'admin_notice' ) );

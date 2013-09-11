@@ -98,6 +98,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function import_csv( $action = 'import_csv', $file = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
 		$msg = $err = array();
 		
 		if ( $action == 'upload_csv' && $file == '' ) return array( $err, $msg );
@@ -543,7 +546,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::value_form( $cols );
 		echo '<p class="submit">';
 		self::primary_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'update_single_match_close' );
-		self::secondary_button( __( 'Save' ), 'update_single_match' );
+		self::secondary_button( __( 'Save', FOOTBALLPOOL_TEXT_DOMAIN ), 'update_single_match' );
 		self::cancel_button();
 		echo '</p>';
 	}

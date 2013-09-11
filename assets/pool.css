@@ -52,8 +52,8 @@ table.statistics th { color: #fff; background-color: #000; font-weight: bold; fo
 table.statistics td { border-bottom: 1px solid #ccc; }
 table.statistics td.score { text-align: center; }
 
-table.matchinfo a { text-decoration: none; }
-table.matchinfo a:hover { text-decoration: underline; }
+table.prediction-table-questions a, table.matchinfo a { text-decoration: none; }
+table.prediction-table-questions a:hover, table.matchinfo a:hover { text-decoration: underline; }
 
 .nopointer { cursor: default!important; }
 

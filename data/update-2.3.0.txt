@@ -39,3 +39,4 @@ ALTER TABLE `{$prefix}predictions`
 	CHANGE `hasJoker` `has_joker` TINYINT(4) NOT NULL DEFAULT '0';
 ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `question_id` );
 ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `user_id` );
+ALTER TABLE  `{$prefix}scorehistory` ADD `goal_diff_bonus` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `goal_bonus`;

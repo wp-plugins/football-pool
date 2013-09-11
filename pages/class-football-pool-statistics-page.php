@@ -8,6 +8,7 @@ class Football_Pool_Statistics_Page {
 		$user = Football_Pool_Utils::get_integer( 'user' );
 		
 		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
+		$goal_diff_bonus = ( Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' ) > 0 );
 		
 		global $current_user;
 		get_currentuserinfo();
@@ -15,14 +16,14 @@ class Football_Pool_Statistics_Page {
 		$users = Football_Pool_Utils::get_integer_array( 'users' );
 		if ( $user > 0 && ! in_array( $user, $users ) ) $users[] = $user;
 		if ( $current_user->ID != 0 && ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
-
+		
 		$stats = new Football_Pool_Statistics;
 		$pool = new Football_Pool_Pool;
 
 		if ( ! $stats->data_available && $view != 'matchpredictions' ) {
-			$output.= sprintf( '<h2>%s</h2><p>%s</p>',
-								__( 'Statistics not yet available', FOOTBALLPOOL_TEXT_DOMAIN ),
-								__( 'After the first match you can view your scores and those of other users here.', FOOTBALLPOOL_TEXT_DOMAIN )
+			$output.= sprintf( '<h2>%s</h2><p>%s</p>'
+								, __( 'Statistics not yet available', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'After the first match you can view your scores and those of other users here.', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 		} else {
 			$chart_data = new Football_Pool_Chart_Data();
@@ -48,18 +49,18 @@ class Football_Pool_Statistics_Page {
 								);
 					$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
 					$ranking_selector .= sprintf( '<input type="hidden" name="page_id" value="%d" />'
-											, $page_id
-									);
+													, $page_id
+											);
 					$ranking_selector .= sprintf( '<input type="hidden" name="user" value="%d" />'
-											, $user
-									);
+													, $user
+											);
 					$ranking_selector .= sprintf( '<input type="hidden" name="view" value="%s" />'
-											, $view
-									);
+													, $view
+											);
 					foreach ( $users as $user ) {
 						$ranking_selector .= sprintf( '<input type="hidden" name="users[]" value="%d" />'
-											, $user
-									);
+														, $user
+												);
 					}
 					
 					if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
@@ -117,20 +118,21 @@ class Football_Pool_Statistics_Page {
 					}
 					break;
 				case 'user':
-					$userInfo = get_userdata( $user );
-					$output .= $stats->show_user_info( $userInfo );
+					$user_info = get_userdata( $user );
+					$output .= $stats->show_user_info( $user_info );
 					if ( $stats->stats_visible ) {
 						// can't use esc_url() here because it also strips the square brackets from users[]
 						$url = add_query_arg( 
 												array( 
 													'user' => false,
 													'view' => false,
-													'users[]' => $userInfo->ID
+													'users[]' => $user_info->ID
 												) 
 								);
-						$output .= sprintf( '<p><a href="%s">' . __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a></p>'
+						$txt = __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN );
+						$output .= sprintf( "<p><a href='%s'>{$txt}</a></p>"
 											, $url
-											, $userInfo->display_name
+											, $user_info->display_name
 									);
 						
 						$output .= $ranking_selector;
@@ -169,8 +171,10 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) ) {
 							$chart = new Football_Pool_Chart( 'chart5', 'pie', 300, 300 );
 							$chart->data = $chart_data->points_total_pie_series( $raw_data );
+							/* xgettext:no-php-format */
 							$chart->title = __( '% of the max points', FOOTBALLPOOL_TEXT_DOMAIN );
-							$chart->options[] = "subtitle: { text: '(" . __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) . ")' }";
+							$chart->options[] = sprintf( "subtitle: { text: '(%s)' }"
+														, __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) );
 							$chart->JS_options[] = "options.series[0].data[0].sliced = true";
 							$chart->JS_options[] = "options.series[0].data[0].selected = true";
 							//if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
@@ -205,8 +209,12 @@ class Football_Pool_Statistics_Page {
 							if ( $goal_bonus ) {
 								$axis[] = __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN );
 							}
+							if ( $goal_diff_bonus ) {
+								$axis[] = __( 'toto score with goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN );
+							}
+							$axis_definition = implode( "', '", $axis );
 							$chart->options[] = "xAxis: { 
-														categories: [ '" . implode( "', '", $axis ) . "' ]
+														categories: [ '{$axis_definition}' ]
 												}";
 							$chart->options[] = "tooltip: {
 													formatter: function() {
@@ -221,11 +229,12 @@ class Football_Pool_Statistics_Page {
 						$raw_data = $chart_data->bonus_question_for_users_pie_chart_data( $users, $ranking );
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
-							$chart->data = $chart_data->bonus_question_pie_series( $raw_data );
+							$chart->data = $chart_data->bonus_question_pie_series( $raw_data, 'no open questions' );
 							$chart->title = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN );
-							$chart->options[] = "xAxis: { 
-														categories: [ '" . __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "', '" . __( 'false answer', FOOTBALLPOOL_TEXT_DOMAIN ) . "' ]
-												}";
+							$chart->options[] = sprintf( "xAxis: { categories: [ '%s', '%s' ] }"
+														, __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN )
+														, __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN )
+												);
 							$chart->options[] = "tooltip: {
 													formatter: function() {
 														return this.x + '<br>'
@@ -246,7 +255,9 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart2', 'line', 720, 500 );
 							$chart->data = $chart_data->score_per_match_line_series( $raw_data );
+							// $output .= Football_Pool_Utils::debug($chart->data,'return');
 							$chart->title = __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN );
+							$txt = __( 'points', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "tooltip: {
 													shared: true, crosshairs: true, 
 													formatter: function() {
@@ -254,7 +265,7 @@ class Football_Pool_Statistics_Page {
 														jQuery.each( this.points, function( i, point ) {
 															s += '<b style=\"color:' + point.series.color + '\">' 
 																+ point.series.name + '</b>: ' 
-																+ point.y + ' " . __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
+																+ point.y + ' {$txt}<br>';
 														} );
 														return s;
 													}
@@ -273,6 +284,7 @@ class Football_Pool_Statistics_Page {
 							$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
 							// Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
 							$ordinal_suffixes = __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN );
+							$txt = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "tooltip: {
 													shared: true, crosshairs: true,
 													formatter: function() {
@@ -281,12 +293,14 @@ class Football_Pool_Statistics_Page {
 															s += '<b style=\"color:' + point.series.color + '\">' 
 																+ point.series.name + '</b>: ' 
 																+ add_ordinal_suffix( point.y, {$ordinal_suffixes} ) 
-																+ ' " . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . "<br>';
+																+ ' {$txt}<br>';
 														} );
 														return s;
 													}
 												}";
-							$chart->JS_options[] = 'options.yAxis.title.text = "' . __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
+							$chart->JS_options[] = sprintf( 'options.yAxis.title.text = "%s"'
+															, __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN )
+													);
 							//$chart->JS_options[] = 'options.yAxis.endOnTick = true';
 							$chart->JS_options[] = 'options.yAxis.reversed = true';
 							$chart->JS_options[] = 'options.yAxis.showFirstLabel = false';

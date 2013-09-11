@@ -71,6 +71,7 @@ class Football_Pool {
 		$options['fullpoints'] = FOOTBALLPOOL_FULLPOINTS;
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
+		// $options['diffpoints'] = FOOTBALLPOOL_DIFFPOINTS;
 		$options['maxperiod'] = FOOTBALLPOOL_MAXPERIOD;
 		$options['use_leagues'] = 1; // 1: yes, 0: no
 		$options['shoutbox_max_chars'] = FOOTBALLPOOL_SHOUTBOX_MAXCHARS;

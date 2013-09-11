@@ -9,10 +9,11 @@ class Football_Pool_Pagination {
 	private $total_items = 0;
 	private $page_size = 20;
 	
-	public function __construct( $num_items ) {
+	public function __construct( $num_items, $wrap = false ) {
 		$this->total_items = $num_items;
 		$this->total_pages = $this->calc_total_pages( $num_items, $this->page_size );
 		$this->current_page = $this->get_pagenum();
+		$this->wrap = $wrap;
 	}
 	
 	public function get_page_size() {
@@ -62,7 +63,9 @@ class Football_Pool_Pagination {
 		$output .= sprintf( '<a class="prev-page%s" title="%s" href="%s">&lsaquo;</a>'
 							, $disable_first
 							, esc_attr__( 'Go to the previous page' )
-							, esc_url( add_query_arg( $this->page_param, max( 1, $this->current_page - 1 ), $current_url ) )
+							, esc_url( add_query_arg( 
+											$this->page_param, max( 1, $this->current_page - 1 ), 
+											$current_url ) )
 					);
 		
 		$output .= sprintf( '<span class="paging-input"><input class="current-page" title="%s" type="text" name="%s" value="%d" size="%d"> of <span class="total-pages">%d</span></span>'
@@ -78,9 +81,7 @@ class Football_Pool_Pagination {
 							, esc_attr__( 'Go to the next page' )
 							, esc_url( add_query_arg( 
 											$this->page_param, min( $this->total_pages, $this->current_page + 1 ), 
-											$current_url 
-										) 
-								)
+											$current_url ) )
 					);
 		$output .= sprintf( '<a class="last-page%s" title="%s" href="%s">&raquo;</a>'
 							, $disable_last

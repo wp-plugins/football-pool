@@ -9,13 +9,14 @@ class Football_Pool_Chart_Data {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT
-									COUNT( IF( full = 1, 1, NULL ) ) AS scorefull, 
-									COUNT( IF( toto = 1, 1, NULL ) ) AS scoretoto, 
-									COUNT( IF( goal_bonus = 1, 
+									  COUNT( IF( full = 1, 1, NULL ) ) AS scorefull
+									, COUNT( IF( toto = 1, 1, NULL ) ) AS scoretoto
+									, COUNT( IF( goal_bonus = 1, 
 												IF( toto = 1, NULL, 1 ), 
 												NULL ) 
-									) AS goalbonus, 
-									COUNT( user_id ) AS scoretotal
+									  ) AS goalbonus
+									, COUNT( IF( goal_diff_bonus = 1, 1, NULL ) ) AS diffbonus
+									, COUNT( user_id ) AS scoretotal
 								FROM {$prefix}scorehistory 
 								WHERE `type` = 0 AND ranking_id = %d
 								GROUP BY score_order HAVING score_order = %d", 
@@ -32,12 +33,16 @@ class Football_Pool_Chart_Data {
 		if ( count( $users ) > 0 ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$user_ids = implode( ',', $users );
+			
 			$sql = "SELECT 
-						COUNT( IF( s.full = 1, 1, NULL ) ) AS scorefull, 
-						COUNT( IF( s.toto = 1, 1, NULL ) ) AS scoretoto, 
-						COUNT( IF( s.goal_bonus = 1, IF( s.toto = 1, NULL, 1 ), NULL ) ) AS single_goal_bonus, 
-						COUNT( s.score_order ) AS scoretotal, 
-						u.display_name AS user_name 
+						  COUNT( IF( s.full = 1, 1, NULL ) ) AS scorefull
+						, COUNT( IF( s.toto = 1, 1, NULL ) ) AS scoretoto
+						, COUNT( IF( s.goal_bonus = 1, IF( s.toto = 1, NULL, 1 ), NULL ) ) AS single_goal_bonus
+						, COUNT( IF( s.goal_diff_bonus = 1, 1, NULL ) ) AS goal_diff_bonus
+						, COUNT( s.score_order ) AS scoretotal
+						, u.display_name AS user_name 
 					FROM {$prefix}scorehistory s 
 					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
 			if ( $pool->has_leagues ) {
@@ -47,16 +52,18 @@ class Football_Pool_Chart_Data {
 				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 			}
 			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = 0 
-						AND s.user_id IN ( " . implode( ',', $users ) . " ) ";
+						AND s.user_id IN ( {$user_ids} ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 			$sql .= "GROUP BY s.user_id";
+			
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			foreach ( $rows as $row ) {
 				$data[ $row['user_name'] ] = array(
-												'scorefull'  => $row['scorefull'],
-												'scoretoto'  => $row['scoretoto'],
-												'scoretotal' => $row['scoretotal'],
-												'goalbonus' => $row['single_goal_bonus'],
+													'scorefull'  => $row['scorefull'],
+													'scoretoto'  => $row['scoretoto'],
+													'scoretotal' => $row['scoretotal'],
+													'goalbonus' => $row['single_goal_bonus'],
+													'diffbonus' => $row['goal_diff_bonus'],
 												);
 			}
 		}
@@ -150,7 +157,7 @@ class Football_Pool_Chart_Data {
 		$data = $wpdb->get_var( $sql );
 		$output['total_score'] = ( $data != null ) ? $data : 0;
 		// get the number of matches for which there are results
-		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory
+		$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}scorehistory
 								WHERE type = 0 AND user_id = %d AND ranking_id = %d", $user, $ranking_id );
 		$data = $wpdb->get_var( $sql );
 		$num_matches = ( $data != null ) ? $data : 0;
@@ -191,13 +198,13 @@ class Football_Pool_Chart_Data {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
-			$sql = $wpdb->prepare( "SELECT h.score_order, h." . $history_data_to_plot . ", 
-											u.display_name, h.type 
-											FROM {$prefix}scorehistory h, {$wpdb->users} u 
-											WHERE h.ranking_id = %d AND u.ID = h.user_id 
-												AND h.user_id IN (" . implode( ',', $users ) . ")
-											ORDER BY h.score_date ASC, h.type ASC, h.score_order ASC, h.user_id ASC"
-											, $ranking_id
+			$user_ids = implode( ',', $users );
+			$sql = $wpdb->prepare( "SELECT h.score_order, h.{$history_data_to_plot}, u.display_name, h.type 
+									FROM {$prefix}scorehistory h, {$wpdb->users} u 
+									WHERE h.ranking_id = %d AND u.ID = h.user_id 
+										AND h.user_id IN ( {$user_ids} )
+									ORDER BY h.score_date ASC, h.type ASC, h.score_order ASC, h.user_id ASC"
+									, $ranking_id
 								);
 								
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -220,15 +227,25 @@ class Football_Pool_Chart_Data {
 	******************************************/
 	public function score_chart_series( $rows ) {
 		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
+		$goal_diff_bonus = ( Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' ) > 0 );
+		
 		$data = array();
 		foreach ( $rows as $name => $row ) {
+			$toto = $goal_diff_bonus ? (int) $row['scoretoto'] - (int) $row['diffbonus'] : (int) $row['scoretoto'];
 			$data[$name] = array(
 								array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
-								array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
-								array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] - ( $goal_bonus ? $row['goalbonus'] : 0 ) ),
+								array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), $toto ),
+								array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN )
+										, (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] 
+											- ( $goal_bonus ? $row['goalbonus'] : 0 ) 
+								),
 							);
 			if ( $goal_bonus ) {
 				$data[$name][] = array( __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['goalbonus'] );
+			}
+			if ( $goal_diff_bonus ) {
+				$data[$name][] = array( __( 'goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN )
+										, (int) $row['diffbonus'] );
 			}
 		}
 		return $data;
@@ -236,14 +253,25 @@ class Football_Pool_Chart_Data {
 	
 	public function predictions_pie_series( $row ) {
 		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
+		$goal_diff_bonus = ( Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' ) > 0 );
+		
+		$toto = $goal_diff_bonus ? (int) $row['scoretoto'] - (int) $row['diffbonus']: (int) $row['scoretoto'];
 		$data = array(
 					array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
-					array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretoto'] ),
-					array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] - ( $goal_bonus ? $row['goalbonus'] : 0 ) )
+					array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), $toto ),
+					array( __( 'no score', FOOTBALLPOOL_TEXT_DOMAIN )
+							, (int) $row['scoretotal'] - $row['scorefull'] - $row['scoretoto'] 
+								- ( $goal_bonus ? $row['goalbonus'] : 0 ) 
+					),
 				);
 		if ( $goal_bonus ) {
 			$data[] = array( __( 'just the goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['goalbonus'] );
 		}
+		if ( $goal_diff_bonus ) {
+			$data[] = array( __( 'toto score with goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN )
+							, (int) $row['diffbonus'] );
+		}
+		
 		return $data;
 	}
 	
@@ -255,15 +283,18 @@ class Football_Pool_Chart_Data {
 		return $data;
 	}
 	
-	public function bonus_question_pie_series( $rows ) {
+	public function bonus_question_pie_series( $rows, $open = 'open' ) {
 		$data = array();
 		foreach ( $rows as $name => $row ) {
 			$data[$name] = array(
 								array( __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuscorrect'] ), 
 								array( __( 'wrong', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonuswrong'] ),
-								array( __( 'still open', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonustotal'] - $row['bonuscorrect'] - $row['bonuswrong'] )
 								//array( __( 'no answer', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['bonusnoanswer'] )
 							);
+			if ( $open == 'open' ) {
+				$data[$name][] = array( __( 'still open', FOOTBALLPOOL_TEXT_DOMAIN )
+										, (int) $row['bonustotal'] - $row['bonuscorrect'] - $row['bonuswrong'] );
+			}
 		}
 		return $data;
 	}

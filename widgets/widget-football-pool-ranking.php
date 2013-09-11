@@ -66,8 +66,10 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		$num_users = $instance['num_users'];
 		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
 		$ranking_id = ! empty( $instance['ranking_id'] ) ? $instance['ranking_id'] : FOOTBALLPOOL_RANKING_DEFAULT;
-		$show_num_predictions = ! empty( $instance['show_num_predictions'] ) ? $instance['show_num_predictions'] : Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' );
-		$show_num_predictions = ( $show_num_predictions == 'on' );
+		$show_num_predictions = ! empty( $instance['show_num_predictions'] ) ? 
+											$instance['show_num_predictions'] : 
+											Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' );
+		$show_num_predictions = ( $show_num_predictions != false );
 		
 		if ( $title != '' ) {
 			echo $before_title, $title, $after_title;

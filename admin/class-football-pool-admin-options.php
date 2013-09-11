@@ -316,7 +316,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							, __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
 							, self::donate_button( 'return' )
 					);
-		
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
 		$recalculate = ( Football_Pool_Utils::post_string( 'recalculate' ) ==

@@ -360,6 +360,7 @@ function calculate_score_history() {
 			ranking: data.ranking,
 			progress: data.progress,
 			total_steps: data.total_steps,
+			user_set: data.user_set,
 			total_user_sets: data.total_user_sets,
 			total_users: data.total_users,
 			calculation_type: data.calculation_type,

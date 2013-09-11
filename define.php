@@ -34,9 +34,9 @@ define( 'FOOTBALLPOOL_RANKING_CALCULATION_SMART', 'smart' );
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
 define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
 define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
-define( 'FOOTBALLPOOL_RECALC_STEP2_DIV', 500 );
-define( 'FOOTBALLPOOL_RECALC_STEP3_DIV', 200 );
-define( 'FOOTBALLPOOL_RECALC_STEP4_DIV', 500 );
+define( 'FOOTBALLPOOL_RECALC_STEP2_DIV', 50 );
+define( 'FOOTBALLPOOL_RECALC_STEP3_DIV', 100 );
+define( 'FOOTBALLPOOL_RECALC_STEP4_DIV', 50 );
 define( 'FOOTBALLPOOL_RECALC_STEP5_DIV', 50 );
 define( 'FOOTBALLPOOL_RECALC_STEP6_DIV', 4 );
 
@@ -45,6 +45,9 @@ define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
 define( 'FOOTBALLPOOL_FULLPOINTS',   5 ); // 3
 define( 'FOOTBALLPOOL_TOTOPOINTS',   2 ); // 2
 define( 'FOOTBALLPOOL_GOALPOINTS',   0 ); // 1
+define( 'FOOTBALLPOOL_DIFFPOINTS',   1 ); // points for correct goal difference
+                                          // (e.g. match result is 4-0 and prediction is 6-2)
+
 // matches csv import and export
 define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
 define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );

@@ -111,9 +111,10 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
-* Danish (`da_DK`) by Morten Bilberg Rasmussen.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher.
+* Danish (`da_DK`) by Morten Bilberg Rasmussen.
+* German (`de_DE`) by Frank Winter.
 * Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
 
 == Incompatible plugins ==
@@ -178,7 +179,9 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (related to bug in user selector widget).
 * Bug fix: pie charts where not updated correctly for user defined rankings once such a ranking was selected on the charts page.
 * Bug fix: custom date field in the shortcode tinymce popup was behaving strange.
-* New translation: Danish (da_DK).
+* Bug fix: not all labels in group widget and group standing page were translated.
+* New translation: Danish (da_DK) by Morten Bilberg Rasmussen.
+* New translation: German (de_DE) by Frank Winter.
 
 = 2.2.5 =
 * Bug fix: CSV upload in matches admin was not working (thanks BruceFeuillette for reporting the bug).

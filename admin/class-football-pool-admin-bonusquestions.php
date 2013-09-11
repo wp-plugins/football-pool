@@ -256,7 +256,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				);
 		self::value_form( $cols );
 		echo '<p class="submit">';
-		submit_button( __( 'Save & Close' ), 'primary', 'submit', false );
+		submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
 		submit_button( null, 'secondary', 'save', false );
 		self::cancel_button();
 		self::secondary_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'user-answers', false );

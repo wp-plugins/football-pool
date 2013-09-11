@@ -121,6 +121,7 @@ class Football_Pool_Statistics {
 						, __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN )
 						, __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
+		$userpage = Football_Pool::get_page_link( 'user' );
 		
 		foreach ( $answers as $answer ) {
 			if ( $answer['correct'] == 1 ) {
@@ -130,7 +131,11 @@ class Football_Pool_Statistics {
 				$class = 'wrong';
 				$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
-			$output .= sprintf( '<tr><td>%s</td><td>%s</td>', $answer['name'], $answer['answer'] );
+			$output .= sprintf( '<tr><td><a href="%s">%s</a></td><td>%s</td>'
+								, esc_url( add_query_arg( array( 'user' => $answer['user_id'] ), $userpage ) )
+								, $answer['name']
+								, $answer['answer'] 
+						);
 			$output .= sprintf( '<td class="score %s" title="%s"></td></tr>'
 								, $class 
 								, $title

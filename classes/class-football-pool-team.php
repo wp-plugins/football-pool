@@ -87,32 +87,17 @@ class Football_Pool_Team extends Football_Pool_Teams {
 	}
 	
 	public function get_plays() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		$matches = new Football_Pool_Matches;
+		$matches = $matches->matches;
 		
-		$sql = $wpdb->prepare( "SELECT 
-									m.home_team_id, 
-									m.away_team_id, 
-									m.home_score, 
-									m.away_score, 
-									s.id AS stadium_id, 
-									s.name, 
-									t.name AS matchtype, 
-									m.id AS id, 
-									m.play_date 
-								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-								WHERE m.stadium_id = s.id 
-									AND m.matchtype_id = t.id AND t.visibility = 1
-									AND ( m.home_team_id = %d OR m.away_team_id = %d )
-								ORDER BY {$sorting}",
-								$this->id,
-								$this->id
-						);
+		$plays = array();
+		foreach ( $matches as $match ) {
+			if ( $match['home_team_id'] == $this->id || $match['away_team_id'] == $this->id ) $plays[] = $match;
+		}
 		
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return $plays;
 	}
-
+	
 	public function get_stadiums() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;

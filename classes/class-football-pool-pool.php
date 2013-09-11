@@ -55,17 +55,19 @@ class Football_Pool_Pool {
 	}
 	
 	public function calc_score( $home, $away, $user_home, $user_away, $joker ) {
-		if ( $home == '' || $away == '' )
+		if ( ! is_int( $home ) || ! is_int( $away ) )
 			return '';
 		if ( $user_home == '' || $user_away == '' )
 			return 0;
 		
+		$full = false;
 		$score = 0;
 		// check for toto result
 		if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
 			// check for exact match
 			if ( $home == $user_home && $away == $user_away ) {
 				$score = (int) Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+				$full = true;
 			} else {
 				$score = (int) Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 			}
@@ -74,6 +76,9 @@ class Football_Pool_Pool {
 		$goal_bonus = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
 		if ( $home == $user_home ) $score += $goal_bonus;
 		if ( $away == $user_away ) $score += $goal_bonus;
+		// check for goal diff bonus
+		$goal_diff_bonus = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		if ( ! $full && ( $home - $user_home ) == ( $away - $user_away ) ) $score += $goal_diff_bonus;
 		
 		if ( $joker == 1 ) $score *= 2;
 		

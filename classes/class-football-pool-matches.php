@@ -128,10 +128,11 @@ class Football_Pool_Matches {
 		return array_shift( $this->matches );
 	}
 	
-	public function get_info( $type = null ) {
+	public function get_info( $types = null ) {
 		global $wpdb;
-		if ( is_array( $type ) && count( $type ) > 0 ) {
-			$sql = $this->matches_query( 'WHERE t.id IN ( ' . implode( ',', $type ) . ' ) ' );
+		if ( is_array( $types ) && count( $types ) > 0 ) {
+			$types = implode( ',', $types );
+			$sql = $this->matches_query( "WHERE t.id IN ( {$types} ) " );
 		} else {
 			$sql = $this->matches_query();
 		}
@@ -213,7 +214,8 @@ class Football_Pool_Matches {
 		
 		$ids = '';
 		if ( is_array( $match_ids ) && count( $match_ids ) > 0 ) {
-			$ids = ' AND m.id IN ( ' . implode( ',', $match_ids ) . ' ) ';
+			$match_ids = implode( ',', $match_ids );
+			$ids = " AND m.id IN ( {$match_ids} ) ";
 		}
 		
 		$sql = $wpdb->prepare( "SELECT 
@@ -337,9 +339,9 @@ class Football_Pool_Matches {
 											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
-				// Translators: this is a date format string (see http://php.net/date)
 				$output .= sprintf( '<tr><td class="matchdate" colspan="6" title="%s">%s</td></tr>'
-									, date_i18n( __( 'l', FOOTBALLPOOL_TEXT_DOMAIN )
+									// Translators: this is a date format string (see http://php.net/date)
+									, date_i18n( _x( 'l', 'a date format string (see http://php.net/date)', FOOTBALLPOOL_TEXT_DOMAIN )
 												, $localdate->format( 'U' ) )
 									, $date_title );
 			}
@@ -477,7 +479,8 @@ class Football_Pool_Matches {
 									),
 							$this->show_users_link( $info['id'], $info['match_timestamp'] )
 						);
-					if ( is_array( $info['linked_questions'] ) && count( $info['linked_questions'] ) > 0 ) {
+						
+						if ( is_array( $info['linked_questions'] ) && count( $info['linked_questions'] ) > 0 ) {
 						$questions = $pool->get_bonus_questions_for_user( $user_id, $info['linked_questions'] );
 						foreach( $questions as $question ) {
 							$output .= sprintf( '<tr id="match-%d-%d-question-%d" class="linked-question"><td colspan="11">%s</td><tr>'
@@ -570,6 +573,8 @@ class Football_Pool_Matches {
 		if ( ! $this->match_is_editable( $ts ) ) {
 			$pool = new Football_Pool_Pool;
 			return $pool->calc_score( $home, $away, $user_home, $user_away, $joker );
+		} else {
+			return '<span class="no-score"></span>';
 		}
 	}
 	
