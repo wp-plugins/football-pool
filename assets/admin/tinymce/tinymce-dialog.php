@@ -60,7 +60,7 @@ function match_options() {
 	<script type="text/javascript">
 	jQuery( document ).ready( function() {
 		tinyMCEPopup.executeOnLoad( 'tinymce_init()' );
-		tinymce_init_tabs( 'tabs' );
+		footballpool_tinymce_init_tabs( 'tabs' );
 	});
 	
 	function toggle_atts( select_id, atts ) {
@@ -519,7 +519,7 @@ function match_options() {
 			<input type="button" id="cancel" name="cancel" value="<?php _e( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="tinyMCEPopup.close();" />
 		</div>
 		<div style="float: right">
-			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="tinymce_insert_shortcode();" />
+			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="footballpool_tinymce_insert_shortcode();" />
 		</div>
 	</div>
 

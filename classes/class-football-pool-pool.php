@@ -78,7 +78,9 @@ class Football_Pool_Pool {
 		if ( $away == $user_away ) $score += $goal_bonus;
 		// check for goal diff bonus
 		$goal_diff_bonus = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
-		if ( ! $full && ( $home - $user_home ) == ( $away - $user_away ) ) $score += $goal_diff_bonus;
+		if ( ! $full && $home != $away && ( $home - $user_home ) == ( $away - $user_away ) ) {
+			$score += $goal_diff_bonus;
+		}
 		
 		if ( $joker == 1 ) $score *= 2;
 		
@@ -540,7 +542,7 @@ class Football_Pool_Pool {
 				$questions[$i] = $row;
 				$ts = new DateTime( $row['question_date'] );
 				$ts = $ts->format( 'U' );
-				$questions[$i]['question_date'] = $ts;
+				$questions[$i]['question_timestamp'] = $ts;
 				$i++;
 			}
 		}
@@ -580,7 +582,7 @@ class Football_Pool_Pool {
 				$question_info[$i]['question'] = $row['question'];
 				$question_info[$i]['answer'] = $row['answer'];
 				$question_info[$i]['points'] = $row['points'];
-				$question_info[$i]['question_date'] = $ts;
+				// $question_info[$i]['question_date'] = $ts;
 				$question_info[$i]['question_timestamp'] = $ts;
 				$question_info[$i]['score_date'] = $row['score_date'];
 				$question_info[$i]['answer_before_date'] = $row['answer_before_date'];
@@ -606,7 +608,7 @@ class Football_Pool_Pool {
 		$questions = $this->get_bonus_questions();
 		if ( is_array( $questions ) && array_key_exists( $id, $questions ) ) {
 			$info = $questions[$id];
-			$info['question_is_editable'] = $this->question_is_editable( $info['question_date'] );
+			$info['question_is_editable'] = $this->question_is_editable( $info['question_timestamp'] );
 		}
 		return $info;
 	}
@@ -728,13 +730,13 @@ class Football_Pool_Pool {
 		// to local time
 		$lock_time = Football_Pool_Utils::date_from_gmt( $lock_time );
 		
-		if ( $this->question_is_editable( $question['question_date'] ) ) {
+		if ( $this->question_is_editable( $question['question_timestamp'] ) ) {
 			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
 			
 			$output .= '<p>';
 			
 			// remind a player if there is only 1 day left to answer the question.
-			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['question_date'] );
+			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['question_timestamp'] );
 			if ( ( $timestamp - current_time( 'timestamp' ) ) <= ( 24 * 60 * 60 ) ) {
 				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
@@ -805,7 +807,7 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		foreach ( $questions as $question ) {
-			if ( $this->question_is_editable( $question['question_date'] ) && $answers[$question['id']] != '') {
+			if ( $this->question_is_editable( $question['question_timestamp'] ) && $answers[$question['id']] != '') {
 				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
 										SET user_id = %d,
 											question_id = %d,
@@ -988,7 +990,7 @@ class Football_Pool_Pool {
 		$statspage = Football_Pool::get_page_link( 'statistics' );
 		
 		foreach ( $questions as $question ) {
-			if ( $this->always_show_predictions || ! $this->question_is_editable( $question['question_date'] ) ) {
+			if ( $this->always_show_predictions || ! $this->question_is_editable( $question['question_timestamp'] ) ) {
 				$output .= '<div class="bonus userview">';
 				$output .= sprintf( '<p class="question"><span class="nr">%d.</span> %s</p>'
 									, $nr++

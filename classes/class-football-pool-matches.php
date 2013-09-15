@@ -110,7 +110,7 @@ class Football_Pool_Matches {
 		
 		return "SELECT 
 					m.id, 
-					UNIX_TIMESTAMP( m.play_date ) AS match_timestamp, m.play_date,
+					m.play_date,
 					m.home_team_id, m.away_team_id, 
 					m.home_score, m.away_score, 
 					s.name AS stadium_name, s.id AS stadium_id,

@@ -150,7 +150,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 			}
 		}
 		
-		$rows = $matches->get_info();
+		$rows = $matches->matches;
 		if ( count( $rows ) > 0 ) {
 			foreach( $rows as $row ) {
 				if ( $matchtype != $row['matchtype'] ) {
@@ -197,7 +197,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		
 		$matches = new Football_Pool_Matches();
-		$rows = $matches->get_info();
+		$rows = $matches->matches;
 		foreach ( $rows as $row ) {
 			$checked = Football_Pool_Utils::post_int( 'match-' . $row['id'], 0 );
 			if ( $checked == 1 ) {

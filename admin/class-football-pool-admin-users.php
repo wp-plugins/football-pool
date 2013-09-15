@@ -33,7 +33,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	public function screen_options() {
 		$args = array(
 			'label' => __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'default' => 20,
+			'default' => FOOTBALLPOOL_ADMIN_USERS_PER_PAGE,
 			'option' => 'users_per_page'
 		);
 		add_screen_option( 'per_page', $args );

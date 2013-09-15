@@ -82,11 +82,13 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'start' =>
 							array( 'text', __( 'Start date', FOOTBALLPOOL_TEXT_DOMAIN ), 'start', __( 'The start date of the tournament or pool. The shortcode [fp-start] adds this value in the content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'fullpoints' =>
-							array( 'text', __( 'Full score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fp-fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Full score', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fp-fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'totopoints' =>
-							array( 'text', __( 'Toto score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'totopoints', __( 'The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [fp-totopoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Toto score', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'totopoints', __( 'The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [fp-totopoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'goalpoints' => 
-							array( 'text', __( 'Goal bonus *', FOOTBALLPOOL_TEXT_DOMAIN ), 'goalpoints', __( 'Extra points a user gets for guessing the goals correct for one of the teams. These points are added to the toto points or full points. The shortcode [fp-goalpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'goalpoints', __( 'Extra points a user gets for guessing the goals correct for one of the teams. These points are added to the toto points or full points. The shortcode [fp-goalpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'diffpoints' => 
+							array( 'text', __( 'Goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'diffpoints', __( 'Extra points a user gets for guessing the goal difference correct for a match. Only awarded in matches with a winning team and only on top of toto points. See the help page for more information. The shortcode [fp-diffpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'stop_time_method_matches' =>
 							array( 
 								'radiolist', 
@@ -105,7 +107,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'maxperiod' => 
 							array( 
 								'text', 
-								__( 'Dynamic stop threshold (in seconds) for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Dynamic stop threshold (in seconds) for matches', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'maxperiod', 
 								__( 'A user may change his/her predictions untill this amount of time before game kickoff. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								array( 'stop_time_method_matches' => 1 ) 
@@ -113,7 +115,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'matches_locktime' => 
 							array( 
 								'datetime', 
-								__( 'Prediction stop date for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Prediction stop date for matches', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'matches_locktime', 
 								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the matches have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)', 
 								'',
@@ -137,14 +139,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'bonus_question_locktime' => 
 							array( 
 								'datetime', 
-								__( 'Prediction stop date for questions *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Prediction stop date for questions', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'bonus_question_locktime', 
 								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the bonus questions have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)',
 								'',
 								array( 'stop_time_method_questions' => 0 )
 							),
 						'shoutbox_max_chars' =>
-							array( 'text', __( 'Maximum length for a shoutbox message *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Maximum length for a shoutbox message', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_leagues' => 
 							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are already points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
 						'default_league_new_user' => 
@@ -293,9 +295,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								// array( 'prediction_type' => 0 )
 							// ),
 						'team_points_win' => 
-							array( 'text', __( 'Points for win *', FOOTBALLPOOL_TEXT_DOMAIN ), 'team_points_win', __( 'The points a team gets for a win.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Points for win', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'team_points_win', __( 'The points a team gets for a win.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'team_points_draw' => 
-							array( 'text', __( 'Points for draw *', FOOTBALLPOOL_TEXT_DOMAIN ), 'team_points_draw', __( 'The points a team gets for a draw.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Points for draw', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'team_points_draw', __( 'The points a team gets for a draw.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'listing_show_team_thumb' => 
 							array( 'checkbox', __( 'Show photo in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_thumb', __( 'Show the team\'s photo on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'listing_show_venue_thumb' => 
@@ -305,7 +307,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'listing_show_venue_comments' => 
 							array( 'checkbox', __( 'Show comments in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_comments', __( 'Show the venue\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						// 'number_of_jokers' => 
-							// array( 'text', __( 'Number of jokers *', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							// array( 'text', __( 'Number of jokers', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'number_of_jokers' => 
 							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'When checked the joker is enabled and users can add the joker to one prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'show_num_predictions_in_ranking' => 
@@ -352,7 +354,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				
 				// check if ranking log should be updated
 				if ( in_array( $option[2], $log_options ) && self::get_value( $option[2] ) != $value ) {
-					// Football_Pool_Utils::debug(self::get_value( $option[2] ) .' : '. $value);
 					$update_log = true;
 				}
 				
@@ -382,6 +383,10 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['fullpoints'],
 									$options['totopoints'],
 									$options['goalpoints'],
+									$options['diffpoints'],
+									$options['ranking_display'],
+									$options['show_ranking'],
+									$options['show_num_predictions_in_ranking'],
 								)
 							);
 		echo '<p class="submit">';
@@ -432,9 +437,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['ranking_display'],
-									$options['show_ranking'],
-									$options['show_num_predictions_in_ranking'],
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],
@@ -450,6 +452,15 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		submit_button( null, 'primary', null, true );
 		
+		self::admin_sectiontitle( __( 'Groups Page Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['team_points_win'],
+									$options['team_points_draw'],
+									$options['groups_page_match_types'], 
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		
 		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['use_charts'],
@@ -458,15 +469,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['dashboard_image'], 
 									$options['use_favicon'],
 									$options['use_touchicon'], 
-								) 
-							);
-		submit_button( null, 'primary', null, true );
-		
-		self::admin_sectiontitle( __( 'Groups Page Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::options_form( array( 
-									$options['team_points_win'],
-									$options['team_points_draw'],
-									$options['groups_page_match_types'], 
+									$options['hide_admin_bar'], 
+									$options['add_tinymce_button'], 
+									$options['keep_data_on_uninstall'],
 								) 
 							);
 		submit_button( null, 'primary', null, true );
@@ -481,14 +486,11 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		submit_button( null, 'primary', null, true );
 				
-		self::admin_sectiontitle( __( 'Advanced Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::options_form( array( 
-									$options['hide_admin_bar'], 
-									$options['add_tinymce_button'], 
-									$options['keep_data_on_uninstall'],
-								) 
-							);
-		submit_button( null, 'primary', null, true );
+		// self::admin_sectiontitle( __( 'Advanced Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		// self::options_form( array( 
+								// ) 
+							// );
+		// submit_button( null, 'primary', null, true );
 		
 		self::admin_footer();
 	}

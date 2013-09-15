@@ -193,7 +193,7 @@ class Football_Pool_Statistics_Page {
 						}
 					}
 					
-					if ( count( $users ) >= 1 ) {
+					if ( $view != 'user' ) {
 						$output .= $ranking_selector;
 						// column charts
 						// chart6: column, what did the players score with the game predictions?
@@ -230,6 +230,7 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
 							$chart->data = $chart_data->bonus_question_pie_series( $raw_data, 'no open questions' );
+							// $output .= Football_Pool_Utils::debug($chart->data,'return');
 							$chart->title = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = sprintf( "xAxis: { categories: [ '%s', '%s' ] }"
 														, __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -244,7 +245,7 @@ class Football_Pool_Statistics_Page {
 												}";
 							$output .= $chart->draw();
 							// remove last point from series; we don't need it :)
-							$output .= $chart->remove_last_point_from_series();
+							// $output .= $chart->remove_last_point_from_series();
 						}
 					}
 				default:
@@ -255,7 +256,6 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart2', 'line', 720, 500 );
 							$chart->data = $chart_data->score_per_match_line_series( $raw_data );
-							// $output .= Football_Pool_Utils::debug($chart->data,'return');
 							$chart->title = __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN );
 							$txt = __( 'points', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "tooltip: {

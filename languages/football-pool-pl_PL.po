@@ -691,8 +691,8 @@ msgstr ""
 "zawartości strony."
 
 #: admin/class-football-pool-admin-options.php:50
-msgid "Full score *"
-msgstr "Pełne punkty *"
+msgid "Full score"
+msgstr "Pełne punkty"
 
 #: admin/class-football-pool-admin-options.php:50
 msgid ""
@@ -705,8 +705,8 @@ msgstr ""
 "jest rówież używana do przeliczania rankingu."
 
 #: admin/class-football-pool-admin-options.php:52
-msgid "Toto score *"
-msgstr "Toto score *"
+msgid "Toto score"
+msgstr "Toto score"
 
 #: admin/class-football-pool-admin-options.php:52
 msgid ""
@@ -722,7 +722,7 @@ msgstr ""
 #: admin/class-football-pool-admin-options.php:56
 #, fuzzy
 msgid "Prediction stop method for matches"
-msgstr "Czas (w sekundach) *"
+msgstr "Czas (w sekundach)"
 
 #: admin/class-football-pool-admin-options.php:59
 msgid "Dynamic time"
@@ -739,7 +739,7 @@ msgid "Select which method to use for the prediction stop."
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:71
-msgid "Dynamic stop threshold (in seconds) for matches *"
+msgid "Dynamic stop threshold (in seconds) for matches"
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:73
@@ -753,8 +753,8 @@ msgstr ""
 
 #: admin/class-football-pool-admin-options.php:79
 #, fuzzy
-msgid "Prediction stop date for matches *"
-msgstr "Czas (w sekundach) *"
+msgid "Prediction stop date for matches"
+msgstr "Czas (w sekundach)"
 
 #: admin/class-football-pool-admin-options.php:81
 msgid ""
@@ -777,8 +777,8 @@ msgstr ""
 
 #: admin/class-football-pool-admin-options.php:103
 #, fuzzy
-msgid "Prediction stop date for questions *"
-msgstr "Czas (w sekundach) *"
+msgid "Prediction stop date for questions"
+msgstr "Czas (w sekundach)"
 
 #: admin/class-football-pool-admin-options.php:105
 msgid ""
@@ -788,8 +788,8 @@ msgid ""
 msgstr ""
 
 #: admin/class-football-pool-admin-options.php:110
-msgid "Maximum length for a shoutbox message *"
-msgstr "Maksymalna długość wiadomości shoutbox *"
+msgid "Maximum length for a shoutbox message"
+msgstr "Maksymalna długość wiadomości shoutbox"
 
 #: admin/class-football-pool-admin-options.php:110
 msgid ""
@@ -1997,7 +1997,7 @@ msgstr ""
 #~ msgstr "Pozycja drużyny"
 
 #, fuzzy
-#~ msgid "One prediction lock *"
+#~ msgid "One prediction lock"
 #~ msgstr "zobacz typy"
 
 #~ msgid "Edit team position"

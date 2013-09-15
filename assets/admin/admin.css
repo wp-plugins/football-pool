@@ -147,3 +147,5 @@ div.ranking-log span { padding-right: 10px; }
 #step-0-form .calculation-type-select label { clear: both; display: block; margin-bottom: 4px; font-weight: bold; cursor: pointer; }
 #step-0-form .calculation-type-select label span { float: left; padding-left: 30px; font-style: italic; font-weight: normal; }
 #step-0-form .submit { clear: both; }
+
+.tablenav.no-pages { display: none; }

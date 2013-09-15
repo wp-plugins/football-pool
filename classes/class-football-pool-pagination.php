@@ -35,7 +35,7 @@ class Football_Pool_Pagination {
 		}
 		
 		$output = '';
-		if ( $this->wrap ) $output .= '<div class="tablenav top">';
+		if ( $this->wrap ) $output .= sprintf( '<div class="tablenav top%s">', $page_class );
 		
 		$output .= sprintf( '<div class="tablenav-pages%s">', $page_class );
 		if ( $this->show_total ) {

@@ -221,8 +221,8 @@ class Football_Pool_Chart {
 
 	public function remove_last_point_from_series() {
 		return sprintf( "<script type='text/javascript'>
-							jQuery(document).ready(function() {
-								jQuery.each(chart_%s.series, function() { this.data[this.data.length-1].remove() } );
+							jQuery( document ).ready(function() {
+								jQuery.each( chart_%s.series, function() { this.data[this.data.length-1].remove() } );
 							});
 						</script>", 
 					$this->ID

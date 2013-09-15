@@ -7,7 +7,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		$totopoints = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		$fullpoints = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 		$goalpoints = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
-
+		$diffpoints = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
 		<div class="help-page">
@@ -74,9 +75,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="points">Points</h2>
-		<p>The plugin uses 3 different scores that are rewarded to players for the match predictions they do. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
-		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points. The goal bonus is rewarded if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
-		
+		<p>The plugin uses 4 different scores that are rewarded to players for the match predictions they do: full points, toto points, goal bonus and goal difference bonus. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
+		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
+		<p>If you set the goal difference bonus to anything other than zero (default is zero), then this bonus is added to scored points if the user predicted the correct winner and the user was right about the goal difference (e.g. result is 2-1 and the user predicted 3-2). This bonus is not rewarded if the user predicted the wrong winner (e.g. result is 2-1 and the user predicted 2-3) or when the match result is a draw (e.g. 2-2).</p>
+		<p>
+		Your current settings are:
+		</p>
+		<table>
+			<tr><td>full points:</td><td><?php echo $fullpoints; ?></td></tr>
+			<tr><td>toto points:</td><td><?php echo $totopoints; ?></td></tr>
+			<tr><td>goal bonus:</td><td><?php echo $goalpoints; ?></td></tr>
+			<tr><td>goal difference bonus:</td><td><?php echo $diffpoints; ?></td></tr>
+		</table>
+		<p></p>
 		<table class="widefat help">
 		<tr>
 			<th>match result</th>
@@ -84,7 +95,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<th>points scored</th>
 		</tr>
 		<tr class="alternate">
-			<td>2-1</td>
+			<td>3-1</td>
 			<td>1-0</td>
 			<td>
 				toto points.<br>
@@ -92,14 +103,22 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</td>
 		</tr>
 		<tr>
-			<td>2-1</td>
+			<td>3-1</td>
 			<td>2-0</td>
+			<td>
+				toto points plus goal difference bonus for the correct goal difference (2 goals difference).<br>
+				total = <?php echo $totopoints; ?> + <?php echo $diffpoints; ?> = <?php echo $totopoints + $diffpoints; ?>
+			</td>
+		</tr>
+		<tr class="alternate">
+			<td>3-1</td>
+			<td>3-0</td>
 			<td>
 				toto points plus goal bonus for the correct amount of goals for the home team.<br>
 				total = <?php echo $totopoints; ?> + <?php echo $goalpoints; ?> = <?php echo $totopoints + $goalpoints; ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>2-1</td>
 			<td>2-1</td>
 			<td>
@@ -107,7 +126,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
-		<tr>
+		<tr class="alternate">
 			<td>2-1</td>
 			<td>1-1</td>
 			<td>
@@ -115,10 +134,26 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $goalpoints; ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>2-1</td>
 			<td>0-0</td>
 			<td>no points</td>
+		</tr>
+		<tr class="alternate">
+			<td>1-1</td>
+			<td>1-1</td>
+			<td>
+				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
+				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td>1-1</td>
+			<td>0-0</td>
+			<td>
+				toto points.<br>
+				total = <?php echo $totopoints; ?>
+			</td>
 		</tr>
 		</table>
 		

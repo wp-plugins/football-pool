@@ -1,6 +1,10 @@
 <?php
 global $wpdb;
 
+// admin screen options (defaults per page)
+define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
+define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
+
 // WP constants
 if ( function_exists( 'wp_enqueue_media' ) ) {
 	define( 'FOOTBALLPOOL_WP_MEDIA', true );

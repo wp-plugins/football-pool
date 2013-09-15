@@ -71,7 +71,7 @@ class Football_Pool {
 		$options['fullpoints'] = FOOTBALLPOOL_FULLPOINTS;
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
-		// $options['diffpoints'] = FOOTBALLPOOL_DIFFPOINTS;
+		$options['diffpoints'] = FOOTBALLPOOL_DIFFPOINTS;
 		$options['maxperiod'] = FOOTBALLPOOL_MAXPERIOD;
 		$options['use_leagues'] = 1; // 1: yes, 0: no
 		$options['shoutbox_max_chars'] = FOOTBALLPOOL_SHOUTBOX_MAXCHARS;
@@ -252,7 +252,7 @@ class Football_Pool {
 		$role = get_role( 'editor' );
 		$role->remove_cap( 'manage_football_pool' );
 		
-		// don't delete data if user option is set to keep all data (option = 1)
+		// only delete data if user option is set to remove all data (option = 0, which is the default)
 		if ( Football_Pool_Utils::get_fp_option( 'keep_data_on_uninstall', 0, 'int' ) == 0 ) {
 			// delete custom tables from database
 			$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );
@@ -270,7 +270,7 @@ class Football_Pool {
 			$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'footballpool%'" );
 		}
 	}
-
+	
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
 		$no_show = current_user_can( 'subscriber' ) 
@@ -355,7 +355,7 @@ class Football_Pool {
 				}
 			}
 			
-			// admin js & css
+			// global admin js & css
 			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
 			self::include_js( 'assets/admin/admin.js', 'js-pool-admin'
 								, array( 'jquery', 'jquery-ui-core', 'jquery-ui-progressbar' ) );
@@ -388,8 +388,8 @@ class Football_Pool {
 	
 	public function the_content( $content ) {
 		if ( is_page() ) {
-			$page_ID = get_the_ID();
-			switch ( $page_ID ) {
+			$page_id = get_the_ID();
+			switch ( $page_id ) {
 				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
 					$page = new Football_Pool_Ranking_Page();
 					$content .= $page->page_content();
@@ -485,7 +485,7 @@ class Football_Pool {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			// check if the new player picked a league to play in
-			if (Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
+			if ( Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
 				$errors->add( 'league_error', __( '<strong>ERROR:</strong> You must choose a league to play in!', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		}
@@ -640,10 +640,10 @@ class Football_Pool {
 			if ( isset( $page['comment'] ) ) {
 				$newpage['comment_status'] = $page['comment'];
 			}
-			$page_ID = wp_insert_post( $newpage );
+			$page_id = wp_insert_post( $newpage );
 			
-			Football_Pool_Utils::update_fp_option( "page_id_{$page['slug']}", $page_ID );
-			return $page_ID;
+			Football_Pool_Utils::update_fp_option( "page_id_{$page['slug']}", $page_id );
+			return $page_id;
 		}
 	}
 	

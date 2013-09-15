@@ -25,13 +25,14 @@ function match_options() {
 	global $matches;
 	$all_matches = $matches->matches;
 	foreach ( $all_matches as $match ) {
+		$match_id = isset( $match['id'] ) ? $match['id'] : $match['nr'];
 		$option_text = sprintf( '%d: %s - %s (%s)'
-								, $match['id']
+								, $match_id
 								, $match['home_team']
 								, $match['away_team']
 								, Football_Pool_Utils::date_from_gmt( $match['date'] )
 						);
-		printf( '<option value="%d">%s</option>', $match['id'], $option_text );
+		printf( '<option value="%d">%s</option>', $match_id, $option_text );
 	}
 }
 
@@ -47,8 +48,8 @@ function debug_line( $info, $value ) {
 <html>
 <head>
 	<meta charset="utf-8">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="../assets/admin/ZeroClipboard/ZeroClipboard.min.js"></script>
-	<script src="../assets/admin/jquery-ui/js/jquery-1.9.0.js"></script>
 	<style type="text/css">
 	body { font-family: Verdana; }
 	#debug-info { border: 1px solid #ccc; padding: .5em; }
@@ -89,7 +90,7 @@ $sql = "SELECT
 			NOW() AS mysql_now,
 			@@global.time_zone AS mysql_global_timezone,
 			@@session.time_zone AS mysql_session_timezone";
-			$row = $wpdb->get_row( $sql, ARRAY_A );
+$row = $wpdb->get_row( $sql, ARRAY_A );
 $mysql_datetime = $row['mysql_utc_ts'];
 $mysql_timestamp = $row['mysql_unix_ts'];
 $mysql_now = $row['mysql_now'];
@@ -99,24 +100,26 @@ $mysql_session_timezone = $row['mysql_session_timezone'];
 // Match info
 if ( $match > 0 ) {
 	$match = $matches->get_match_info( $match );
-	if ( isset( $match['id'] ) ) {
-		$match_info = "({$match['id']}) {$match['home_team']} - {$match['away_team']}";
+	if ( count( $match ) > 0 ) {
+		$match_id = isset( $match['id'] ) ? $match['id'] : $match['nr'];
+		$match_date = isset( $match['play_date'] ) ? $match['play_date'] : $match['playDate'];
+		$match_info = "({$match_id}) {$match['home_team']} - {$match['away_team']}";
 
 		$datetime = Football_Pool_Utils::get_fp_option( 'matches_locktime', '' );
 		if ( Football_Pool_Utils::get_fp_option( 'stop_time_method_matches', 0, 'int' ) == 1 
-			&& $datetime != '' ) {
+				&& $datetime != '' ) {
 			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $datetime ) );
 		} else {
-			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match['play_date'] ) );
+			$lock_date = new DateTime( Football_Pool_Utils::date_from_gmt( $match_date ) );
 			$offset = Football_Pool_Utils::get_fp_option( 'maxperiod', FOOTBALLPOOL_MAXPERIOD, 'int' );
 			$lock_date->modify( '-' . $offset . ' seconds' );
 		}
 		$lock_date = $lock_date->format( 'Y-m-d H:i' );
 
 		debug_line( 'Match', $match_info );
-		debug_line( 'Match date (database, should be UTC)', $match['play_date'] );
-		debug_line( 'Match date (local)', 
-					$matches->format_match_time( new DateTime( $match['play_date'] ), 'Y-m-d H:i' ) );
+		debug_line( 'Match date (database, should be UTC)', $match_date );
+		debug_line( 'Match date (local)'
+					, $matches->format_match_time( new DateTime( $match_date ), 'Y-m-d H:i' ) );
 		debug_line( 'Match timestamp (database, should be UTC)', $match['match_timestamp'] );
 		debug_line( 'Match is locked', ( ! $match['match_is_editable'] ? 'true' : 'false' ) );
 		debug_line( 'Match was/will be locked at time (local)', $lock_date );
@@ -145,6 +148,7 @@ if ( $question > 0 ) {
 }
 // WordPress
 debug_line( 'WordPress timezone offset', get_option( 'gmt_offset' ) );
+debug_line( 'WordPress timezone string', get_option( 'timezone_string' ) );
 debug_line( 'WordPress current date (local)', current_time( 'mysql' ) );
 debug_line( 'WordPress current timestamp (local)', current_time( 'timestamp' ) );
 debug_line( 'WordPress current date (UTC)', current_time( 'mysql', true ) );
@@ -157,7 +161,8 @@ debug_line( 'Plugin prediction stop method questions', get_fp_option( 'stop_time
 debug_line( 'Plugin match time display setting', get_fp_option( 'match_time_display' ) );
 // PHP/web server
 debug_line( 'PHP current date and time (UTC)', $date->format( 'Y-m-d H:i' ) );
-debug_line( 'PHP current timestamp (UTC)', $date->format( 'U' ) );
+debug_line( 'PHP current timestamp (UTC, time())', time() );
+debug_line( 'PHP current timestamp (UTC, date-&gt;format("U"))', $date->format( 'U' ) );
 debug_line( 'PHP default timezone setting', date_default_timezone_get() );
 // MySQL/database server
 debug_line( 'MySQL current date and time (UTC)', $mysql_datetime );

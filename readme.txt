@@ -155,8 +155,10 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 
 = 2.3.0 =
 * Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
-* Added pagination to the user admin page (default is 20 per page but you can change it in the screen options tab).
+* Added pagination to the user admin page (default is 20 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
+* Added pagination to the matches admin page (default is 50 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
 * New feature: link a question to a match. Linked questions are displayed beneath the match on the prediction form.
+* New scoring option: goal difference bonus.
 * New shortcode: display the score of a single user with [fp-user-score].
 * New shortcode: display the predictions for a match or question with [fp-predictions].
 * New shortcode: display a table of matches with [fp-matches].
@@ -174,6 +176,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Added image for wrong answers to prediction table for questions.
 * Changed database table structure so naming convention is the same for all tables.
 * Bug fix: old values were shown after a save of a match or a question in the admin (cache is now flushed after a save).
+* Bug fix: the 'dynamic stop time' check did not work as it should, causing a prediction for a match not being saved to the database even though the match was still editable in the prediction form (thanks full1restart719 and BruceFeuillette for reporting the bug helping me with fixing the bug).
 * Bug fix: prediction form shortcode did not update values when used in a post (thanks BruceFeuillette for reporting the bug).
 * Bug fix: user selector widget did not work in WordPress installs with default permalink setting (thanks Tomas Jonsson to for reporting this).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (related to bug in user selector widget).

@@ -227,6 +227,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								  ) AS goal_bonus
 								, IF( m.home_score = p.home_score AND m.away_score = p.away_score, NULL,
 									IF( 
+										m.home_score <> m.away_score AND
 										( CAST( m.home_score AS SIGNED ) - CAST( p.home_score AS SIGNED ) ) 
 										= 
 										( CAST( m.away_score AS SIGNED ) - CAST( p.away_score AS SIGNED ) )

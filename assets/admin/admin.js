@@ -1,4 +1,8 @@
 jQuery( document ).ready( function() {
+	jQuery( 'body.football-pool input.current-page' ).keydown( function( event ) {
+		if ( event.which == 13 ) jQuery( 'input[name="action"]' ).val( '' );
+	} );
+	
 	jQuery( 'div.matchtype input:checkbox' ).click( function() {
 		var matchtype_id = jQuery( this ).attr( 'id' ).replace( 'matchtype-', '' );
 		if ( jQuery( this ).is( ':checked' ) ) {
@@ -26,147 +30,8 @@ jQuery( document ).ready( function() {
 	} catch( err ) { }
 } );
 
-function bulk_action_warning( id ) {
-	var bulk_select = jQuery( '#' + id );
-	var msg;
-	if ( bulk_select && bulk_select.prop( 'selectedIndex' ) != 0 ) {
-		msg = jQuery( '#' + id + ' option').filter( ':selected' ).attr( 'bulk-msg' );
-		if ( msg != '' && msg != undefined ) {
-			return( confirm( msg ) );
-		} else {
-			return true;
-		}
-	} else {
-		return false;
-	}
-}
-
-function toggle_points( id ) {
-	jQuery( '#' + id + '_points' ).toggle();
-}
-
-var value_store = [];
-function set_input_param( param, id, value ) {
-	var param_value;
-	if ( jQuery.isArray( id ) && id.length >= 1 ) {
-		jQuery.each( id, function( i, v ) { 
-			if ( v != '' ) {
-				if ( ! jQuery.isArray( value_store[v] ) ) value_store[v] = [];
-				value_store[v][param] = jQuery( v ).attr( param );
-				param_value = jQuery.isArray( value ) ? value[i] : value;
-				jQuery( v ).attr( param, param_value );
-			}
-		} );
-	} else {
-		if ( id != '' ) {
-			value_store[id] = [ param, jQuery( id ).attr( param ) ];
-			param_value = jQuery.isArray( value ) ? value[0] : value;
-			jQuery( id ).attr( param, param_value );
-		}
-	}
-}
-
-function restore_input_param( param, id ) {
-	var param_value = '';
-	if ( jQuery.isArray( id ) && id.length >= 1 ) {
-		jQuery.each( id, function( i, v ) {
-			param_value = ( typeof value_store[v][param] != undefined ) ? value_store[v][param] : '';
-			jQuery( v ).attr( param, param_value );
-		} );
-	} else {
-		param_value = ( typeof value_store[id][param] != undefined ) ? value_store[id][param] : '';
-		jQuery( id ).attr( param, param_value );
-	}
-}
-
-function disable_inputs( id ) {
-	var check_id = arguments[1] || '';
-	var readonly = false;
-	if ( check_id != '' ) {
-		readonly = jQuery( '#' + check_id ).is(':checked');
-	}
-	
-	if ( jQuery.isArray( id ) && id.length >= 1 ) {
-		jQuery.each( id, function( i, v ) { 
-			if ( v != '' ) {
-				if ( check_id != '' ) {
-					if ( readonly ) {
-						jQuery( v ).attr( 'disabled', 'disabled' );
-					} else {
-						jQuery( v ).removeAttr( 'disabled' );
-					}
-				} else {
-					jQuery( v ).attr( 'disabled', 'disabled' ); 
-				}
-			}
-		} );
-	} else if ( id != '' ) {
-		if ( check_id != '' ) {
-			if ( readonly ) {
-				jQuery( id ).attr( 'disabled', 'disabled' );
-			} else {
-				jQuery( id ).removeAttr( 'disabled' );
-			}
-		} else {
-			jQuery( id ).attr( 'disabled', 'disabled' ); 
-		}
-	}
-}
-
-function toggle_linked_radio_options( active_id, disabled_id ) {
-	if ( jQuery.isArray( active_id ) && active_id.length >= 1 ) {
-		jQuery.each( active_id, function( i, v ) { 
-			if ( v != '' ) jQuery( v ).toggle( true ); 
-		} );
-	} else if ( active_id != '' ) {
-		jQuery( active_id ).toggle( true );
-	}
-	
-	if ( jQuery.isArray( disabled_id ) && disabled_id.length >= 1 ) {
-		jQuery.each( disabled_id, function( i, v ) { 
-			if ( v != '' ) jQuery( v ).toggle( false ); 
-		} );
-	} else if ( disabled_id != '' ) {
-		jQuery( disabled_id ).toggle( false );
-	}
-}
-
-// jQuery Input Hints plugin
-// Copyright (c) 2009 Rob Volk
-// http://www.robvolk.com
-
-jQuery( document ).ready( function() {
-   jQuery( 'input[title].with-hint' ).inputHints();
-});
-
-jQuery.fn.inputHints=function() {
-	// hides the input display text stored in the title on focus
-	// and sets it on blur if the user hasn't changed it.
-
-	// show the display text
-	// changed (AntoineH): only for empty inputs
-	jQuery(this).each(function(i) {
-		if (jQuery(this).val() == '') {
-			jQuery(this).val(jQuery(this).attr('title'))
-				.addClass('hint');
-		}
-	});
-
-	// hook up the blur & focus
-	return jQuery(this).focus(function() {
-		if (jQuery(this).val() == jQuery(this).attr('title'))
-			jQuery(this).val('')
-				.removeClass('hint');
-	}).blur(function() {
-		if (jQuery(this).val() == '')
-			jQuery(this).val(jQuery(this).attr('title'))
-				.addClass('hint');
-	});
-}; // jQuery Input Hints plugin
-
-
 // tinymce extension
-function tinymce_init_tabs( id ) {
+function footballpool_tinymce_init_tabs( id ) {
 	jQuery( 'li', '#' + id ).each( function() {
 		jQuery( this ).bind( "click", function() {
 			mcTabs.displayTab( 
@@ -178,11 +43,11 @@ function tinymce_init_tabs( id ) {
 	});
 }
 
-function tinymce_init() {
+function footballpool_tinymce_init() {
 	tinyMCEPopup.resizeToInnerSize();
 }
 
-function tinymce_insert_shortcode() {
+function footballpool_tinymce_insert_shortcode() {
 	var selected_val, 
 		shortcode = '', 
 		close_tag = false,
@@ -407,3 +272,141 @@ function score_calculation_error() {
 	jQuery( '#calculation-message' ).html( '<span class="error">' + msg + '</span>' );
 }
 // end score calculation handler
+
+function bulk_action_warning( id ) {
+	var bulk_select = jQuery( '#' + id );
+	var msg;
+	if ( bulk_select && bulk_select.prop( 'selectedIndex' ) != 0 ) {
+		msg = jQuery( '#' + id + ' option').filter( ':selected' ).attr( 'bulk-msg' );
+		if ( msg != '' && msg != undefined ) {
+			return( confirm( msg ) );
+		} else {
+			return true;
+		}
+	} else {
+		return false;
+	}
+}
+
+function toggle_points( id ) {
+	jQuery( '#' + id + '_points' ).toggle();
+}
+
+var value_store = [];
+function set_input_param( param, id, value ) {
+	var param_value;
+	if ( jQuery.isArray( id ) && id.length >= 1 ) {
+		jQuery.each( id, function( i, v ) { 
+			if ( v != '' ) {
+				if ( ! jQuery.isArray( value_store[v] ) ) value_store[v] = [];
+				value_store[v][param] = jQuery( v ).attr( param );
+				param_value = jQuery.isArray( value ) ? value[i] : value;
+				jQuery( v ).attr( param, param_value );
+			}
+		} );
+	} else {
+		if ( id != '' ) {
+			value_store[id] = [ param, jQuery( id ).attr( param ) ];
+			param_value = jQuery.isArray( value ) ? value[0] : value;
+			jQuery( id ).attr( param, param_value );
+		}
+	}
+}
+
+function restore_input_param( param, id ) {
+	var param_value = '';
+	if ( jQuery.isArray( id ) && id.length >= 1 ) {
+		jQuery.each( id, function( i, v ) {
+			param_value = ( typeof value_store[v][param] != undefined ) ? value_store[v][param] : '';
+			jQuery( v ).attr( param, param_value );
+		} );
+	} else {
+		param_value = ( typeof value_store[id][param] != undefined ) ? value_store[id][param] : '';
+		jQuery( id ).attr( param, param_value );
+	}
+}
+
+function disable_inputs( id ) {
+	var check_id = arguments[1] || '';
+	var readonly = false;
+	if ( check_id != '' ) {
+		readonly = jQuery( '#' + check_id ).is(':checked');
+	}
+	
+	if ( jQuery.isArray( id ) && id.length >= 1 ) {
+		jQuery.each( id, function( i, v ) { 
+			if ( v != '' ) {
+				if ( check_id != '' ) {
+					if ( readonly ) {
+						jQuery( v ).attr( 'disabled', 'disabled' );
+					} else {
+						jQuery( v ).removeAttr( 'disabled' );
+					}
+				} else {
+					jQuery( v ).attr( 'disabled', 'disabled' ); 
+				}
+			}
+		} );
+	} else if ( id != '' ) {
+		if ( check_id != '' ) {
+			if ( readonly ) {
+				jQuery( id ).attr( 'disabled', 'disabled' );
+			} else {
+				jQuery( id ).removeAttr( 'disabled' );
+			}
+		} else {
+			jQuery( id ).attr( 'disabled', 'disabled' ); 
+		}
+	}
+}
+
+function toggle_linked_radio_options( active_id, disabled_id ) {
+	if ( jQuery.isArray( active_id ) && active_id.length >= 1 ) {
+		jQuery.each( active_id, function( i, v ) { 
+			if ( v != '' ) jQuery( v ).toggle( true ); 
+		} );
+	} else if ( active_id != '' ) {
+		jQuery( active_id ).toggle( true );
+	}
+	
+	if ( jQuery.isArray( disabled_id ) && disabled_id.length >= 1 ) {
+		jQuery.each( disabled_id, function( i, v ) { 
+			if ( v != '' ) jQuery( v ).toggle( false ); 
+		} );
+	} else if ( disabled_id != '' ) {
+		jQuery( disabled_id ).toggle( false );
+	}
+}
+
+// jQuery Input Hints plugin
+// Copyright (c) 2009 Rob Volk
+// http://www.robvolk.com
+
+jQuery( document ).ready( function() {
+   jQuery( 'input[title].with-hint' ).inputHints();
+});
+
+jQuery.fn.inputHints=function() {
+	// hides the input display text stored in the title on focus
+	// and sets it on blur if the user hasn't changed it.
+
+	// show the display text
+	// changed (AntoineH): only for empty inputs
+	jQuery(this).each(function(i) {
+		if (jQuery(this).val() == '') {
+			jQuery(this).val(jQuery(this).attr('title'))
+				.addClass('hint');
+		}
+	});
+
+	// hook up the blur & focus
+	return jQuery(this).focus(function() {
+		if (jQuery(this).val() == jQuery(this).attr('title'))
+			jQuery(this).val('')
+				.removeClass('hint');
+	}).blur(function() {
+		if (jQuery(this).val() == '')
+			jQuery(this).val(jQuery(this).attr('title'))
+				.addClass('hint');
+	});
+}; // jQuery Input Hints plugin
