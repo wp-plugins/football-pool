@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 2.2.5
+Stable tag: 2.3.0
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -14,6 +14,8 @@ Logged in users of your blog can predict outcomes of matches and earn extra poin
 This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin also deletes all the plugin's data from the database (by default), but you may choose to keep the data by setting the 'keep data on uninstall' option on the settings page.
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship and World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
+
+A special thank you to all the translators that found time to translate the many labels in this plugin. And thanks to all the users that reported bugs.
 
 **Features**
 
@@ -112,7 +114,7 @@ The Football Pool plugin is available in the following languages:
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
 * Spanish (`es_ES`) by Cristian Carlucci.
-* French (`fr_FR`) by Julien Blancher.
+* French (`fr_FR`) by Julien Blancher and Bruce Feuillette.
 * Danish (`da_DK`) by Morten Bilberg Rasmussen.
 * German (`de_DE`) by Frank Winter.
 * Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
