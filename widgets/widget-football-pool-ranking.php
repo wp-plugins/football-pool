@@ -171,4 +171,3 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

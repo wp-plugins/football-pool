@@ -157,7 +157,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					$matchtype = $row['matchtype'];
 					printf( '<div class="matchtype"><label><input type="checkbox" id="matchtype-%d">
 								%s</label></div>'
-							, $row['type_id']
+							, $row['match_type_id']
 							, $matchtype
 					);
 				}
@@ -172,7 +172,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 				$checked = $checked ? 'checked="checked"' : '';
 				printf( '<div class="match matchtype-%d"><label><input type="checkbox" name="match-%d" value="1" %s>
 							%s - %s</label></div>'
-						, $row['type_id']
+						, $row['match_type_id']
 						, $row['id']
 						, $checked
 						, $teams->team_names[$row['home_team_id']]
@@ -435,4 +435,3 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 }
-?>

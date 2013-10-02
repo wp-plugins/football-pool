@@ -79,6 +79,17 @@ class Football_Pool_Admin {
 			true
 		);
 		
+		if ( FOOTBALLPOOL_SCORE_DEBUG ) {
+			self::add_submenu_page(
+				$slug,
+				'Debug Score Calc',
+				'Debug Score Calc',
+				$capability, 
+				'footballpool-score-debug',
+				'Football_Pool_Admin_Score_Calculation'
+			);
+		}
+		
 		self::add_submenu_page(
 			$slug,
 			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -208,7 +219,7 @@ class Football_Pool_Admin {
 	
 	// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
 	public function add_footballpool_tinymce_plugin( $plugin_array ) {
-		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.js';
+		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.min.js';
 		return $plugin_array;
 	}
 	// end tinymce
@@ -1146,4 +1157,3 @@ class Football_Pool_Admin {
 		return $date;
 	}
 }
-?>

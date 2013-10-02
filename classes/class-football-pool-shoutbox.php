@@ -58,4 +58,3 @@ class Football_Pool_Shoutbox {
 		return ( $result > 0 );
 	}
 }
-?>

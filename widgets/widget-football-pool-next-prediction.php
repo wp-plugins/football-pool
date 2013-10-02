@@ -160,4 +160,3 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 	}
 }
-?>

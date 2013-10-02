@@ -87,4 +87,3 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

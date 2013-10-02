@@ -230,7 +230,6 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
 							$chart->data = $chart_data->bonus_question_pie_series( $raw_data, 'no open questions' );
-							// $output .= Football_Pool_Utils::debug($chart->data,'return');
 							$chart->title = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = sprintf( "xAxis: { categories: [ '%s', '%s' ] }"
 														, __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -316,4 +315,3 @@ class Football_Pool_Statistics_Page {
 		return $output;
 	}
 }
-?>

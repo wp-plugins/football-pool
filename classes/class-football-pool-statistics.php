@@ -58,9 +58,10 @@ class Football_Pool_Statistics {
 		$matches = new Football_Pool_Matches;
 		
 		if ( count( $info ) > 0 ) {
+		// $output.=Football_Pool_Utils::debug($info,'return');
 			if ( $matches->always_show_predictions || $info['match_is_editable'] == false ) {
 				$output .= sprintf( '<h2>%s - %s', $info['home_team'], $info['away_team'] );
-				if ( $info['home_score'] != '' && $info['away_score'] != '' ) {
+				if ( is_integer( $info['home_score'] ) && is_integer( $info['away_score'] ) ) {
 					$output .= sprintf( ' (%d - %d)', $info['home_score'], $info['away_score'] );
 				}
 				$output .= '</h2>';
@@ -211,4 +212,3 @@ class Football_Pool_Statistics {
 	}
 	
 }
-?>

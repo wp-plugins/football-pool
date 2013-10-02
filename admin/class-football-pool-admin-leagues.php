@@ -194,4 +194,3 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	}
 
 }
-?>

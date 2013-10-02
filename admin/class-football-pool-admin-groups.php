@@ -137,4 +137,3 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	}
 	
 }
-?>

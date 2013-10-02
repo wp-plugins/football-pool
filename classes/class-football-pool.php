@@ -311,12 +311,12 @@ class Football_Pool {
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;
 				$highcharts_dir = WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API;
 				self::include_js( $highcharts_url, 'js-highcharts', null, false, $highcharts_dir );
-				self::include_js( 'assets/pool-charts.js', 'js-pool-charts', array( 'jquery' ) );
+				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery' ) );
 			}
 			
 			// pool js & css
 			self::include_css( 'assets/pool.css', 'css-pool' );
-			self::include_js( 'assets/pool.js', 'js-pool', array( 'jquery' ) );
+			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
 			// localized countdown code
 			wp_localize_script( 'js-pool'
 								, 'FootballPoolBlog'
@@ -357,7 +357,7 @@ class Football_Pool {
 			
 			// global admin js & css
 			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
-			self::include_js( 'assets/admin/admin.js', 'js-pool-admin'
+			self::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
 								, array( 'jquery', 'jquery-ui-core', 'jquery-ui-progressbar' ) );
 			
 			// score calculation css, ajax & progressbar
@@ -679,4 +679,3 @@ class Football_Pool {
 		}
 	}
 }
-?>

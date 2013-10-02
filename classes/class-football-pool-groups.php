@@ -401,4 +401,3 @@ class Football_Pool_Groups {
 		return $output;
 	}
 }
-?>

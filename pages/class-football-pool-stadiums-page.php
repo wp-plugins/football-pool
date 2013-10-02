@@ -40,4 +40,3 @@ class Football_Pool_Stadiums_Page {
 		return $output;
 	}
 }
-?>

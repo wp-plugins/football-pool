@@ -128,4 +128,3 @@ if ( FOOTBALLPOOL_ENABLE_DEBUG && defined( 'SAVE_QUERIES' ) && constant( 'SAVE_Q
 	// save db queries to file
 	add_action( 'shutdown', array( 'Football_Pool_Utils', 'sql_logger' ) );
 }
-?>

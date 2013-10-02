@@ -79,4 +79,3 @@ class Football_Pool_Stadiums {
 		return $result;
 	}
 }
-?>

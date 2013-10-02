@@ -226,4 +226,3 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 }
-?>

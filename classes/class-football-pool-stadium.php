@@ -52,4 +52,3 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 		return $plays;
 	}
 }
-?>

@@ -113,6 +113,7 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
+* Albanian (`sq`) by Migen Nepravishta.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher and Bruce Feuillette.
 * Danish (`da_DK`) by Morten Bilberg Rasmussen.
@@ -177,6 +178,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Added contextual help to admin screens. Moved informative text on admin pages to these help tabs (needs WordPress 3.3 or higher).
 * Added image for wrong answers to prediction table for questions.
 * Changed database table structure so naming convention is the same for all tables.
+* Minified the javascript files.
 * Bug fix: old values were shown after a save of a match or a question in the admin (cache is now flushed after a save).
 * Bug fix: the 'dynamic stop time' check did not work as it should, causing a prediction for a match not being saved to the database even though the match was still editable in the prediction form (thanks full1restart719 and BruceFeuillette for reporting the bug helping me with fixing the bug).
 * Bug fix: prediction form shortcode did not update values when used in a post (thanks BruceFeuillette for reporting the bug).
@@ -185,6 +187,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Bug fix: pie charts where not updated correctly for user defined rankings once such a ranking was selected on the charts page.
 * Bug fix: custom date field in the shortcode tinymce popup was behaving strange.
 * Bug fix: not all labels in group widget and group standing page were translated.
+* New translation: Albanian (sq) by Migen Nepravishta.
 * New translation: Danish (da_DK) by Morten Bilberg Rasmussen.
 * New translation: German (de_DE) by Frank Winter.
 

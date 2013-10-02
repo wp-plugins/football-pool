@@ -368,4 +368,3 @@ class Football_Pool_Chart_Data {
 		return $this->per_match_line_series( $lines );
 	}
 }
-?>

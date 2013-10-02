@@ -52,4 +52,3 @@ class Football_Pool_Logout_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

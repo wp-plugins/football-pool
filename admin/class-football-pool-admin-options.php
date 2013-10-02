@@ -495,4 +495,3 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 }
-?>

@@ -1,8 +1,14 @@
 <?php
 class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
+	private static $debug = false;
+	private static $start = 0;
+	
 	public function process() {
-		check_ajax_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
-		$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+		$nonce = '';
+		if ( ! self::$debug ) {
+			check_ajax_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
+			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+		}
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -13,20 +19,20 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		$output = '';
 		
 		// get step number and other parameters
-		$step = Football_Pool_Utils::post_int( 'step', 0 );
-		$sub_step = Football_Pool_Utils::post_int( 'sub_step', 1 );
-		$progress = Football_Pool_Utils::post_int( 'progress', 0 );
-		$user_set = Football_Pool_Utils::post_int( 'user_set', 0 );
-		$total_user_sets = Football_Pool_Utils::post_int( 'total_user_sets', 0 );
-		$total_users = Football_Pool_Utils::post_int( 'total_users', 0 );
-		$total_steps = Football_Pool_Utils::post_int( 'total_steps', 0 );
-		$calculation_type = Football_Pool_Utils::post_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
+		$step = self::post_int( 'step', self::$start );
+		$sub_step = self::post_int( 'sub_step', 1 );
+		$progress = self::post_int( 'progress', 0 );
+		$user_set = self::post_int( 'user_set', 0 );
+		$total_user_sets = self::post_int( 'total_user_sets', 0 );
+		$total_users = self::post_int( 'total_users', 0 );
+		$total_steps = self::post_int( 'total_steps', 0 );
+		$calculation_type = self::post_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 
 		// is this a single ranking calculation?
-		$ranking_id = Football_Pool_Utils::post_int( 'single_ranking', 0 );
+		$ranking_id = self::post_int( 'single_ranking', 0 );
 		$is_single_ranking = ( $ranking_id > 0 );
 		if ( ! $is_single_ranking ) {
-			$ranking_id = Football_Pool_Utils::post_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
+			$ranking_id = self::post_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
 		} elseif ( $step > 0 ) {
 			// get ranking matches and ranking questions to narrow the results
 			$ranking_matches = $pool->get_ranking_matches( $ranking_id );
@@ -525,11 +531,24 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								);
 		}
 		
-		header( 'application/json' );
-		echo json_encode( $params );
-		
-		// always die when doing ajax requests
-		die();
+		if ( ! self::$debug ) {
+			header( 'application/json' );
+			echo json_encode( $params );
+			// always die when doing ajax requests
+			die();
+		} else {
+			unset( $params['colorbox_html'] );
+			$url = add_query_arg( $params, "{$_SERVER['PHP_SELF']}?page=footballpool-score-debug" );
+			printf( '<p>step %d completed.</p><p><a href="%s">&raquo; next step</a></p>', $step, $url );
+			var_dump( $params );
+		}
+	}
+	
+	public function admin() {
+		// add to admin menu for debugging
+		self::$start = 1;
+		self::$debug = true;
+		self::process();
 	}
 	
 	private function get_user_set( $offset, $amount ) {
@@ -538,5 +557,20 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								, $offset, $amount );
 		return $wpdb->get_col( $sql );
 	}
+	
+	private function post_int( $key, $default = 0 ) {
+		if ( self::$debug ) {
+			return Football_Pool_Utils::get_int( $key, $default );
+		} else {
+			return Football_Pool_Utils::post_int( $key, $default );
+		}
+	}
+	
+	private function post_string( $key, $default = '' ) {
+		if ( self::$debug ) {
+			return Football_Pool_Utils::get_str( $key, $default );
+		} else {
+			return Football_Pool_Utils::post_str( $key, $default );
+		}
+	}
 }
-?>

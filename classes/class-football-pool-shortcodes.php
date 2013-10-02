@@ -458,4 +458,3 @@ class Football_Pool_Shortcodes {
 		return Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
 	}
 }
-?>

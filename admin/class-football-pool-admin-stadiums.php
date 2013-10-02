@@ -190,4 +190,3 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 	}
 
 }
-?>

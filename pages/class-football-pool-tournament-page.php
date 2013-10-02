@@ -5,4 +5,3 @@ class Football_Pool_Tournament_Page {
 		return $matches->print_matches( $matches->matches );
 	}
 }
-?>

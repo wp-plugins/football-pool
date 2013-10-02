@@ -54,4 +54,3 @@ class Football_Pool_User_Page {
 		return $output;
 	}
 }
-?>

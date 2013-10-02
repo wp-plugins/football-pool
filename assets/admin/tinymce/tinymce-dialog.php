@@ -40,7 +40,7 @@ function match_options() {
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
-	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.js"></script>
+	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js"></script>
 	<base target="_self" />
 	
 	<style type="text/css">

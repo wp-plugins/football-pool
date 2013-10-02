@@ -226,4 +226,3 @@ class Football_Pool_Teams {
 		return $flags;
 	}
 }
-?>

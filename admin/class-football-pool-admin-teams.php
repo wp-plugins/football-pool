@@ -267,4 +267,3 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 	}
 }
-?>

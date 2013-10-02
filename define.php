@@ -88,7 +88,8 @@ define( 'FOOTBALLPOOL_NONCE_SHOUTBOX', 'football-pool-shoutbox' );
 define( 'FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX', '_footballpool_shoutbox_wpnonce' );
 
 // dev environment values
-if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
+define( 'FOOTBALLPOOL_SCORE_DEBUG', false );
+if ( FOOTBALLPOOL_SCORE_DEBUG || $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
 	$wpdb->show_errors();
 	// http://wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405
@@ -97,4 +98,3 @@ if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', false );
 	$wpdb->hide_errors();
 }
-?>

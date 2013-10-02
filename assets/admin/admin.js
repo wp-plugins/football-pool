@@ -25,7 +25,7 @@ jQuery( document ).ready( function() {
 							+ '</div>';
 				},
 			innerWidth: "600px",
-			innerHeight: "400px",
+			innerHeight: "400px"
 		} );
 	} catch( err ) { }
 } );
@@ -185,7 +185,7 @@ function calculate_score_history() {
 			action: ajax_action,
 			fp_recalc_nonce: FootballPoolAjax.fp_recalc_nonce,
 			step: 0,
-			single_ranking: ranking,
+			single_ranking: ranking
 		}
 		
 		try {
@@ -197,7 +197,7 @@ function calculate_score_history() {
 												arrowKey: false,
 												close: FootballPoolAjax.colorbox_close,
 												innerWidth: "500px",
-												innerHeight: "250px",
+												innerHeight: "250px"
 											} );
 							jQuery( "#cboxClose" ).hide();
 						}, 'json' )
@@ -228,7 +228,7 @@ function calculate_score_history() {
 			user_set: data.user_set,
 			total_user_sets: data.total_user_sets,
 			total_users: data.total_users,
-			calculation_type: data.calculation_type,
+			calculation_type: data.calculation_type
 		}
 		
 		jQuery( '#ajax-loader' ).show();

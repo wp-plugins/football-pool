@@ -250,4 +250,3 @@ abstract class Football_Pool_Widget extends WP_Widget {
 		return $instance;
 	}
 }
-?>

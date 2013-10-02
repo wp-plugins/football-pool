@@ -708,4 +708,3 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 	}
 
 }
-?>

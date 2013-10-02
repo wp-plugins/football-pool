@@ -293,4 +293,3 @@ class Football_Pool_Utils {
 	}
 	
 }
-?>

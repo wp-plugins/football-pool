@@ -126,4 +126,3 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 			echo $args['after_widget'];
 	}
 }
-?>

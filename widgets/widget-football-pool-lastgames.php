@@ -96,4 +96,3 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

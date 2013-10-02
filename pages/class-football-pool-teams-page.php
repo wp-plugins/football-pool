@@ -82,4 +82,3 @@ class Football_Pool_Teams_Page {
 		return $output;
 	}
 }
-?>

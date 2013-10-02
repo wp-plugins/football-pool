@@ -119,4 +119,3 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		return $stadiums;
 	}
 }
-?>

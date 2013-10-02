@@ -114,7 +114,7 @@ class Football_Pool_Matches {
 					m.home_team_id, m.away_team_id, 
 					m.home_score, m.away_score, 
 					s.name AS stadium_name, s.id AS stadium_id,
-					t.name AS matchtype, t.id AS type_id
+					t.name AS matchtype, t.id AS type_id, t.id AS match_type_id
 				FROM {$prefix}matches m
 				JOIN {$prefix}stadiums s
 					ON ( m.stadium_id = s.id )
@@ -165,8 +165,8 @@ class Football_Pool_Matches {
 				$match_info[$i]['match_timestamp'] = $ts;
 				$match_info[$i]['play_date'] = $row['play_date'];
 				$match_info[$i]['date'] = $row['play_date'];
-				$match_info[$i]['home_score'] = (int) $row['home_score'];
-				$match_info[$i]['away_score'] = (int) $row['away_score'];
+				$match_info[$i]['home_score'] = is_numeric( $row['home_score'] ) ? (int) $row['home_score'] : $row['home_score'];
+				$match_info[$i]['away_score'] = is_numeric( $row['away_score'] ) ? (int) $row['away_score'] : $row['away_score'];
 				$match_info[$i]['home_team'] = ( 
 						isset( $teams->team_names[(integer) $row['home_team_id'] ] ) ? 
 							$teams->team_names[(integer) $row['home_team_id'] ] : 
@@ -183,7 +183,7 @@ class Football_Pool_Matches {
 				$match_info[$i]['id'] = (int) $row['id'];
 				$match_info[$i]['stadium_id'] = (int) $row['stadium_id'];
 				$match_info[$i]['stadium_name'] = $row['stadium_name'];
-				$match_info[$i]['match_type_id'] = (int) $row['type_id'];
+				$match_info[$i]['match_type_id'] = (int) $row['match_type_id'];
 				$match_info[$i]['match_type'] = $row['matchtype'];
 				$match_info[$i]['matchtype'] = $row['matchtype'];
 				
@@ -648,4 +648,3 @@ class Football_Pool_Matches {
 	}
 
 }
-?>

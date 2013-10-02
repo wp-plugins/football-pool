@@ -114,4 +114,3 @@ class Football_Pool_Pagination {
 	}
 
 }
-?>

@@ -76,4 +76,3 @@ class Football_Pool_Pool_Page {
 				);
 	}
 }
-?>

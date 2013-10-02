@@ -110,4 +110,3 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

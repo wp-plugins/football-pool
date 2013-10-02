@@ -1092,4 +1092,3 @@ class Football_Pool_Pool {
 			return $avatar;
 	}
 }
-?>

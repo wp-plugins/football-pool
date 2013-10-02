@@ -450,4 +450,3 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 
 }
-?>

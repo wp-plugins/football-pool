@@ -120,4 +120,3 @@ class Football_Pool_Admin_Feature_Pointers {
 	}
 	
 }
-?>

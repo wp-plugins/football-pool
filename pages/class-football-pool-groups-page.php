@@ -29,4 +29,3 @@ class Football_Pool_Groups_Page {
 		return $output;
 	}
 }
-?>

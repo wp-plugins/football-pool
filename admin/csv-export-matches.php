@@ -61,4 +61,3 @@ foreach ( $matches as $match ) {
 }
 fclose( $fp );
 exit;
-?>

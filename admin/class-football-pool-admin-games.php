@@ -621,7 +621,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $success;
 	}
 	
-	private function print_matches( $rows ) {
+	private function print_matches( $rows ) {	
 		$date_title = '';
 		$matchtype = '';
 		
@@ -785,4 +785,3 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 
 }
-?>

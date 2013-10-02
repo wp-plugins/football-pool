@@ -159,4 +159,3 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	}
 
 }
-?>

@@ -229,4 +229,3 @@ class Football_Pool_Chart {
 				);
 	}
 }
-?>

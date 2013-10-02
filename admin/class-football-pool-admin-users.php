@@ -549,4 +549,3 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		// Football_Pool_Admin::notice( $notice , 'important' );
 	// }
 }
-?>
