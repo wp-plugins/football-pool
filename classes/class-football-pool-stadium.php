@@ -21,43 +21,34 @@ class Football_Pool_Stadium extends Football_Pool_Stadiums {
 		}
 	}
 	
-	public function HTML_image() {
+	private function get_photo_url( $photo ) {
 		$path = '';
-		if ( strpos( $this->photo, 'http://' ) !== 0 && strpos( $this->photo, 'https://' ) !== 0 ) {
+		if ( stripos( $photo, 'http://' ) !== 0 && stripos( $photo, 'https://' ) !== 0 ) {
 			$path = FOOTBALLPOOL_PLUGIN_URL . 'assets/images/stadiums/';
 		}
-		return sprintf( '<img src="%s%s" title="%s" alt="%s" class="stadiumphoto" />'
-						, esc_attr( $path )
-						, esc_attr( $this->photo )
+		
+		return $path . $photo;
+	}
+	
+	public function HTML_image( $return = 'image' ) {
+		$thumb = ( $return == 'thumb' ) ? ' thumb stadium-list' : '';
+		return sprintf( '<img src="%s" title="%s" alt="%s" class="stadium-photo%s" />'
+						, esc_attr( $this->get_photo_url( $this->photo ) )
 						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
 						, esc_attr( htmlentities( $this->name, null, 'UTF-8' ) )
+						, $thumb
 					);
 	}
 	
 	public function get_plays() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		$matches = new Football_Pool_Matches;
+		$matches = $matches->matches;
 		
-		$sql = $wpdb->prepare( "SELECT 
-									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
-									m.homeTeamId, 
-									m.awayTeamId, 
-									m.homeScore, 
-									m.awayScore, 
-									s.name, 
-									s.id, 
-									t.name AS matchtype, 
-									m.nr,
-									m.playDate 
-								FROM {$prefix}matches m, {$prefix}stadiums s, {$prefix}matchtypes t 
-								WHERE m.stadiumId = s.id  AND s.id = %d
-									AND m.matchtypeId = t.id AND t.visibility = 1
-								ORDER BY {$sorting}", 
-							$this->id
-						);
+		$plays = array();
+		foreach ( $matches as $match ) {
+			if ( $match['stadium_id'] == $this->id ) $plays[] = $match;
+		}
 		
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return $plays;
 	}
 }
-?>

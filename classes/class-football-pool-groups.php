@@ -83,7 +83,8 @@ class Football_Pool_Groups {
 		
 		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
-			$group_ranking[ $row['id'] ][ (integer) $row['teamId'] ] = $this->get_standing_for_team( $ranking, $row['teamId'] );
+			$group_ranking[$row['id']][(integer) $row['team_id']] = 
+								$this->get_standing_for_team( $ranking, $row['team_id'] );
 		}
 		
 		return $this->order_groups( $group_ranking );
@@ -96,31 +97,6 @@ class Football_Pool_Groups {
 		return $arr;
 	}
 	
-
-	/* alternative way to get all the scores: combine results of these 2 queries
-	
-		select 
-		  homeTeamId,  
-		  count(*) as games, 
-		  sum(homeScore) as goals, 
-		  sum(awayScore) as against, 
-		  count(if(homeScore>awayScore,1,null)) as wins, 
-		  count(if(homeScore=awayScore,1,null)) as draws, 
-		  count(if(homeScore<awayScore,1,null)) as losses 
-		from pool_matches 
-		group by homeTeamId 
-		
-		select 
-		  awayTeamId,  
-		  count(*) as games, 
-		  sum(awayScore) as goals, 
-		  sum(homeScore) as against, 
-		  count(if(homeScore<awayScore,1,null)) as wins, 
-		  count(if(homeScore=awayScore,1,null)) as draws, 
-		  count(if(homeScore>awayScore,1,null)) as losses 
-		from pool_matches 
-		group by awayTeamId
-	*/
 	private function get_standings()
 	{
 		$wins = array();
@@ -137,25 +113,25 @@ class Football_Pool_Groups {
 		$rows = $matches->get_info( $match_types );
 		
 		foreach ( $rows as $row ) {
-			if ( ( $row['homeScore'] != null ) && ( $row['awayScore'] != null ) ) {
+			if ( ( $row['home_score'] != null ) && ( $row['away_score'] != null ) ) {
 				// set goals
 				$this->set_goals_array( 
 								$for, $against, 
-								$row['homeTeamId'], $row['awayTeamId'], 
-								$row['homeScore'], $row['awayScore'] 
+								$row['home_team_id'], $row['away_team_id'], 
+								$row['home_score'], $row['away_score'] 
 						);
 				// set wins, draws and losses
-				if ( (int) $row['homeScore'] > (int) $row['awayScore'] ) {
-					$wins   = $this->set_standing_array( $wins, $row['homeTeamId'] );
-					$losses = $this->set_standing_array( $losses, $row['awayTeamId'] );
-				} elseif ( (int) $row['homeScore'] < (int) $row['awayScore'] ) {
-					$losses = $this->set_standing_array( $losses, $row['homeTeamId'] );
-					$wins   = $this->set_standing_array( $wins, $row['awayTeamId'] );
-				} elseif ( (int) $row['homeScore'] == (int) $row['awayScore'] ) {
-					$draws = $this->set_standing_array( $draws, $row['homeTeamId'] );
-					$draws = $this->set_standing_array( $draws, $row['awayTeamId'] );
+				if ( (int) $row['home_score'] > (int) $row['away_score'] ) {
+					$wins   = $this->set_standing_array( $wins, $row['home_team_id'] );
+					$losses = $this->set_standing_array( $losses, $row['away_team_id'] );
+				} elseif ( (int) $row['home_score'] < (int) $row['away_score'] ) {
+					$losses = $this->set_standing_array( $losses, $row['home_team_id'] );
+					$wins   = $this->set_standing_array( $wins, $row['away_team_id'] );
+				} elseif ( (int) $row['home_score'] == (int) $row['away_score'] ) {
+					$draws = $this->set_standing_array( $draws, $row['home_team_id'] );
+					$draws = $this->set_standing_array( $draws, $row['away_team_id'] );
 				} else {
-					echo 'what the fuck? this shouldn\'t happen: ', $row['homeTeamId'], '-', $row['awayTeamId'], '<br />';
+					echo 'what the fuck? this shouldn\'t happen: ', $row['home_team_id'], '-', $row['away_team_id'], '<br />';
 				}
 			}
 		}
@@ -163,12 +139,15 @@ class Football_Pool_Groups {
 	}
 	
 	private function get_standing_for_team( $ranking, $id ) {
+		$team_points_win  = Football_Pool_Utils::get_fp_option( 'team_points_win', FOOTBALLPOOL_TEAM_POINTS_WIN, 'int' );
+		$team_points_draw = Football_Pool_Utils::get_fp_option( 'team_points_draw', FOOTBALLPOOL_TEAM_POINTS_DRAW, 'int' );
+		
 		$wins =    ( isset( $ranking[0][$id] ) ? $ranking[0][$id] : 0 );
 		$draws =   ( isset( $ranking[1][$id] ) ? $ranking[1][$id] : 0 );
 		$losses =  ( isset( $ranking[2][$id] ) ? $ranking[2][$id] : 0 );
 		$for =     ( isset( $ranking[3][$id] ) ? $ranking[3][$id] : 0 );
 		$against = ( isset( $ranking[4][$id] ) ? $ranking[4][$id] : 0 );
-		$points =  ( $wins * 3 ) + $draws;
+		$points =  ( $wins * $team_points_win ) + ( $draws * $team_points_draw );
 		$plays =   $wins + $draws + $losses;
 		return array(
 					'team' => $id, 
@@ -183,7 +162,7 @@ class Football_Pool_Groups {
 	}
 	
 	// only return games for the first round
-	public function get_plays_for_group( $group ) {
+	public function get_plays( $group_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -192,31 +171,32 @@ class Football_Pool_Groups {
 													'groups_page_match_types' 
 													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
 												);
+		if ( ! is_array( $match_types ) || count( $match_types ) == 0 ) {
+			$match_types = array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE );
+		}
 		$match_types = implode( ',', $match_types );
 		
-		$sql = $wpdb->prepare( "SELECT DISTINCT
-									UNIX_TIMESTAMP(m.playDate) AS match_timestamp, 
-									m.homeTeamId, 
-									m.awayTeamId, 
-									m.homeScore, 
-									m.awayScore, 
-									s.id AS stadiumId, 
-									s.name AS stadiumName, 
-									t.name AS matchtype, 
-									m.nr,
-									m.playDate
-								FROM {$prefix}matches m, {$prefix}stadiums s, 
-									{$prefix}matchtypes t, {$prefix}teams tm 
-								WHERE m.stadiumId = s.id 
-									AND m.matchtypeId = t.id 
-									AND t.id IN ( {$match_types} )
-									AND ( m.homeTeamId = tm.id OR m.awayTeamId = tm.id )
-									AND tm.groupId = %d
-								ORDER BY {$sorting}",
-							$group
+		$sql = $wpdb->prepare( "SELECT DISTINCT m.id
+								FROM {$prefix}matches m, {$prefix}matchtypes t, {$prefix}teams tm 
+								WHERE m.matchtype_id = t.id AND t.id IN ( {$match_types} )
+									AND ( m.home_team_id = tm.id OR m.away_team_id = tm.id )
+									AND tm.group_id = %d
+								ORDER BY {$sorting}"
+								, $group_id
 						);
 		
-		return $wpdb->get_results( $sql, ARRAY_A );
+		$match_ids = $wpdb->get_col( $sql );
+		if ( ! is_array( $match_ids ) ) $match_ids = array();
+		
+		$matches = new Football_Pool_Matches;
+		$matches = $matches->matches;
+		
+		$plays = array();
+		foreach( $matches as $match ) {
+			if ( in_array( $match['id'], $match_ids, false ) ) $plays[] = $match;
+		}
+		
+		return $plays;
 	}
 
 	private function compare_teams( $a, $b ) {
@@ -294,10 +274,10 @@ class Football_Pool_Groups {
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			$sql = "SELECT t.id AS teamId, t.name AS teamName, g.id, g.name 
+			$sql = "SELECT t.id AS team_id, t.name AS team_name, g.id, g.name 
 					FROM {$prefix}teams t, {$prefix}groups g 
-					WHERE t.groupId = g.id AND t.is_real = 1 AND t.is_active = 1
-					ORDER BY g.name ASC, t.groupOrder ASC, t.id ASC";
+					WHERE t.group_id = g.id AND t.is_real = 1 AND t.is_active = 1
+					ORDER BY g.name ASC, t.group_order ASC, t.id ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			wp_cache_set( $cache_key, $rows );
 		}
@@ -316,8 +296,19 @@ class Football_Pool_Groups {
 		$ranking = $this->get_ranking_array();
 
 		if ( $layout == 'wide' ) {
-			$wdl = '<th class="wins"><span title="wins">w</span></th><th class="draws">'
-				 . '<span title="draws">d</span></th><th class="losses"><span title="losses">l</span></th>';
+			$wdl = sprintf( '<th class="wins"><span title="wins">w</span></th>
+							<th class="draws"><span title="draws">d</span></th>
+							<th class="losses"><span title="losses">l</span></th>'
+							, esc_attr( __( 'wins', FOOTBALLPOOL_TEXT_DOMAIN ) )
+							// Translators: this is a short notation for 'wins'
+							, _x( 'w', 'short for \'wins\'', FOOTBALLPOOL_TEXT_DOMAIN )
+							, esc_attr( __( 'draws', FOOTBALLPOOL_TEXT_DOMAIN ) )
+							// Translators: this is a short notation for 'draws'
+							, _x( 'd', 'short for \'draws\'', FOOTBALLPOOL_TEXT_DOMAIN )
+							, esc_attr( __( 'losses', FOOTBALLPOOL_TEXT_DOMAIN ) )
+							// Translators: this is a short notation for 'losses'
+							, _x( 'l', 'short for \'losses\'', FOOTBALLPOOL_TEXT_DOMAIN )
+					);
 			$th1 = '';
 			$th2 = '';
 			$format = '<tr>
@@ -331,8 +322,16 @@ class Football_Pool_Groups {
 						</tr>';
 		} else {
 			$wdl = '';
-			$th1 = '<span title="matches">m</span>';
-			$th2 = '<span title="points">p</span>';
+			$th1 = sprintf( '<span title="%s">%s</span>'
+							, esc_attr( __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) )
+							// Translators: this is a short notation for 'matches'
+							, _x( 'm', 'short for \'matches\'', FOOTBALLPOOL_TEXT_DOMAIN )
+					);
+			$th2 = sprintf( '<span title="%s">%s</span>'
+							, esc_attr( __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ) )
+							// Translators: this is a short notation for 'points'
+							, _x( 'p', 'short for \'points\'', FOOTBALLPOOL_TEXT_DOMAIN )
+					);
 			$format = '<tr>
 							<td class="team">%s</td>
 							<td class="plays">%d</td>
@@ -402,4 +401,3 @@ class Football_Pool_Groups {
 		return $output;
 	}
 }
-?>

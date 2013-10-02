@@ -14,11 +14,17 @@ class Football_Pool_Stadiums {
 	}
 	
 	public function print_lines( $stadiums ) {
+		$thumbs_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_venue_thumb' );
+		$comments_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_venue_comments' );
 		$output = '';
 		while ( $stadium = array_shift( $stadiums ) ) {
-			$output .= sprintf( '<li><a href="%s">%s</a></li>'
+			$photo = ( $thumbs_in_listing && $stadium->photo != '' ) ? $stadium->HTML_image( 'thumb' ) : '';
+			$comments = ( $comments_in_listing ) ? $stadium->comments : '';
+			$output .= sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
 								, add_query_arg( array( 'stadium' => $stadium->id ) )
+								, $photo
 								, htmlentities( $stadium->name, null, 'UTF-8' )
+								, $comments
 						);
 		}
 		return $output;
@@ -73,4 +79,3 @@ class Football_Pool_Stadiums {
 		return $result;
 	}
 }
-?>

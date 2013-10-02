@@ -24,12 +24,21 @@ function footballpool_update_chars( id, chars ) {
 	jQuery( "#" + id ).parent().find( "span span" ).replaceWith( "<span>" + remaining + "</span>" );
 }
 
-function footballpool_do_countdown( el, time_text, extra_text, year, month, day, hour, minute, second, format ) {
+function footballpool_do_countdown( el, extra_text, year, month, day, hour, minute, second, format ) {
 	var date_to = new Date(year, month-1, day, hour, minute, second).getTime();
 	var date_now = new Date().getTime();
 	var diff = Math.abs(Math.round((date_to - date_now) / 1000));
 	var pre, post, txt = '';
-
+	
+	if ( extra_text == null ) {
+		extra_text = { 
+						'pre_before' : FootballPoolBlog.count_txt_pre_before, 
+						'post_before' : FootballPoolBlog.count_txt_post_before, 
+						'pre_after' : FootballPoolBlog.count_txt_pre_after, 
+						'post_after' : FootballPoolBlog.count_txt_post_after
+					}
+	}
+	
 	if ( date_to < date_now ) {
 		pre = extra_text['pre_after'], post = extra_text['post_after'];
 	} else {
@@ -40,38 +49,38 @@ function footballpool_do_countdown( el, time_text, extra_text, year, month, day,
 	
 	switch ( format ) {
 		case 1: // only seconds
-			txt += diff + ' ' + ( diff == 1 ? time_text['second'] : time_text['seconds'] );
+			txt += diff + ' ' + ( diff == 1 ? FootballPoolBlog.count_txt_second : FootballPoolBlog.count_txt_seconds );
 			break;
 		case 2: // days, hours, minutes, seconds
 			switch ( true ) {
 				case diff > 86400:
 					tmp = Math.floor( diff / 86400 );
-					txt += tmp + ' ' + ( tmp == 1 ? time_text['day'] : time_text['days'] ) + ', ';
+					txt += tmp + ' ' + ( tmp == 1 ? FootballPoolBlog.count_txt_day : FootballPoolBlog.count_txt_days ) + ', ';
 					diff -= tmp * 86400;
 				case diff > 3600:
 					tmp = Math.floor( diff / 3600 );
-					txt += tmp + ' ' + ( tmp == 1 ? time_text['hour'] : time_text['hours'] ) + ', ';
+					txt += tmp + ' ' + ( tmp == 1 ? FootballPoolBlog.count_txt_hour : FootballPoolBlog.count_txt_hours ) + ', ';
 					diff -= tmp * 3600;
 				case diff > 60:
 					tmp = Math.floor( diff / 60 );
-					txt += tmp + ' ' + ( tmp == 1 ? time_text['minute'] : time_text['minutes'] ) + ', ';
+					txt += tmp + ' ' + ( tmp == 1 ? FootballPoolBlog.count_txt_minute : FootballPoolBlog.count_txt_minutes ) + ', ';
 					diff -= tmp * 60;
 				default:
-					txt += diff + ' ' + ( diff == 1 ? time_text['second'] : time_text['seconds'] );
+					txt += diff + ' ' + ( diff == 1 ? FootballPoolBlog.count_txt_second : FootballPoolBlog.count_txt_seconds );
 			}
 			break;
 		case 3: // hours, minutes, seconds
 			switch ( true ) {
 				case diff > 3600:
 					tmp = Math.floor( diff / 3600 );
-					txt += tmp + ' ' + ( tmp == 1 ? time_text['hour'] : time_text['hours'] ) + ', ';
+					txt += tmp + ' ' + ( tmp == 1 ? FootballPoolBlog.count_txt_hour : FootballPoolBlog.count_txt_hours ) + ', ';
 					diff -= tmp * 3600;
 				case diff > 60:
 					tmp = Math.floor( diff / 60 );
-					txt += tmp + ' ' + ( tmp == 1 ? time_text['minute'] : time_text['minutes'] ) + ', ';
+					txt += tmp + ' ' + ( tmp == 1 ? FootballPoolBlog.count_txt_minute : FootballPoolBlog.count_txt_minutes ) + ', ';
 					diff -= tmp * 60;
 				default:
-					txt += diff + ' ' + ( diff == 1 ? time_text['second'] : time_text['seconds'] );
+					txt += diff + ' ' + ( diff == 1 ? FootballPoolBlog.count_txt_second : FootballPoolBlog.count_txt_seconds );
 			}
 			break;
 	}

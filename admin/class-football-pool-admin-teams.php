@@ -2,6 +2,24 @@
 class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete teams.</p><p>Only <em>\'Active\'</em> teams are shown on the teams page in the blog. The <em>\'real\'</em> column indicates if the team is a real team in the tournament or a temporary placeholder for a match that is not yet set (e.g. Winner Group A).</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+					array(
+						'id' => 'details',
+						'title' => __( 'Team details', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is used in the standing table and the match overview.</li><li>If <em>link</em> is filled the team name on the team\'s page will link to this address.</li><li>The <em>comments</em> field can be used to add some extra info about the team. The info is shown on the team\'s page.</li></ul>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#teams-groups-and-matches">Help section about teams</a>';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Add, change or delete teams.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -57,12 +75,10 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 				if ( $item_id > 0 ) {
 					self::delete( $item_id );
 					self::notice( sprintf( __( 'Team id:%s deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id ) );
-					self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				}
 				if ( count( $bulk_ids) > 0 ) {
 					self::delete( $bulk_ids );
 					self::notice( sprintf( __( '%s teams deleted.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
-					self::notice( __( 'Scores recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				}
 			default:
 				self::view();
@@ -105,7 +121,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 					array( 'multiline', __( 'comments', FOOTBALLPOOL_TEXT_DOMAIN ), 'comments', $values['comments'], __( 'An optional text with extra information about the team that is displayed on the team\'s page.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'dropdown', __( 'group', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_id', $values['group_id'], $groups, '' ),
 					array( 'integer', __( 'group order', FOOTBALLPOOL_TEXT_DOMAIN ), 'group_order', $values['group_order'], __( 'If teams are placed in a group and the default ordering does not work (when teams have the same points) you can fix the ordering with this number.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'checkbox', __( 'team is not a temporary team name', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_real', $values['is_real'], __( 'Set to false if the team name is not a real team, e.g. "Winner match 30".', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'checkbox', __( 'team is not a temporary team name', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_real', $values['is_real'], __( 'Uncheck this box if the team is not a real team, e.g. "Winner match 30".', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 'checkbox', __( 'team is active', FOOTBALLPOOL_TEXT_DOMAIN ), 'is_active', $values['is_active'], '' ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
@@ -176,16 +192,16 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		// delete all teams, matches for that team and predictions made for those matches
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions 
-								WHERE matchNr IN 
-									( SELECT nr FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d )"
+								WHERE match_id IN 
+									( SELECT id FROM {$prefix}matches WHERE home_team_id = %d OR away_team_id = %d )"
 								, $id, $id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE homeTeamId = %d OR awayTeamId = %d"
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE home_team_id = %d OR away_team_id = %d"
 								, $id, $id );
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}teams WHERE id = %d", $id );
 		$wpdb->query( $sql );
-		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
+		wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 	}
 	
 	private function update_item( $input ) {
@@ -196,15 +212,15 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}teams 
-										( name, photo, flag, link, groupId, groupOrder, is_real, is_active, comments )
+										( name, photo, flag, link, group_id, group_order, is_real, is_active, comments )
 									VALUES 
 										( %s, %s, %s, %s, %d, %d, %d, %d, %s )",
 									$name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET
-										name = %s, photo = %s, flag = %s, link = %s, groupId = %d, 
-										groupOrder = %d, is_real = %d, is_active = %d, comments = %s
+										name = %s, photo = %s, flag = %s, link = %s, group_id = %d, 
+										group_order = %d, is_real = %d, is_active = %d, comments = %s
 									WHERE id = %d",
 									$name, $photo, $flag, $link, $group_id, 
 									$group_order, $is_real, $is_active, $comments,
@@ -214,7 +230,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		
 		$wpdb->query( $sql );
 		
-		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
+		wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 
@@ -248,7 +264,6 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "UPDATE {$prefix}teams SET is_active = %d WHERE id = %d"
 								, $active, $id );
 		$wpdb->query( $sql );
-		wp_cache_delete( Football_Pool_Teams::CACHE_KEY_TEAMS );
+		wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 	}
 }
-?>

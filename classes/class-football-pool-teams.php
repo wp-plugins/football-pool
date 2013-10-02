@@ -6,8 +6,6 @@ class Football_Pool_Teams {
 	public $team_flags;
 	public $show_team_links;
 	
-	const CACHE_KEY_TEAMS = 'fp_get_teams';
-	
 	public function __construct() {
 		// get the team_names
 		$this->team_types = $this->get_team_types();
@@ -25,13 +23,13 @@ class Football_Pool_Teams {
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-//@todo: extra testing
+		//@TODO: extra testing
 		$sql = $wpdb->prepare( "SELECT 
-									t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, 
-									g.name AS groupName, t.groupOrder AS group_order, 
+									t.id, t.name, t.photo, t.flag, t.link, g.id AS group_id, 
+									g.name AS group_name, t.group_order, 
 									t.is_real, t.is_active, t.comments
 								FROM {$prefix}teams t
-								LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id
+								LEFT OUTER JOIN {$prefix}groups g ON t.group_id = g.id
 								WHERE t.id = %d",
 								$id
 							);
@@ -48,8 +46,8 @@ class Football_Pool_Teams {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = $wpdb->prepare( "SELECT 
-									id, name, photo, flag, link, groupId AS group_id, 
-									groupOrder AS group_order, is_real, is_active, comments
+									id, name, photo, flag, link, group_id, 
+									group_order, is_real, is_active, comments
 								FROM {$prefix}teams WHERE name = %s", $name );
 		$result = $wpdb->get_row( $sql );
 		
@@ -71,7 +69,7 @@ class Football_Pool_Teams {
 			
 			$sql = $wpdb->prepare( 
 							"INSERT INTO {$prefix}teams 
-								( name, photo, flag, link, groupId, groupOrder, is_real, is_active, comments ) 
+								( name, photo, flag, link, group_id, group_order, is_real, is_active, comments ) 
 							 VALUES 
 								( %s, %s, %s, %s, %d, %d, %d, %d, %s )"
 							, $name, $photo, $flag, $link, $group_id, $group_order, $is_real, $is_active, $comments
@@ -92,7 +90,7 @@ class Football_Pool_Teams {
 									'inserted'    => true
 									);
 			// clear the cache
-			wp_cache_delete( self::CACHE_KEY_TEAMS );
+			wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 		}
 		
 		return $result;
@@ -107,7 +105,7 @@ class Football_Pool_Teams {
 		if ( $group_order === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			$sql = $wpdb->prepare( "SELECT groupOrder FROM {$prefix}teams WHERE id = %d", $team );
+			$sql = $wpdb->prepare( "SELECT group_order FROM {$prefix}teams WHERE id = %d", $team );
 			$group_order = $wpdb->get_var( $sql );
 			wp_cache_set( $cache_key, $group_order );
 		}
@@ -116,12 +114,18 @@ class Football_Pool_Teams {
 	}
 	
 	public function print_lines( $teams ) {
+		$thumbs_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_team_thumb' );
+		$comments_in_listing = Football_Pool_Utils::get_fp_option( 'listing_show_team_comments' );
 		$output = '';
 		while ( $team = array_shift( $teams ) ) {
 			if ( $team->is_real == 1 && $team->is_active == 1 ) {
-				$output .= sprintf( '<li><a href="%s">%s</a></li>'
+				$photo = ( $thumbs_in_listing && $team->photo != '' ) ? $team->HTML_thumb( 'thumb' ) : '';
+				$comments = ( $comments_in_listing ) ? $team->comments : '';
+				$output .= sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
 									, add_query_arg( array( 'team' => $team->id ) )
+									, $photo
 									, htmlentities( $team->name, null, 'UTF-8' )
+									, $comments
 							);
 			}
 		}
@@ -139,7 +143,7 @@ class Football_Pool_Teams {
 				
 				$sql = $wpdb->prepare( "
 										UPDATE {$prefix}teams 
-										SET name = %s, groupOrder = %d WHERE id = %d",
+										SET name = %s, group_order = %d WHERE id = %d",
 										$name, $order, $team
 								);
 				$wpdb->query( $sql );
@@ -169,20 +173,20 @@ class Football_Pool_Teams {
 	}
 	
 	public function get_teams() {
-		$rows = wp_cache_get( self::CACHE_KEY_TEAMS );
+		$rows = wp_cache_get( FOOTBALLPOOL_CACHE_TEAMS );
 		
 		if ( $rows === false ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
 			$sql = "SELECT 
-						t.id, t.name, t.photo, t.flag, t.link, g.id AS groupId, g.name as groupName, t.groupOrder,
-						t.is_real, t.is_active, t.groupOrder AS group_order, t.comments
+						t.id, t.name, t.photo, t.flag, t.link, g.id AS group_id, g.name as group_name,
+						t.is_real, t.is_active, group_order, t.comments
 					FROM {$prefix}teams t
-					LEFT OUTER JOIN {$prefix}groups g ON t.groupId = g.id 
+					LEFT OUTER JOIN {$prefix}groups g ON t.group_id = g.id 
 					ORDER BY t.name ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( self::CACHE_KEY_TEAMS, $rows );
+			wp_cache_set( FOOTBALLPOOL_CACHE_TEAMS, $rows );
 		}
 		
 		$teams = array();
@@ -222,4 +226,3 @@ class Football_Pool_Teams {
 		return $flags;
 	}
 }
-?>

@@ -2,13 +2,46 @@
 class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the <em>\'edit\'</em> link.</p><p>After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while. You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+					array(
+						'id' => 'import',
+						'title' => __( 'Import & Export', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>Matches can be imported into the plugin using the import function (<em>\'Bulk change game schedule\'</em>). See the help page for more information about the required format.</p><p>On the import screen you can choose one of the already uploaded schedules or upload a new one (if write is enabled on the upload directory).</p><p>The import can add matches to your schedule, or completely overwrite the existing schedule. Please beware that when overwriting the schedule all existing predictions and rankings will be lost.</p><p>Existing matches can be exported using the <em>\'Download game schedule\'</em> button.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+					array(
+						'id' => 'details',
+						'title' => __( 'Match details', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<ul><li><em>match date</em> must be in UTC format.</li></ul>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+				);
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#teams-groups-and-matches">%s</a></p><p><a href="?page=footballpool-options">%s</a>'
+								, __( 'Help section about matches and the import', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Plugin options page', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
+	public function screen_options() {
+		$args = array(
+			'label' => __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ),
+			'default' => FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE,
+			'option' => 'matches_per_page'
+		);
+		add_screen_option( 'per_page', $args );
+	}
+	
 	public function admin() {
 		$action  = Football_Pool_Utils::request_string( 'action' );
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		
 		self::admin_header( __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'On this page you can quickly edit match scores and team names for final rounds (if applicable). If you wish to change all information about a match, then click the \'edit\' link.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::intro( __( 'After saving the match data the pool ranking is recalculated. If you have a lot of users this may take a while.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'You can (temporarily) disable the automatic recalculation of scores in the Plugin Options.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$log = '';
 		$file = '';
@@ -74,6 +107,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 	
 	private function import_csv( $action = 'import_csv', $file = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
 		$msg = $err = array();
 		
 		if ( $action == 'upload_csv' && $file == '' ) return array( $err, $msg );
@@ -84,6 +120,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		if ( $file != '' && ( $fp = @fopen( FOOTBALLPOOL_CSV_UPLOAD_DIR . $file, 'r' ) ) !== false ) {
 			if ( $action == 'import_csv_overwrite' ) {
+				// ranking update log
+				$sql = "SELECT ranking_id FROM {$prefix}rankings_matches";
+				$ranking_ids = $wpdb->get_col( $sql );
+				foreach( $ranking_ids as $ranking_id ) {
+					self::update_ranking_log( $ranking_id, null, null, 
+								__( 'match import with overwrite', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+				}
 				// remove all match data except matchtypes
 				self::empty_table( 'scorehistory' );
 				self::empty_table( 'predictions' );
@@ -105,7 +149,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			}
 			
 			// check the columns
-			$full_data = ( count( $header ) != 5 ) ? true : false;
+			$full_data = ( count( $header ) > 5 ) ? true : false;
 			if ( $full_data ) {
 				$column_names = explode(
 									FOOTBALLPOOL_CSV_DELIMITER,	'play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo'
@@ -204,18 +248,20 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						}
 						
 						// add the match
-						$nr = self::update_match( 
+						$id = self::update_match( 
 													0, $home_team_id, $away_team_id, null, null, 
 													$play_date, $stadium_id, $match_type_id
 												);
 						$msg[] = sprintf( 
 										__( 'Match %d imported: %s - %s for date "%s"', FOOTBALLPOOL_TEXT_DOMAIN )
-										, $nr, $home_team->name, $away_team->name, $play_date
+										, $id, $home_team->name, $away_team->name, $play_date
 								);
 					}
 				}
 			} else {
-				$err[] = sprintf( __( 'Imported csv file should contain %d columns. See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), count( $column_names ) );
+				$column_count = count( $column_names );
+				$header_count = count( $header );
+				$err[] = sprintf( __( 'Imported csv file should contain %d columns (header contains %d columns). See help page for the correct format.', FOOTBALLPOOL_TEXT_DOMAIN ), $column_count, $header_count );
 			}
 		} else {
 			if ( $file == '' ) 
@@ -246,8 +292,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			if ( count( $errors ) > 0 ) self::notice( implode( '<br>', $errors ), 'important' );
 			if ( count( $import_log ) > 0 ) self::notice( implode( '<br>', $import_log ) );
 		}
-		
-		self::intro( sprintf( __( 'More information about the csv file import can be found in the <a href="%s">help file</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), '?page=footballpool-help#teams-groups-and-matches' ) );
 		
 		// check if upload dir exists and is writable
 		$upload_is_readable = is_readable( FOOTBALLPOOL_CSV_UPLOAD_DIR );
@@ -352,9 +396,29 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
+	private function get_matches_for_page( $all_matches, $offset, $number ) {
+		$matches = array();
+		foreach( $all_matches as $match ) {
+			
+		}
+		return $matches;
+	}
+	
 	private function view() {
 		$matches = new Football_Pool_Matches();
-		$rows = $matches->get_info();
+		$rows = $matches->matches;
+		
+		$num_matches = count( $rows );
+		$pagination = new Football_Pool_Pagination( $num_matches );
+		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
+		$pagination->wrap = true;
+		
+		$rows = array_slice( 
+							$rows
+							, ( $pagination->current_page - 1 ) * $pagination->get_page_size()
+							, $pagination->get_page_size()
+							, true
+				);
 		
 		$full_data = ( Football_Pool_Utils::get_fp_option( 'export_format', 0, 'int' ) == 0 );
 		$download_url = wp_nonce_url( FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php'
@@ -372,6 +436,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			'link' 
 		);
 		echo '</span></p>';
+		$pagination->show();
 		self::print_matches( $rows );
 		submit_button();
 	}
@@ -393,8 +458,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		if ( $action != 'edit' ) {
-			if ( $success ) self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-			
+			if ( $success ) {
+				self::notice( __( 'Values updated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				wp_cache_delete( FOOTBALLPOOL_CACHE_MATCHES );
+			}
 			if ( $action == 'update_single_match' ) {
 				self::edit_handler( $item_id, 'edit' );
 			} else {
@@ -407,25 +474,36 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		// delete match, corresponding predictions and linked bonus questions
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE nr = %d", $item_id );
+		// ranking update log
+		$sql = $wpdb->prepare( "SELECT ranking_id FROM {$prefix}rankings_matches
+								WHERE match_id = %d", $item_id );
+		$ranking_ids = $wpdb->get_col( $sql );
+		foreach( $ranking_ids as $ranking_id ) {
+			self::update_ranking_log( $ranking_id, null, null, 
+						sprintf( __( 'match %d deleted', FOOTBALLPOOL_TEXT_DOMAIN ), $item_id )
+					);
+		}
+		
+		// delete match, corresponding predictions and update linked bonus questions
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}matches WHERE id = %d", $item_id );
 		$success = ( $wpdb->query( $sql ) !== false );
 		if ( $success ) {
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE matchNr = %d", $item_id );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE match_id = %d", $item_id );
 			$success = ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
-									WHERE question_id IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE matchNr = %d
-									)"
-								, $item_id );
-			$success &= ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
-									WHERE questionId IN (
-										SELECT id FROM {$prefix}bonusquestions WHERE matchNr = %d
-									)"
-								, $item_id );
-			$success &= ( $wpdb->query( $sql ) !== false );
-			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE matchNr = %d", $item_id );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
+									// WHERE question_id IN (
+										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
+									// )"
+								// , $item_id );
+			// $success &= ( $wpdb->query( $sql ) !== false );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
+									// WHERE question_id IN (
+										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
+									// )"
+								// , $item_id );
+			// $success &= ( $wpdb->query( $sql ) !== false );
+			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE match_id = %d", $item_id );
+			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET match_id = 0 WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
@@ -483,9 +561,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		$matchdate = new DateTime( $values['date'] );
-		$matchdate_local = self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) );
+		$matchdate = $matchdate->format( 'Y-m-d H:i' );
+		$matchdate_local = Football_Pool_Utils::date_from_gmt( $matchdate );
 		$cols = array(
-					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_date', $values['date'], sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ),
+					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_date', $matchdate, sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ),
 					array( 'dropdown', __( 'home team', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_team_id', $values['home_team_id'], $teams, '' ),
 					array( 'dropdown', __( 'away team', FOOTBALLPOOL_TEXT_DOMAIN ), 'away_team_id', $values['away_team_id'], $teams, '' ),
 					array( 'text', __( 'home score', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_score', $values['home_score'], '' ),
@@ -497,7 +576,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::value_form( $cols );
 		echo '<p class="submit">';
 		self::primary_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'update_single_match_close' );
-		self::secondary_button( __( 'Save' ), 'update_single_match' );
+		self::secondary_button( __( 'Save', FOOTBALLPOOL_TEXT_DOMAIN ), 'update_single_match' );
 		self::cancel_button();
 		echo '</p>';
 	}
@@ -519,19 +598,22 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	
 	private function update() {
 		$matches = new Football_Pool_Matches;
-		$rows = $matches->get_info();
+		$rows = $matches->matches;
 		
 		// update scores for all matches
 		foreach( $rows as $row ) {
-			$match = $row['nr'];
-			$home_score = Football_Pool_Utils::post_integer( '_home_score_' . $match, 'NULL' );
-			$away_score = Football_Pool_Utils::post_integer( '_away_score_' . $match, 'NULL' );
-			$home_team = Football_Pool_Utils::post_integer( '_home_team_' . $match, -1 );
-			$away_team = Football_Pool_Utils::post_integer( '_away_team_' . $match, -1 );
-			$match_date = Football_Pool_Utils::post_string( '_match_date' . $match, '0000-00-00 00:00' );
+			$match_id = $row['id'];
+			$match_on_form = ( Football_Pool_Utils::post_integer( '_match_id_' . $match_id, 0 ) == $match_id );
+			$home_score = Football_Pool_Utils::post_integer( '_home_score_' . $match_id, 'NULL' );
+			$away_score = Football_Pool_Utils::post_integer( '_away_score_' . $match_id, 'NULL' );
+			$home_team = Football_Pool_Utils::post_integer( '_home_team_' . $match_id, -1 );
+			$away_team = Football_Pool_Utils::post_integer( '_away_team_' . $match_id, -1 );
+			$match_date = Football_Pool_Utils::post_string( '_match_date_' . $match_id, '1900-01-01 00:00' );
 			
-			$success = self::update_match( $match, $home_team, $away_team, 
-											$home_score, $away_score, $match_date );
+			if ( $match_on_form ) {
+				$success = self::update_match( $match_id, $home_team, $away_team, 
+												$home_score, $away_score, $match_date );
+			}
 		}
 		
 		if ( $success ) $success &= self::update_score_history();
@@ -539,7 +621,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $success;
 	}
 	
-	private function print_matches( $rows ) {
+	private function print_matches( $rows ) {	
 		$date_title = '';
 		$matchtype = '';
 		
@@ -555,40 +637,37 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				echo '<tr><td class="sidebar-name" colspan="10"><h3>', $matchtype, '</h3></td></tr>';
 			}
 			
-			$matchdate = new DateTime( $row['playDate'] );
-			$localdate = new DateTime( self::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
+			$matchdate = new DateTime( $row['play_date'] );
+			$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
-				// Translators: this is a date format string (see http://php.net/date)
-				$localdate_tooltip = date_i18n( __( 'd M Y, H:i', FOOTBALLPOOL_TEXT_DOMAIN )
-												, $localdate->format( 'U' ) );
 				echo '<tr><td class="sidebar-name"></td>',
 						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
-						'<td class="sidebar-name date-title" colspan="7"><span title="', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $localdate_tooltip, '">', $date_title, '</span></td>',
+						'<td class="sidebar-name date-title" colspan="7">', $date_title, '</td>',
 						'</tr>';
 			}
 			
 			$page = wp_nonce_url( sprintf( '?page=%s&amp;item_id=%d'
 											, Football_Pool_Utils::get_string( 'page' )
-											, $row['nr'] )
+											, $row['id'] )
 									, FOOTBALLPOOL_NONCE_ADMIN );
 			$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $row['nr'] 
+								, $row['id'] 
 							);
 			$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
 			echo '<tr>',
-					'<td class="time">', $row['nr'], '</td>',
+					'<td class="time">', $row['id'], self::hidden_input( "_match_id_{$row['id']}", $row['id'], 'return' ), '</td>',
 					'<td class="time local">', $localdate->format( 'Y-m-d H:i' ), '</td>',
-					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date' . $row['nr'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
-					'<td class="home">', self::teamname_input( (int) $row['homeTeamId'], '_home_team_'.$row['nr'] ), '</td>',
-					'<td class="score">', self::show_input( '_home_score_' . $row['nr'], $row['homeScore'] ), '</td>',
+					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
+					'<td class="home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
+					'<td class="score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',
 					'<td>-</td>',
-					'<td class="score">', self::show_input( '_away_score_' . $row['nr'], $row['awayScore'] ), '</td>',
-					'<td class="away">', self::teamname_input( (int) $row['awayTeamId'], '_away_team_' . $row['nr'] ), '</td>',
+					'<td class="score">', self::show_input( '_away_score_' . $row['id'], $row['away_score'] ), '</td>',
+					'<td class="away">', self::teamname_input( (int) $row['away_team_id'], '_away_team_' . $row['id'] ), '</td>',
 					'<td><a href="', $page, '&amp;action=edit">', __( 'edit' ), '</a></td>',
 					'<td><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'delete' ), '</a></td>',
 					'</tr>';
@@ -626,59 +705,79 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $select;
 	}
 	
-	private function update_match( $nr, $home_team, $away_team, $home_score, $away_score, 
+	private function update_match( $id, $home_team, $away_team, $home_score, $away_score, 
 									$match_date, $stadium_id = null, $match_type_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		if ( $nr == 0 ) {
+		if ( $id == 0 ) {
 			if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}matches 
-											( homeTeamId, awayTeamId, homeScore, awayScore, 
-												playDate, stadiumId, matchtypeId )
+											( home_team_id, away_team_id, home_score, away_score, 
+												play_date, stadium_id, matchtype_id )
 										VALUES ( %d, %d, NULL, NULL, %s, %d, %d )"
 									, $home_team, $away_team, $match_date, $stadium_id, $match_type_id
 								);
 			} else {
+				self::update_ranking_log( 1, null, null, 
+									__( 'match with end score added to pool', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}matches 
-											( homeTeamId, awayTeamId, homeScore, awayScore, 
-												playDate, stadiumId, matchtypeId )
+											( home_team_id, away_team_id, home_score, away_score, 
+												play_date, stadium_id, matchtype_id )
 										VALUES ( %d, %d, %d, %d, %s, %d, %d )"
 									, $home_team, $away_team, $home_score, $away_score
 									, $match_date, $stadium_id, $match_type_id
 								);
 			}
 		} else {
+			$matches = new Football_Pool_Matches;
+			$match = $matches->matches[$id];
+			$old_home_score = $match['home_score'];
+			$old_away_score = $match['away_score'];
+			$old_date = new DateTime( $match['date'] );
+			$old_date = $old_date->format( 'Y-m-d H:i' );
+			$old_home_id = $match['home_team_id'];
+			$old_away_id = $match['away_team_id'];
 			if ( ! is_integer( $stadium_id ) || ! is_integer( $match_type_id ) ) {
-				$matches = new Football_Pool_Matches;
-				$match = $matches->matches[ $nr ];
 				$stadium_id = $match['stadium_id'];
 				$match_type_id = $match['match_type_id'];
 			}
 			
 			if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
-											homeTeamId = %d, awayTeamId = %d, 
-											homeScore = NULL, awayScore = NULL,
-											playDate = %s, stadiumId = %d, matchtypeId = %d
-										WHERE nr = %d",
-									$home_team, $away_team, $match_date, $stadium_id, $match_type_id, $nr
+											home_team_id = %d, away_team_id = %d, 
+											home_score = NULL, away_score = NULL,
+											play_date = %s, stadium_id = %d, matchtype_id = %d
+										WHERE id = %d",
+									$home_team, $away_team, $match_date, $stadium_id, $match_type_id, $id
 								);
 			} else {
+				$old_set = array( $old_home_id, $old_away_id, $old_home_score, $old_away_score, $old_date );
+				$new_set = array( $home_team, $away_team, $home_score, $away_score, $match_date );
+				if ( count( array_diff_assoc( $new_set, $old_set ) ) > 0 ) {
+					$sql = $wpdb->prepare( "SELECT DISTINCT( ranking_id ) FROM {$prefix}rankings_matches
+											WHERE match_id = %d", $id );
+					$ranking_ids = $wpdb->get_col( $sql );
+					foreach( $ranking_ids as $ranking_id ) {
+						self::update_ranking_log( $ranking_id, null, null, 
+									sprintf( __( 'match %d changed', FOOTBALLPOOL_TEXT_DOMAIN ), $id )
+								);
+					}
+				}
 				$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
-											homeTeamId = %d, awayTeamId = %d, 
-											homeScore = %d, awayScore = %d, 
-											playDate = %s, stadiumId = %d, matchtypeId = %d
-										WHERE nr = %d",
+											home_team_id = %d, away_team_id = %d, 
+											home_score = %d, away_score = %d, 
+											play_date = %s, stadium_id = %d, matchtype_id = %d
+										WHERE id = %d",
 									$home_team, $away_team, $home_score, $away_score, 
-									$match_date, $stadium_id, $match_type_id, $nr
+									$match_date, $stadium_id, $match_type_id, $id
 								);
 			}
 		}
 		
 		$success = ( $wpdb->query( $sql ) !== false );
 		
-		if ( $nr  > 0 ) {
+		if ( $id  > 0 ) {
 			return $success;
 		} else {
 			return $success ? $wpdb->insert_id : 0;
@@ -686,4 +785,3 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	}
 
 }
-?>

@@ -7,12 +7,15 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action("widgets_init", create_function('', 'register_widget( "Football_Pool_Last_Games_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Last Games Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays the last X played games of the tournament.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'last matches', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Number of games to show', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Last Games Widget',
-		'description' => 'Football pool plugin: this widget displays the last X played games of the tournament.',
+		'description' => 'this widget displays the last X played games of the tournament.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(
@@ -57,25 +60,25 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 			
 			foreach ( $rows as $row ) {
 				if ( $teams->show_team_links ) {
-					$url_home = esc_url( add_query_arg( array( 'team' => $row['homeTeamId'] ), $teampage ) );
-					$url_away = esc_url( add_query_arg( array( 'team' => $row['awayTeamId'] ), $teampage ) );
+					$url_home = esc_url( add_query_arg( array( 'team' => $row['home_team_id'] ), $teampage ) );
+					$url_away = esc_url( add_query_arg( array( 'team' => $row['away_team_id'] ), $teampage ) );
 					$team_str = '<a href="%s">%s</a>';
 				}
 				$url_stats = esc_url( add_query_arg( 
-											array( 'view' => 'matchpredictions', 'match' => $row['nr'] ),
+											array( 'view' => 'matchpredictions', 'match' => $row['id'] ),
 											$statisticspage 
 											) 
 									);
 				
 				printf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
 						, $url_home
-						, $teams->team_names[ (int) $row['homeTeamId'] ]
+						, $teams->team_names[ (int) $row['home_team_id'] ]
 						, $url_away
-						, $teams->team_names[ (int) $row['awayTeamId'] ]
+						, $teams->team_names[ (int) $row['away_team_id'] ]
 					);
 				
 				echo '<td class="score"><a href="', $url_stats, '" title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
-					$row['homeScore'], ' - ', $row['awayScore'], '</a></td></tr>';
+					$row['home_score'], ' - ', $row['away_score'], '</a></td></tr>';
 			}
 			echo '</table>';
 		} else {
@@ -93,4 +96,3 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

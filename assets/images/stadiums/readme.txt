@@ -1,0 +1,1 @@
+You can add images of the stadiums/venues with the media uploader in WordPress, or place them in this folder.

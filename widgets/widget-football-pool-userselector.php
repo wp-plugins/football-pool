@@ -7,12 +7,15 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( 'widgets_init', create_function( '', 'register_widget("Football_Pool_User_Selector_Widget");' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'User Selector Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'players', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'height (px)', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'User Selector Widget',
-		'description' => 'Football pool plugin: this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.',
+		'description' => 'this widget displays a list of users that can be selected. Only for use on the Statistics page; it won\'t even show on all other pages.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(
@@ -58,15 +61,18 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		if ( count($rows) > 0 ) {
 			$ranking = Football_Pool_Utils::request_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
 			printf( '<form action="%s" method="get">', $statisticspage );
-			printf( '<input type="hidden" name="ranking" value="%s" />', $ranking );
+			printf( '<input type="hidden" name="ranking" value="%d" />', $ranking );
+			// fix for the default permalink setting
+			$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
+			printf( '<input type="hidden" name="page_id" value="%d" />', $page_id );
 			
 			printf( '<ol class="userselector" style="height: %spx;">', $height );
 			foreach( $rows as $row ) {
-				$selected = ( in_array( $row['userId'], $users ) ) ? true : false;
+				$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
 				echo '<li', ( $selected ? ' class="selected"' : '' ), '>
-						<input type="checkbox" name="users[]" id="user', $row['userId'], '"
-							value="', $row['userId'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
-						<label for="user', $row['userId'], '"> ', $pool->get_avatar( $row['userId'], 'small' ), $row['userName'], '</label></li>';
+						<input type="checkbox" name="users[]" id="user', $row['user_id'], '"
+							value="', $row['user_id'], '" ', ( $selected ? 'checked="checked" ' : '' ), '/>
+						<label for="user', $row['user_id'], '"> ', $pool->get_avatar( $row['user_id'], 'small' ), $row['user_name'], '</label></li>';
 			}
 			echo '</ol>';
 			printf( '<p><input type="submit" value="%s" /></p>'
@@ -120,4 +126,3 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 			echo $args['after_widget'];
 	}
 }
-?>

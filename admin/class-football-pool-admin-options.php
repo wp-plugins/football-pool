@@ -2,18 +2,33 @@
 class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>The fields on this page set different options for the plugin.</p><p>Some settings have effect on the ranking (e.g. points), when changing such a setting you can recalculate the ranking on this page with the <em>\'Recalculate scores\'</em> button.</p><p>You have to click <em>Save Changes</em> for the new settings to take effect.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+				);
+		$help_sidebar = sprintf( '<a href="?page=footballpool-help#rankings">%s</a>'
+								, __( 'Help section about rankings', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		$action = Football_Pool_Utils::post_string( 'action' );
-		
 		$date = date_i18n( 'Y-m-d H:i' );
 		
 		$match_time_offsets = array();
 		// based on WordPress's functions.php
 		$offset_range = array( 
-							-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, -6.5, -6, -5.5, 
-							-5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5,
-							0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 
-							8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.75, 13, 13.75, 14
+							-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, 
+							-6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, 
+							-0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 
+							6, 6.5, 7, 7.5, 8, 8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 
+							12, 12.75, 13, 13.75, 14
 						);
 		foreach ( $offset_range as $offset ) {
 			if ( 0 <= $offset )
@@ -56,7 +71,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		// definition of all configurable options
 		$options = array(
-						//array( 'text', __( 'Remove data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'remove_data_on_uninstall', __( '', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'keep_data_on_uninstall' =>
+							array( 'checkbox', __( 'Keep data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'keep_data_on_uninstall', __( 'If checked the options and pool data (teams, matches, predictions, etc.) are not removed when deactivating the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'webmaster' => 
 							array( 'text', __( 'Webmaster', FOOTBALLPOOL_TEXT_DOMAIN ), 'webmaster', __( 'This value is used for the shortcode [fp-webmaster].', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'money' => 
@@ -66,11 +82,13 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'start' =>
 							array( 'text', __( 'Start date', FOOTBALLPOOL_TEXT_DOMAIN ), 'start', __( 'The start date of the tournament or pool. The shortcode [fp-start] adds this value in the content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'fullpoints' =>
-							array( 'text', __( 'Full score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fp-fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Full score', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fp-fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'totopoints' =>
-							array( 'text', __( 'Toto score *', FOOTBALLPOOL_TEXT_DOMAIN ), 'totopoints', __( 'The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [fp-totopoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Toto score', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'totopoints', __( 'The points a user gets for guessing the outcome of a match (win, loss or draw) without also getting the exact amount of goals. The shortcode [fp-totopoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'goalpoints' => 
-							array( 'text', __( 'Goal bonus *', FOOTBALLPOOL_TEXT_DOMAIN ), 'goalpoints', __( 'Extra points a user gets for guessing the goals correct for one of the teams. These points are added to the toto points or full points. The shortcode [fp-goalpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'goalpoints', __( 'Extra points a user gets for guessing the goals correct for one of the teams. These points are added to the toto points or full points. The shortcode [fp-goalpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'diffpoints' => 
+							array( 'text', __( 'Goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'diffpoints', __( 'Extra points a user gets for guessing the goal difference correct for a match. Only awarded in matches with a winning team and only on top of toto points. See the help page for more information. The shortcode [fp-diffpoints] adds this value in the content. This value is also used in the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'stop_time_method_matches' =>
 							array( 
 								'radiolist', 
@@ -89,7 +107,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'maxperiod' => 
 							array( 
 								'text', 
-								__( 'Dynamic stop threshold (in seconds) for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Dynamic stop threshold (in seconds) for matches', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'maxperiod', 
 								__( 'A user may change his/her predictions untill this amount of time before game kickoff. The time is in seconds, e.g. 15 minutes is 900 seconds.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								array( 'stop_time_method_matches' => 1 ) 
@@ -97,7 +115,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'matches_locktime' => 
 							array( 
 								'datetime', 
-								__( 'Prediction stop date for matches *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Prediction stop date for matches', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'matches_locktime', 
 								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the matches have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)', 
 								'',
@@ -121,14 +139,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'bonus_question_locktime' => 
 							array( 
 								'datetime', 
-								__( 'Prediction stop date for questions *', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								__( 'Prediction stop date for questions', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 
 								'bonus_question_locktime', 
 								__( 'If a valid date and time [Y-m-d H:i] is given here, then this date/time will be used as a single value before all predictions for the bonus questions have to be entered by users. (your local time is:', FOOTBALLPOOL_TEXT_DOMAIN ) . ' <a href="options-general.php">' . $date . '</a>)',
 								'',
 								array( 'stop_time_method_questions' => 0 )
 							),
 						'shoutbox_max_chars' =>
-							array( 'text', __( 'Maximum length for a shoutbox message *', FOOTBALLPOOL_TEXT_DOMAIN ), 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+							array( 'text', __( 'Maximum length for a shoutbox message', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'shoutbox_max_chars', __( 'Maximum length (number of characters) a message in the shoutbox may have.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_leagues' => 
 							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are already points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
 						'default_league_new_user' => 
@@ -216,6 +234,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								array( 
 									array( 'value' => 0, 'text' => __( 'Date ascending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 									array( 'value' => 1, 'text' => __( 'Date descending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 2, 'text' => __( 'Match types descending, matches date ascending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+									array( 'value' => 3, 'text' => __( 'Match types ascending, matches date descending', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 								),
 								__( 'Select the order in which matches must be displayed on the matches page and the prediction page..', FOOTBALLPOOL_TEXT_DOMAIN ),
 							),
@@ -274,23 +294,45 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								// '',
 								// array( 'prediction_type' => 0 )
 							// ),
+						'team_points_win' => 
+							array( 'text', __( 'Points for win', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'team_points_win', __( 'The points a team gets for a win.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'team_points_draw' => 
+							array( 'text', __( 'Points for draw', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'team_points_draw', __( 'The points a team gets for a draw.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_team_thumb' => 
+							array( 'checkbox', __( 'Show photo in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_thumb', __( 'Show the team\'s photo on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_venue_thumb' => 
+							array( 'checkbox', __( 'Show photo in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_thumb', __( 'Show the venue\'s photo on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_team_comments' => 
+							array( 'checkbox', __( 'Show comments in team listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_team_comments', __( 'Show the team\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'listing_show_venue_comments' => 
+							array( 'checkbox', __( 'Show comments in venue listing', FOOTBALLPOOL_TEXT_DOMAIN ), 'listing_show_venue_comments', __( 'Show the venue\'s comments on the team listing page (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						// 'number_of_jokers' => 
+							// array( 'text', __( 'Number of jokers', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'number_of_jokers' => 
+							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'When checked the joker is enabled and users can add the joker to one prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'show_num_predictions_in_ranking' => 
+							array( 'checkbox', __( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_num_predictions_in_ranking', __( 'When checked the number of predictions (matches and questions) a user saved is shown on the ranking page. This setting also effects the default value for the ranking widget and the ranking shortcode (but can be changed with their parameters).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
 							, __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
 							, self::donate_button( 'return' )
 					);
-		
 		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
 		
 		$recalculate = ( Football_Pool_Utils::post_string( 'recalculate' ) ==
 													__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ) )
 						|| ( Football_Pool_Utils::get_string( 'recalculate' ) == 'yes' );
+		$ranking_id = Football_Pool_Utils::get_int( 'single_ranking' );
 		if ( $recalculate ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
-			self::update_score_history( 'force' );
+			self::update_score_history( 'force', $ranking_id );
 		} elseif ( $action == 'update' ) {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
+			
+			$update_log = false;
+			$log_options = array( 'fullpoints', 'totopoints', 'goalpoints', 'use_leagues' );
+			
 			foreach ( $options as $option ) {
 				if ( is_array( $option[0] ) ) {
 					$value_type = $option[0][1];
@@ -300,8 +342,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 				
 				if ( $value_type == 'text' || $value_type == 'string' ) {
 					$value = Football_Pool_Utils::post_string( $option[2] );
-				} elseif ( $value != '' && $value_type == 'date' || $value_type == 'datetime' ) {
-					$value = self::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
+				} elseif ( $value_type == 'date' || $value_type == 'datetime' ) {
+					$value = Football_Pool_Utils::gmt_from_date( self::make_date_from_input( $option[2], $value_type ) );
 				} elseif ( $value_type == 'integer array' ) {
 					$value = Football_Pool_Utils::post_integer_array( $option[2] );
 				} elseif ( $value_type == 'string array' ) {
@@ -310,7 +352,20 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 					$value = Football_Pool_Utils::post_integer( $option[2] );
 				}
 				
+				// check if ranking log should be updated
+				if ( in_array( $option[2], $log_options ) && self::get_value( $option[2] ) != $value ) {
+					$update_log = true;
+				}
+				
 				self::set_value( $option[2], $value );
+			}
+			
+			if ( $update_log ) {
+				foreach ( $user_defined_rankings as $ranking ) {
+					self::update_ranking_log( $ranking['value'], null, null, 
+											__( 'plugin options changed', FOOTBALLPOOL_TEXT_DOMAIN )
+											);
+				}
 			}
 			self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
@@ -328,11 +383,19 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['fullpoints'],
 									$options['totopoints'],
 									$options['goalpoints'],
+									$options['diffpoints'],
+									$options['ranking_display'],
+									$options['show_ranking'],
+									$options['show_num_predictions_in_ranking'],
 								)
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -345,11 +408,16 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['stop_time_method_questions'],
 									$options['bonus_question_locktime'],
 									$options['always_show_predictions'],
+									$options['number_of_jokers'],
 								)
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'League Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -360,20 +428,35 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		submit_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 'secondary', 'recalculate', false );
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', 'calculate_score_history()' )
+								, false
+								, 'js-button' 
+		);
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['ranking_display'],
-									$options['show_ranking'],
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],
 									$options['match_time_offset'],
 									$options['show_team_link'],
 									$options['show_venues_on_team_page'],
+									$options['listing_show_team_thumb'],
+									$options['listing_show_team_comments'],
+									$options['listing_show_venue_thumb'],
+									$options['listing_show_venue_comments'],
 									$options['match_sort_method'],
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		
+		self::admin_sectiontitle( __( 'Groups Page Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['team_points_win'],
+									$options['team_points_draw'],
+									$options['groups_page_match_types'], 
 								) 
 							);
 		submit_button( null, 'primary', null, true );
@@ -388,7 +471,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
 									$options['add_tinymce_button'], 
-									$options['groups_page_match_types'], 
+									$options['keep_data_on_uninstall'],
 								) 
 							);
 		submit_button( null, 'primary', null, true );
@@ -403,7 +486,12 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		submit_button( null, 'primary', null, true );
 				
+		// self::admin_sectiontitle( __( 'Advanced Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		// self::options_form( array( 
+								// ) 
+							// );
+		// submit_button( null, 'primary', null, true );
+		
 		self::admin_footer();
 	}
 }
-?>

@@ -7,7 +7,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		$totopoints = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		$fullpoints = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 		$goalpoints = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
-
+		$diffpoints = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
 		<div class="help-page">
@@ -15,7 +16,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 			<ol>
 				<li><a href="#introduction">Introduction</a></li>
-				<li><a href="#time">Time</a></li>
+				<li><a href="#admin">Admin pages</a></li>
+				<li><a href="#times">Time</a></li>
 				<li><a href="#points">Points</a></li>
 				<li><a href="#rankings">Rankings & Scoring</a></li>
 				<li><a href="#leagues">Leagues</a></li>
@@ -38,32 +40,54 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		
+		<h2 id="admin">Admin pages</h2>
+		<p>
+		The admin pages of the plugin let you define all necessary parts of the plugin. Every admin page contains contextual help: use the help tab at the top right of every screen if you need information about the admin page.<br />
+		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-admin-help.png" alt="screenshot" />
+		</p>
+		<p>You can use this help file for more detailed information about all the aspects of the plugin. </p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
 		<h2 id="times">Time</h2>
 		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
 		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff of the match (dynamic time), or a single date/time for all matches. The default is a dynamic time setting of 900 seconds (= 15 minutes) before the start of a match.<br>
 		Bonus questions each have an 'answer before' date and time. But you may override these individual values with a single stop time for all bonus questions. The default is to allow for a 'answer before' time per question.
 		</p>
+		
+		<h3>Questions and plugin settings</h3>
 		<p>
-		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time. (The plugin stores them in the database in UTC.)
+		The times in the plugin options and the 'answer before' times in the bonus question admin must be entered in local time (the plugin stores them in the database in UTC).
 		</p>
 		
 		<h3>Matches</h3>
 		<p>
 		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
+		
 		<div class="help important">
-			<p><strong>Tip:</strong> Always test if your <a href="options-general.php">timezone setting</a> and 
-			<a href="admin.php?page=footballpool-options">plugin times</a> are correct. Change the date of one of 
-			your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
+			<p><strong>Debugging timezone problems</strong></p>
+			<p><strong>Tip:</strong> Always test if your <a href="options-general.php" title="WordPress general settings">timezone setting</a> and <a href="admin.php?page=footballpool-options" title="Football Pool plugin settings">plugin times</a> are correct. Change the date of one of your bonus questions and one of your matches (or the corresponding stop time in the plugin settings) and check if the question and match are correctly blocked or open. If not, check your plugin settings and WordPress settings.</p>
+			<p>The plugin also has a helper page that displays some debug info on your plugin and server settings. The helper page can be found <a target="_blank" href="<?php echo FOOTBALLPOOL_PLUGIN_URL, 'admin/timezone-test.php'; ?>" title="debug info on date and time settings">here</a>.</p>
 		</div>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="points">Points</h2>
-		<p>The plugin uses 3 different scores that are rewarded to players for the match predictions they do. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
-		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points. The goal bonus is rewarded if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
-		
+		<p>The plugin uses 4 different scores that are rewarded to players for the match predictions they do: full points, toto points, goal bonus and goal difference bonus. The toto points are rewarded if the right match result is predicted (win, loss or draw). A player gets the full score if also the exact amount of goals was predicted.</p>
+		<p>If you set the goal bonus to anything other than zero (default is zero), then this bonus is added to the scored points if the goals predicted are right; even if the match result was wrong (e.g. result is 2-1 and user predicted 1-1).</p>
+		<p>If you set the goal difference bonus to anything other than zero (default is zero), then this bonus is added to scored points if the user predicted the correct winner and the user was right about the goal difference (e.g. result is 2-1 and the user predicted 3-2). This bonus is not rewarded if the user predicted the wrong winner (e.g. result is 2-1 and the user predicted 2-3) or when the match result is a draw (e.g. 2-2).</p>
+		<p>
+		Your current settings are:
+		</p>
+		<table>
+			<tr><td>full points:</td><td><?php echo $fullpoints; ?></td></tr>
+			<tr><td>toto points:</td><td><?php echo $totopoints; ?></td></tr>
+			<tr><td>goal bonus:</td><td><?php echo $goalpoints; ?></td></tr>
+			<tr><td>goal difference bonus:</td><td><?php echo $diffpoints; ?></td></tr>
+		</table>
+		<p></p>
 		<table class="widefat help">
 		<tr>
 			<th>match result</th>
@@ -71,7 +95,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<th>points scored</th>
 		</tr>
 		<tr class="alternate">
-			<td>2-1</td>
+			<td>3-1</td>
 			<td>1-0</td>
 			<td>
 				toto points.<br>
@@ -79,14 +103,22 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</td>
 		</tr>
 		<tr>
-			<td>2-1</td>
+			<td>3-1</td>
 			<td>2-0</td>
+			<td>
+				toto points plus goal difference bonus for the correct goal difference (2 goals difference).<br>
+				total = <?php echo $totopoints; ?> + <?php echo $diffpoints; ?> = <?php echo $totopoints + $diffpoints; ?>
+			</td>
+		</tr>
+		<tr class="alternate">
+			<td>3-1</td>
+			<td>3-0</td>
 			<td>
 				toto points plus goal bonus for the correct amount of goals for the home team.<br>
 				total = <?php echo $totopoints; ?> + <?php echo $goalpoints; ?> = <?php echo $totopoints + $goalpoints; ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>2-1</td>
 			<td>2-1</td>
 			<td>
@@ -94,7 +126,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
-		<tr>
+		<tr class="alternate">
 			<td>2-1</td>
 			<td>1-1</td>
 			<td>
@@ -102,39 +134,67 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $goalpoints; ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>2-1</td>
 			<td>0-0</td>
 			<td>no points</td>
 		</tr>
+		<tr class="alternate">
+			<td>1-1</td>
+			<td>1-1</td>
+			<td>
+				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
+				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td>1-1</td>
+			<td>0-0</td>
+			<td>
+				toto points.<br>
+				total = <?php echo $totopoints; ?>
+			</td>
+		</tr>
 		</table>
+		
+		<h3>The golden ball (joker)</h3>
+		<p>
+		A player in the pool gets <strong>one</strong> golden ball. This golden ball can be placed next to a match to double the points for that match.<br />
+		The golden ball may be placed and/or moved to other matches as long the matches are still changeable. A golden ball is activated at the moment the match it is placed on is no longer changeable. And once activated the golden ball cannot be moved.
+		</p>
+		<p>The plugin has an option on the settings page to disable the golden ball functionality.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
-		<h2 id="rankings">Rankings</h2>
+		<h2 id="rankings">Rankings & Scoring</h2>
 		<p>
-		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (default). <br />
+		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (this is called the default ranking). <br />
 		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). If you want to use this feature make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions; this is the ranking definition. The custom rankings can be used with the ranking shortcode, in a ranking widget or on the ranking and charts page.
 		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
-		<div class="help important">
-			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for all the ranking calculations to finish.</p>
-		</div>
-		<p>By default all rankings will be automatically (re)calculated when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a>.
+		<h3>Ranking calculation</h3>
+		<p>By default an admin will be automatically notified for a (re)calculation of the rankings when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a> and do a manual recalculation when you're finished editing.
 		</p>
+		<div class="help important">
+			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So, once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for the ranking calculations to finish.</p>
+		</div>
+		<h3>Smart vs. full vs. single calculations</h3>
+		<p>The plugin has 3 different kind of recalculations. The easiest to explain is the full calculation: everything is recalculated. If you have a small competition (e.g. World Cup), one ranking and not too many users (say 50 to 100) you can use this calculation. Success guaranteed, when in doubt, use this one.</p>
+		<p>A smart calculation keeps track of changes you make in the plugin that might affect a ranking. For example: if you change the score or date for a match, this will affect rankings that include this match, or if you add users this will affect all rankings. When doing a smart calculation only the ranking that are marked as 'should get an update' will be recalculated. Always including the default ranking, that one is the base ranking and will always be updated in a smart recalculation. On the rankings admin page you can see which rankings will be updated.</p>
+		<p>A single ranking can be done on the ranking admin page. Only this ranking will be updated. Nothing else.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="leagues">Leagues</h2>
 		<p>The plugin supports placing players in different leagues. For example when you want to group players per department, or friends and family, or paying and non-paying, etc. When playing with leagues an admin has to 'approve' the league for which a player subscribed. That can be done on the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
-		<p>If using leagues all players have to be a member of a league, otherwise they are not considered to be a football pool player.</p>
+		<p>When using leagues all players have to be a member of a league, otherwise they are not considered to be a pool player.</p>
 
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="players">Players</h2>
-		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues your blog users have to be added to an active league. New subscribers to your blog must choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them).<br />
-		If not playing with leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
+		<p>There are two ways the plugin can handle your blog users: via leagues or not via leagues. If playing with leagues, your blog users have to be in an active league before they can participate in the pool. New subscribers to your blog choose a league when subscribing, but existing users have to change this setting after the plugin is installed (or the admin can do this for them on the <a href="?page=footballpool-users">Users page</a>).</p>
+		<p>When not using leagues all your blog users are automatically players in the pool. If you want to exclude some players from the rankings (e.g. the admin), you can disable them in the <a href="?page=footballpool-users">Users page</a> of the Football Pool plugin.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
@@ -174,7 +234,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<h3>csv file import</h3>
 		<p>
-		The csv file can be uploaded in one of the following formats:
+		The csv file (must be in <a href="http://superuser.com/questions/479756/eol-in-notepad-and-notepad" title="tip: use Notepad++ to convert to the correct EOL format">UNIX or Windows/DOS EOL format</a>) can be uploaded in one of the following formats:
 		<ol>
 			<li>minimal data (only the basic information about teams);</li>
 			<li>full data (all information).</li>
@@ -336,7 +396,74 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
 		</p>
 		<p>The different shortcodes are explained in the following paragraphs.</p>
-		<h3>[fp-groups]</h3>
+		
+		<h3>[fp-predictions]</h3>
+		<p>Shows the predictions for a given match and/or question.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>The numeric id for the match</td>
+				<td>match id (integer)</td>
+				<td>none</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">question</td>
+				<td>The numeric id for the question</td>
+				<td>question id (integer)</td>
+				<td>none</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">text</td>
+				<td>text to display if no predictions can be shown (invalid id, or predictions not publicly viewable)</td>
+				<td>string</td>
+				<td>empty string</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-predictions match=1]</span><br />
+		</p>
+		
+		<h3>[fp-user-score]</h3>
+		<p>Shows the score for a given user.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">user</td>
+				<td>The numeric id for user</td>
+				<td><a href="users.php">user id</a> (integer)</td>
+				<td>current user</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">ranking</td>
+				<td>The numeric id for the ranking from which the score has to be taken</td>
+				<td><a href="?page=footballpool-groups">ranking id</a> (integer)</td>
+				<td>default ranking</td>
+			</tr>
+			<tr class="alternate">
+				<td class="row-title">date</td>
+				<td>Calculate the score untill this date.</td>
+				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>now</td>
+			</tr>
+			<tr class="">
+				<td class="row-title">text</td>
+				<td>text to display if no user or no score is found</td>
+				<td>string</td>
+				<td>0</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-user-score user=1 text="no score"]</span><br />
+		<span class="code">[fp-user-score user=58 ranking=2 text="no score"]</span><br />
+		<span class="code">[fp-user-score user=5 date="2013-06-01 12:00"]</span><br />
+		</p>
+		
+		<h3>[fp-group]</h3>
 		<p>Shows a group standing for the group stage of the tournament. Parameter "id" must be given. If "id" is 
 		ommited, or not a valid group id, then nothing will be returned.</p>
 		<p>
@@ -351,7 +478,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>example:<br />
-		<span class="code">[fp-groups id=2]</span><br />
+		<span class="code">[fp-group id=2]</span><br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-groups.png" alt="screenshot" />
 		</p>
 		
@@ -384,10 +511,17 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
 				<td></td>
 			</tr>
+			<tr class="alternate">
+				<td class="row-title">show_num_predictions</td>
+				<td>If set to true also the number of predictions a user saved (matches and answers to questions) is shown in the ranking.</td>
+				<td>1 = true<br/>0 = false</td>
+				<td>depends on the 'Show number of predictions?' setting on the <a href="?page=footballpool-options">options page</a></td>
+			</tr>
 		</table>
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-ranking num=5 ranking=4]</span><br />
+		<span class="code">[fp-ranking num=5 show_num_predictions=1]</span><br />
 		<span class="code">[fp-ranking num=5 date="postdate"]</span><br />
 		<span class="code">[fp-ranking num=5 date="2012-06-22 11:00"]</span><br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-shortcode-ranking.png" alt="screenshot" />
@@ -433,6 +567,40 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-predictionform matchtype="1"]</span><br />
 		</p>
 
+		<h3>[fp-matches]</h3>
+		<p>Shows the info table for the selected matches and/or matches in a matchtype. All parameters are cumulative, so all given matches and matches in a matchtype are put together in one table.</p>
+		<p>All arguments can be entered in the following formats (example for matches):
+		<table>
+			<tr><td>match 1</td><td>&rarr;</td><td>match="1"</td></tr>
+			<tr><td>matches 1 to 5</td><td>&rarr;</td><td>match="1-5"</td></tr>
+			<tr><td>matches 1, 3 and 6</td><td>&rarr;</td><td>match="1,3,6"</td></tr>
+			<tr><td>matches 1 to 5 and 10</td><td>&rarr;</td><td>match="1-5,10"</td></tr>
+		</table>
+		</p>
+		<p>If an argument is left empty it is ignored.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr class="alternate">
+				<td class="row-title">match</td>
+				<td>Collection of <a href="?page=footballpool-games">match ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+			<tr class="">
+				<td class="row-title">matchtype</td>
+				<td>Collection of <a href="?page=footballpool-matchtypes">match type ids</a>.</td>
+				<td>see formats above</td>
+				<td></td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-matches match="1-5"]</span><br />
+		<span class="code">[fp-matches match="1-4,9-12" matchtype="2"]</span><br />
+		<span class="code">[fp-matches matchtype="1"]</span><br />
+		</p>
+
 		<h3>[fp-register]link text[/fp-register]</h3>
 		<p>Shows a link to the register page of WordPress. Text between the tags will be the text for the link. If no content is given, then a default text is shown as the link text. A redirect link to the post or page is automatically added if the get_permalink function does not return false.</p>
 		<p>
@@ -470,8 +638,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</tr>
 			<tr class="">
 				<td class="row-title">match</td>
-				<td>Number of the match to count down to.</td>
-				<td><a href="?page=footballpool-games">match nr</a> (integer)</td>
+				<td>ID of the match to count down to.</td>
+				<td><a href="?page=footballpool-games">match id</a> (integer)</td>
 				<td>empty</td>
 			</tr>
 			<tr class="alternate">
@@ -540,4 +708,3 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 	}
 
 }
-?>

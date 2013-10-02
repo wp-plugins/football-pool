@@ -1,133 +1,201 @@
 <?php
 class Football_Pool_Admin {
+	public function add_body_class( $classes ) {
+		global $hook_suffix;
+		if ( strpos( $hook_suffix, 'footballpool' ) !== false ) $classes .= 'football-pool';
+		return $classes;
+	}
+	
+	public function adminhook_suffix() {
+		// for debugging
+		global $hook_suffix;
+		echo "<!-- admin hook for current page is: {$hook_suffix} -->";
+	}
+	
+	public function set_screen_options( $status, $option, $value ) {
+		return $value;
+	}
+	
+	public function get_screen_option( $option, $type = 'int' ) {
+		$default_value = false;
+		$screen = get_current_screen();
+		
+		$screen_option = $screen->get_option( $option, 'option' );
+		$option_value = get_user_meta( get_current_user_id(), $screen_option, true );
+		
+		$default_value = empty ( $option_value );
+		if ( ! $default_value && $type == 'int' ) $option_value = (int) $option_value;
+		
+		if ( $default_value ) $option_value = $screen->get_option( $option, 'default' );
+		
+		return $option_value;
+	}
+	
+	private function add_submenu_page( $parent_slug, $page_title, $menu_title
+									, $capability, $menu_slug, $class, $toplevel = false ) {
+		if ( is_array( $class ) ) {
+			$function = array( $class, 'admin' );
+			$help_class = $screen_options_class = $class['help'];
+		} else {
+			$function = array( $class, 'admin' );
+			$help_class = $screen_options_class = $class;
+		}
+		
+		$hook = add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
+		
+		// help tab
+		if ( method_exists( $help_class, 'help' ) ) {
+			$menu_level = $toplevel ? 'toplevel' : 'football-pool';
+			add_action( "admin_head-{$menu_level}_page_{$menu_slug}", array( $help_class, 'help' ) );
+		}
+		// screen options
+		if ( $hook && method_exists( $screen_options_class, 'screen_options' ) ) {
+			add_action( "load-{$hook}", array( $screen_options_class, 'screen_options' ) );
+		}
+	}
 	
 	public function init() {
 		$slug = 'footballpool-options';
+		$capability = 'manage_football_pool';
 		
+		// main menu item
 		add_menu_page(
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'manage_football_pool',
+			$capability, 
 			$slug,
 			array( 'Football_Pool_Admin_Options', 'admin' ),
 			'div'
 		);
 		
-		add_submenu_page(
+		// submenu pages
+		self::add_submenu_page(
 			$slug,
 			__( 'Football Pool Options', FOOTBALLPOOL_TEXT_DOMAIN ),
 			__( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ),
-			'manage_football_pool',
+			$capability, 
 			'footballpool-options',
-			array( 'Football_Pool_Admin_Options', 'admin' )
+			'Football_Pool_Admin_Options',
+			true
 		);
 		
-		add_submenu_page(
+		if ( FOOTBALLPOOL_SCORE_DEBUG ) {
+			self::add_submenu_page(
+				$slug,
+				'Debug Score Calc',
+				'Debug Score Calc',
+				$capability, 
+				'footballpool-score-debug',
+				'Football_Pool_Admin_Score_Calculation'
+			);
+		}
+		
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit users', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-users',
-			array( 'Football_Pool_Admin_Users', 'admin' )
+			'Football_Pool_Admin_Users'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-games',
-			array( 'Football_Pool_Admin_Games', 'admin' )
+			'Football_Pool_Admin_Games'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Questions', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-bonus',
-			array( 'Football_Pool_Admin_Bonus_Questions', 'admin' )
+			'Football_Pool_Admin_Bonus_Questions'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-shoutbox',
-			array( 'Football_Pool_Admin_Shoutbox', 'admin' )
+			'Football_Pool_Admin_Shoutbox'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-teams',
-			array( 'Football_Pool_Admin_Teams', 'admin' )
+			'Football_Pool_Admin_Teams'
 		);
 		
-		// add_submenu_page(
+		// self::add_submenu_page(
 			// $slug,
 			// __( 'Edit teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			// __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			// 'manage_football_pool', 
+			// $capability, 
 			// 'footballpool-teams-position',
-			// array( 'Football_Pool_Admin_Teams_Position', 'admin' )
+			// 'Football_Pool_Admin_Teams_Position'
 		// );
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Venues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-venues',
-			array( 'Football_Pool_Admin_Stadiums', 'admin' )
+			'Football_Pool_Admin_Stadiums'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-leagues',
-			array( 'Football_Pool_Admin_Leagues', 'admin' )
+			'Football_Pool_Admin_Leagues'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Rankings', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			'manage_football_pool', 
 			'footballpool-rankings',
-			array( 'Football_Pool_Admin_Rankings', 'admin' )
+			'Football_Pool_Admin_Rankings'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit match types', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-matchtypes',
-			array( 'Football_Pool_Admin_Match_Types', 'admin' )
+			'Football_Pool_Admin_Match_Types'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Edit groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Groups', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-groups',
-			array( 'Football_Pool_Admin_Groups', 'admin' )
+			'Football_Pool_Admin_Groups'
 		);
 		
-		add_submenu_page(
+		self::add_submenu_page(
 			$slug,
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
 			__( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'manage_football_pool', 
+			$capability, 
 			'footballpool-help',
-			array( 'Football_Pool_Admin_Help', 'admin' )
+			'Football_Pool_Admin_Help'
 		);
 	}
 	
@@ -151,7 +219,7 @@ class Football_Pool_Admin {
 	
 	// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
 	public function add_footballpool_tinymce_plugin( $plugin_array ) {
-		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.js';
+		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.min.js';
 		return $plugin_array;
 	}
 	// end tinymce
@@ -177,10 +245,58 @@ class Football_Pool_Admin {
 	// use type 'updated' for yellow message and type 'error' or 'important' for the red one
 	public function notice( $msg, $type = 'updated', $fade = true ) {
 		if ( $type == 'important' ) $type = 'error';
-		echo '<div class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
+		echo '<div id="message" class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
-	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+	private function image_input_WP3_5( $label, $key, $value, $description, $type ) {
+		$key = esc_attr( $key );
+		$title = __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN );
+		// based on http://mikejolley.com/2012/12/using-the-new-wordpress-3-5-media-uploader-in-plugins/
+		echo "<script type='text/javascript'>
+			jQuery( document ).ready( function() {
+				var file_frame;
+				jQuery( '#{$key}_button ' ).live( 'click', function( event ) {
+					event.preventDefault();
+					
+					if ( file_frame ) {
+						file_frame.open();
+						return;
+					}
+				 
+					file_frame = wp.media.frames.file_frame = wp.media( {
+						title: '{$title}',//jQuery( this ).data( 'uploader_title' ),
+						button: {
+							text: jQuery( this ).data( 'uploader_button_text' ),
+						},
+						multiple: false  
+					} );
+				 
+					file_frame.on( 'select', function() {
+						attachment = file_frame.state().get( 'selection' ).first().toJSON();
+						// jQuery( '#{$key}' ).val( attachment.sizes.thumbnail.url );
+						jQuery( '#{$key}' ).val( attachment.url );
+					} );
+				 
+					file_frame.open();
+				} );
+			} );
+			</script>
+		";
+		
+		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="fp-image-upload-value %s">
+							<input id="%s_button" type="button" value="%s" class="fp-image-upload-button">'
+							, $key
+							, $key
+							, esc_attr( $value )
+							, esc_attr( $value )
+							, esc_attr( $type )
+							, $key
+							, $title
+						);
+		echo self::option_row( $key, $label, $input, $description );
+	}
+	
+	private function image_input_old( $label, $key, $value, $description, $type ) {
 		$key = esc_attr( $key );
 		echo '<script type="text/javascript">
 			jQuery( document ).ready( function() {
@@ -207,8 +323,8 @@ class Football_Pool_Admin {
 			});
 			</script>';
 		
-		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="%s">
-							<input id="%s_button" type="button" value="%s">'
+		$input = sprintf( '<input name="%s" type="text" id="%s" value="%s" title="%s" class="fp-image-upload-value %s">
+							<input id="%s_button" type="button" value="%s" class="fp-image-upload-button">'
 							, $key
 							, $key
 							, esc_attr( $value )
@@ -218,6 +334,14 @@ class Football_Pool_Admin {
 							, __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		echo self::option_row( $key, $label, $input, $description );
+	}
+	
+	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+		if ( FOOTBALLPOOL_WP_MEDIA ) {
+			self::image_input_WP3_5( $label, $key, $value, $description, $type );
+		} else {
+			self::image_input_old( $label, $key, $value, $description, $type );
+		}
 	}
 	
 	public function checkbox_input( $label, $key, $checked, $description = ''
@@ -312,8 +436,18 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description, $depends_on, $label_extra );
 	}
 	
-	public function hidden_input( $key, $value ) {
-		echo '<input type="hidden" name="', esc_attr( $key ), '" id="', esc_attr( $key ), '" value="', esc_attr( $value ), '">';
+	public function hidden_input( $key, $value, $return = 'echo' ) {
+		$output = sprintf( '<input type="hidden" name="%s" id="%s" value="%s">'
+						, esc_attr( $key )
+						, esc_attr( $key )
+						, esc_attr( $value )
+					);
+		
+		if ( $return == 'echo' ) {
+			echo $output;
+		} else {
+			return $output;
+		}
 	}
 	
 	public function no_input( $label, $value, $description ) {
@@ -322,16 +456,6 @@ class Football_Pool_Admin {
 			<td>', $value, '</td>
 			<td><span class="description">', $description, '</span></td>
 			</tr>';
-	}
-	
-	// accepts a date in Y-m-d H:i format and changes it to UTC
-	public function gmt_from_date( $date_string ) {
-		return Football_Pool_Utils::gmt_from_date( $date_string );
-	}
-	
-	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
-	public function date_from_gmt( $date_string ) {
-		return Football_Pool_Utils::date_from_gmt( $date_string );
 	}
 	
 	// helper function for the date_time input. 
@@ -351,10 +475,15 @@ class Football_Pool_Admin {
 		return $value;
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = '', $depends_on = '' ) {
+	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
+									, $depends_on = '' ) {
 		if ( $value != '' ) {
-			//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
-			$date = new DateTime( self::date_from_gmt ( $value ) );
+			if ( is_object( $value ) ) {
+				$date = $value;
+			} else {
+				//$date = DateTime::createFromFormat( 'Y-m-d H:i', $value );
+				$date = new DateTime( Football_Pool_Utils::date_from_gmt ( $value ) );
+			}
 			$year = $date->format( 'Y' );
 			$month = $date->format( 'm' );
 			$day = $date->format( 'd');
@@ -547,14 +676,37 @@ class Football_Pool_Admin {
 		echo sprintf( '<p>%s</p>', $txt );
 	}
 	
-	public function help( $id, $title, $content ) {
-		//@todo: why won't this work???
-		get_current_screen()->add_help_tab( array(
-												'id'		=> $id,
-												'title'		=> $title,
-												'content'	=> '<p>' . $content . '</p>'
-											) 
-								);
+	// overwrite in the individual help pages
+	public function help() {
+		self::add_help_tabs();
+	}
+	
+	// Define a method named 'help' on each admin page that calls this method with 
+	// the tab definition (array of tabs) and an optional sidebar.
+	// Don't forget to add the admin_head-hook!
+	public function add_help_tabs( $help_tabs = '', $help_sidebar = '' ) {
+		if ( ! is_array( $help_tabs ) ) return;
+		
+		$screen = get_current_screen();
+		foreach ( $help_tabs as $help_tab ) {
+			$screen->add_help_tab(
+						array(
+							'id' => $help_tab['id'],
+							'title' => $help_tab['title'],
+							'content' => $help_tab['content']
+						)
+					);
+		}
+		
+		if ( $help_sidebar != '' ) {
+			$screen->set_help_sidebar(
+							sprintf( 
+									'<p><strong>%s</strong></p><p>%s</p>' 
+									, __( 'For more information:', FOOTBALLPOOL_TEXT_DOMAIN )
+									, $help_sidebar
+							)
+						);
+		}
 	}
 	
 	public function admin_sectiontitle( $title ) {
@@ -596,7 +748,10 @@ class Football_Pool_Admin {
 		printf( '<h2>%s%s%s</h2>', $title, $subtitle, $addnew );
 
 		echo $extra;
-		echo '<form action="" method="post">';
+		
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		$current_url = remove_query_arg( array( 'action', 'item_id' ), $current_url );
+		printf( '<form action="%s" method="post">', $current_url );
 		echo '<input type="hidden" name="action" id="action" value="update" />';
 		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
 	}
@@ -605,9 +760,10 @@ class Football_Pool_Admin {
 		echo '</form></div>';
 	}
 	
-	public function bulk_actions( $actions, $name = 'action' ) {
+	public function bulk_actions( $actions, $name = 'action', $pagination = false ) {
+		echo '<div class="tablenav top">';
 		if ( count($actions) > 0 ) {
-			echo '<div class="tablenav top"><div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
+			echo '<div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
 			echo '<option selected="selected" value="-1">Bulk Actions</option>';
 			foreach ( $actions as $action ) {
 				printf( '<option value="%s" bulk-msg="%s">%s</option>'
@@ -617,12 +773,17 @@ class Football_Pool_Admin {
 				);
 			}
 			echo "</select><input onclick=\"return bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
-			echo '</div><br class="clear"></div>';
+			echo '</div>';
 		}
+		
+		if ( is_object( $pagination ) ) {
+			$pagination->show();
+		}
+		echo '<br class="clear"></div>';
 	}
 	
-	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array() ) {
-		self::bulk_actions( $bulkactions, 'action' );
+	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {
+		self::bulk_actions( $bulkactions, 'action', $pagination );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
 		self::list_table_def( $cols, 'head' );
 		self::list_table_def( $cols, 'foot' );
@@ -639,7 +800,7 @@ class Football_Pool_Admin {
 			</th>';
 		
 		foreach ( $cols as $col ) {
-			echo '<th id="', esc_attr( $col[2] ), '" class="manage-column column-', esc_attr( $col[2] ), '" scope="col">', $col[1], '</th>';
+			echo '<th id="', esc_attr( $col[2] ), '-', $tag, '" class="manage-column column-', esc_attr( $col[2] ), '" scope="col">', $col[1], '</th>';
 		}
 		echo "</tr></t{$tag}>";
 	}
@@ -736,6 +897,35 @@ class Football_Pool_Admin {
 		echo '</table>';
 	}
 	
+	public function empty_scorehistory( $ranking_id = 'all' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $ranking_id == 'all' ) {
+			$check = self::empty_table( 'scorehistory' );
+		} elseif ( $ranking_id == 'smart set' ) {
+			$sql = "SELECT DISTINCT( ranking_id ) 
+					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 0";
+			$delete_these = implode( 
+								',', 
+								array_merge( $wpdb->get_col( $sql ), array( FOOTBALLPOOL_RANKING_DEFAULT ) ) 
+							);
+			$sql = "SELECT DISTINCT( ranking_id ) 
+					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 1";
+			$do_not_delete_these = implode( ',', array_merge( $wpdb->get_col( $sql ), array( 0 ) ) );
+			$sql = "DELETE FROM {$prefix}scorehistory 
+					WHERE ranking_id IN ( {$delete_these} ) AND ranking_id NOT IN ( {$do_not_delete_these} )";
+			$check = ( $wpdb->query( $sql ) !== false );
+		} elseif ( is_int( $ranking_id ) && $ranking_id > 0 ) {
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}scorehistory WHERE ranking_id = %d", $ranking_id );
+			$check = ( $wpdb->query( $sql ) !== false );
+		} else {
+			$check = false;
+		}
+		
+		return $check;
+	}
+	
 	public function empty_table( $table_name = '' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -764,44 +954,64 @@ class Football_Pool_Admin {
 		return $check;
 	}
 	
-	public function recalculate_scorehistory_iframe() {
-		$url = FOOTBALLPOOL_PLUGIN_URL . 'admin/calculate-score-history.php';
-		$url = wp_nonce_url( $url, FOOTBALLPOOL_NONCE_SCORE_CALC );
-		echo '<div id="fp-calculation-iframe">';
-		echo '<iframe src="', $url, '" width="500" height="160"></iframe>';
-		self::secondary_button( 
-			__( 'Close (re)calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			'close_calculation_iframe()', 
-			true, 
-			'js-button', 
-			array( 'id' => 'close-iframe', 'disabled' => 'disabled' ) 
-		);
-		echo '</div>';
+	private function recalculate_scorehistory_lightbox( $ranking_id = 0 ) {
+		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
+		echo "<script> calculate_score_history({$single_ranking}) </script>";
 	}
 	
-	private function recalculate_manual() {
-		self::secondary_button( 
-			__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ), 
-			wp_nonce_url( '?page=footballpool-options&recalculate=yes', FOOTBALLPOOL_NONCE_ADMIN ), 
-			true, 
-			'link' 
+	private function recalculate_manual( $ranking_id = 0 ) {
+		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
+		
+		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+								, array( '', "calculate_score_history({$single_ranking})" )
+								, false
+								, 'js-button' 
 		);
 	}
 	
-	public function update_score_history( $force = 'no' ) {
+	public function update_score_history( $force = 'no', $ranking_id = 0 ) {
 		$auto_calc = Football_Pool_Utils::get_fp_option( 'auto_calculation'
 														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
 														, 'int' );
 		
 		if ( $auto_calc == 1 || $force == 'force' ) {
-			self::recalculate_scorehistory_iframe();
+			self::recalculate_scorehistory_lightbox( $ranking_id );
 		} else {
-			self::recalculate_manual();
+			self::recalculate_manual( $ranking_id );
 		}
 		return true;
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button', $other_attributes = null ) {
+	public function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
+										, $preserve_keys = 'no', $is_single_calculation = 0 ) {
+		if ( $new_set == null || $old_set == null ) {
+			$log = true;
+		} elseif ( is_array( $new_set ) && is_array( $old_set ) ) {
+			$log = ( count( $new_set ) != count( $old_set ) );
+			if ( $preserve_keys == 'assoc' || $preserve_keys == 'preserve keys' ) {
+				$log = ( $log || count( array_diff_assoc( $new_set, $old_set ) ) > 0 );
+			} else {
+				$log = ( $log || count( array_diff( $new_set, $old_set ) ) > 0 );
+			}
+		} else {
+			$log = ( $old_set != $new_set );
+		}
+		
+		if ( $log ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings_updatelog 
+										( ranking_id, log_message, log_date, is_single_calculation )
+									VALUES ( %d, %s, NOW(), %d )"
+									, $ranking_id, $log_message, $is_single_calculation
+							);
+			
+			$wpdb->query( $sql );
+		}
+	}
+	
+	private function get_button_action_val( $action ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -814,7 +1024,46 @@ class Football_Pool_Admin {
 		} else {
 			$action_val = $action;
 		}
+		return array( $action_val, $onclick_val );
+	}
+	
+	// this function returns HTML for a secondary button, rather than echoing it
+	public function link_button( $text, $action, $wrap = false, $other_attributes = null, $type = 'secondary' ) {
+		$actions = self::get_button_action_val( $action );
+		$action_val  = $actions[0];
+		$onclick_val = $actions[1];
 		
+		$attributes = '';
+		if ( is_array( $other_attributes ) ) {
+			foreach( $other_attributes as $key => $value ) {
+				$attributes .= $key . '="' . esc_attr( $value ) . '" ';
+			}
+		} elseif ( ! empty( $other_attributes ) ) {
+			$attributes = $other_attributes;
+		}
+		
+		if ( $action_val != '' ) $action_val = "location.href='{$action_val}';";
+		$button = sprintf( '<input type="button" onclick="%s%s" 
+									class="button button-%s" value="%s" %s/>'
+							, $action_val
+							, $onclick_val
+							, $type
+							, esc_attr( $text )
+							, $attributes
+					);
+		if ( $wrap ) {
+			$button = '<p class="submit">' . $button . '</p>';
+		}
+		
+		return $button;
+	}
+	
+	public function secondary_button( $text, $action, $wrap = false, $type = 'button'
+									, $other_attributes = null ) {
+		$actions = self::get_button_action_val( $action );
+		$action_val  = $actions[0];
+		$onclick_val = $actions[1];
+				
 		if ( $type == 'button' ) {
 			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
 			$atts = array( "onclick" => $onclick_val );
@@ -833,29 +1082,7 @@ class Football_Pool_Admin {
 					$atts 
 			);
 		} elseif ( $type == 'link' || $type == 'js-button' ) {
-			$attributes = '';
-			if ( is_array( $other_attributes ) ) {
-				foreach( $other_attributes as $key => $value ) {
-					$attributes .= $key . '="' . esc_attr( $value ) . '" ';
-				}
-			} elseif ( ! empty( $other_attributes ) ) {
-				$attributes = $other_attributes;
-			}
-			
-			if ( $type == 'link' ) {
-				$action_val = "location.href='{$action_val}'";
-			}
-			$button = sprintf( '<input type="button" onclick="%s;%s" 
-										class="button-secondary" value="%s" %s/>'
-								, $action_val
-								, $onclick_val
-								, esc_attr( $text )
-								, $attributes
-						);
-			if ( $wrap ) {
-				$button = '<p class="submit">' . $button . '</p>';
-			}
-			echo $button;
+			echo self::link_button( $text, $action, $wrap, $other_attributes );
 		}
 	}
 	
@@ -912,6 +1139,9 @@ class Football_Pool_Admin {
 	 * @author Modern Tribe, Inc. (Peter Chester)
 	 */
 	public function replace_text_in_thickbox( $translated_text, $source_text, $domain ) {
+		// only used for older versions of WP, WP3.5 and newer use the media library
+		if ( FOOTBALLPOOL_WP_MEDIA ) return;
+		
 		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
 			if ( 'Insert into Post' == $source_text ) {
 				return __( 'Use Image', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -920,5 +1150,10 @@ class Football_Pool_Admin {
 		return $translated_text;
 	}
 	
+	public function example_date( $gmt = 'false', $offset = -1 ) {
+		if ( $offset == -1 ) $offset = 14 * 24 * 60 * 60;
+		$date = date( 'Y-m-d 18:00', time() + $offset );
+		if ( $gmt == 'gmt' ) $date = Football_Pool_Utils::gmt_from_date( $date );
+		return $date;
+	}
 }
-?>

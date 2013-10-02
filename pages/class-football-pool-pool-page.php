@@ -13,6 +13,17 @@ class Football_Pool_Pool_Page {
 			$questions = $pool->get_bonus_questions_for_user( $current_user->ID );
 			
 			$matches = new Football_Pool_Matches;
+			// example code for http://wordpress.org/support/topic/only-display-x-number-of-games-in-the-future
+			// $ids = array( 0 ); // force empty set
+			// // only matches between now and two weeks from now
+			// $date_from = time();
+			// $date_to = strtotime( '+2 week' );
+			// foreach ( $matches->matches as $match ) {
+				// if ( $match['match_timestamp'] >= $date_from  && $match['match_timestamp'] < $date_to ) {
+					// $ids[] = $match['id'];
+				// }
+			// }
+			// $result = $matches->get_match_info_for_user( $current_user->ID, $ids );
 			$result = $matches->get_match_info_for_user( $current_user->ID );
 			
 			$empty_prediction = $matches->first_empty_match_for_user( $current_user->ID );
@@ -38,7 +49,9 @@ class Football_Pool_Pool_Page {
 				$nr = 1;
 				$output .= sprintf( '<h2 id="bonus">%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				foreach ( $questions as $question ) {
-					$output .= $pool->print_bonus_question( $question, $nr++ );
+					if ( $question['match_id'] == 0 ) {
+						$output .= $pool->print_bonus_question( $question, $nr++ );
+					}
 				}
 				$output .= $this->save_button();
 			}
@@ -63,4 +76,3 @@ class Football_Pool_Pool_Page {
 				);
 	}
 }
-?>

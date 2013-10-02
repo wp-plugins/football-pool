@@ -56,4 +56,3 @@ class Football_Pool_Ranking_Page {
 		return $output;
 	}
 }
-?>

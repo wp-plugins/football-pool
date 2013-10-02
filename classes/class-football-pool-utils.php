@@ -1,5 +1,19 @@
 <?php
 class Football_Pool_Utils {
+	// Replace placeholders in a string with a text.
+	//	 input:			  the string with %placeholders%
+	//	 params:			 array of placeholders and texts, format: array( 'placeholder' => 'text', ... )
+	//	 placeholder_delim:  the char that identifies a placeholder, defaults to '%'
+	public function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
+		if ( count( $params ) > 0 ) {
+			foreach ( $params as $key => $val ) {
+				$input = str_replace( "{$placeholder_delim}{$key}{$placeholder_delim}", $val, $input );
+			}
+		}
+		
+		return $input;
+	}
+
 	public function select( $id, $options, $selected_val, $name = '' ) {
 		if ( $name == '' ) $name = $id;
 		
@@ -210,9 +224,14 @@ class Football_Pool_Utils {
 		return ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ? self::safe_stripslashes_deep( $_POST[$key] ) : $default );
 	}
 	
-	// print information about a variable in a human readable way
-	// if argument sleep is set, the execution will halt after the debug for the given amount of micro seconds
-	// (one micro second = one millionth of a second)
+	// debug function, but defaults to file log instead of echoing the debug info
+	public function debugf( $var, $type = 'file', $sleep = 0 ) {
+		self::debug( $var, $type, $sleep );
+	}
+	
+	// Print information about a variable in a human readable way.
+	// If argument sleep is set, the execution will halt after the debug for the given 
+	// amount of micro seconds (one micro second = one millionth of a second).
 	public function debug( $var, $type = 'echo', $sleep = 0 ) {
 		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
 		
@@ -262,5 +281,15 @@ class Football_Pool_Utils {
 		if ( is_int( $sleep ) && $sleep > 0 ) usleep( $sleep );
 	}
 
+	// http://stackoverflow.com/questions/4660692/is-it-possible-to-print-a-log-of-all-database-queries-for-a-page-request-in-word
+	function sql_logger() {
+		global $wpdb;
+		$log_file = fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
+		fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );
+		foreach( $wpdb->queries as $q ) {
+			fwrite( $log_file, $q[0] . " - ({$q[1]} s)" . "\n\n" );
+		}
+		fclose( $log_file );
+	}
+	
 }
-?>

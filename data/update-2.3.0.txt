@@ -1,0 +1,42 @@
+ALTER TABLE `{$prefix}teams` 
+	CHANGE `groupId` `group_id` INT UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `groupOrder` `group_order` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `{$prefix}shoutbox` 
+	CHANGE `userId` `user_id` INT(11) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `shoutText` `shout_text` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
+	CHANGE `dateEntered` `date_entered` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';
+ALTER TABLE `{$prefix}scorehistory` 
+	CHANGE `scoreDate` `score_date` DATETIME NOT NULL, 
+	CHANGE `scoreOrder` `score_order` INT(11) UNSIGNED NOT NULL, 
+	CHANGE `userId` `user_id` INT(11) UNSIGNED NOT NULL, 
+	CHANGE `totalScore` `total_score` INT(11) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `{$prefix}league_users` 
+	CHANGE `userId` `user_id` INT(11) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `leagueId` `league_id` INT(11) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `{$prefix}leagues` 
+	CHANGE `userDefined` `user_defined` TINYINT(3) UNSIGNED NOT NULL DEFAULT '1';
+ALTER TABLE `{$prefix}bonusquestions_useranswers` 
+	CHANGE `questionId` `question_id` INT(10) UNSIGNED NOT NULL, 
+	CHANGE `userId` `user_id` INT(11) UNSIGNED NOT NULL;
+ALTER TABLE `{$prefix}bonusquestions` 
+	CHANGE `answerBeforeDate` `answer_before_date` DATETIME NOT NULL, 
+	CHANGE `scoreDate` `score_date` DATETIME NULL DEFAULT NULL, 
+	CHANGE `matchNr` `match_id` INT(10) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `{$prefix}matches` 
+	CHANGE `nr` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	CHANGE `playDate` `play_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', 
+	CHANGE `stadiumId` `stadium_id` INT(10) UNSIGNED NOT NULL, 
+	CHANGE `homeTeamId` `home_team_id` INT(11) NOT NULL, 
+	CHANGE `awayTeamId` `away_team_id` INT(11) NOT NULL, 
+	CHANGE `homeScore` `home_score` TINYINT(3) UNSIGNED NULL DEFAULT NULL, 
+	CHANGE `awayScore` `away_score` TINYINT(3) UNSIGNED NULL DEFAULT NULL, 
+	CHANGE `matchtypeId` `matchtype_id` INT(10) UNSIGNED NOT NULL;
+ALTER TABLE `{$prefix}predictions` 
+	CHANGE `userId` `user_id` INT(11) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `matchNr` `match_id` INT(10) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `homeScore` `home_score` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `awayScore` `away_score` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0', 
+	CHANGE `hasJoker` `has_joker` TINYINT(4) NOT NULL DEFAULT '0';
+ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `question_id` );
+ALTER TABLE  `{$prefix}bonusquestions_useranswers` ADD INDEX (  `user_id` );
+ALTER TABLE  `{$prefix}scorehistory` ADD `goal_diff_bonus` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `goal_bonus`;

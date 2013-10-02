@@ -2,9 +2,20 @@
 class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete leagues.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+				);
+		$help_sidebar = '<a href="?page=footballpool-help#leagues">Help section about leagues</a></p><p><a href="?page=footballpool-help#players">Help section about players</a>';
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Add, change or delete leagues.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -72,7 +83,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$leagues = $pool->leagues;
 		if ( array_key_exists( $id, $leagues ) ) {
 			$output = array(
-							'name' => $leagues[$id]['leagueName'],
+							'name' => $leagues[$id]['league_name'],
 							'image' => $leagues[$id]['image']
 							);
 		} else {
@@ -88,8 +99,8 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$output = array();
 		foreach ( $leagues as $league ) {
 			$output[] = array(
-							'id' => $league['leagueId'], 
-							'name' => $league['leagueName'], 
+							'id' => $league['league_id'], 
+							'name' => $league['league_name'], 
 							'image' => $league['image']
 						);
 		}
@@ -147,9 +158,9 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE leagueId=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE league_id = %d", $id );
 		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}leagues WHERE id=%d", $id );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}leagues WHERE id = %d", $id );
 		$wpdb->query( $sql );
 	}
 	
@@ -160,20 +171,20 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$id = $input[0];
 		$name = $input[1];
 		$image = $input[2];
-		$userDefined = 1;
+		$user_defined = 1;
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}leagues (name, userDefined, image)
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}leagues ( name, user_defined, image )
 									VALUES (%s, %d, %s)",
-									$name, $userDefined, $image
+									$name, $user_defined, $image
 								);
 		} else {
 			$sql = $wpdb->prepare( "UPDATE {$prefix}leagues SET
 										name = %s,
-										userDefined = %d,
+										user_defined = %d,
 										image = %s
 									WHERE id = %d",
-									$name, $userDefined, $image, $id
+									$name, $user_defined, $image, $id
 								);
 		}
 		
@@ -183,4 +194,3 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	}
 
 }
-?>

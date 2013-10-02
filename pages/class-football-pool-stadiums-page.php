@@ -25,14 +25,13 @@ class Football_Pool_Stadiums_Page {
 				$output .= sprintf( '<h4>%s</h4>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 			
-			$output .= '<p><a href="' . get_page_link() . '">'
-					. __( 'view all venues', FOOTBALLPOOL_TEXT_DOMAIN )
-					. '</a></p>';
-		}
-		else
-		{
+			$output .= sprintf( '<p><a href="%s">%s</a></p>'
+								, get_page_link()
+								, __( 'view all venues', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
+		} else {
 			// show all stadiums
-			$output .= '<p><ol class="stadiumlist">';
+			$output .= '<p><ol class="stadium-list">';
 			$all_stadiums = $stadiums->get_stadiums();
 			$output .= $stadiums->print_lines( $all_stadiums );
 			$output .= '</ol></p>';
@@ -41,4 +40,3 @@ class Football_Pool_Stadiums_Page {
 		return $output;
 	}
 }
-?>

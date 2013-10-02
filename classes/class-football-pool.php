@@ -55,7 +55,7 @@ class Football_Pool {
 		
 		// $matches = new Football_Pool_Matches();
 		// $first_match = $matches->get_first_match_info();
-		// $matchdate = new DateTime( $first_match['playDate'] );
+		// $matchdate = new DateTime( $first_match['play_date'] );
 		// $date = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
 		// $date = new DateTime( $matches->format_match_time( $matchdate, 'Y-m-d H:i' ) );
 		$date = new DateTime();
@@ -71,6 +71,7 @@ class Football_Pool {
 		$options['fullpoints'] = FOOTBALLPOOL_FULLPOINTS;
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
+		$options['diffpoints'] = FOOTBALLPOOL_DIFFPOINTS;
 		$options['maxperiod'] = FOOTBALLPOOL_MAXPERIOD;
 		$options['use_leagues'] = 1; // 1: yes, 0: no
 		$options['shoutbox_max_chars'] = FOOTBALLPOOL_SHOUTBOX_MAXCHARS;
@@ -79,7 +80,7 @@ class Football_Pool {
 		$options['dashboard_image'] = FOOTBALLPOOL_ASSETS_URL . 'admin/images/dashboardwidget.png';
 		$options['matches_locktime'] = '';
 		$options['bonus_question_locktime'] = '';
-		// $options['remove_data_on_uninstall'] = 1; // 1: yes, 0: no
+		$options['keep_data_on_uninstall'] = 0; // 1: yes, 0: no
 		$options['use_favicon'] = 1; // 1: yes, 0: no
 		$options['use_touchicon'] = 1; // 1: yes, 0: no
 		$options['stop_time_method_matches'] = 0; // 0: dynamic, 1: one stop date
@@ -102,6 +103,15 @@ class Football_Pool {
 		$options['show_ranking'] = FOOTBALLPOOL_RANKING_DEFAULT;
 		$options['prediction_type'] = 0; // 0: score, 1: winner/draw
 		$options['prediction_type_draw'] = 1; // 1: also include draw as an option, 0: only home and away team
+		$options['team_points_win'] = FOOTBALLPOOL_TEAM_POINTS_WIN;
+		$options['team_points_draw'] = FOOTBALLPOOL_TEAM_POINTS_DRAW;
+		$options['listing_show_team_thumb'] = 1; // 1: yes, 0: no
+		$options['listing_show_venue_thumb'] = 1; // 1: yes, 0: no
+		$options['listing_show_team_comments'] = 1; // 1: yes, 0: no
+		$options['listing_show_venue_comments'] = 1; // 1: yes, 0: no
+		$options['number_of_jokers'] = FOOTBALLPOOL_DEFAULT_JOKERS;
+		$options['calculation_type_preference'] = FOOTBALLPOOL_RANKING_CALCULATION_SMART;
+		$options['show_num_predictions_in_ranking'] = 0; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
@@ -112,17 +122,20 @@ class Football_Pool {
 		self::db_actions( $install_sql );
 		
 		if ( $action == 'install' ) {
-			$sql = "INSERT INTO `{$prefix}leagues` ( `name`, `userDefined`, `image` ) VALUES
-					( '" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, '' ),
-					( '" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png' ),
-					( '" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '' );";
-			$wpdb->query( $sql );
-			$sql = $wpdb->prepare( "INSERT INTO `{$prefix}rankings` ( `id`, `name`, `user_defined` ) 
-									VALUES ( %d, %s, 0 );"
-									, FOOTBALLPOOL_RANKING_DEFAULT
-									, __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN )
-							);
-			$wpdb->query( $sql );
+			// don't (re)install data if user option is set to keep all data (option = 1)
+			if ( Football_Pool_Utils::get_fp_option( 'keep_data_on_uninstall', 0, 'int' ) == 0 ) {
+				$sql = "INSERT INTO `{$prefix}leagues` ( `name`, `user_defined`, `image` ) VALUES
+						( '" . __( 'all users', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 0, '' ),
+						( '" . __( 'for money', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, 'league-money-green.png' ),
+						( '" . __( 'for free', FOOTBALLPOOL_TEXT_DOMAIN ) . "', 1, '' );";
+				$wpdb->query( $sql );
+				$sql = $wpdb->prepare( "INSERT INTO `{$prefix}rankings` ( `id`, `name`, `user_defined` ) 
+										VALUES ( %d, %s, 0 );"
+										, FOOTBALLPOOL_RANKING_DEFAULT
+										, __( 'default ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+								);
+				$wpdb->query( $sql );
+			}
 		} elseif ( $action == 'update' ) {
 			/** UPDATES FOR PREVIOUS VERSIONS **/
 			if ( ! self::is_at_least_version( '2.0.0' ) ) {
@@ -166,29 +179,36 @@ class Football_Pool {
 				delete_option( 'footballpool_db_version' );
 				update_option( FOOTBALLPOOL_OPTIONS, $options );
 			}
+			if ( ! self::is_at_least_version( '2.3.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.3.0.txt' ) );
+				self::db_actions( $update_sql );
+			}
 			/** END UPDATES **/
 		}
 		
 		// all database installs and updates are finished, so update the db version value
 		Football_Pool_Utils::update_fp_option( 'db_version', FOOTBALLPOOL_DB_VERSION );
 
-		// create pages
-		$locale = self::get_locale();
-		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
-		
-		// first look for a translated text of the rules page in the languages folder of WP
-		$file = WP_LANG_DIR . "/{$domain}/rules-page-content-{$locale}.txt";
-		if ( ! file_exists( $file ) ) {
-			// if no file found, then check the plugin's languages folder
-			$file = FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt";
+		// don't (re)install data if user option is set to keep all data (option = 1)
+		if ( Football_Pool_Utils::get_fp_option( 'keep_data_on_uninstall', 0, 'int' ) == 0 ) {
+			// create pages
+			$locale = self::get_locale();
+			$domain = FOOTBALLPOOL_TEXT_DOMAIN;
+			
+			// first look for a translated text of the rules page in the languages folder of WP
+			$file = WP_LANG_DIR . "/{$domain}/rules-page-content-{$locale}.txt";
 			if ( ! file_exists( $file ) ) {
-				// no translation available, revert to default English text
-				$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
+				// if no file found, then check the plugin's languages folder
+				$file = FOOTBALLPOOL_PLUGIN_DIR . "languages/rules-page-content-{$locale}.txt";
+				if ( ! file_exists( $file ) ) {
+					// no translation available, revert to default English text
+					$file = FOOTBALLPOOL_PLUGIN_DIR . 'languages/rules-page-content.txt';
+				}
 			}
-		}
-		self::$pages['rules']['text'] = self::read_from_file( $file );
-		foreach ( self::$pages as $page ) {
-			self::create_page($page);
+			self::$pages['rules']['text'] = self::read_from_file( $file );
+			foreach ( self::$pages as $page ) {
+				self::create_page($page);
+			}
 		}
 	}
 	
@@ -232,22 +252,25 @@ class Football_Pool {
 		$role = get_role( 'editor' );
 		$role->remove_cap( 'manage_football_pool' );
 		
-		// delete custom tables from database
-		$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );
-		self::db_actions( $uninstall_sql );
-		
-		// delete pages
-		foreach ( self::$pages as $page ) {
-			wp_delete_post( Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ), true );
+		// only delete data if user option is set to remove all data (option = 0, which is the default)
+		if ( Football_Pool_Utils::get_fp_option( 'keep_data_on_uninstall', 0, 'int' ) == 0 ) {
+			// delete custom tables from database
+			$uninstall_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/uninstall.txt' ) );
+			self::db_actions( $uninstall_sql );
+			
+			// delete pages
+			foreach ( self::$pages as $page ) {
+				wp_delete_post( Football_Pool_Utils::get_fp_option( 'page_id_' . $page['slug'] ), true );
+			}
+			
+			// delete plugin options
+			delete_option( FOOTBALLPOOL_OPTIONS );
+			
+			// delete custom user meta
+			$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'footballpool%'" );
 		}
-		
-		// delete plugin options
-		delete_option( FOOTBALLPOOL_OPTIONS );
-		
-		// delete custom user meta
-		$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'footballpool%'" );
 	}
-
+	
 	public function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
 		$no_show = current_user_can( 'subscriber' ) 
@@ -265,7 +288,6 @@ class Football_Pool {
 	public function init() {
 		// i18n support:
 		//   http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
-		
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		$locale = self::get_locale();
@@ -282,53 +304,92 @@ class Football_Pool {
 		}
 		
 		if ( ! is_admin() ) {
+			// the frontend
+			
 			if ( Football_Pool_Utils::get_fp_option( 'use_charts', 0, 'int' ) == 1 ) {
 				//highcharts
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;
 				$highcharts_dir = WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API;
-				self::include_js( $highcharts_url, 'js-highcharts', false, $highcharts_dir );
-				self::include_js( 'assets/pool-charts.js', 'js-pool-charts' );
+				self::include_js( $highcharts_url, 'js-highcharts', null, false, $highcharts_dir );
+				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery' ) );
 			}
 			
-			//fancybox -> replaced with colorbox because of license problem
-			// self::include_js( 'assets/fancybox/jquery.fancybox.js', 'js-fancybox' );
-			// self::include_css( 'assets/fancybox/jquery.fancybox.css', 'css-fancybox' );
-			self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox' );
-			self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
-			
-			//pool css
+			// pool js & css
 			self::include_css( 'assets/pool.css', 'css-pool' );
-			//pool js
-			self::include_js( 'assets/pool.js', 'js-pool' );
-			//extra countdown code
-			add_action( 'wp_head', array( 'Football_Pool', 'countdown_texts' ) );
+			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
+			// localized countdown code
+			wp_localize_script( 'js-pool'
+								, 'FootballPoolBlog'
+								, array( 
+									'count_txt_second' => __( 'second', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_seconds' => __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_day' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_days' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_hour' => __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_hours' => __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_minute' => __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_minutes' => __( 'minutes', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_pre_before' => __( 'Wait ', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_post_before' => __( ' before the tournament starts'
+																		, FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_pre_after' => '',
+									'count_txt_post_after' => __( ' ago the tournament started.'
+																		, FOOTBALLPOOL_TEXT_DOMAIN ),
+								)
+			);
 		} else {
+			// the admin
+			
 			// image uploader scripts
-			if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
-				wp_enqueue_script('media-upload');
-			}
-			if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
-				wp_enqueue_script('thickbox');
-			}
-			if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
-				wp_enqueue_style('thickbox');
+			if ( FOOTBALLPOOL_WP_MEDIA ) {
+				wp_enqueue_media();
+			} else {
+				if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
+					wp_enqueue_script( 'media-upload' );
+				}
+				if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
+					wp_enqueue_script( 'thickbox' );
+				}
+				if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
+					wp_enqueue_style( 'thickbox' );
+				}
 			}
 			
-			// admin css
+			// global admin js & css
 			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
-			// admin js
-			self::include_js( 'assets/admin/admin.js', 'js-pool-admin' );
+			self::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
+								, array( 'jquery', 'jquery-ui-core', 'jquery-ui-progressbar' ) );
+			
+			// score calculation css, ajax & progressbar
+			if ( ! wp_script_is( 'jquery-ui-core', 'queue' ) ) {
+				wp_enqueue_script( 'jquery-ui-core' );
+			}
+			if ( ! wp_script_is( 'jquery-ui-progressbar', 'queue' ) ) {
+				wp_enqueue_script( 'jquery-ui-progressbar' );
+			}
+			self::include_css( 'assets/admin/jquery-ui/css/start/jquery-ui-1.10.0.custom.min.css'
+								, 'css-pool-admin-custom-jquery-ui' );
 			wp_localize_script( 'js-pool-admin'
 								, 'FootballPoolAjax'
-								, array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) 
+								, array( 
+									'fp_recalc_nonce' => wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC ),
+									'colorbox_close' => __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'colorbox_html' => '',
+									'error_message' => __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database and try again.', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'error_label' => __( 'Error message', FOOTBALLPOOL_TEXT_DOMAIN )
+								)
 			);
 		}
+		
+		// colorbox jQuery plugin for lightboxes
+		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
+		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
 	}
 	
 	public function the_content( $content ) {
 		if ( is_page() ) {
-			$page_ID = get_the_ID();
-			switch ( $page_ID ) {
+			$page_id = get_the_ID();
+			switch ( $page_id ) {
 				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
 					$page = new Football_Pool_Ranking_Page();
 					$content .= $page->page_content();
@@ -397,9 +458,9 @@ class Football_Pool {
 		
 		$pool = new Football_Pool_Pool;
 		if ( $pool->has_leagues ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( userId, leagueId ) 
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}league_users ( user_id, league_id ) 
 									VALUES ( %d, %d )
-									ON DUPLICATE KEY UPDATE leagueId = %d" 
+									ON DUPLICATE KEY UPDATE league_id = %d" 
 									, $user_id
 									, $league_id
 									, $league_id
@@ -424,44 +485,11 @@ class Football_Pool {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			// check if the new player picked a league to play in
-			if (Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
+			if ( Football_Pool_Utils::post_int( 'league', 0 ) == 0 ) {
 				$errors->add( 'league_error', __( '<strong>ERROR:</strong> You must choose a league to play in!', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		}
 		return $errors;
-	}
-	
-	public function countdown_texts() {
-		$text_second = __( 'second', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_seconds = __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_day = __( 'day', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_days = __( 'days', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_hour = __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_hours = __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_minute = __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_minutes = __( 'minutes', FOOTBALLPOOL_TEXT_DOMAIN );
-		
-		$text_pre_before = __( 'Wait ', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_post_before = __( ' before the tournament starts', FOOTBALLPOOL_TEXT_DOMAIN );
-		$text_pre_after = '';
-		$text_post_after = __( ' ago the tournament started.', FOOTBALLPOOL_TEXT_DOMAIN );
-	
-		echo "<script type='text/javascript'>
-				var footballpool_countdown_extra_text = new Array();
-				var footballpool_countdown_time_text = new Array();
-				footballpool_countdown_time_text['second'] = '{$text_second}';
-				footballpool_countdown_time_text['seconds'] = '{$text_seconds}';
-				footballpool_countdown_time_text['day'] = '{$text_day}';
-				footballpool_countdown_time_text['days'] = '{$text_days}';
-				footballpool_countdown_time_text['hour'] = '{$text_hour}';
-				footballpool_countdown_time_text['hours'] = '{$text_hours}';
-				footballpool_countdown_time_text['minute'] = '{$text_minute}';
-				footballpool_countdown_time_text['minutes'] = '{$text_minutes}';
-				footballpool_countdown_extra_text['pre_before'] = '{$text_pre_before}';
-				footballpool_countdown_extra_text['post_before'] = '{$text_post_before}';
-				footballpool_countdown_extra_text['pre_after'] = '{$text_pre_after}';
-				footballpool_countdown_extra_text['post_after'] = '{$text_post_after}';
-				</script>";
 	}
 	
 	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
@@ -553,7 +581,7 @@ class Football_Pool {
 		} 
 	}
 	
-//=============================================================================================================//
+//======================================================================================================//
 	
 	private function include_css( $file, $handle, $forced_exit = true, $custom_path = '' ) {
 		if ( $custom_path != '' ) {
@@ -572,7 +600,7 @@ class Football_Pool {
 		}
 	}
 	
-	private function include_js( $file, $handle, $forced_exit = true, $custom_path = '' ) {
+	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '' ) {
 		if ( $custom_path != '' ) {
 			$url = $file;
 			$dir = $custom_path;
@@ -582,7 +610,7 @@ class Football_Pool {
 		}
 		
 		if ( file_exists( $dir ) ) {
-			wp_register_script( $handle, $url );
+			wp_register_script( $handle, $url, $deps );
 			wp_enqueue_script( $handle );
 		} else {
             if ( $forced_exit ) wp_die( $dir . ' not found' );
@@ -612,10 +640,10 @@ class Football_Pool {
 			if ( isset( $page['comment'] ) ) {
 				$newpage['comment_status'] = $page['comment'];
 			}
-			$page_ID = wp_insert_post( $newpage );
+			$page_id = wp_insert_post( $newpage );
 			
-			Football_Pool_Utils::update_fp_option( "page_id_{$page['slug']}", $page_ID );
-			return $page_ID;
+			Football_Pool_Utils::update_fp_option( "page_id_{$page['slug']}", $page_id );
+			return $page_id;
 		}
 	}
 	
@@ -651,4 +679,3 @@ class Football_Pool {
 		}
 	}
 }
-?>

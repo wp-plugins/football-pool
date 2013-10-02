@@ -8,18 +8,28 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 
 $pool = new Football_Pool_Pool;
 
+function bonusquestion_options() {
+	global $pool;
+	$questions = $pool->get_bonus_questions();
+	foreach( $questions as $question ) {
+		if ( $question['match_id'] == 0 ) {
+			printf( '<option value="%d">%d: %s</option>', $question['id'], $question['id'], $question['question'] );
+		}
+	}
+}
+
 function match_options() {
 	$matches = new Football_Pool_Matches;
 	$matches = $matches->matches;
 	foreach ( $matches as $match ) {
 		$option_text = sprintf( '%d: %s - %s (%s)'
-								, $match['nr']
+								, $match['id']
 								, $match['home_team']
 								, $match['away_team']
 								// , $match['match_datetime']
 								, Football_Pool_Utils::date_from_gmt( $match['date'] )
 						);
-		printf( '<option value="%d">%s</option>', $match['nr'], $option_text );
+		printf( '<option value="%d">%s</option>', $match['id'], $option_text );
 	}
 }
 ?>
@@ -27,10 +37,10 @@ function match_options() {
 <head>
 	<title><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></title>
 	<meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
-	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.js"></script>
+	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js"></script>
 	<base target="_self" />
 	
 	<style type="text/css">
@@ -44,12 +54,13 @@ function match_options() {
 	.shortcode-select { background-color: #f1f1f1; }
 	.shortcode-select td p { margin-bottom: 8px; }
 	.shortcode-select td { font-weight: bold; }
+	.info { font-style: italic; }
 	</style>
 	
 	<script type="text/javascript">
 	jQuery( document ).ready( function() {
 		tinyMCEPopup.executeOnLoad( 'tinymce_init()' );
-		tinymce_init_tabs( 'tabs' );
+		footballpool_tinymce_init_tabs( 'tabs' );
 	});
 	
 	function toggle_atts( select_id, atts ) {
@@ -73,9 +84,9 @@ function match_options() {
 		disable_inputs( text_ids, id );
 	}
 	
-	function toggle_predictionform_select( clicked ) {
+	function toggle_select_row( clicked, shortcode ) {
 		clicked = jQuery( clicked ).attr( 'for' );
-		jQuery( '.tr-predictionform select' ).each( function() {
+		jQuery( '.tr-' + shortcode + ' select' ).each( function() {
 			if ( jQuery( this ).attr( 'id' ) == clicked ) {
 				jQuery( this ).show( 'slow' );
 			} else {
@@ -103,10 +114,13 @@ function match_options() {
 			<tr class="shortcode-select">
 				<td><label for="s-pool"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
-					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform' } )">
+					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform', 'fp-user-score': 'tr-user-score', 'fp-user-predictions': 'tr-user-predictions', 'fp-matches': 'tr-matches' } )">
 						<option value="fp-ranking"><?php _e( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-user-predictions"><?php _e( 'Predictions for match or question', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-user-score"><?php _e( 'Score for a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-group"><?php _e( 'Group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-predictionform"><?php _e( 'Prediction form', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-matches"><?php _e( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -143,7 +157,9 @@ function match_options() {
 							<?php
 							$leagues = $pool->get_leagues( true );
 							foreach ( $leagues as $league ) {
-								printf( '<option value="%d">%s</option>', $league['leagueId'], $league['leagueName'] );
+								printf( '<option value="%d">%s</option>'
+										, $league['league_id'], $league['league_name'] 
+								);
 							}
 							?>
 						</optgroup>
@@ -160,20 +176,115 @@ function match_options() {
 			</tr>
 			<tr class="tr-ranking">
 				<td>
+					<label for="ranking-show-num-predictions"><?php _e( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<input type="checkbox" id="ranking-show-num-predictions" <?php echo ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 ? 'checked="checked" ' : '' ); ?>/>
+				</td>
+			</tr>
+			<tr class="tr-ranking">
+				<td>
 					<label><a href="//php.net/manual/en/function.date.php" title="<?php _e( 'information about PHP\'s date format', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" target="_blank"><?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
 				</td>
 				<td>
-					<label><input type="radio" id="ranking-date-now" name="ranking-date" value="now" checked="checked" onclick="toggle_linked_radio_options( '', '#tr-ranking-date' )" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="ranking-date-postdate" name="ranking-date" value="postdate" onclick="toggle_linked_radio_options( '', '#tr-ranking-date' )" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="ranking-date-custom" name="ranking-date" value="custom" onclick="toggle_linked_radio_options( '#tr-ranking-date', '' )" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="ranking-date-now" name="ranking-date" value="now" checked="checked" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="ranking-date-postdate" name="ranking-date" value="postdate" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="ranking-date-custom" name="ranking-date" value="custom" onclick="jQuery( '#ranking-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#ranking-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
-			<tr id="tr-ranking-date" class="tr-ranking-date atts">
+			<tr class="tr-user-predictions atts">
 				<td>
-					<label></label>
+					<label for="user-predictions-match"><?php _e( 'Match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
-					<span style="padding-left:24px"><input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" /></span>
+					<select id="user-predictions-match">
+						<option value="0"><?php _e( 'Select a match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<?php
+						match_options();
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-predictions atts">
+				<td></td><td class="info"><?php _e( 'and/or', FOOTBALLPOOL_TEXT_DOMAIN ); ?></td>
+			</tr>
+			<tr class="tr-user-predictions atts">
+				<td>
+					<label for="user-predictions-question"><?php _e( 'Question', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="user-predictions-question">
+						<option value="0"><?php _e( 'Select a question', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<?php
+						bonusquestion_options();
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-predictions atts">
+				<td>
+					<label for="user-predictions-text"><?php _e( 'Text', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<input type="text" id="user-predictions-text" style="width:100%" placeholder="<?php _e( 'Text to display if there is nothing to show', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-user-id"><?php _e( 'Select a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="user-score-user-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="" selected="selected"><?php _e( 'logged in user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose another user', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$users = $pool->get_users( 1 );
+							foreach ( $users as $user ) {
+								printf( '<option value="%d">%s</option>', $user['user_id'], $user['user_name'] );
+							}
+							?>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="user-score-ranking-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							$rankings = $pool->get_rankings( 'user defined' );
+							foreach ( $rankings as $ranking ) {
+								printf( '<option value="%d">%s</option>', $ranking['id'], $ranking['name'] );
+							}
+							?>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label for="user-score-text"><?php _e( 'Text', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<input type="text" id="user-score-text" placeholder="0" />
+				</td>
+			</tr>
+			<tr class="tr-user-score atts">
+				<td>
+					<label><a href="//php.net/manual/en/function.date.php" title="<?php _e( 'information about PHP\'s date format', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" target="_blank"><?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
+				</td>
+				<td>
+					<label><input type="radio" id="user-score-date-now" name="user-score-date" value="now" checked="checked" /> <?php _e( 'now', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-postdate" name="user-score-date" value="postdate" /> <?php _e( 'postdate', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="user-score-date-custom" name="user-score-date" value="custom" onclick="jQuery( '#user-score-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="user-score-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#user-score-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
 			<tr class="tr-group atts">
@@ -200,7 +311,7 @@ function match_options() {
 			<tr>
 			<tr class="tr-predictionform atts">
 				<td>
-					<label for="match-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+					<label for="match-id" onclick="toggle_select_row( this, 'predictionform' )"><?php _e( 'Select one or more matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
 					<select id="match-id" style="width:320px; height:100px; display:none;" multiple="multiple">
@@ -210,7 +321,7 @@ function match_options() {
 			</tr>
 			<tr class="tr-predictionform atts">
 				<td>
-					<label for="matchtype-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more match types', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+					<label for="matchtype-id" onclick="toggle_select_row( this, 'predictionform' )"><?php _e( 'Select one or more match types', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
 					<select id="matchtype-id" style="width:320px; height:100px; display:none;" multiple="multiple">
@@ -225,14 +336,44 @@ function match_options() {
 			</tr>
 			<tr class="tr-predictionform atts">
 				<td>
-					<label for="question-id" onclick="toggle_predictionform_select( this )"><?php _e( 'Select one or more questions', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+					<label for="question-id" onclick="toggle_select_row( this, 'predictionform' )"><?php _e( 'Select one or more questions', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
 					<select id="question-id" style="width:320px; height:100px; display:none;" multiple="multiple">
 					<?php
-					$questions = $pool->get_bonus_questions();
-					foreach( $questions as $question ) {
-						printf( '<option value="%d">%s</option>', $question['id'], $question['question'] );
+						bonusquestion_options();
+					?>
+					</select>
+				</td>
+			</tr>
+			<!-- fp-matches -->
+			<tr class="tr-matches atts">
+				<td colspan="2">
+					<strong><?php _e( 'Click a label to show the options.', FOOTBALLPOOL_TEXT_DOMAIN );?></strong>
+					<br />
+					<?php _e( 'Use CTRL+click to select multiple values.', FOOTBALLPOOL_TEXT_DOMAIN );?>
+				</td>
+			<tr>
+			<tr class="tr-matches atts">
+				<td>
+					<label for="matches-match-id" onclick="toggle_select_row( this, 'matches' )"><?php _e( 'Select one or more matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="matches-match-id" style="width:320px; height:100px; display:none;" multiple="multiple">
+					<?php match_options(); ?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-matches atts">
+				<td>
+					<label for="matches-matchtype-id" onclick="toggle_select_row( this, 'matches' )"><?php _e( 'Select one or more match types', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="matches-matchtype-id" style="width:320px; height:100px; display:none;" multiple="multiple">
+					<?php
+					$match_types = Football_Pool_Matches::get_match_types();
+					foreach( $match_types as $match_type ) {
+						printf( '<option value="%d">%s</option>', $match_type->id, $match_type->name );
 					}
 					?>
 					</select>
@@ -378,7 +519,7 @@ function match_options() {
 			<input type="button" id="cancel" name="cancel" value="<?php _e( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="tinyMCEPopup.close();" />
 		</div>
 		<div style="float: right">
-			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="tinymce_insert_shortcode();" />
+			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="footballpool_tinymce_insert_shortcode();" />
 		</div>
 	</div>
 

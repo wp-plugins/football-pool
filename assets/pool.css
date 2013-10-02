@@ -5,7 +5,7 @@
 	margin: 0 0 .25em; 
 	padding: 0 .5em; 
 	color: #fff; 
-	background-color: #990288; 
+	background-color: #ccc; 
 	font-weight: bold; 
 	font-size: .8em; 
 	line-height: 1.8em; 
@@ -21,6 +21,8 @@
 .widget div.football-pool-widget input.text, .widget input.textarea { width: 80%; }
 .widget div.football-pool-widget { padding: 0; margin: 0; }
 
+#sidebar ul .widget_footballpoolnextpredictionwidget p a { display: inline; }
+
 img.flag { width: 18px; height: 18px; border: 0; }
 img.fp-joker { width: 13px;  height: 13px; }
 
@@ -28,8 +30,8 @@ tr.odd { }
 
 td.numeric { text-align: right; }
 
-td.matchtype { color: #fff; background-color: #330039; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; text-align: center; }
-td.matchdate { color: #fff; background-color: #990288; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
+.matchtype { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; text-align: center; }
+.matchdate { color: #fff; background-color: #ccc; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 
 table.matchinfo { border: none; width: 580px; }
 table.matchinfo.input { width: 580px; }
@@ -43,25 +45,32 @@ table.matchinfo td.score { text-align: center; font-weight: bold; padding: 0 .5e
 table.matchinfo td.fp-joker { background-image: url(images/site/ball_over.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
 table.matchinfo td.fp-nojoker { background-image: url(images/site/ball.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
 table.matchinfo td.fp-joker.readonly, table.matchinfo td.fp-nojoker.readonly { cursor: default; }
-table.matchinfo th { color: #fff; background-color: #330039; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
+table.matchinfo th { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 table.matchinfo th.username { width: 200px; }
 table.statistics  { width: 400px; }
-table.statistics th { color: #fff; background-color: #330039; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
-table.statistics td { border-bottom: 1px solid #990288; }
+table.statistics th { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
+table.statistics td { border-bottom: 1px solid #ccc; }
 table.statistics td.score { text-align: center; }
 
-table.matchinfo a { text-decoration: none; }
-table.matchinfo a:hover { text-decoration: underline; }
+table.prediction-table-questions a, table.matchinfo a { text-decoration: none; }
+table.prediction-table-questions a:hover, table.matchinfo a:hover { text-decoration: underline; }
 
 .nopointer { cursor: default!important; }
 
 input.prediction { width: 3em; text-align: right; }
 div.buttonblock { margin: 1em 0 3em; }
 
-img.teamphotothumb { width: 150px; height: 79px; border: 0; cursor: pointer; }
-img.teamphoto { width: 301px; height: 159px; border: 0; cursor: pointer; }
-img.stadiumphoto { border: 0; }
-ol.teamlist, ol.stadiumlist { list-style-type: none; margin: 0; padding: 0; }
+img.team-photo.thumb { width: 150px; height: 79px; border: 0; cursor: pointer; }
+img.stadium-photo.thumb.stadium-list,
+img.team-photo.thumb.team-list { 
+	float: left; 
+	margin: 0 5px 10px 0; 
+}
+img.team-photo { width: 301px; height: 159px; border: 0; cursor: pointer; }
+img.stadium-photo { border: 0; }
+img.stadium-photo.thumb { width: 150px; border: 0; }
+ol.team-list, ol.stadium-list { list-style-type: none; margin: 0; padding: 0; }
+ol.team-list li, ol.stadium-list li { clear: both; margin-bottom: 5px; }
 
 /* group ranking */
 div.ranking { border: 1px solid #000; padding: .25em; margin: 0 2em 2em 0; width: auto; width: 300px; float: left; }
@@ -71,7 +80,7 @@ table.ranking th { text-align: center; font-weight: normal; font-style: italic; 
 table.ranking td { padding: .1em .5em; }
 
 th.wins, td.wins, th.draws, td.draws, th.losses, td.losses { background-color: #ddd; }
-th.plays, td.plays, th.points, td.points { background-color: #990288; }
+th.plays, td.plays, th.points, td.points { background-color: #ccc; }
 th.team, td.team, th.goals, td.goals { background-color: #e1dfdf; }
 td.goals, th.goals { font-size: .6em!important; padding: .1em .2em; }
 th.team, th.points, td.points, th.plays, td.plays { font-weight: bolder; }
@@ -95,7 +104,7 @@ table.pool-ranking tr.currentuser { background-color: #e1dfdf; }
 #rankingsbox table.pool-ranking tr.currentuser { background-color: #transparent; } 
 table.pool-ranking tr.currentuser td, 
 table.pool-ranking tr.currentuser td a, 
-table.pool-ranking tr.currentuser td a:visited { color: #330039; font-weight: bolder; }
+table.pool-ranking tr.currentuser td a:visited { color: #000; font-weight: bolder; }
 
 table.pool-ranking td.score  { text-align:right; padding-right: 1em; }
 
@@ -124,9 +133,9 @@ a.statistics:hover { background-position: 0 62px; }
 
 label { cursor: pointer; }
 
-span.username { color: #330039; font-weight: bolder; }
+span.username { color: #000; font-weight: bolder; }
 
-div.bonus { border-bottom: 1px solid #330039; }
+div.bonus { border-bottom: 1px solid #000; }
 div.bonus, p.bonus, input.bonus { width: 550px; }
 div.bonus.userview { margin-top: 1em; padding-bottom: .5em; }
 div.bonus.userview p { margin: 0; padding: 0; }
@@ -136,7 +145,7 @@ p.bonus { background-color: #eee; padding: 2px; font-weight: bolder; }
 p.bonus.image { background: none; }
 span.bonus { color: #aaa; font-size: 75%;  }
 span.bonus.points { float: right; }
-span.bonus.reminder { color: #990288; font-weight: bolder; }
+span.bonus.reminder { color: #ccc; font-weight: bolder; }
 span.extra { font-size: 80%; color: #666; }
 
 div.bonus ul.multi-select { list-style: none; margin: 0; padding: 0; }
@@ -193,11 +202,11 @@ div.football-pool-widget .widget.button {
 	text-decoration: none; 
 	-moz-border-radius: 5px;
 	border-radius: 5px; 
-	background-color: #990288;
+	background-color: #ccc;
 }
 div.football-pool-widget .widget.button:hover {
 	background-color: #e1dfdf;
-	color: #990288;
+	color: #ccc;
 }
 
 #respond { margin-top: 50px; padding: 0 0 0 3px; }
@@ -211,7 +220,7 @@ div.football-pool-widget .widget.button:hover {
 .widget_footballpoolshoutboxwidget hr {
 	margin: 3px 3px 5px;
 	border: none 0; 
-	border-top: 1px dashed #990288; /*the border*/ 
+	border-top: 1px dashed #ccc; /*the border*/ 
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
 }
 
@@ -237,3 +246,19 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 .widget div.football-pool-widget .pool-ranking .avatar {
 	padding: 0 .5em 0 0; vertical-align: middle; 
 }
+
+.prediction-table-questions td { min-width: 16px; min-height: 16px; }
+.prediction-table-questions td.correct, .prediction-table-questions td.wrong {
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.prediction-table-questions td.correct { background-image: url('images/site/correct.png'); }
+.prediction-table-questions td.wrong { background-image: url('images/site/wrong.png'); }
+.prediction-table-questions.statistics { width: 390px; }
+
+p.bonus .no-answer:after { 
+	content: '...';
+	font-weight: normal;
+}
+
+td.num-predictions, td.ranking.score { text-align: right; }

@@ -2,9 +2,21 @@
 class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	public function help() {
+		$help_tabs = array(
+					array(
+						'id' => 'overview',
+						'title' => __( 'Overview', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>On this page you can add, change or delete shoutbox messages. Shoutbox messages are displayed in the plugin\'s Shoutbox widget.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
+				);
+		$help_sidebar = '';
+	
+		self::add_help_tabs( $help_tabs, $help_sidebar );
+	}
+	
 	public function admin() {
 		self::admin_header( __( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
-		self::intro( __( 'Add, change or delete messages in the shoutbox.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
 		$shout_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		$bulk_ids = Football_Pool_Utils::post_int_array( 'itemcheck', array() );
@@ -47,20 +59,20 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		global $current_user;
 		
 		$values = array(
-						'userName' => $current_user->display_name,
-						'shoutText' => '',
-						'shoutDate' => __( 'now', FOOTBALLPOOL_TEXT_DOMAIN )
+						'user_name' => $current_user->display_name,
+						'shout_text' => '',
+						'shout_date' => __( 'now', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
 		
 		$message = self::get_message( $id );
 		if ( $message && $id > 0 ) {
 			$values = $message;
-			$values['shoutDate'] = self::date_from_gmt( $values['shoutDate'] );
+			$values['shout_date'] = Football_Pool_Utils::date_from_gmt( $values['shout_date'] );
 		}
 		$cols = array(
-					array( 'no_input', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['userName'], '' ),
-					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', $values['shoutText'], '' ),
-					array( 'no_input', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', $values['shoutDate'], '' ),
+					array( 'no_input', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'user_name', $values['user_name'], '' ),
+					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', $values['shout_text'], '' ),
+					array( 'no_input', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', $values['shout_date'], '' ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -83,16 +95,16 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
-					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'message', '' ),
+					array( 'text', __( 'message', FOOTBALLPOOL_TEXT_DOMAIN ), 'shouttext', '' ),
 					array( 'text', __( 'time', FOOTBALLPOOL_TEXT_DOMAIN ), 'time', '' )
 				);
 		
 		$rows = array();
 		foreach( $messages as $message ) {
 			$rows[] = array(
-						$message['userName'], 
-						$message['shoutText'],
-						self::date_from_gmt( $message['shoutDate'] ),
+						$message['user_name'], 
+						$message['shout_text'],
+						Football_Pool_Utils::date_from_gmt( $message['shout_date'] ),
 						$message['id']
 					);
 		}
@@ -139,7 +151,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		if ( $id == 0 ) {
 			$shoutbox->save_shout( $message, $current_user->ID, 150 );
 		} else {
-			$sql = $wpdb->prepare( "UPDATE {$prefix}shoutbox SET shoutText = %s WHERE id = %d", $message, $id );
+			$sql = $wpdb->prepare( "UPDATE {$prefix}shoutbox SET shout_text = %s WHERE id = %d", $message, $id );
 			$wpdb->query( $sql );
 		}
 		
@@ -147,4 +159,3 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	}
 
 }
-?>

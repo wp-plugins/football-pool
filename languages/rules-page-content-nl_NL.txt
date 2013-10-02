@@ -12,7 +12,8 @@ Zoals je hebt gezien, zijn de wedstrijden in de tweede fase nog niet ingevuld. W
 Tijdens het toernooi zijn extra punten te verdienen via de bonusvragen. Dit zijn open vragen die je voor een bepaalde datum moet hebben beantwoord. Bij de vraag staat de datum vermeld en het aantal punten dat je kan verdienen. Bij gokvragen (bv. "in de welke minuut valt het eerste doelpunt?") krijgt de deelnemer die het dichtst bij het antwoord zit, de punten.
 <h3>De puntentelling</h3>
 Bij de bepaling van de puntentelling wordt in de voorrondes gekeken naar de uitslag na afloop van de wedstrijd. Voor de finale wedstrijden wordt ook een eventuele verlenging meegenomen. Doelpunten in een strafschoppenserie worden niet meegenomen bij de bepaling van de puntentelling.
-Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt dat het een gelijkspel wordt. Dit wordt de toto-uitslag genoemd. Als je ook de exacte eindstand weet te raden, krijg je de punten voor juiste uitslag. Als je het aantal doelpunten van een van beide teams goed hebt, dan krijg je de goalbonus opgeteld bij de punten. Ook wanneer je niet de wedstrijduitslag goed had (bv. wedstrijd eindigt in 1-1 en jij had 0-1 voorspelt, je krijgt dan [fp-goalpoints] punten).
+Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt dat het een gelijkspel wordt. Dit wordt de toto-uitslag genoemd. Als je ook de exacte eindstand weet te raden, krijg je de punten voor juiste uitslag. Als je het aantal doelpunten van een van beide teams goed hebt, dan krijg je de goalbonus opgeteld bij de punten. Ook wanneer je niet de wedstrijduitslag goed had (bv. wedstrijd eindigt in 1-1 en jij had 0-1 voorspeld, je krijgt dan [fp-goalpoints] punten bonus).
+De laatste score-optie is de goalverschilbonus: als je de juiste winnaar voorspelt zonder de juiste uitslag te raden, maar wel het doelpuntenverschil correct hebt, dan krijg je [fp-diffpoints] punten extra (bv. wedstrijd eindigt in 2-0 en jij had 3-1 voorspeld).
 <table>
 <thead>
 <tr>
@@ -32,6 +33,11 @@ Je krijgt punten wanneer je de juiste winnaar aanwijst of correct hebt voorspelt
 <tr>
 <td>goalbonus</td>
 <td>[fp-goalpoints]</td>
+</tr>
+<tr>
+<tr>
+<td>goalverschilbonus</td>
+<td>[fp-diffpoints]</td>
 </tr>
 <tr>
 <td>bonusvraag</td>

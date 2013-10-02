@@ -1,0 +1,3537 @@
+# Copyright (C) 2013 Football pool
+# This file is distributed under the same license as the Football pool package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Football pool 2.2.5\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/football-pool\n"
+"POT-Creation-Date: 2013-09-15 20:24+0100\n"
+"PO-Revision-Date: 2013-09-16 22:50+0100\n"
+"Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
+"Language-Team: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
+"Language: da_DK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:9
+#: ../admin/class-football-pool-admin-games.php:9
+#: ../admin/class-football-pool-admin-groups.php:9
+#: ../admin/class-football-pool-admin-leagues.php:9
+#: ../admin/class-football-pool-admin-matchtypes.php:9
+#: ../admin/class-football-pool-admin-options.php:9
+#: ../admin/class-football-pool-admin-rankings.php:9
+#: ../admin/class-football-pool-admin-shoutbox.php:9
+#: ../admin/class-football-pool-admin-stadiums.php:9
+#: ../admin/class-football-pool-admin-teams.php:9
+#: ../admin/class-football-pool-admin-users.php:9
+msgid "Overview"
+msgstr "Oversigt"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:10
+msgid ""
+"<p>On this page you can add, change or delete bonus questions.</p><p>The "
+"<em>'User Answers'</em> link in the table view, or <em>'Edit User Answers'</"
+"em> button in the detail view, is used to check answers from your players.</"
+"p><p><strong>Important:</strong> points are only rewarded <em>after</em> the "
+"admin has checked the user answers!</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre elle eller slette spørgsmål.</p><p> "
+"<em>'Deltagernes besvarelse'</em> linker i tabel oversigten, eller "
+"<em>'Ændre deltageres svar'</em> knappen i den detaljerede oversigt, "
+"benyttes til at kontrollere svarene fra dine deltagere.</"
+"p><p><strong>Vigtigt:</strong> points er kun tildelt <em>efter</em> at "
+"administratoren har kontrolleret alle svar!</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:14
+msgid "Score calculation"
+msgstr "Point beregning"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:15
+msgid ""
+"<p>The score for a bonus question will be added to the players total score "
+"after an admin has 'approved' the answer (<em>'Edit user answers'</em>) and "
+"when the Score Date is filled. The Score Date is the point in time where the "
+"points are added to the total (needed for the charts and/or a ranking for a "
+"given date).</p>\n"
+"\t\t\t\t\t\t<p>You can give a user more points (or less) for a question. Use "
+"the field <em>'points'</em> in the Edit User Answers screen for this; leave "
+"the field empty for standard points.</p>"
+msgstr ""
+"<p>Point'ne for spørgsmål vil blive tilføjet deltagerens samlede point når "
+"administratoren har kontrolleret svarene (<em>'Ændre deltagerens svar'</em>) "
+"og når dato for point er udfyldt. Dato for point er det tidspunkt hvor "
+"point'ne er tilføjet til den samlede score (nødvendig for diagrammer og "
+"stilling for en given dato).</p>\n"
+"\t\t\t\t\t\t<p>Du kan give en deltager flere (eller færre) points for et "
+"spørgsmål. Benyt feltet <em>'points'</em> i Ændre Deltagerens svar siden for "
+"dette; efterlad feltet tomt for at tildele standard points.</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:20
+#: ../admin/class-football-pool-admin-feature-pointers.php:55
+msgid "Linked questions"
+msgstr "Linkede spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:21
+msgid ""
+"<p>If a question is linked to a match it will be shown beneath that match in "
+"the prediction screen. Linked questions cannot be shown separately on a "
+"prediction form for questions, but are always shown with the linked match.</"
+"p><p>When the linked match is deleted the question will be unlinked, but "
+"will still be available in the prediction form.</p>"
+msgstr ""
+"<p>Hvis et spørgsmål er linket til en kamp vil spørgsmålet blive vist under "
+"denne kamp på Spørgsmål og gæt siden. Linkede spørgsmål vil ikke kunne blive "
+"vist seperat på siden for spørgsmål og gæt, og vil altid blive vist sammen "
+"med den linkede kamp.</p><p>Når den linkede kamp bliver slettet vil "
+"spørgsmålet ikke længere være linket, og derfor stadig være tilgængeligt.</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:25
+msgid "Help section about bonus questions"
+msgstr "Hjælpe sektion for spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:26
+msgid "Help section about ranking calculation"
+msgstr "Hjælpesektion for stillingsberegning"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:33
+#: ../pages/class-football-pool-pool-page.php:32
+msgid "Bonus questions"
+msgstr "Spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:47
+msgid "Question saved."
+msgstr "Spørgsmål gemt."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:48
+#: ../admin/class-football-pool-admin-bonusquestions.php:62
+#: ../admin/class-football-pool-admin-bonusquestions.php:117
+#: ../admin/class-football-pool-admin-bonusquestions.php:159
+#: ../admin/class-football-pool-admin-bonusquestions.php:259
+#: ../admin/class-football-pool-admin-games.php:578
+#: ../admin/class-football-pool-admin-groups.php:36
+#: ../admin/class-football-pool-admin-groups.php:78
+#: ../admin/class-football-pool-admin-leagues.php:33
+#: ../admin/class-football-pool-admin-leagues.php:75
+#: ../admin/class-football-pool-admin-matchtypes.php:59
+#: ../admin/class-football-pool-admin-matchtypes.php:101
+#: ../admin/class-football-pool-admin-rankings.php:42
+#: ../admin/class-football-pool-admin-rankings.php:55
+#: ../admin/class-football-pool-admin-rankings.php:97
+#: ../admin/class-football-pool-admin-rankings.php:270
+#: ../admin/class-football-pool-admin-shoutbox.php:34
+#: ../admin/class-football-pool-admin-shoutbox.php:81
+#: ../admin/class-football-pool-admin-stadiums.php:34
+#: ../admin/class-football-pool-admin-stadiums.php:78
+#: ../admin/class-football-pool-admin-teams.php:66
+#: ../admin/class-football-pool-admin-teams.php:131
+msgid "Save & Close"
+msgstr "Gem og luk"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:61
+msgid "Answers updated."
+msgstr "Svar opdateret."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:73
+#, php-format
+msgid "Question id:%s deleted."
+msgstr "Spørgsmål id:%s slettet."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:77
+#, php-format
+msgid "%s questions deleted."
+msgstr "%s spørgsmål slettet."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:108
+#: ../admin/class-football-pool-admin-bonusquestions.php:209
+#: ../admin/class-football-pool-admin-bonusquestions.php:271
+msgid "question"
+msgstr "Spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:109
+#: ../admin/class-football-pool-admin-bonusquestions.php:126
+#: ../admin/class-football-pool-admin-bonusquestions.php:221
+#: ../admin/class-football-pool-admin-bonusquestions.php:275
+#: ../classes/class-football-pool-pool.php:750
+#: ../classes/class-football-pool-pool.php:1021
+#: ../classes/class-football-pool-statistics.php:90
+#: ../classes/class-football-pool-statistics.php:115
+msgid "answer"
+msgstr "Svar"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:111
+#: ../classes/class-football-pool-pool.php:762
+msgid "variable"
+msgstr "Variabel"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:112
+msgid "point(s)"
+msgstr "Points"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:113
+#: ../admin/class-football-pool-admin-bonusquestions.php:211
+#: ../admin/class-football-pool-admin-bonusquestions.php:273
+#: ../classes/class-football-pool-pool.php:745
+msgid "answer before"
+msgstr "Besvar inden"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:125
+#: ../classes/class-football-pool-pool.php:321
+#: ../classes/class-football-pool-shortcodes.php:282
+#: ../classes/class-football-pool-statistics.php:114
+#: ../widgets/widget-football-pool-ranking.php:103
+msgid "user"
+msgstr "Bruger"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:127
+#: ../classes/class-football-pool-chart-data.php:290
+#: ../classes/class-football-pool-chart-data.php:304
+#: ../classes/class-football-pool-statistics.php:122
+msgid "correct"
+msgstr "Korrekt"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:128
+msgid "false"
+msgstr "Forkert"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:129
+#: ../admin/class-football-pool-admin-bonusquestions.php:148
+msgid "Leave empty if you don't want to change the standard points."
+msgstr "Efterlad tom hvis du ikke ønsker at give ekstra eller færre point."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:129
+#: ../admin/class-football-pool-admin-bonusquestions.php:210
+#: ../admin/class-football-pool-admin-bonusquestions.php:272
+#: ../classes/class-football-pool-chart.php:186
+#: ../classes/class-football-pool-groups.php:331
+#: ../classes/class-football-pool-pool.php:323
+#: ../classes/class-football-pool-pool.php:765
+#: ../classes/class-football-pool-pool.php:1005
+#: ../classes/class-football-pool-shortcodes.php:284
+#: ../classes/class-football-pool-statistics.php:92
+#: ../pages/class-football-pool-statistics-page.php:260
+#: ../widgets/widget-football-pool-ranking.php:105
+msgid "points"
+msgstr "Points"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:152
+msgid "No answers yet."
+msgstr "Ingen svar endnu."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:166
+msgid "No questions, users or answers found."
+msgstr "Ingen spørgsmål, brugere, eller svar fundet."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:192
+msgid "text"
+msgstr "Tekst"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:193
+msgid "multiple choice (1 answer)"
+msgstr "Multiple choice (1 svar)"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:194
+msgid "multiple choice (one or more answers)"
+msgstr "Multiple choice (et eller flere svar)"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:199
+msgid "not linked"
+msgstr "ikke linket"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:210
+msgid ""
+"The points a user gets as an award for answering the question correctly."
+msgstr "Point'ne en bruger får for at svare korrekt."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:211
+msgid "A user may give an answer untill this date and time."
+msgstr "En bruger kan afgive svar indtil denne dato og tid."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:212
+#: ../admin/class-football-pool-admin-bonusquestions.php:274
+msgid "score date"
+msgstr "Score dato"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:212
+msgid ""
+"The points awarded will be added to the total points for a user after this "
+"date (for the charts). If not supplied, the points won't be added."
+msgstr ""
+"De tildelte point vil blive tilføjet til brugerens point efter denne dato "
+"(for charts'ne). Hvis det ikke er givet, vil point'ne ikke blive tilføjet."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:215
+msgid "link to match"
+msgstr "link til kamp"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:219
+msgid ""
+"Linked questions are placed directly beneath the match on the prediction "
+"form."
+msgstr "Linkede spørgsmål placeret direkte under den kamp det er linket til."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:221
+msgid "The correct answer (used as a reference)."
+msgstr "Det korrekte svar (til brug som reference)."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:224
+msgid "type"
+msgstr "Skriv"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:237
+msgid "multiple choice options"
+msgstr "Multiple choice muligheder"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:240
+msgid ""
+"A semicolon separated list of answer possibilities. Only applicable for "
+"multiple choice questions."
+msgstr ""
+"En semikolon separeret liste af svar mulighder. Kun mulig for multiple "
+"choice spørgsmål."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:246
+msgid "max answers for multiple choice"
+msgstr "Maksimale antal svar muligheder for multiple choice"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:249
+msgid ""
+"Optional: The maximum number of options a user may select (empty = "
+"unlimited). Only applicable for multiple choice questions with one or more "
+"answers."
+msgstr ""
+"Valgfri: Det maksimale antal af mulighder en bruger må vælge "
+"(tom=ubegrænset). Kun mulig for multiple choice spørgsmål med flere svar."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:253
+#: ../classes/class-football-pool-pool.php:725
+msgid "photo question"
+msgstr "Billed spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:253
+msgid ""
+"Add a URL to a photo for a photo question, or choose one from the media "
+"library (optional)."
+msgstr ""
+"Tilføj en URL til et billede spørgsmål, eller vælge et fra mediebiblioteket "
+"(valgfri)."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:262
+msgid "Edit User Answers"
+msgstr "Ret en brugers svar"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:273
+#: ../admin/class-football-pool-admin-bonusquestions.php:274
+msgid "e.g."
+msgstr "e.g."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-leagues.php:134
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+#: ../admin/class-football-pool-admin-rankings.php:372
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-teams.php:158
+msgid "Delete"
+msgstr "Slet"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+msgid "You are about to delete one or more bonus questions."
+msgstr "Du er ved at slette et eller flere bonus spørgsmål"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+#: ../admin/class-football-pool-admin-games.php:661
+#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-leagues.php:134
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+#: ../admin/class-football-pool-admin-rankings.php:372
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-teams.php:158
+#: ../admin/class-football-pool-admin-users.php:215
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "Are you sure? `OK` to delete, `Cancel` to stop."
+msgstr "Er du sikker? `OK` for at slette, `Cancel` for at stoppe."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:293
+msgid "User Answers"
+msgstr "Brugers svar"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:314
+#, php-format
+msgid "question %d deleted"
+msgstr "spørgsmål %d slettet"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:391
+#, php-format
+msgid "question %d updated"
+msgstr "spørgsmål %d opdateret"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:11
+msgid "Extra layout options"
+msgstr "Ekstra layout muligheder"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:12
+msgid ""
+"Show photo's and/or info about your teams and venues in the listing on the "
+"teams and venues pages."
+msgstr ""
+"Vis billederog/eller information vedrørende dine hold og spillesteder på "
+"listen på siderne for hold og spillesteder."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:17
+msgid "New shortcodes"
+msgstr "Nye shortcodes"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:18
+msgid ""
+"New shortcodes to display the score of a single user, to display the "
+"predictions for a match or question and to display a table of matches. Use "
+"the button in the toolbar to include them:"
+msgstr ""
+"Nye shortcode'er til at vise point'ne for en enkelt deltager, gættene for "
+"kamp eller spørgsmål, og en kamp tabel. Benyt knappen i toolbar'en for at "
+"inkludere dem:"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:25
+msgid "Ranking changes"
+msgstr "Stillings ændringer"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:26
+msgid ""
+"The plugin keeps track of changes in the data that might affect the ranking. "
+"The changes are displayed in the log and this log is used for the new smart "
+"recalculation of the score table."
+msgstr ""
+"Plugin'et holder øje med ændringer i data som vil kunne påvirke stillingen. "
+"Ændringer vises i loggen og benyttes i den nye smartberegning af point "
+"tabeller."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:31
+msgid "Keep data"
+msgstr "Behold data"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:32
+msgid "Keep your data in the database when deactivating the plugin."
+msgstr "Behold din data i database når du deaktiverer plugin'et."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:37
+msgid "Tournament / competition ranking"
+msgstr "Turnering / konkurrence stilling"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:38
+msgid ""
+"Change the points for wins and draws if your sport doesn't use the 3/1 point "
+"rule."
+msgstr ""
+"Her kan du ændre points'ne for sejr og uafgjort hvis din sportsgren ikke "
+"benytter 3/1 point."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:43
+msgid "Disable jokers"
+msgstr "Slå jokere fra"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:44
+msgid "You can completely disable jokers if you don't want to use them."
+msgstr "Du kan slå jokere helt fra hvis du ikke ønsker at benytte dem."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:49
+#: ../admin/class-football-pool-admin-options.php:91
+msgid "Goal difference bonus"
+msgstr "Mål difference bonus"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:50
+msgid ""
+"A new scoring option: reward a player with a bonus if the correct difference "
+"in goals is predicted."
+msgstr ""
+"En ny point mulighed: beløn en deltager med en bonus hvis den korrekte "
+"forskel i antal mål er gættet."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:56
+msgid "You can now link questions directly to a match."
+msgstr "Du kan nu linke et spørgsmål direkte til en kamp."
+
+#: ../admin/class-football-pool-admin-games.php:10
+msgid ""
+"<p>On this page you can quickly edit match scores and team names for final "
+"rounds (if applicable). If you wish to change all information about a match, "
+"then click the <em>'edit'</em> link.</p><p>After saving the match data the "
+"pool ranking is recalculated. If you have a lot of users this may take a "
+"while. You can (temporarily) disable the automatic recalculation of scores "
+"in the Plugin Options.</p>"
+msgstr ""
+"<p>På denne side kan du hurtigt tilrette kamp resultaterne og holdnavnene "
+"for knockout runderne (hvis benyttet). Hvis du ønsker at ændre alt ved en "
+"kamp, klik da på <em>'edit'</em> linket.</p><p>Efter du har gemt kamp data "
+"vil stillingen blive beregnet. Hvis du har mange deltagere kan dette tage "
+"noget tid. Du kan midlertidigt slå den automatiske beregning fra.</p>"
+
+#: ../admin/class-football-pool-admin-games.php:14
+msgid "Import & Export"
+msgstr "Importer og eksporter"
+
+#: ../admin/class-football-pool-admin-games.php:15
+msgid ""
+"<p>Matches can be imported into the plugin using the import function "
+"(<em>'Bulk change game schedule'</em>). See the help page for more "
+"information about the required format.</p><p>On the import screen you can "
+"choose one of the already uploaded schedules or upload a new one (if write "
+"is enabled on the upload directory).</p><p>The import can add matches to "
+"your schedule, or completely overwrite the existing schedule. Please beware "
+"that when overwriting the schedule all existing predictions and rankings "
+"will be lost.</p><p>Existing matches can be exported using the <em>'Download "
+"game schedule'</em> button.</p>"
+msgstr ""
+"<p>Kampe kan importeres ind til plugin'et ved at benytte import funktionen. "
+"(<em>'Masse ændring af kampprogram'</em>). Se hjælpesiden for mere "
+"information om det påkrævede format for importering.</p><p>I importerings "
+"oversigen kan du vælge et allerede importeret kampprogram eller importere et "
+"nyt.</p><p>Import kan også tilføje kampe til det allerede eksisterende "
+"kampprogram, eller overskrive det eksisterende. Ved overskrivning vil alle "
+"stillinger og gæt blive tabt.</p><p> Eksisterende kampe kan også eksporteres "
+"ved at klikke på <em>'Download kampprogram'</em> knappen.</p>"
+
+#: ../admin/class-football-pool-admin-games.php:19
+msgid "Match details"
+msgstr "Kampe detaljer"
+
+#: ../admin/class-football-pool-admin-games.php:20
+msgid "<ul><li><em>match date</em> must be in UTC format.</li></ul>"
+msgstr "<ul><li><em>kamp dato</em> skal være i UTC format.</li></ul>"
+
+#: ../admin/class-football-pool-admin-games.php:24
+msgid "Help section about matches and the import"
+msgstr "Hjælpesektionen for kampe og importering"
+
+#: ../admin/class-football-pool-admin-games.php:25
+msgid "Plugin options page"
+msgstr "Indstillinger"
+
+#: ../admin/class-football-pool-admin-games.php:33
+#: ../admin/class-football-pool-admin-games.php:44
+#: ../admin/class-football-pool-admin.php:94
+#: ../assets/admin/tinymce/tinymce-dialog.php:123
+msgid "Matches"
+msgstr "Kampe"
+
+#: ../admin/class-football-pool-admin-games.php:78
+#, php-format
+msgid "Game %d deleted."
+msgstr "Kamp %d slettet."
+
+#: ../admin/class-football-pool-admin-games.php:80
+msgid "Error performing the requested action."
+msgstr "Fejl under forsøg på at gøre det ønskede."
+
+#: ../admin/class-football-pool-admin-games.php:101
+msgid "Upload of csv file failed."
+msgstr "Upload af csv fil fejlede."
+
+#: ../admin/class-football-pool-admin-games.php:104
+msgid "Upload of csv file successful."
+msgstr "Upload af csv fil var en succes."
+
+#: ../admin/class-football-pool-admin-games.php:128
+msgid "match import with overwrite"
+msgstr "Importer CSV & overskriv"
+
+#: ../admin/class-football-pool-admin-games.php:168
+#, php-format
+msgid "Column %d header should be \"%s\" &rArr; not \"%s\""
+msgstr "Kolonne %d header bør være \"%s\" &rArr; ikke \"%s\""
+
+#: ../admin/class-football-pool-admin-games.php:199
+#: ../admin/class-football-pool-admin-games.php:223
+#, php-format
+msgid "Team %d added: %s"
+msgstr "Hold %d tilføjet: %s"
+
+#: ../admin/class-football-pool-admin-games.php:236
+#, php-format
+msgid "Stadium %d added: %s"
+msgstr "Stadion %d tilføjet: %s"
+
+#: ../admin/class-football-pool-admin-games.php:245
+#, php-format
+msgid "Match Type %d added: %s"
+msgstr "Kamp Type %d tilføjet: %s"
+
+#: ../admin/class-football-pool-admin-games.php:256
+#, php-format
+msgid "Match %d imported: %s - %s for date \"%s\""
+msgstr "Kamp %d importeret: %s - %s for dato \"%s\""
+
+#: ../admin/class-football-pool-admin-games.php:264
+#, php-format
+msgid ""
+"Imported csv file should contain %d columns (header contains %d columns). "
+"See help page for the correct format."
+msgstr ""
+"Importerede csv fil skal indeholde %d kolonner (sidehoved indeholder %d "
+"kolonner). Se hjælpe siden for det korrekt format"
+
+#: ../admin/class-football-pool-admin-games.php:268
+msgid "No csv file selected."
+msgstr "Der er ikke valgt en csv fil."
+
+#: ../admin/class-football-pool-admin-games.php:270
+msgid "Please check if the csv file exists and is readable."
+msgstr "Venligst kontroller at csv filen eksisterer og er læsbar."
+
+#: ../admin/class-football-pool-admin-games.php:301
+msgid ""
+"Please make sure that the directory 'upload' exists in the plugin directory "
+"and that it is readable!"
+msgstr ""
+"Venligst kontroller at direktivet 'upload' eksisterer i plugin direktivet og "
+"det er læsbart!"
+
+#: ../admin/class-football-pool-admin-games.php:304
+msgid ""
+"Uploading of new csv files is not possible at the moment. Directory 'upload' "
+"is not writable."
+msgstr ""
+"Uploading af nye csv filer er ikke muligt i øjeblikket. Stien 'upload' er "
+"ikke skrivbar."
+
+#: ../admin/class-football-pool-admin-games.php:308
+msgid "Choose a new game schedule"
+msgstr "Vælg et nyt kamp program"
+
+#: ../admin/class-football-pool-admin-games.php:309
+msgid ""
+"Import any of the following files. Overwrite the existing game schedule or "
+"add to the existing schedule."
+msgstr ""
+"Importer en af de følgende filer. Overskriv det eksisterende kamp program "
+"eller tilføj et eksisterende kamp program."
+
+#: ../admin/class-football-pool-admin-games.php:316
+msgid "all files"
+msgstr "alle filer"
+
+#: ../admin/class-football-pool-admin-games.php:317
+#, php-format
+msgid "only '%s' files"
+msgstr "kun '%s' filer"
+
+#: ../admin/class-football-pool-admin-games.php:322
+msgid "change"
+msgstr "ændre"
+
+#: ../admin/class-football-pool-admin-games.php:330
+msgid "File"
+msgstr "Filer"
+
+#: ../admin/class-football-pool-admin-games.php:331
+msgid "Contributor"
+msgstr "Bidragsyder"
+
+#: ../admin/class-football-pool-admin-games.php:332
+msgid "Assets"
+msgstr "Aktiver"
+
+#: ../admin/class-football-pool-admin-games.php:344
+msgid "Upload these files to your assets folder in the plugin directory"
+msgstr "Upload disse filer til din aktiver folder i plugin direktivet"
+
+#: ../admin/class-football-pool-admin-games.php:344
+msgid "download files"
+msgstr "download filer"
+
+#: ../admin/class-football-pool-admin-games.php:357
+msgid "Import CSV"
+msgstr "Importer CSV"
+
+#: ../admin/class-football-pool-admin-games.php:360
+msgid "Are you sure you want to add these matches to the existing schedule?"
+msgstr ""
+"Er du sikker på at du vil tilføje disse kampe til det eksisterende kamp "
+"program?"
+
+#: ../admin/class-football-pool-admin-games.php:365
+msgid "Import CSV & Overwrite"
+msgstr "Importer CSV & overskriv"
+
+#: ../admin/class-football-pool-admin-games.php:368
+msgid ""
+"Are you sure you want to overwrite the game schedule with this schedule?"
+"\\nAll predictions and scores will also be overwritten!"
+msgstr ""
+"Er du sikker på at du ønsker at overskrive kamp progammet med dette program?"
+"\\nAlle gæt og point vil også blive overskrevet!"
+
+#: ../admin/class-football-pool-admin-games.php:375
+msgid "No csv files found in 'upload' directory."
+msgstr "Der blev ikke fundet en csv fil i 'upload' direktivet."
+
+#: ../admin/class-football-pool-admin-games.php:384
+msgid "Upload new game schedule"
+msgstr "Upload nyt kamp program"
+
+#: ../admin/class-football-pool-admin-games.php:391
+msgid "Upload CSV"
+msgstr "Upload CSV"
+
+#: ../admin/class-football-pool-admin-games.php:431
+msgid "Bulk change game schedule"
+msgstr "Masse handling: ændre kamp program"
+
+#: ../admin/class-football-pool-admin-games.php:433
+msgid "Download game schedule"
+msgstr "Download kamp program"
+
+#: ../admin/class-football-pool-admin-games.php:462
+msgid "Values updated."
+msgstr "Værdier opdateret."
+
+#: ../admin/class-football-pool-admin-games.php:483
+#, php-format
+msgid "match %d deleted"
+msgstr "Kamp %d slettet."
+
+#: ../admin/class-football-pool-admin-games.php:558
+#, php-format
+msgid ""
+"You have to enter some <a href=\"%s\">teams</a>, <a href=\"%s\">venues</a> "
+"and <a href=\"%s\">match types</a> first."
+msgstr ""
+"Du bliver nødt til at indtaste nogle <a href=\"%s\">hold</a>, <a href=\"%s"
+"\">spillesteder</a> og <a href=\"%s\">kamp typer</a> først."
+
+#: ../admin/class-football-pool-admin-games.php:559
+#: ../admin/class-football-pool-admin-users.php:71
+msgid "Back"
+msgstr "Tilbage"
+
+#: ../admin/class-football-pool-admin-games.php:567
+msgid "match date (UTC)"
+msgstr "Kamp dato (UTC)"
+
+#: ../admin/class-football-pool-admin-games.php:567
+#, php-format
+msgid "local time is %s"
+msgstr "Lokal tid er %s"
+
+#: ../admin/class-football-pool-admin-games.php:568
+msgid "home team"
+msgstr "Hjemmehold"
+
+#: ../admin/class-football-pool-admin-games.php:569
+msgid "away team"
+msgstr "Udehold"
+
+#: ../admin/class-football-pool-admin-games.php:570
+msgid "home score"
+msgstr "Hjemmescore"
+
+#: ../admin/class-football-pool-admin-games.php:571
+msgid "away score"
+msgstr "Udescore"
+
+#: ../admin/class-football-pool-admin-games.php:572
+msgid "stadium"
+msgstr "Stadion"
+
+#: ../admin/class-football-pool-admin-games.php:573
+#: ../admin/class-football-pool-admin-matchtypes.php:138
+msgid "match type"
+msgstr "Kamp type"
+
+#: ../admin/class-football-pool-admin-games.php:579
+#: ../classes/class-football-pool-pool.php:1067
+#: ../pages/class-football-pool-pool-page.php:75
+msgid "Save"
+msgstr "Gem"
+
+#. #-#-#-#-#  1extracted.pot (PACKAGE VERSION)  #-#-#-#-#
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../admin/class-football-pool-admin-games.php:643
+#: ../classes/class-football-pool-matches.php:338
+#: ../classes/class-football-pool-matches.php:428
+msgid "M d, Y"
+msgstr "j. F Y"
+
+#: ../admin/class-football-pool-admin-games.php:648
+msgid "local time"
+msgstr "Lokal tid"
+
+#: ../admin/class-football-pool-admin-games.php:649
+msgid "UTC"
+msgstr "UTC"
+
+#: ../admin/class-football-pool-admin-games.php:658
+#, php-format
+msgid "You are about to delete match %d."
+msgstr "Du er ved at slette kamp %d."
+
+#: ../admin/class-football-pool-admin-games.php:665
+msgid "change match time"
+msgstr "Ændre kamp tid"
+
+#: ../admin/class-football-pool-admin-games.php:671
+msgid "edit"
+msgstr "ændre"
+
+#: ../admin/class-football-pool-admin-games.php:672
+msgid "delete"
+msgstr "slet"
+
+#: ../admin/class-football-pool-admin-games.php:723
+msgid "match with end score added to pool"
+msgstr "kamp med endeligt resultat tilføjet til stillingen"
+
+#: ../admin/class-football-pool-admin-games.php:763
+#, php-format
+msgid "match %d changed"
+msgstr "kamp %d ændret"
+
+#: ../admin/class-football-pool-admin-groups.php:10
+msgid ""
+"<p>On this page you can add, change or delete groups.</p><p>Groups are used "
+"in a typical tournament setting to group teams for a group phase. After the "
+"group phase some teams advance to the final rounds.</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre eller slette grupper.</p><p>Grupper "
+"benyttes normalt i turneringer hvor der er en gruppe fase (som for eksempel "
+"EM og VM i fodbold). Efter gruppe fasen går nogle hold videre til knockout</"
+"p>"
+
+#: ../admin/class-football-pool-admin-groups.php:14
+msgid "Help section about groups"
+msgstr "Hjælpe sektion for grupper"
+
+#: ../admin/class-football-pool-admin-groups.php:21
+#: ../admin/class-football-pool-admin.php:175
+msgid "Groups"
+msgstr "Grupper"
+
+#: ../admin/class-football-pool-admin-groups.php:35
+msgid "Group saved."
+msgstr "Grupper gemt."
+
+#: ../admin/class-football-pool-admin-groups.php:47
+#, php-format
+msgid "Group id:%d deleted."
+msgstr "Grupper id:%d slettet."
+
+#: ../admin/class-football-pool-admin-groups.php:51
+#, php-format
+msgid "%d groups deleted."
+msgstr "%d grupper slettet."
+
+#: ../admin/class-football-pool-admin-groups.php:72
+#: ../admin/class-football-pool-admin-matchtypes.php:94
+#: ../admin/class-football-pool-admin-rankings.php:263
+#: ../admin/class-football-pool-admin-shoutbox.php:73
+#: ../admin/class-football-pool-admin-shoutbox.php:97
+#: ../admin/class-football-pool-admin-stadiums.php:70
+#: ../admin/class-football-pool-admin-teams.php:117
+#: ../admin/class-football-pool-admin-users.php:186
+#: ../classes/class-football-pool-statistics.php:181
+msgid "name"
+msgstr "Navn"
+
+#: ../admin/class-football-pool-admin-groups.php:88
+#: ../admin/class-football-pool-admin-teams.php:122
+msgid "group"
+msgstr "Gruppe"
+
+#: ../admin/class-football-pool-admin-groups.php:99
+msgid "You are about to delete one or more groups."
+msgstr "Du er ved at slette en eller flere grupper."
+
+#: ../admin/class-football-pool-admin-help.php:12
+#: ../admin/class-football-pool-admin.php:183
+#: ../admin/class-football-pool-admin.php:184
+#: ../admin/class-football-pool-admin.php:219
+msgid "Help"
+msgstr "Hjælp"
+
+#: ../admin/class-football-pool-admin-leagues.php:10
+msgid "<p>On this page you can add, change or delete leagues.</p>"
+msgstr "<p>På denne side kan du tilføje, ændre eller slette ligaer.</p>"
+
+#: ../admin/class-football-pool-admin-leagues.php:18
+#: ../admin/class-football-pool-admin-users.php:14
+#: ../admin/class-football-pool-admin.php:148
+msgid "Leagues"
+msgstr "Ligaer"
+
+#: ../admin/class-football-pool-admin-leagues.php:32
+msgid "League saved."
+msgstr "Liga gemt."
+
+#: ../admin/class-football-pool-admin-leagues.php:44
+#, php-format
+msgid "League id:%s deleted."
+msgstr "Liga id:%s slettet."
+
+#: ../admin/class-football-pool-admin-leagues.php:48
+#, php-format
+msgid "%s leagues deleted."
+msgstr "%s ligaer slettet."
+
+#: ../admin/class-football-pool-admin-leagues.php:68
+#: ../admin/class-football-pool-admin-leagues.php:119
+msgid "league"
+msgstr "liga"
+
+#: ../admin/class-football-pool-admin-leagues.php:69
+#: ../admin/class-football-pool-admin-leagues.php:120
+msgid "image"
+msgstr "billede"
+
+#: ../admin/class-football-pool-admin-leagues.php:69
+msgid "Images must be saved in the \"plugin-folder/assets\" folder."
+msgstr "Billeder skal gemmes i \"plugin-folder/assets\" folderen."
+
+#: ../admin/class-football-pool-admin-leagues.php:113
+msgid ""
+"<strong>Important:</strong> at this moment you are not using leagues. This "
+"may be caused by the fact that you didn't add any leagues in the admin, or "
+"because you changed this setting in the <a href=\"?page=footballpool-options"
+"\">plugin options</a>."
+msgstr ""
+"<strong>Vigtigt:</strong> Du benytter ikke ligaer i øjeblikket. Dette kan "
+"være som følge af at du ikke tilføjede ligaer i admin, eller fordi du "
+"ændrede denne indstilling i <a href=\"?page=footballpool-options\">plugin "
+"options</a>."
+
+#: ../admin/class-football-pool-admin-leagues.php:121
+msgid "league nr"
+msgstr "liga nr"
+
+#: ../admin/class-football-pool-admin-leagues.php:134
+msgid "You are about to delete one or more leagues."
+msgstr "Du er ved at slette en eller flere ligaer."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:10
+msgid ""
+"<p>On this page you can add, change or delete match types.</p><p>Match types "
+"are used to group matches together on the match schedule screen (e.g. Group "
+"Phase, Quarter Finals).</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre eller slette kamptyper.</p><p>Kam "
+"typer benyttes til at samle kampe på kampoversigten (for eksempel Gruppe "
+"fasen, kvartfinale, etc.).</p>"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:19
+#: ../admin/class-football-pool-admin.php:166
+msgid "Match Types"
+msgstr "Kamp typer"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:35
+#, php-format
+msgid "Match type %d is visible."
+msgstr "Kamp type %d er synlig"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:37
+#, php-format
+msgid "Match type %d is invisible."
+msgstr "Kamp type %d er ikke synlig."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:44
+#, php-format
+msgid "%d match types made visible."
+msgstr "%d kamp typer er gjort synlige."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:46
+#, php-format
+msgid "%d match types made invisible."
+msgstr "%d kamp typer er gjort usynlige."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:58
+msgid "Match type saved."
+msgstr "Kamp type gemt."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:70
+#, php-format
+msgid "Match type id:%s deleted."
+msgstr "Kamp type id:%s er slettet."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:74
+#, php-format
+msgid "%s match types deleted."
+msgstr "%s kamp typer er slettet."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:95
+msgid "visible on the website"
+msgstr "synlig på hjemmesiden"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:139
+msgid "visible"
+msgstr "synlig"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+msgid "You are about to delete one or more match types."
+msgstr "Du er ved at slettet en eller flere kamp typer."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+msgid "Make visible"
+msgstr "Gør synlig"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+msgid "You are about to make one or more match types visible."
+msgstr "Du er ved at gøre en eller flere kamp typer synlige."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "Are you sure? `OK` to proceed, `Cancel` to stop."
+msgstr "Er du sikker? 'OK' for at forsætte, 'Cancel' for at afrbyde."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "Make invisible"
+msgstr "Gør usynlig."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "You are about to make one or more match types invisible."
+msgstr "Du er ved at gøre en eller flere kamp typer usynlige."
+
+#: ../admin/class-football-pool-admin-options.php:10
+msgid ""
+"<p>The fields on this page set different options for the plugin.</p><p>Some "
+"settings have effect on the ranking (e.g. points), when changing such a "
+"setting you can recalculate the ranking on this page with the "
+"<em>'Recalculate scores'</em> button.</p><p>You have to click <em>Save "
+"Changes</em> for the new settings to take effect.</p>"
+msgstr ""
+"<p>Felterne på denne side bestemmer forskellige indstillinger for plugin'et."
+"</p><p>Nogle indstillinger har en effekt på stillingen (points), og når "
+"dette ændres kan du genberegne stillinge på denne side ved hjælpe af "
+"<em>'Beregn stilling'</em> knappen.</p><p>Du skal huske at  <em>Gemme "
+"ændringer</em> for at ændringer virker.</p>"
+
+#: ../admin/class-football-pool-admin-options.php:14
+#: ../admin/class-football-pool-admin-rankings.php:19
+msgid "Help section about rankings"
+msgstr "Hjælpe sektion for stillinger"
+
+#: ../admin/class-football-pool-admin-options.php:75
+msgid "Keep data on uninstall"
+msgstr "Behold data ved afinstallering"
+
+#: ../admin/class-football-pool-admin-options.php:75
+msgid ""
+"If checked the options and pool data (teams, matches, predictions, etc.) are "
+"not removed when deactivating the plugin."
+msgstr ""
+"Hvis markeret vil indstillinger og kampdata (hold, kampe, gæt, etc.) ikke "
+"blive slettet hvis plugin'et deaktiveres."
+
+#: ../admin/class-football-pool-admin-options.php:77
+#: ../assets/admin/tinymce/tinymce-dialog.php:395
+msgid "Webmaster"
+msgstr "Webmaster"
+
+#: ../admin/class-football-pool-admin-options.php:77
+msgid "This value is used for the shortcode [fp-webmaster]."
+msgstr "Denne værdi er benyttet af shortcode'en [fp-webmaster]."
+
+#: ../admin/class-football-pool-admin-options.php:79
+#: ../assets/admin/tinymce/tinymce-dialog.php:397
+msgid "Money"
+msgstr "Penge"
+
+#: ../admin/class-football-pool-admin-options.php:79
+msgid ""
+"If you play for money, then this is the sum users have to pay. The shortcode "
+"[fp-money] adds this value in the content."
+msgstr ""
+"Hvis du spiller om penge er dette beløbet som skal betales. Shortcode'en [fp-"
+"money] tilføjer denne værdi."
+
+#: ../admin/class-football-pool-admin-options.php:81
+#: ../assets/admin/tinymce/tinymce-dialog.php:396
+msgid "Bank"
+msgstr "Bank"
+
+#: ../admin/class-football-pool-admin-options.php:81
+msgid ""
+"If you play for money, then this is the person you have to give the money. "
+"The shortcode [fp-bank] adds this value in the content."
+msgstr ""
+"Hvis du spiller om penge er dette personen du skal give penge. Shortcode'en "
+"[fp-bank] tilføjer denne værdi."
+
+#: ../admin/class-football-pool-admin-options.php:83
+#: ../assets/admin/tinymce/tinymce-dialog.php:398
+msgid "Start date"
+msgstr "Start dato"
+
+#: ../admin/class-football-pool-admin-options.php:83
+msgid ""
+"The start date of the tournament or pool. The shortcode [fp-start] adds this "
+"value in the content."
+msgstr ""
+"Start datoen af turneringen. Shortcode'en [fp-start] tilføjer denne værdi."
+
+#: ../admin/class-football-pool-admin-options.php:85
+msgid "Full score"
+msgstr "Korrekt resultat"
+
+#: ../admin/class-football-pool-admin-options.php:85
+msgid ""
+"The points a user gets for getting the exact outcome of a match. The "
+"shortcode [fp-fullpoints] adds this value in the content. This value is also "
+"used for the calculations in the pool."
+msgstr ""
+"Antal point en bruger får for at gætte det korrekte resultat. Shortcode'en "
+"[fp-fullpoints] tilføjer denne værdi i et indlæg eller side. Værdien her "
+"bruges også til at beregne stilling."
+
+#: ../admin/class-football-pool-admin-options.php:87
+msgid "Toto score"
+msgstr "Korrekt udfald"
+
+#: ../admin/class-football-pool-admin-options.php:87
+msgid ""
+"The points a user gets for guessing the outcome of a match (win, loss or "
+"draw) without also getting the exact amount of goals. The shortcode [fp-"
+"totopoints] adds this value in the content. This value is also used in the "
+"calculations in the pool."
+msgstr ""
+"Det antal point en bruger får for at gætte det korrekte udfald af en kamp "
+"(sejr, nederlag eller uafgjort). Shortcode'en [fp-totopoints] tilføjer denne "
+"værdi i et indlæg eller side. Værdien her bruges også til at beregne "
+"stilling."
+
+#: ../admin/class-football-pool-admin-options.php:89
+#: ../assets/admin/tinymce/tinymce-dialog.php:394
+msgid "Goal bonus"
+msgstr "Mål bonus"
+
+#: ../admin/class-football-pool-admin-options.php:89
+msgid ""
+"Extra points a user gets for guessing the goals correct for one of the "
+"teams. These points are added to the toto points or full points. The "
+"shortcode [fp-goalpoints] adds this value in the content. This value is also "
+"used in the calculations in the pool."
+msgstr ""
+"Det antal ekstra point en bruger får for at gætte det korrekte antal mål for "
+"et af holdene. Disse point er tilføjet til korrekt udfald point eller fuld "
+"point. Shortcode'en [fp-goalpoints] tilføjer denne værdi i et indlæg eller "
+"side. Værdien her bruges også til at beregne stilling."
+
+#: ../admin/class-football-pool-admin-options.php:91
+msgid ""
+"Extra points a user gets for guessing the goal difference correct for a "
+"match. Only awarded in matches with a winning team and only on top of toto "
+"points. See the help page for more information. The shortcode [fp-"
+"diffpoints] adds this value in the content. This value is also used in the "
+"calculations in the pool."
+msgstr ""
+"Det antal ekstra point en bruger får for at gætte det korrekte mål "
+"difference for et af holdene. Disse point er tilføjet til toto point. "
+"Shortcode'en [fp-diffpoints] tilføjer denne værdi i et indlæg eller side. "
+"Værdien her bruges også til at beregne stilling."
+
+#: ../admin/class-football-pool-admin-options.php:95
+msgid "Prediction stop method for matches"
+msgstr ""
+"Metode til at bestemme hvornår der er deadline for indsendelse af gæt på "
+"kampene."
+
+#: ../admin/class-football-pool-admin-options.php:98
+msgid "Dynamic time"
+msgstr "Dynamisk tid"
+
+#: ../admin/class-football-pool-admin-options.php:99
+msgid "One stop date"
+msgstr "One-stop dato"
+
+#: ../admin/class-football-pool-admin-options.php:101
+#: ../admin/class-football-pool-admin-options.php:133
+msgid "Select which method to use for the prediction stop."
+msgstr ""
+"Vælg hvilken metode der skal benyttes for deadline for indsendelse af gæt."
+
+#: ../admin/class-football-pool-admin-options.php:110
+msgid "Dynamic stop threshold (in seconds) for matches"
+msgstr "Dynamisk deadline grænse (i sekunder) for kampe"
+
+#: ../admin/class-football-pool-admin-options.php:112
+msgid ""
+"A user may change his/her predictions untill this amount of time before game "
+"kickoff. The time is in seconds, e.g. 15 minutes is 900 seconds."
+msgstr ""
+"En bruger kan ændre hans eller hendes gæt indtil dette tidspunkt før "
+"kickoff. Tiden er i sekunder, e.g. 15 minutter er 900 sekunder."
+
+#: ../admin/class-football-pool-admin-options.php:118
+msgid "Prediction stop date for matches"
+msgstr "Deadline dato for indsendelse af gæt for kampe"
+
+#: ../admin/class-football-pool-admin-options.php:120
+msgid ""
+"If a valid date and time [Y-m-d H:i] is given here, then this date/time will "
+"be used as a single value before all predictions for the matches have to be "
+"entered by users. (your local time is:"
+msgstr ""
+"Hvis gyldig dato og tid [Y-m-d H:i] er givet her, vil denne dato/tid blive "
+"benyttet for alle gæt (din lokale tid er:"
+
+#: ../admin/class-football-pool-admin-options.php:127
+msgid "Use one prediction stop date for questions?"
+msgstr "Benyt deadline dato for spørgsmål?"
+
+#: ../admin/class-football-pool-admin-options.php:130
+msgid "No"
+msgstr "Nej"
+
+#: ../admin/class-football-pool-admin-options.php:131
+msgid "Yes"
+msgstr "Ja"
+
+#: ../admin/class-football-pool-admin-options.php:142
+msgid "Prediction stop date for questions"
+msgstr "Deadline dato for spørgsmål"
+
+#: ../admin/class-football-pool-admin-options.php:144
+msgid ""
+"If a valid date and time [Y-m-d H:i] is given here, then this date/time will "
+"be used as a single value before all predictions for the bonus questions "
+"have to be entered by users. (your local time is:"
+msgstr ""
+"Hvis gyldig dato og tid [Y-m-d H:i] er givet her, vil denne dato/tid blive "
+"benyttet for alle bonus spørgsmål (din lokale tid er:"
+
+#: ../admin/class-football-pool-admin-options.php:149
+msgid "Maximum length for a shoutbox message"
+msgstr "Maksimal længde af besked i shoutbox"
+
+#: ../admin/class-football-pool-admin-options.php:149
+msgid ""
+"Maximum length (number of characters) a message in the shoutbox may have."
+msgstr "Maksimal længde (antal slag) en besked i shoutboxen må have."
+
+#: ../admin/class-football-pool-admin-options.php:151
+msgid "Use leagues"
+msgstr "Benyt ligaer"
+
+#: ../admin/class-football-pool-admin-options.php:151
+msgid ""
+"Set this if you want to use leagues in your pool. You can use this (e.g.) "
+"for paying and non-paying users, or different departments. Important: if you "
+"change this value when there are already points given, then the scoretable "
+"will not be automatically recalculated. Use the recalculate button on this "
+"page for that."
+msgstr ""
+"Benyt denne hvis du vil benytte ligaer i din turnering. Du kan for eksempel "
+"benytte det hvis du har både betalende og ikke-betalende brugere eller "
+"forskellige afdelinger. Vigtigt: Hvis du vælger denne efter der er givet "
+"point vil der ikke blive beregnet automatisk. Benyt beregnings knappen til "
+"dette."
+
+#: ../admin/class-football-pool-admin-options.php:153
+msgid "Standard league for new users"
+msgstr "Standard liga for nye brugere"
+
+#: ../admin/class-football-pool-admin-options.php:153
+msgid ""
+"The standard league (<a href=\"?page=footballpool-leagues\">fill in the "
+"league ID</a>) a new user will be placed after registration."
+msgstr ""
+"Standard ligaen (<a href=\"?page=footballpool-leagues\">udfyld liga ID</a>) "
+"en ny bruger vil blive placeret i efter registrering."
+
+#: ../admin/class-football-pool-admin-options.php:155
+msgid "Image for Dashboard Widget"
+msgstr "Billede til dashboard widget."
+
+#: ../admin/class-football-pool-admin-options.php:157
+msgid "Hide Admin Bar for subscribers"
+msgstr "Skjul admin bar for abonnnenter"
+
+#: ../admin/class-football-pool-admin-options.php:157
+msgid ""
+"After logging in a subscriber may see an Admin Bar on top of your blog (a "
+"user option). With this plugin option you can ignore the user configuration "
+"and never show the Admin Bar."
+msgstr ""
+"Efter login vil en abonnent muligvis se en admin bar i toppen af din blog "
+"(bruger indstilling). Med denne indstilling kan du ignorere denne "
+"konfiguration og aldrig vise denne."
+
+#: ../admin/class-football-pool-admin-options.php:159
+msgid "Use favicon"
+msgstr "Benyt favicon"
+
+#: ../admin/class-football-pool-admin-options.php:159
+#: ../admin/class-football-pool-admin-options.php:161
+msgid "Switch off if you don't want to use the icons in the plugin."
+msgstr "Vælg fra hvis du ikke ønsker at benytte ikonerne i dette plugin."
+
+#: ../admin/class-football-pool-admin-options.php:161
+msgid "Use Apple touch icon"
+msgstr "Benyt Apple touch ikon."
+
+#: ../admin/class-football-pool-admin-options.php:163
+msgid "Show team names as links"
+msgstr "Vis holdnavne som links"
+
+#: ../admin/class-football-pool-admin-options.php:163
+msgid ""
+"Switch off if you don't want to link the team names to a team info page."
+msgstr ""
+"Vælg fra hvis du ikke vil have holdnavne som links til hold info siden."
+
+#: ../admin/class-football-pool-admin-options.php:165
+msgid "Show venues on team page"
+msgstr "Vis spillested på holdsiden"
+
+#: ../admin/class-football-pool-admin-options.php:165
+msgid ""
+"Switch off if you don't want to show all venues a team plays in during a "
+"season or tournament (in national competitions the venue list is a bit "
+"useless)."
+msgstr ""
+"Vælg fra hvis du ikke vil vise alle spillesteder et hold spiller over en "
+"sæson (i nationale konkurrencer er spillelisten lidt ubrugelig)."
+
+#: ../admin/class-football-pool-admin-options.php:169
+msgid "Use charts"
+msgstr "Benyt diagrammer"
+
+#: ../admin/class-football-pool-admin-options.php:172
+#, php-format
+msgid ""
+"The Highcharts API is needed for this feature. See the <%s>Help page<%s> for "
+"information on installing this library."
+msgstr ""
+"Highcharts API er nødvendig for denne feature. Se <%s>Help page<%s> for "
+"information om installering af dette bibliotek"
+
+#: ../admin/class-football-pool-admin-options.php:179
+msgid "Format for the csv export (match schedule)"
+msgstr "Format for csv exportering (kamp program)"
+
+#: ../admin/class-football-pool-admin-options.php:182
+msgid "Full data"
+msgstr "Fuld data"
+
+#: ../admin/class-football-pool-admin-options.php:183
+msgid "Minimal data"
+msgstr "Minimal data"
+
+#: ../admin/class-football-pool-admin-options.php:185
+#, php-format
+msgid ""
+"Select the format of the csv export. See the <%s>Help page<%s> for more "
+"information."
+msgstr ""
+"Vælg csv format til exportering. Se <%s>Help page<%s> for mere information."
+
+#: ../admin/class-football-pool-admin-options.php:190
+msgid "Match time setting"
+msgstr "Kamp tidsindstillinger"
+
+#: ../admin/class-football-pool-admin-options.php:193
+msgid "Use WordPress Timezone setting"
+msgstr "Benyt WordPress tidszone indstillinger"
+
+#: ../admin/class-football-pool-admin-options.php:194
+msgid "Use UTC time"
+msgstr "Benyt UTC tid"
+
+#: ../admin/class-football-pool-admin-options.php:195
+#: ../admin/class-football-pool-admin-options.php:254
+msgid "Custom setting"
+msgstr "Special indstillinger"
+
+#: ../admin/class-football-pool-admin-options.php:197
+msgid "Select which method to use for the display of match times."
+msgstr "Vælg hvilke metode der skal benyttes til at vise kamp tidspunkt."
+
+#: ../admin/class-football-pool-admin-options.php:207
+msgid "Match time offset"
+msgstr "Kamp tidspunkt afvigelse"
+
+#: ../admin/class-football-pool-admin-options.php:210
+msgid ""
+"The offset in hours to add to (or extract from) the UTC start time of a "
+"match. Only used for display of the time."
+msgstr ""
+"Afvigelsen i timer som tillægges (eller trækkes fra) UTC kamp start. "
+"Benyttes kun ved visning af tid."
+
+#: ../admin/class-football-pool-admin-options.php:215
+msgid "Use shortcode button in visual editor"
+msgstr "Benyt shortcode knap i visuel editor"
+
+#: ../admin/class-football-pool-admin-options.php:215
+msgid ""
+"The plugin can add a button to the visual editor of WordPress. With this "
+"option disabled this button will not be included (uncheck if the button is "
+"causing problems)."
+msgstr ""
+"Plugin'et kan tilføje en knap i den visuelle editor i WordPress. Med denne "
+"mulighed"
+
+#: ../admin/class-football-pool-admin-options.php:217
+msgid "Always show predictions"
+msgstr "Vis altid gæt"
+
+#: ../admin/class-football-pool-admin-options.php:217
+msgid ""
+"Normally match predictions are only shown to other players after a "
+"prediction can't be changed anymore. With this option enabled the "
+"predictions are visible to anyone, anytime. Works only for matches, not "
+"bonus questions."
+msgstr ""
+"Kamp gæt vil normalt kun blive vist til andre spillere efter at de ikke kan "
+"rettes mere. Med denne mulighed kan man altid se de andre spillere gæt. "
+"Gælder kun for kampe ikke bonus spørgsmål."
+
+#: ../admin/class-football-pool-admin-options.php:219
+msgid "Use HTML5 number inputs"
+msgstr "Benyt HTML5 tal input"
+
+#: ../admin/class-football-pool-admin-options.php:219
+msgid ""
+"Make use of HTML5 number inputs for the prediction form. Some browsers "
+"display these as spin controls."
+msgstr ""
+"Benyt HTML5 tal input til forudsigelser. Nogle browsere viser disse som spin "
+"controls."
+
+#: ../admin/class-football-pool-admin-options.php:223
+msgid "Groups page matches"
+msgstr "Gruppers side kampe"
+
+#: ../admin/class-football-pool-admin-options.php:226
+#, php-format
+msgid ""
+"The Groups page shows standings for the matches in these match types. "
+"Defaults to match type id: %d."
+msgstr ""
+"Gruppernes side viser rangeringen for kampe af denne type af kamp. Defaults "
+"to match type id: %d."
+
+#: ../admin/class-football-pool-admin-options.php:226
+#: ../assets/admin/tinymce/tinymce-dialog.php:309
+#: ../assets/admin/tinymce/tinymce-dialog.php:354
+msgid "Use CTRL+click to select multiple values."
+msgstr "Benyt CTRL+klik for at vælge flere værdier."
+
+#: ../admin/class-football-pool-admin-options.php:232
+msgid "Match sorting"
+msgstr "Kamp sortering"
+
+#: ../admin/class-football-pool-admin-options.php:235
+msgid "Date ascending"
+msgstr "Dato stigende"
+
+#: ../admin/class-football-pool-admin-options.php:236
+msgid "Date descending"
+msgstr "Dato faldende"
+
+#: ../admin/class-football-pool-admin-options.php:237
+msgid "Match types descending, matches date ascending"
+msgstr "Kamptype faldende, kampdato stigende"
+
+#: ../admin/class-football-pool-admin-options.php:238
+msgid "Match types ascending, matches date descending"
+msgstr "Kamptype stigende, kampdato faldende"
+
+#: ../admin/class-football-pool-admin-options.php:240
+msgid ""
+"Select the order in which matches must be displayed on the matches page and "
+"the prediction page.."
+msgstr "Vælg hvilken rækkefølge kampe skal vises på kampsiden og gætsiden.."
+
+#: ../admin/class-football-pool-admin-options.php:243
+msgid "Show (gr)avatars"
+msgstr "Vis (gr)avatars"
+
+#: ../admin/class-football-pool-admin-options.php:243
+msgid "Show the user's (gr)avatar in ranking tables (if available)."
+msgstr "Vis brugerens (gr)avatar i stillingen (hvis muligt)."
+
+#: ../admin/class-football-pool-admin-options.php:245
+msgid "Automatic calculation"
+msgstr "Automatisk beregning"
+
+#: ../admin/class-football-pool-admin-options.php:245
+msgid ""
+"By default the rankings are automatically (re)calculated in the admin. "
+"Change this setting if you want to (temporarily) disable this behaviour."
+msgstr ""
+"Stillingen bliver som standard beregnet automatisk.Du kan ændre dette her."
+
+#: ../admin/class-football-pool-admin-options.php:249
+msgid "Ranking to show"
+msgstr "Hvilken stilling der bliver vist"
+
+#: ../admin/class-football-pool-admin-options.php:252
+msgid "Default ranking"
+msgstr "Standard stilling"
+
+#: ../admin/class-football-pool-admin-options.php:253
+msgid "Let the user decide"
+msgstr "Lad brugeren bestemme"
+
+#: ../admin/class-football-pool-admin-options.php:256
+msgid ""
+"The ranking page and charts page can show different rankings. Use this "
+"setting to decide which ranking to show."
+msgstr ""
+"Stilling og diagram siden kan vise forskellige stillinger. Benyt denne "
+"indstilling for at bestemme hvilken stilling der skal vises."
+
+#: ../admin/class-football-pool-admin-options.php:266
+#: ../pages/class-football-pool-ranking-page.php:43
+#: ../pages/class-football-pool-statistics-page.php:73
+msgid "Choose ranking"
+msgstr "Vælg stilling"
+
+#: ../admin/class-football-pool-admin-options.php:269
+msgid ""
+"Choose the ranking you want to use on the ranking page and the charts page."
+msgstr "Vælg den stilling du vil benytte på stillingssiden og diagramsiden."
+
+#: ../admin/class-football-pool-admin-options.php:298
+msgid "Points for win"
+msgstr "Points for en sejr"
+
+#: ../admin/class-football-pool-admin-options.php:298
+msgid "The points a team gets for a win."
+msgstr "Point et hold får for en sejr."
+
+#: ../admin/class-football-pool-admin-options.php:300
+msgid "Points for draw"
+msgstr "Points for uafgjort"
+
+#: ../admin/class-football-pool-admin-options.php:300
+msgid "The points a team gets for a draw."
+msgstr "Point et hold får for at spille uafgjort."
+
+#: ../admin/class-football-pool-admin-options.php:302
+msgid "Show photo in team listing"
+msgstr "Vis billede i hold oversigten"
+
+#: ../admin/class-football-pool-admin-options.php:302
+msgid "Show the team's photo on the team listing page (if available)."
+msgstr "Vis holdets billede på holdsiden (hvis det findes)."
+
+#: ../admin/class-football-pool-admin-options.php:304
+msgid "Show photo in venue listing"
+msgstr "Vis billede i stadion oversigten"
+
+#: ../admin/class-football-pool-admin-options.php:304
+msgid "Show the venue's photo on the team listing page (if available)."
+msgstr "Vis stadions billede på holdsiden (hvis det findes)."
+
+#: ../admin/class-football-pool-admin-options.php:306
+msgid "Show comments in team listing"
+msgstr "Vis kommentarer på holdsiden"
+
+#: ../admin/class-football-pool-admin-options.php:306
+msgid "Show the team's comments on the team listing page (if available)."
+msgstr "Vis holdets kommentare på holdsiden (hvis det findes)."
+
+#: ../admin/class-football-pool-admin-options.php:308
+msgid "Show comments in venue listing"
+msgstr "Vis kommentarer i stadion oversigten"
+
+#: ../admin/class-football-pool-admin-options.php:308
+msgid "Show the venue's comments on the team listing page (if available)."
+msgstr "Vis stadions kommentare på holdsiden (hvis det findes)."
+
+#: ../admin/class-football-pool-admin-options.php:312
+msgid "Enable jokers?"
+msgstr "Tillad jokere?"
+
+#: ../admin/class-football-pool-admin-options.php:312
+msgid ""
+"When checked the joker is enabled and users can add the joker to one "
+"prediction to multiply the score."
+msgstr ""
+"Når markeret er jokeren aktiveret og du kan benytte jokeren på et gæt for at "
+"forøge point'ne."
+
+#: ../admin/class-football-pool-admin-options.php:314
+#: ../assets/admin/tinymce/tinymce-dialog.php:179
+#: ../widgets/widget-football-pool-ranking.php:16
+msgid "Show number of predictions?"
+msgstr "Vis antal af gæt?"
+
+#: ../admin/class-football-pool-admin-options.php:314
+msgid ""
+"When checked the number of predictions (matches and questions) a user saved "
+"is shown on the ranking page. This setting also effects the default value "
+"for the ranking widget and the ranking shortcode (but can be changed with "
+"their parameters)."
+msgstr ""
+"Når markeret vil det antal af gæt (kampe og spørgsmål) en deltagere har gemt "
+"fremgå af stillingen. Denne indstilling vil også påvirke standard værdien "
+"for stilllinges widget'en, og stillings shortcode'en (men kan ændres med "
+"deres parametre)."
+
+#: ../admin/class-football-pool-admin-options.php:318
+msgid ""
+"If you want to support this plugin, you can buy me an espresso (doppio "
+"please ;))"
+msgstr ""
+"Hvis du vil støtte dette plugin, kan du købe mig en espresso (doppio tak;))"
+
+#: ../admin/class-football-pool-admin-options.php:321
+#: ../admin/class-football-pool-admin.php:75
+msgid "Plugin Options"
+msgstr "Indstillinger"
+
+#: ../admin/class-football-pool-admin-options.php:324
+#: ../admin/class-football-pool-admin-options.php:394
+#: ../admin/class-football-pool-admin-options.php:416
+#: ../admin/class-football-pool-admin-options.php:431
+#: ../admin/class-football-pool-admin.php:954
+msgid "Recalculate Scores"
+msgstr "Genberegn stillingen"
+
+#: ../admin/class-football-pool-admin-options.php:366
+msgid "plugin options changed"
+msgstr "Indstillinger ændret"
+
+#: ../admin/class-football-pool-admin-options.php:370
+#: ../admin/class-football-pool-admin-teams-position.php:14
+#: ../admin/class-football-pool-admin-users.php:76
+#: ../classes/class-football-pool-pool.php:792
+msgid "Changes saved."
+msgstr "Ændringer er gemt."
+
+#: ../admin/class-football-pool-admin-options.php:375
+#: ../classes/class-football-pool.php:578
+#, php-format
+msgid ""
+"Charts are enabled but Highcharts API was not found! See <a href=\"%s\">Help "
+"page</a> for details."
+msgstr ""
+"Diagrammer er slået til, men Highcharts API blev ikke fundet! Se <a href=\"%s"
+"\">Help page</a> for detaljer."
+
+#: ../admin/class-football-pool-admin-options.php:378
+msgid ""
+"If values in the fields marked with an asterisk are left empty, then the "
+"plugin will default to the initial values."
+msgstr ""
+"Hvis værdier i felterne der er markeret med en stjerne er efterladt tomme, "
+"så vil plugin'et benytte standard værdier."
+
+#: ../admin/class-football-pool-admin-options.php:380
+msgid "Ranking Options"
+msgstr "Point givning"
+
+#: ../admin/class-football-pool-admin-options.php:401
+msgid "Prediction Options"
+msgstr "Gæt muligheder"
+
+#: ../admin/class-football-pool-admin-options.php:423
+msgid "League Options"
+msgstr "Liga muligheder"
+
+#: ../admin/class-football-pool-admin-options.php:438
+msgid "Pool Layout Options"
+msgstr "Pool opsætnings muligheder"
+
+#: ../admin/class-football-pool-admin-options.php:455
+msgid "Groups Page Options"
+msgstr "Gruppers side kampe"
+
+#: ../admin/class-football-pool-admin-options.php:464
+msgid "Other Options"
+msgstr "Andre muligheder"
+
+#: ../admin/class-football-pool-admin-options.php:479
+msgid "Shortcodes"
+msgstr "Shortcodes"
+
+#: ../admin/class-football-pool-admin-rankings.php:10
+msgid ""
+"<p>On this page you can add, change or delete custom rankings.</p><p>A "
+"ranking is calculated for the total points scored for the matches and/or "
+"bonus questions in the ranking. Change the matches and bonus questions for a "
+"ranking via the <em>'Ranking composition'</em> link beneath the ranking name."
+"</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre eller slette specielle stillinger.</"
+"p><p> En stilling er beregnet udfra det totale antal point for kampe og "
+"spørgsmål. Dette kan ændres via <em>'Stillingssammensætning'</em> link under "
+"stillingens navn.</p>"
+
+#: ../admin/class-football-pool-admin-rankings.php:14
+msgid "Log"
+msgstr "Log"
+
+#: ../admin/class-football-pool-admin-rankings.php:15
+msgid ""
+"<p>The log shows actions in the plugin that may have an affect on a  "
+"particular ranking (e.g. when a score is entered for a match). If a ranking "
+"shows a log you may want to consider doing a recalculation of that ranking.</"
+"p><p>Log is only effective when <em>Automatic Calculation</em> is off</p>"
+msgstr ""
+"<p>Log'en viser de handlinger der er foretaget i plugin'et som kan have "
+"relevans for en specifik stilling (e.g. når der er tilføjet resultat for en "
+"kamp). Hvis en stilling viser en log, bør du overveje at lave en "
+"genberegning.</p><p>Log er kun aktiv når <em>Automatisk beregning</em> er "
+"slået fra</p>"
+
+#: ../admin/class-football-pool-admin-rankings.php:26
+msgid "User defined rankings"
+msgstr "Benyt definerede stillinger"
+
+#: ../admin/class-football-pool-admin-rankings.php:53
+msgid "Ranking saved."
+msgstr "Stilling gemt."
+
+#: ../admin/class-football-pool-admin-rankings.php:60
+#: ../admin/class-football-pool-admin-rankings.php:271
+msgid "Save & Define"
+msgstr "Gem og definer"
+
+#: ../admin/class-football-pool-admin-rankings.php:71
+#, php-format
+msgid "Ranking id:%s deleted."
+msgstr "Stilling id:%s slettet."
+
+#: ../admin/class-football-pool-admin-rankings.php:75
+#, php-format
+msgid "%s rankings deleted."
+msgstr "%s stilling slettet."
+
+#: ../admin/class-football-pool-admin-rankings.php:88
+msgid "Definition of"
+msgstr "Definitionen af"
+
+#: ../admin/class-football-pool-admin-rankings.php:90
+#: ../classes/class-football-pool-groups.php:326
+#: ../classes/class-football-pool.php:3
+#: ../pages/class-football-pool-pool-page.php:42
+#: ../pages/class-football-pool-stadiums-page.php:25
+#: ../pages/class-football-pool-teams-page.php:65
+msgid "matches"
+msgstr "Kampe"
+
+#: ../admin/class-football-pool-admin-rankings.php:93
+#: ../pages/class-football-pool-pool-page.php:50
+#: ../pages/class-football-pool-user-page.php:47
+msgid "bonus questions"
+msgstr "Spørgsmål"
+
+#: ../admin/class-football-pool-admin-rankings.php:105
+msgid "Not a valid ranking."
+msgstr "Ikke en valid stilling"
+
+#: ../admin/class-football-pool-admin-rankings.php:134
+msgid "no questions found"
+msgstr "Kunne ikke finde nogen spørgsmål"
+
+#: ../admin/class-football-pool-admin-rankings.php:183
+msgid "no matches found"
+msgstr "Kunne ikke finde nogen kampe"
+
+#: ../admin/class-football-pool-admin-rankings.php:209
+msgid "matches added or removed from ranking"
+msgstr "kampe tilføjet eller slettet fra stilling"
+
+#: ../admin/class-football-pool-admin-rankings.php:239
+msgid "questions added or removed from ranking"
+msgstr "spørgsmål tilføjet eller slettet fra stilling"
+
+#: ../admin/class-football-pool-admin-rankings.php:313
+msgid "show more"
+msgstr "vis mere"
+
+#: ../admin/class-football-pool-admin-rankings.php:349
+#: ../classes/class-football-pool.php:9
+msgid "ranking"
+msgstr "Stilling"
+
+#: ../admin/class-football-pool-admin-rankings.php:350
+msgid "log"
+msgstr "log"
+
+#: ../admin/class-football-pool-admin-rankings.php:351
+msgid "calculate"
+msgstr "Beregn"
+
+#: ../admin/class-football-pool-admin-rankings.php:356
+msgid "Recalculate this ranking"
+msgstr "Beregn stilling"
+
+#: ../admin/class-football-pool-admin-rankings.php:372
+msgid "You are about to delete one or more rankings."
+msgstr "Du er ved at slette en eller flere stillinger."
+
+#: ../admin/class-football-pool-admin-rankings.php:373
+msgid "Ranking composition"
+msgstr "Stillings sammensætning"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:59
+#, php-format
+msgid "(users %d - %d of %d)"
+msgstr "(deltagere %d - %d af %d)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:68
+#, php-format
+msgid "(step %d)"
+msgstr "(trin %d)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:72
+msgid "empty ranking table"
+msgstr "Ingen stilling tilgængelig"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:73
+#, php-format
+msgid "check user predictions with actual results %s"
+msgstr "Kontroller brugerens gæt med de aktuelle resultater %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:75
+#, php-format
+msgid "update score with points %s"
+msgstr "opdater stillingen med point %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:77
+#, php-format
+msgid "add bonus question points %s"
+msgstr "tilføj point for bonus spørgsmål %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:79
+#, php-format
+msgid "ranking %d: update total score incrementally %s"
+msgstr "rangering %d: opdater samlet stilling trinvist %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:81
+#, php-format
+msgid "ranking %d: update ranking for users %s"
+msgstr "rangering %d: opdater samlet stilling for brugere %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:83
+#, php-format
+msgid "ranking %d: calculate user ranking %s"
+msgstr "Rangering %d: beregn brugernes stilling %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:85
+msgid "score (re)calculation finished"
+msgstr "beregning af point afsluttet"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:88
+msgid "Score (re)calculation"
+msgstr "Point beregning"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:133
+msgid "Please do not interrupt this process."
+msgstr "Venligst undlad at afbryde denne proces."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:135
+msgid "Sit back and relax, this may take a while :-)"
+msgstr "Læn dig tilbage og slap af, dette kan tage et stykke tid :-)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:151
+msgid "You are about to recalculate the score table for the plugin."
+msgstr "Du er ved at beregne point for plugin'et."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:157
+msgid "Smart calculation"
+msgstr "Smart beregning"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:158
+msgid ""
+"A smart calculation tries to determine which rankings need an update. A "
+"smart calculation will in most cases be faster than a full calculation."
+msgstr ""
+"En smart beregning forsøger at bestemme hvilke stillinger der skal "
+"opdateres. En smart beregning vil i mange tilfælde være hurtigere end en "
+"fuld beregning."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:163
+msgid "Full calculation"
+msgstr "Fuld beregning"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:164
+msgid ""
+"A full calculation recalculates all rankings. If you want to be absolutely "
+"sure everything is recalculated, choose this option."
+msgstr ""
+"En fuld beregning beregner alle stillinger. Hvis du vil være sikker på at "
+"alt er beregnet skal du vælge denne."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:171
+msgid "Continue"
+msgstr "Forsæt"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:180
+#: ../admin/class-football-pool-admin.php:1104
+#: ../assets/admin/tinymce/tinymce-dialog.php:519
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:522
+msgid "Step"
+msgstr "Trin"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:524
+#: ../classes/class-football-pool.php:378
+msgid ""
+"Something went wrong while (re)calculating the scores. Please check if "
+"TRUNCATE/DROP or DELETE rights are available at the database and try again."
+msgstr ""
+"Der gik noget galt med beregningen af point. Venligst kontroller at TRUNCATE/"
+"DROP eller DELETE rettigheder er tilladt i databasen."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:10
+msgid ""
+"<p>On this page you can add, change or delete shoutbox messages. Shoutbox "
+"messages are displayed in the plugin's Shoutbox widget.</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre eller slette shoutbox beskeder. "
+"Shoutbox beskeder vises i plugin'ets Shoutbox widget.</p>"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:19
+#: ../admin/class-football-pool-admin.php:112
+msgid "Shoutbox"
+msgstr "Shoutbox"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:33
+msgid "Message saved."
+msgstr "Besked gemt."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:45
+#, php-format
+msgid "Message id:%s deleted."
+msgstr "Besked id:%s slettet."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:49
+#, php-format
+msgid "%s messages deleted."
+msgstr "%s beskeder slettet."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:64
+#: ../assets/admin/tinymce/tinymce-dialog.php:190
+#: ../assets/admin/tinymce/tinymce-dialog.php:285
+msgid "now"
+msgstr "nu"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:74
+#: ../admin/class-football-pool-admin-shoutbox.php:98
+msgid "message"
+msgstr "besked"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:75
+#: ../admin/class-football-pool-admin-shoutbox.php:99
+msgid "time"
+msgstr "tid"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+msgid "You are about to delete one or more shoutbox messages."
+msgstr "Du er ved at slette en eller flere shoutbox beskeder."
+
+#: ../admin/class-football-pool-admin-stadiums.php:10
+msgid "<p>On this page you can add, change or delete venues.</p>"
+msgstr "<p>På denne side kan du tilføje, ændre eller slette spillesteder.</p>"
+
+#: ../admin/class-football-pool-admin-stadiums.php:19
+#: ../admin/class-football-pool-admin.php:139
+msgid "Venues"
+msgstr "Spillesteder"
+
+#: ../admin/class-football-pool-admin-stadiums.php:33
+msgid "Venue saved."
+msgstr "Spillested gemt."
+
+#: ../admin/class-football-pool-admin-stadiums.php:45
+#, php-format
+msgid "Venue id:%s deleted."
+msgstr "Spillested id:%s slettet."
+
+#: ../admin/class-football-pool-admin-stadiums.php:49
+#, php-format
+msgid "%s venues deleted."
+msgstr "%s spillesteder slettet."
+
+#: ../admin/class-football-pool-admin-stadiums.php:71
+#: ../admin/class-football-pool-admin-stadiums.php:120
+#: ../admin/class-football-pool-admin-teams.php:118
+#: ../pages/class-football-pool-teams-page.php:57
+msgid "photo"
+msgstr "billede"
+
+#: ../admin/class-football-pool-admin-stadiums.php:72
+#: ../admin/class-football-pool-admin-teams.php:121
+msgid "comments"
+msgstr "kommentarer"
+
+#: ../admin/class-football-pool-admin-stadiums.php:72
+msgid ""
+"An optional text with extra information about the venue that is displayed on "
+"the venue's page."
+msgstr ""
+"Valgfri tekst med ekstra information om spillestedet som vil blive vist på "
+"spillestedet side."
+
+#: ../admin/class-football-pool-admin-stadiums.php:119
+msgid "venue"
+msgstr "spillested"
+
+#: ../admin/class-football-pool-admin-stadiums.php:121
+msgid "venue nr"
+msgstr "spillested nr"
+
+#: ../admin/class-football-pool-admin-stadiums.php:134
+msgid "You are about to delete one or more venues."
+msgstr "Du er ved at slette en eller flere spillesteder"
+
+#: ../admin/class-football-pool-admin-teams-position.php:6
+#: ../admin/class-football-pool-admin-teams.php:24
+#: ../admin/class-football-pool-admin.php:121
+msgid "Teams"
+msgstr "Hold"
+
+#: ../admin/class-football-pool-admin-teams-position.php:17
+msgid ""
+"The first column contains a value that can be used for the ranking of teams "
+"in a group (Group Stage). In most cases the plugin will calculate this "
+"position automatically based on the results in the tournament. If two teams "
+"end up on the same position, even after considering all the tournament, then "
+"extra data is needed. Data this plugin doesn't have. You can manually tweak "
+"the last sort parameter here."
+msgstr ""
+"Den første kolonne indeholder en værdi som kan benyttes til stillingen af "
+"hold i en gruppe. I de fleste tilfælde vil plugin'et beregne stillingen "
+"automatisk baseret på resultaterne. Hvis to hold ender med samme placering, "
+"selv efter at alt er inkluderet, så er der behov for ekstra data. Data som "
+"ikke findes i plugin'et. Du kan manuelt ændre dette."
+
+#: ../admin/class-football-pool-admin-teams-position.php:18
+msgid "The start value is the position at the start of the tournament."
+msgstr "Start værdien er den position man vil tage i starten af turneringen."
+
+#: ../admin/class-football-pool-admin-teams.php:10
+msgid ""
+"<p>On this page you can add, change or delete teams.</p><p>Only "
+"<em>'Active'</em> teams are shown on the teams page in the blog. The "
+"<em>'real'</em> column indicates if the team is a real team in the "
+"tournament or a temporary placeholder for a match that is not yet set (e.g. "
+"Winner Group A).</p>"
+msgstr ""
+"<p>På denne side kan du tilføje, ændre eller slette hold.</p><p>Kun "
+"<em>'Aktive'</em> hold vises på holdsiden. Kolonnen <em>'Rigtige'</em> "
+"indikerer om holdet er rigtigt eller en midlertidig pladsholder for en kamp "
+"der endnu ikke er bestemt (e.g. gruppe vindere).</p>"
+
+#: ../admin/class-football-pool-admin-teams.php:14
+msgid "Team details"
+msgstr "Hold detaljer"
+
+#: ../admin/class-football-pool-admin-teams.php:15
+msgid ""
+"<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is "
+"used in the standing table and the match overview.</li><li>If <em>link</em> "
+"is filled the team name on the team's page will link to this address.</"
+"li><li>The <em>comments</em> field can be used to add some extra info about "
+"the team. The info is shown on the team's page.</li></ul>"
+msgstr ""
+"<ul><li><em>billede</em> er benyttet på holdsiden.</li><li><em>flag</em> er "
+"benyttet på stillingsoversigten og kampprogrammet.</li><li>Hvis <em>link</"
+"em> er udfyldt på holdet sideder vil linkes til denne adresse.</"
+"li><li><em>Kommentar</em> feltet kan benyttes til at tilføje ekstra "
+"information om et hold. denne info vises på holdets side.</li></ul>"
+
+#: ../admin/class-football-pool-admin-teams.php:25
+msgid "Add, change or delete teams."
+msgstr "Tilføj, ændre eller slet hold."
+
+#: ../admin/class-football-pool-admin-teams.php:26
+msgid ""
+"If you delete a team all matches for the team and predictions for those "
+"matches are also deleted. After a delete action the scores in the pool are "
+"recalculated."
+msgstr ""
+"Hvis du sletter et hold vil alle kampe med det hold og forudsigelser for de "
+"kampe også blive slettet. Efter at det er slettet vil stillingen i pool'en "
+"også blive genberegnet."
+
+#: ../admin/class-football-pool-admin-teams.php:42
+#, php-format
+msgid "Team %d activated."
+msgstr "Hold %d aktiveret."
+
+#: ../admin/class-football-pool-admin-teams.php:44
+#, php-format
+msgid "Team %d deactivated."
+msgstr "Hold %d deaktiveret."
+
+#: ../admin/class-football-pool-admin-teams.php:51
+#, php-format
+msgid "%d teams activated."
+msgstr "%d hold aktiveret."
+
+#: ../admin/class-football-pool-admin-teams.php:53
+#, php-format
+msgid "%d teams deactivated."
+msgstr "%d hold deaktiveret."
+
+#: ../admin/class-football-pool-admin-teams.php:65
+msgid "Team saved."
+msgstr "Hold gemt."
+
+#: ../admin/class-football-pool-admin-teams.php:77
+#, php-format
+msgid "Team id:%s deleted."
+msgstr "Hold id:%s slettet."
+
+#: ../admin/class-football-pool-admin-teams.php:81
+#, php-format
+msgid "%s teams deleted."
+msgstr "%s hold slettet."
+
+#: ../admin/class-football-pool-admin-teams.php:118
+#: ../admin/class-football-pool-admin-teams.php:119
+#, php-format
+msgid ""
+"Image path must be a full URL to the image. Or a path relative to %s in the "
+"plugin directory"
+msgstr ""
+"Billede stien skal udfyldes med den fulde URL til billede, eller eventuelt "
+"en sti til %s i plugin direktivet"
+
+#: ../admin/class-football-pool-admin-teams.php:119
+msgid "flag"
+msgstr "flag"
+
+#: ../admin/class-football-pool-admin-teams.php:120
+msgid "link"
+msgstr "link"
+
+#: ../admin/class-football-pool-admin-teams.php:120
+msgid ""
+"A link to a website with information about the team. Used on the team page "
+"in de plugin."
+msgstr ""
+"Et link til en hjemmeside med information om holdet. Bliver benyttet på hold "
+"siden i plugin'et."
+
+#: ../admin/class-football-pool-admin-teams.php:121
+msgid ""
+"An optional text with extra information about the team that is displayed on "
+"the team's page."
+msgstr ""
+"En valgfri tekst med ekstra information om holdet der vil blive vist på "
+"holdet side."
+
+#: ../admin/class-football-pool-admin-teams.php:123
+msgid "group order"
+msgstr "gruppe rækkefølge"
+
+#: ../admin/class-football-pool-admin-teams.php:123
+msgid ""
+"If teams are placed in a group and the default ordering does not work (when "
+"teams have the same points) you can fix the ordering with this number."
+msgstr ""
+"Hvis hold er placeret i en gruppe og standard rækkefølgen ikke virker (når "
+"hold har samme point) kan du ændre dette med dette tal."
+
+#: ../admin/class-football-pool-admin-teams.php:124
+msgid "team is not a temporary team name"
+msgstr "hold er ikke et midlertidigt hold navn"
+
+#: ../admin/class-football-pool-admin-teams.php:124
+msgid ""
+"Uncheck this box if the team is not a real team, e.g. \"Winner match 30\"."
+msgstr ""
+"Sæt til falsk hvis hold navnet ikke er et rigtig hold navn, e.g. \"Winner "
+"match 30\"."
+
+#: ../admin/class-football-pool-admin-teams.php:125
+msgid "team is active"
+msgstr "hold er aktiveret"
+
+#: ../admin/class-football-pool-admin-teams.php:141
+msgid "team"
+msgstr "hold"
+
+#: ../admin/class-football-pool-admin-teams.php:142
+msgid "active"
+msgstr "aktiv"
+
+#: ../admin/class-football-pool-admin-teams.php:143
+msgid "real team"
+msgstr "rigtig hold"
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "Activate team(s)"
+msgstr "Aktiver hold"
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "You are about to activate one or more teams."
+msgstr "Du er ved at aktivere et eller flere hold."
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "Are you sure? `OK` to activate, `Cancel` to stop."
+msgstr "Er du sikker? 'OK' for at aktivere, 'Cancel' for at stoppe."
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "Deactivate team(s)"
+msgstr "Deaktiver hold"
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "You are about to deactivate one or more teams."
+msgstr "Du er ved at deaktivere et eller flere hold."
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "Are you sure? `OK` to deactivate, `Cancel` to stop."
+msgstr "Er du sikker? 'OK' for at deaktivere, 'Cancel' for at stoppe"
+
+#: ../admin/class-football-pool-admin-teams.php:158
+msgid "You are about to delete one or more teams."
+msgstr "Du er ved at slette et eller flere hold."
+
+#: ../admin/class-football-pool-admin-users.php:10
+msgid ""
+"<p>On this page you can add or remove users from the pool.</p><p>Use the "
+"bulk actions to add or remove more players at once.</p>"
+msgstr ""
+"<p>På denne side kan du tilføje eller slette brugere fra stillingen.</"
+"p><p>Benyt massehandling for at tilføje eller slette flere af gangen.</p>"
+
+#: ../admin/class-football-pool-admin-users.php:15
+msgid ""
+"<p>The plugin can use leagues (a league is a group of players in your pool) "
+"to group players together. If you are using leagues in the pool an admin has "
+"to acknowledge the league for which a player subscribed.</p><p>The "
+"<em>'plays in league'</em> column shows the league where the user is "
+"currently added to; you may change that value. The column <em>'registered "
+"for league'</em> shows the league the user wants to play in (the user chose "
+"this value upon subscribing for the pool).</p>"
+msgstr ""
+"<p>Plugin'et kan benytte ligaer (en liga er en specifik samling af "
+"deltagere) til at gruppere deltagere. Hvis du benytter ligaer skal "
+"administratoren anerkende den liga som man skal tilføjes.</p><p><em>'Spiller "
+"i liga'</em> kolonnen viser den liga hvor en deltager tilhører; du kan ændre "
+"dette. Kolonnen <em>'registreret i liga'</em> viser den liga som en deltager "
+"ønsker at deltage i (valgt ved registrering).</p>"
+
+#: ../admin/class-football-pool-admin-users.php:19
+msgid "Other options"
+msgstr "Andre muligheder"
+
+#: ../admin/class-football-pool-admin-users.php:20
+msgid ""
+"<p>The <em>'payed?'</em> option has no function in the pool, but can be a "
+"help for the admin to remember which of the players have payed if you are "
+"using a fee for competing in the pool.</p>"
+msgstr ""
+"<p><em>'Betatlt?'</em> muligheden har ingen funktion i stillingen, men kan "
+"hjælpe administrator med at holde styr på hvem der har betalt og ikke "
+"betalt , i tilfælde af at man tager betaling for at deltage.</p>"
+
+#: ../admin/class-football-pool-admin-users.php:25
+msgid "Change league settings"
+msgstr "Ændre liga indstillinger"
+
+#: ../admin/class-football-pool-admin-users.php:26
+msgid "Help section about players"
+msgstr "Hjælpesektion for spillere"
+
+#: ../admin/class-football-pool-admin-users.php:27
+msgid "Help section about leagues"
+msgstr "Hjælpesektion for ligaer"
+
+#: ../admin/class-football-pool-admin-users.php:35
+#: ../admin/class-football-pool-admin-users.php:45
+#: ../admin/class-football-pool-admin-users.php:475
+#: ../admin/class-football-pool-admin.php:85
+msgid "Users"
+msgstr "Brugere"
+
+#: ../admin/class-football-pool-admin-users.php:44
+#: ../admin/class-football-pool-admin.php:63
+#: ../admin/class-football-pool-admin.php:64
+#: ../classes/class-football-pool.php:577
+msgid "Football Pool"
+msgstr "Football Pool"
+
+#: ../admin/class-football-pool-admin-users.php:51
+msgid ""
+"You are using leagues. To exclude users from the pool you have to take them "
+"out of any league."
+msgstr ""
+"Du benytter ligaer. For at ekskludere brugere fra stillingen skal du fjerne "
+"dem fra alle ligaer."
+
+#: ../admin/class-football-pool-admin-users.php:53
+msgid "To exclude users tick the appropiate column"
+msgstr "For at ekskludere en bruger vælg i den respektive kollone"
+
+#: ../admin/class-football-pool-admin-users.php:63
+msgid "Save Changes"
+msgstr "Gem ændringer"
+
+#: ../admin/class-football-pool-admin-users.php:83
+#, php-format
+msgid "%s deleted as a user."
+msgstr "%s slettet som brugerr."
+
+#: ../admin/class-football-pool-admin-users.php:87
+#, php-format
+msgid "%d users removed as user."
+msgstr "%d brugere er slettet som brugere."
+
+#: ../admin/class-football-pool-admin-users.php:98
+#, php-format
+msgid "%s added as a user."
+msgstr "%s tilføjet som bruger."
+
+#: ../admin/class-football-pool-admin-users.php:102
+#, php-format
+msgid "%d users added as user."
+msgstr "%d brugere tilføjet som bruger."
+
+#: ../admin/class-football-pool-admin-users.php:146
+#: ../admin/class-football-pool-admin-users.php:483
+msgid "unknown"
+msgstr "ubekendt"
+
+#: ../admin/class-football-pool-admin-users.php:188
+msgid "plays in league"
+msgstr "spiller i liga"
+
+#: ../admin/class-football-pool-admin-users.php:189
+msgid "registered for league"
+msgstr "registreret for ligaen"
+
+#: ../admin/class-football-pool-admin-users.php:191
+msgid "not a user in the pool"
+msgstr "ikke en bruger i pool'en"
+
+#: ../admin/class-football-pool-admin-users.php:193
+msgid "payed?"
+msgstr "betalt?"
+
+#: ../admin/class-football-pool-admin-users.php:213
+msgid "Add"
+msgstr "Tilføj"
+
+#: ../admin/class-football-pool-admin-users.php:214
+msgid "Remove"
+msgstr "Fjern"
+
+#: ../admin/class-football-pool-admin-users.php:215
+msgid "Add to football pool"
+msgstr "Tilføj til football pool"
+
+#: ../admin/class-football-pool-admin-users.php:215
+msgid "You are about to add one or more users to the pool."
+msgstr "Du er ved at tilføje en eller flere brugere til stillingen."
+
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "Remove from football pool"
+msgstr "Fjern fra football pool"
+
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "You are about to remove one or more users from the pool."
+msgstr "Du er ved at slette en eller flere brugere fra stillingen."
+
+#: ../admin/class-football-pool-admin-users.php:224
+msgid "List player email addresses"
+msgstr "Deltagernes E-mail adresser"
+
+#: ../admin/class-football-pool-admin-users.php:238
+msgid "Email addresses"
+msgstr "E-mail adresser"
+
+#: ../admin/class-football-pool-admin-users.php:243
+msgid "Player"
+msgstr "Spiller"
+
+#: ../admin/class-football-pool-admin-users.php:250
+msgid "Not a player"
+msgstr "Ikke en spiller"
+
+#: ../admin/class-football-pool-admin-users.php:301
+#, php-format
+msgid "user %d removed from pool"
+msgstr "bruger %d fjernet fra stilling"
+
+#: ../admin/class-football-pool-admin-users.php:397
+#: ../admin/class-football-pool-admin.php:805
+msgid "no data"
+msgstr "ingen data"
+
+#: ../admin/class-football-pool-admin-users.php:472
+#: ../classes/class-football-pool.php:475
+msgid "Play in league"
+msgstr "Spil i liga"
+
+#: ../admin/class-football-pool-admin-users.php:475
+msgid ""
+"<strong>Important:</strong> An administrator can change users in the "
+"plugin's admin page for"
+msgstr ""
+"<strong>Vigtigt:</strong> En administrator kan ændre brugere i plugin'ets "
+"admin side for"
+
+#: ../admin/class-football-pool-admin-users.php:486
+msgid "The webmaster put you in this league"
+msgstr "Webmasteren har placeret dig i denne liga"
+
+#: ../admin/class-football-pool-admin-users.php:489
+msgid ""
+"if this value is different from the one you entered on registration, then "
+"the webmaster did not approve it yet."
+msgstr ""
+"hvis denne værdi er anderledes end den du skrev ved registrering, så er det "
+"fordi webmasteren ikke har godkendt det endnu."
+
+#: ../admin/class-football-pool-admin-users.php:494
+msgid "Status for user"
+msgstr "Status for bruger"
+
+#: ../admin/class-football-pool-admin-users.php:497
+msgid ""
+"Extra meta information for the user. If filled this will be shown behind the "
+"user's name on the ranking page and ranking shortcode."
+msgstr ""
+"Ekstra meta information for brugeren. Hvis udfyld vil det blive vist efter "
+"brugerens navn på stillings siden og stillings shortcode'en"
+
+#: ../admin/class-football-pool-admin-users.php:527
+#, php-format
+msgid "user %d deleted from blog"
+msgstr "bruger %d slettet fra blog"
+
+#: ../admin/class-football-pool-admin.php:74
+msgid "Football Pool Options"
+msgstr "Football Pool muligheder"
+
+#: ../admin/class-football-pool-admin.php:84
+msgid "Edit users"
+msgstr "Ændre brugere"
+
+#: ../admin/class-football-pool-admin.php:93
+msgid "Edit matches"
+msgstr "Ændre kampe"
+
+#: ../admin/class-football-pool-admin.php:102
+msgid "Edit bonus questions"
+msgstr "Ændre spørgsmål"
+
+#: ../admin/class-football-pool-admin.php:103
+msgid "Questions"
+msgstr "Spørgsmål"
+
+#: ../admin/class-football-pool-admin.php:111
+msgid "Edit shoutbox"
+msgstr "Ændre shoutbox"
+
+#: ../admin/class-football-pool-admin.php:120
+msgid "Edit teams"
+msgstr "Ændre hold"
+
+#: ../admin/class-football-pool-admin.php:138
+msgid "Edit venues"
+msgstr "Ændre spillesteder"
+
+#: ../admin/class-football-pool-admin.php:147
+msgid "Edit leagues"
+msgstr "Ændre ligaer"
+
+#: ../admin/class-football-pool-admin.php:156
+msgid "Edit rankings"
+msgstr "Ændre stilling"
+
+#: ../admin/class-football-pool-admin.php:157
+msgid "Rankings"
+msgstr "Stilling"
+
+#: ../admin/class-football-pool-admin.php:165
+msgid "Edit match types"
+msgstr "Ændre kamptyper"
+
+#: ../admin/class-football-pool-admin.php:174
+msgid "Edit groups"
+msgstr "Ændre grupper"
+
+#: ../admin/class-football-pool-admin.php:218
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: ../admin/class-football-pool-admin.php:242
+#: ../admin/class-football-pool-admin.php:323
+msgid "Choose Image"
+msgstr "Vælg billede"
+
+#: ../admin/class-football-pool-admin.php:694
+msgid "For more information:"
+msgstr "For mere information:"
+
+#: ../admin/class-football-pool-admin.php:730
+msgid "Add New"
+msgstr "Tilføj ny"
+
+#: ../admin/class-football-pool-admin.php:823
+msgid "yes"
+msgstr "ja"
+
+#: ../admin/class-football-pool-admin.php:824
+msgid "no"
+msgstr "nej"
+
+#: ../admin/class-football-pool-admin.php:1136
+msgid "Use Image"
+msgstr "Benyt billede"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:38
+#: ../assets/admin/tinymce/tinymce-dialog.php:115
+#: ../assets/admin/tinymce/tinymce-dialog.php:389
+#: ../assets/admin/tinymce/tinymce-dialog.php:409
+#: ../assets/admin/tinymce/tinymce-dialog.php:447
+msgid "Select a shortcode"
+msgstr "Vælg en shortcode"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:103
+msgid "Pool"
+msgstr "Pool"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:104
+msgid "Options"
+msgstr "Mulighder"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:105
+msgid "Links"
+msgstr "Links"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:106
+msgid "Other"
+msgstr "Andet"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:118
+#: ../widgets/widget-football-pool-ranking.php:13
+msgid "Ranking"
+msgstr "Stilling"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:119
+msgid "Predictions for match or question"
+msgstr "Gæt for kamp eller spørgsmål"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:120
+msgid "Score for a user"
+msgstr "Score for bruger"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:121
+msgid "Group"
+msgstr "Gruppe"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:122
+msgid "Prediction form"
+msgstr "Form for gæt"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:129
+#: ../assets/admin/tinymce/tinymce-dialog.php:254
+msgid "Select a ranking"
+msgstr "Vælg en stilling"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:133
+#: ../assets/admin/tinymce/tinymce-dialog.php:153
+#: ../assets/admin/tinymce/tinymce-dialog.php:238
+#: ../assets/admin/tinymce/tinymce-dialog.php:258
+#: ../assets/admin/tinymce/tinymce-dialog.php:477
+msgid "default"
+msgstr "standard"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:134
+#: ../assets/admin/tinymce/tinymce-dialog.php:259
+msgid "all scores"
+msgstr "alle point"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:136
+#: ../assets/admin/tinymce/tinymce-dialog.php:261
+msgid "or choose a user defined ranking"
+msgstr "eller vælg en brugerdefineret stilling"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:149
+msgid "Select a league"
+msgstr "Vælg en liga"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:154
+msgid "all players"
+msgstr "alle spillere"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:156
+msgid "or choose a league"
+msgstr "eller vælg en liga"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:171
+msgid "Number of players"
+msgstr "Antal af spillere"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:187
+#: ../assets/admin/tinymce/tinymce-dialog.php:282
+#: ../assets/admin/tinymce/tinymce-dialog.php:465
+msgid "information about PHP's date format"
+msgstr "information om PHP's dato format"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:187
+#: ../assets/admin/tinymce/tinymce-dialog.php:282
+#: ../assets/admin/tinymce/tinymce-dialog.php:460
+#: ../assets/admin/tinymce/tinymce-dialog.php:465
+msgid "Date"
+msgstr "Dato"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:191
+#: ../assets/admin/tinymce/tinymce-dialog.php:286
+msgid "postdate"
+msgstr "dato for post"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:192
+#: ../assets/admin/tinymce/tinymce-dialog.php:287
+msgid "custom date"
+msgstr "special dato"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:197
+#: ../assets/admin/tinymce/tinymce-dialog.php:459
+#: ../assets/admin/tinymce/tinymce-dialog.php:473
+msgid "Match"
+msgstr "Kamp"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:201
+msgid "Select a match"
+msgstr "Vælg en kamp"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:209
+msgid "and/or"
+msgstr "og/eller"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:213
+msgid "Question"
+msgstr "Spørgsmål"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:217
+msgid "Select a question"
+msgstr "Vælg et spørgsmål"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:226
+#: ../assets/admin/tinymce/tinymce-dialog.php:274
+msgid "Text"
+msgstr "Tekst"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:229
+msgid "Text to display if there is nothing to show"
+msgstr "Tekst der vises hvis der ikke er noget at vise"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:234
+msgid "Select a user"
+msgstr "Vælg en deltager"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:239
+msgid "logged in user"
+msgstr "bruger der er logget ind"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:241
+msgid "or choose another user"
+msgstr "eller vælg en anden deltager"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:292
+msgid "Select a group"
+msgstr "Vælg en gruppe"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:307
+#: ../assets/admin/tinymce/tinymce-dialog.php:352
+msgid "Click a label to show the options."
+msgstr "Vælg et label for at vise muligheder."
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:314
+#: ../assets/admin/tinymce/tinymce-dialog.php:359
+msgid "Select one or more matches"
+msgstr "Vælg en eller flere kampe"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:324
+#: ../assets/admin/tinymce/tinymce-dialog.php:369
+msgid "Select one or more match types"
+msgstr "Vælg en eller flere kamptyper"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:339
+msgid "Select one or more questions"
+msgstr "Vælg en eller flere spørgsmål"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:392
+msgid "Full points"
+msgstr "Korrekt resultat"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:393
+msgid "Toto points"
+msgstr "Korrekt udfald"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:412
+msgid "Link to page"
+msgstr "Link til side"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:413
+msgid "Link to registration"
+msgstr "Link til registrering"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:418
+msgid "Select a page"
+msgstr "Vælg en side"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:432
+msgid "Link title"
+msgstr "Link titel"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:433
+msgid "New window?"
+msgstr "Nyt vindue?"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:450
+msgid "Countdown"
+msgstr "Nedtælling"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:456
+msgid "Countdown to"
+msgstr "Nedtælling til"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:478
+msgid "first match"
+msgstr "første kamp"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:480
+msgid "or choose a match"
+msgstr "eller vælg en kamp"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:488
+msgid "More information about this on the Help page."
+msgstr "Mere information om dette findes på hjælpe siden"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:488
+msgid "Texts for counter"
+msgstr "Tekst for optælling"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:492
+msgid "no texts"
+msgstr "ingen tekst"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:495
+msgid "before - time not passed"
+msgstr "før - tiden er ikke gået"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:495
+#: ../assets/admin/tinymce/tinymce-dialog.php:496
+#: ../assets/admin/tinymce/tinymce-dialog.php:499
+#: ../assets/admin/tinymce/tinymce-dialog.php:500
+msgid ""
+"Leave empty for the default texts. Don't forget spaces between a text and "
+"the timer."
+msgstr ""
+"Undlad at udfylde for standard tekster. Glem ikke at der skal være mellemrum "
+"mellem tekst og timeren."
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:496
+msgid "after - time not passed"
+msgstr "efter - tiden er ikke gået"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:499
+msgid "before - time passed"
+msgstr "før - tiden er gået"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:500
+msgid "after - time passed"
+msgstr "efter - tiden er gået"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:506
+msgid "Display inline"
+msgstr "Vis inline"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:522
+msgid "Insert"
+msgstr "Indsæt"
+
+#: ../classes/class-football-pool-chart-data.php:236
+#: ../classes/class-football-pool-chart-data.php:260
+#: ../pages/class-football-pool-statistics-page.php:206
+msgid "full score"
+msgstr "Korrekt resultat"
+
+#: ../classes/class-football-pool-chart-data.php:237
+#: ../classes/class-football-pool-chart-data.php:261
+#: ../pages/class-football-pool-statistics-page.php:207
+msgid "toto score"
+msgstr "Korrekt udfald"
+
+#: ../classes/class-football-pool-chart-data.php:238
+#: ../classes/class-football-pool-chart-data.php:262
+#: ../pages/class-football-pool-statistics-page.php:208
+msgid "no score"
+msgstr "ingen point"
+
+#: ../classes/class-football-pool-chart-data.php:244
+#: ../classes/class-football-pool-chart-data.php:268
+#: ../pages/class-football-pool-statistics-page.php:210
+msgid "just the goal bonus"
+msgstr "bare mål bonus"
+
+#: ../classes/class-football-pool-chart-data.php:247
+msgid "goal difference bonus"
+msgstr "mål difference bonus"
+
+#: ../classes/class-football-pool-chart-data.php:271
+#: ../pages/class-football-pool-statistics-page.php:213
+msgid "toto score with goal difference bonus"
+msgstr "toto point med mål difference"
+
+#: ../classes/class-football-pool-chart-data.php:280
+#: ../pages/class-football-pool-statistics-page.php:259
+msgid "points scored"
+msgstr "optjente points"
+
+#: ../classes/class-football-pool-chart-data.php:281
+msgid "points missed"
+msgstr "ikke-optjente points"
+
+#: ../classes/class-football-pool-chart-data.php:291
+#: ../classes/class-football-pool-chart-data.php:305
+msgid "wrong"
+msgstr "forkert"
+
+#: ../classes/class-football-pool-chart-data.php:295
+msgid "still open"
+msgstr "stadig åben"
+
+#: ../classes/class-football-pool-chart-data.php:306
+msgid "no answer"
+msgstr "intet svar"
+
+#: ../classes/class-football-pool-chart-data.php:337
+#: ../classes/class-football-pool-matches.php:368
+msgid "match"
+msgstr "Kamp"
+
+#: ../classes/class-football-pool-chart-data.php:343
+#: ../pages/class-football-pool-statistics-page.php:234
+msgid "bonus question"
+msgstr "Spørgsmål"
+
+#: ../classes/class-football-pool-chart.php:30
+msgid "Charts are not enabled"
+msgstr "Diagrammer er ikke aktiveret"
+
+#: ../classes/class-football-pool-chart.php:197
+msgid "matches and questions"
+msgstr "Kampe og spørgsmål"
+
+#: ../classes/class-football-pool-chart.php:203
+msgid "Click and drag in the plot area to zoom in"
+msgstr "Klik og træk i plot området for at zoome ind"
+
+#: ../classes/class-football-pool-chart.php:204
+msgid "Drag your finger over the plot to zoom in"
+msgstr "Træk din finger over plot området for at zoome ind"
+
+#: ../classes/class-football-pool-groups.php:302
+msgid "wins"
+msgstr "vundet"
+
+#. Translators: this is a short notation for 'wins'
+#: ../classes/class-football-pool-groups.php:304
+msgctxt "short for 'wins'"
+msgid "w"
+msgstr "v"
+
+#: ../classes/class-football-pool-groups.php:305
+msgid "draws"
+msgstr "uafgjort"
+
+#. Translators: this is a short notation for 'draws'
+#: ../classes/class-football-pool-groups.php:307
+msgctxt "short for 'draws'"
+msgid "d"
+msgstr "u"
+
+#: ../classes/class-football-pool-groups.php:308
+msgid "losses"
+msgstr "tabt"
+
+#. Translators: this is a short notation for 'losses'
+#: ../classes/class-football-pool-groups.php:310
+msgctxt "short for 'losses'"
+msgid "l"
+msgstr "t"
+
+#. Translators: this is a short notation for 'matches'
+#: ../classes/class-football-pool-groups.php:328
+msgctxt "short for 'matches'"
+msgid "m"
+msgstr "k"
+
+#. Translators: this is a short notation for 'points'
+#: ../classes/class-football-pool-groups.php:333
+msgctxt "short for 'points'"
+msgid "p"
+msgstr "p"
+
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../classes/class-football-pool-matches.php:344
+msgctxt "a date format string (see http://php.net/date)"
+msgid "l"
+msgstr "l"
+
+#: ../classes/class-football-pool-matches.php:474
+#: ../classes/class-football-pool-statistics.php:183
+msgid "score"
+msgstr "Point"
+
+#: ../classes/class-football-pool-matches.php:584
+msgid "view other users predictions"
+msgstr "Se de andre spilleres gæt på denne kamp"
+
+#: ../classes/class-football-pool-matches.php:641
+msgid "use your joker?"
+msgstr "Benyt din Joker"
+
+#: ../classes/class-football-pool-pagination.php:43
+#, php-format
+msgid "1 item"
+msgid_plural "%s items"
+msgstr[0] "1 enhed"
+msgstr[1] "%s enheder"
+
+#: ../classes/class-football-pool-pool.php:292
+msgid "No results yet. Below is a list of all users."
+msgstr "Ingen resultater endnu. Nedenunder er der en liste med alle brugere."
+
+#: ../classes/class-football-pool-pool.php:298
+msgid "No users have registered for this pool (yet)."
+msgstr "Ingen brugere har registreret sig for denne stilling (endnu)."
+
+#: ../classes/class-football-pool-pool.php:322
+#: ../classes/class-football-pool-shortcodes.php:283
+#: ../classes/class-football-pool.php:11
+#: ../widgets/widget-football-pool-ranking.php:104
+msgid "predictions"
+msgstr "Gæt"
+
+#: ../classes/class-football-pool-pool.php:741
+msgid "Important:"
+msgstr "Vigtigt:"
+
+#: ../classes/class-football-pool-pool.php:744
+msgid "answer this question before this date"
+msgstr "Du skal besvare spørgsmålet inden denne dato"
+
+#: ../classes/class-football-pool-pool.php:756
+msgid ""
+"it's is no longer possible to answer this question, or change your answer"
+msgstr ""
+"Det er ikke længere muligt at svare på dette spørgsmål eller ændre dit svar."
+
+#: ../classes/class-football-pool-pool.php:757
+msgid "closed on"
+msgstr "lukket den"
+
+#: ../classes/class-football-pool-pool.php:796
+msgid ""
+"Something went wrong during the save. Check if you are still logged in. If "
+"the problems persist, then contact your webmaster."
+msgstr ""
+"Der gik noget galt da du forsøgte at gemme. Kontroller at du stadig er "
+"logget ind. Hvis problemet forsætter kontakt da webmaster."
+
+#: ../classes/class-football-pool-pool.php:1009
+#: ../classes/class-football-pool-pool.php:1018
+msgid "view other users answers"
+msgstr "Se de andre spilleres svar på dette spørgsmål"
+
+#: ../classes/class-football-pool-shortcodes.php:317
+#: ../widgets/widget-football-pool-lastgames.php:85
+#: ../widgets/widget-football-pool-ranking.php:140
+msgid "No match data available."
+msgstr "Der er ikke nogen kamp data."
+
+#: ../classes/class-football-pool-shortcodes.php:409
+msgid "register"
+msgstr "Registrer"
+
+#: ../classes/class-football-pool-statistics.php:48
+msgid "User unknown."
+msgstr "Ukendt bruger"
+
+#: ../classes/class-football-pool-statistics.php:70
+#: ../classes/class-football-pool-statistics.php:73
+#: ../classes/class-football-pool-statistics.php:97
+#: ../classes/class-football-pool-statistics.php:101
+msgid "This data is not (yet) available."
+msgstr "Data er endnu ikke tilgængelig."
+
+#: ../classes/class-football-pool-statistics.php:85
+msgid "Bonus question"
+msgstr "Spørgsmål"
+
+#: ../classes/class-football-pool-statistics.php:116
+msgid "correct?"
+msgstr "Korrekt?"
+
+#: ../classes/class-football-pool-statistics.php:121
+msgid "answer correct"
+msgstr "Korrekt svar"
+
+#: ../classes/class-football-pool-statistics.php:129
+#: ../pages/class-football-pool-statistics-page.php:236
+msgid "correct answer"
+msgstr "korrekt svar"
+
+#: ../classes/class-football-pool-statistics.php:132
+#: ../pages/class-football-pool-statistics-page.php:237
+msgid "wrong answer"
+msgstr "forkert svar"
+
+#: ../classes/class-football-pool-statistics.php:182
+#: ../classes/class-football-pool.php:8
+msgid "prediction"
+msgstr "Gæt"
+
+#: ../classes/class-football-pool-team.php:61
+#: ../classes/class-football-pool-team.php:71
+#: ../classes/class-football-pool-team.php:85
+msgid "team photo for"
+msgstr "hold foto for"
+
+#: ../classes/class-football-pool-team.php:69
+msgid "Click to enlarge:"
+msgstr "Klik for at forstørre"
+
+#: ../classes/class-football-pool-team.php:84
+#: ../classes/class-football-pool.php:376
+msgid "close"
+msgstr "luk"
+
+#: ../classes/class-football-pool-widget.php:109
+msgid "Football pool plugin"
+msgstr "Football Pool plugin"
+
+#: ../classes/class-football-pool.php:4
+msgid "teams"
+msgstr "Hold"
+
+#: ../classes/class-football-pool.php:5
+msgid "groups"
+msgstr "Grupper"
+
+#: ../classes/class-football-pool.php:6
+#: ../pages/class-football-pool-teams-page.php:42
+msgid "venues"
+msgstr "Spillesteder"
+
+#: ../classes/class-football-pool.php:7
+msgid "rules"
+msgstr "Regler"
+
+#: ../classes/class-football-pool.php:10
+msgid "charts"
+msgstr "Diagrammer"
+
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../classes/class-football-pool.php:63
+msgid "j F"
+msgstr "j F"
+
+#: ../classes/class-football-pool.php:128
+msgid "all users"
+msgstr "Alle brugere"
+
+#: ../classes/class-football-pool.php:129
+msgid "for money"
+msgstr "for penge"
+
+#: ../classes/class-football-pool.php:130
+msgid "for free"
+msgstr "gratis"
+
+#: ../classes/class-football-pool.php:135
+msgid "default ranking"
+msgstr "standard stilling"
+
+#: ../classes/class-football-pool.php:324
+msgid "second"
+msgstr "sekund"
+
+#: ../classes/class-football-pool.php:325
+msgid "seconds"
+msgstr "sekunder"
+
+#: ../classes/class-football-pool.php:326
+#: ../classes/class-football-pool.php:327
+msgid "day"
+msgstr "dag"
+
+#: ../classes/class-football-pool.php:328
+msgid "hour"
+msgstr "time"
+
+#: ../classes/class-football-pool.php:329
+msgid "hours"
+msgstr "timer"
+
+#: ../classes/class-football-pool.php:330
+msgid "minute"
+msgstr "minut"
+
+#: ../classes/class-football-pool.php:331
+msgid "minutes"
+msgstr "minuter"
+
+#: ../classes/class-football-pool.php:332
+msgid "Wait "
+msgstr "Vent"
+
+#: ../classes/class-football-pool.php:333
+msgid " before the tournament starts"
+msgstr " før denne turnering starter"
+
+#: ../classes/class-football-pool.php:336
+msgid " ago the tournament started."
+msgstr " siden denne turnering er startet."
+
+#: ../classes/class-football-pool.php:379
+msgid "Error message"
+msgstr "Fejl besked"
+
+#: ../classes/class-football-pool.php:489
+msgid "<strong>ERROR:</strong> You must choose a league to play in!"
+msgstr "<strong>FEJL:</strong> Du skal vælge en liga at spille i!"
+
+#: ../classes/class-football-pool.php:499
+msgid ""
+"Click below to go to the football pool and predict your scores. Good luck!"
+msgstr ""
+"Klik nednunder for at komme til football pool og gæt dine resultatere. Held "
+"og lykke!"
+
+#: ../classes/class-football-pool.php:500
+msgid "Fill in your predictions."
+msgstr "Begynd med at gætte."
+
+#: ../classes/class-football-pool.php:506
+msgid "Start immediately with your predictions"
+msgstr "Begynd med dine gæt med det samme"
+
+#: ../pages/class-football-pool-groups-page.php:13
+msgid "matches in the group stage"
+msgstr "kampe i gruppe stadiet"
+
+#: ../pages/class-football-pool-groups-page.php:24
+msgid "view all groups"
+msgstr "Se alle grupper"
+
+#: ../pages/class-football-pool-pool-page.php:34
+msgid "Predictions"
+msgstr "Gæt"
+
+#: ../pages/class-football-pool-pool-page.php:62
+#, php-format
+msgid ""
+"You have to be a registered user and <a href=\"%s\">logged in</a> to play in "
+"this pool."
+msgstr ""
+"Du skal være en registreret bruger og <a href=\"%s\">logget ind</a> for at "
+"spille i dette spil."
+
+#: ../pages/class-football-pool-ranking-page.php:31
+msgid "Choose league"
+msgstr "Vælg en liga"
+
+#: ../pages/class-football-pool-ranking-page.php:49
+#: ../pages/class-football-pool-statistics-page.php:79
+msgid "go"
+msgstr "gå"
+
+#: ../pages/class-football-pool-stadiums-page.php:30
+msgid "view all venues"
+msgstr "se alle spillesteder"
+
+#: ../pages/class-football-pool-statistics-page.php:25
+msgid "Statistics not yet available"
+msgstr "Statistik er ikke tilgængelig endnu"
+
+#: ../pages/class-football-pool-statistics-page.php:26
+msgid ""
+"After the first match you can view your scores and those of other users here."
+msgstr "Efter den første kamp kan du se din og de andre spilleres point her."
+
+#: ../pages/class-football-pool-statistics-page.php:94
+msgid "what dit other users score?"
+msgstr "Hvordan klarede de andre spillere sig?"
+
+#: ../pages/class-football-pool-statistics-page.php:112
+msgid "other users scores"
+msgstr "Se de andre spilleres point"
+
+#: ../pages/class-football-pool-statistics-page.php:132
+#, php-format
+msgid "Compare the scores of %s with other users."
+msgstr "Sammenlign dine point af %s med andre spillere."
+
+#: ../pages/class-football-pool-statistics-page.php:149
+msgid "scores in matches"
+msgstr "Point i kampe"
+
+#: ../pages/class-football-pool-statistics-page.php:163
+msgid "scores in bonus questions"
+msgstr "Point i spørgsmål"
+
+#: ../pages/class-football-pool-statistics-page.php:175
+#, no-php-format
+msgid "% of the max points"
+msgstr "% af maksimum point"
+
+#: ../pages/class-football-pool-statistics-page.php:177
+msgid "with the joker used"
+msgstr "med joker"
+
+#: ../pages/class-football-pool-statistics-page.php:189
+msgid "No users selected :'("
+msgstr "Du har ikke valgt spillere :'("
+
+#: ../pages/class-football-pool-statistics-page.php:190
+#: ../pages/class-football-pool-statistics-page.php:192
+msgid "You can select other users on the left side."
+msgstr "Du kan vælge andre spillere i venstreside"
+
+#: ../pages/class-football-pool-statistics-page.php:204
+msgid "scores"
+msgstr "point"
+
+#: ../pages/class-football-pool-statistics-page.php:284
+#: ../pages/class-football-pool-statistics-page.php:287
+#: ../pages/class-football-pool-statistics-page.php:302
+msgid "position in the pool"
+msgstr "placering i stillingen"
+
+#. Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
+#: ../pages/class-football-pool-statistics-page.php:286
+msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
+msgstr "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
+
+#: ../pages/class-football-pool-teams-page.php:14
+msgid "go to the team site"
+msgstr "gå til holdets side"
+
+#: ../pages/class-football-pool-teams-page.php:27
+msgid "plays in"
+msgstr "spiller i"
+
+#: ../pages/class-football-pool-teams-page.php:71
+msgid "view all teams"
+msgstr "se alle hold"
+
+#: ../pages/class-football-pool-user-page.php:12
+msgid "view all statistics for this user"
+msgstr "se al statistik for denne spiller"
+
+#: ../pages/class-football-pool-user-page.php:13
+#: ../pages/class-football-pool-user-page.php:21
+msgid "Statistics"
+msgstr "Statistik"
+
+#: ../pages/class-football-pool-user-page.php:30
+msgid "Below are all the predictions for"
+msgstr "Nedenunder er alle gæt for"
+
+#: ../pages/class-football-pool-user-page.php:35
+msgid "Only matches and bonus questions that can't be changed are shown here."
+msgstr "Kun kampe og spørgsmål der ikke kan ændres vises her."
+
+#: ../pages/class-football-pool-user-page.php:51
+msgid "No user selected."
+msgstr "Ingen spillere valgt."
+
+#: ../widgets/widget-football-pool-group.php:10
+msgid "Group Widget"
+msgstr "Gruppe Widget"
+
+#: ../widgets/widget-football-pool-group.php:11
+msgid "this widget displays the tournament standing for a group."
+msgstr "denne widget viser stillingen for en gruppe."
+
+#: ../widgets/widget-football-pool-group.php:12
+#: ../widgets/widget-football-pool-ranking.php:12
+msgid "standing"
+msgstr "stilling"
+
+#: ../widgets/widget-football-pool-group.php:13
+msgid "Show this group"
+msgstr "Vis denne gruppe"
+
+#: ../widgets/widget-football-pool-group.php:14
+msgid "Layout of the widget"
+msgstr "Layout for widget'en"
+
+#: ../widgets/widget-football-pool-group.php:76
+msgid "wide"
+msgstr "bred"
+
+#: ../widgets/widget-football-pool-group.php:77
+msgid "small"
+msgstr "lille"
+
+#: ../widgets/widget-football-pool-lastgames.php:10
+msgid "Last Games Widget"
+msgstr "Seneste kampe Widget"
+
+#: ../widgets/widget-football-pool-lastgames.php:11
+msgid "this widget displays the last X played games of the tournament."
+msgstr "denne Widget viser de X sidste kampe som er spillet i turneringen."
+
+#: ../widgets/widget-football-pool-lastgames.php:12
+msgid "last matches"
+msgstr "sidste kamp"
+
+#: ../widgets/widget-football-pool-lastgames.php:13
+msgid "Number of games to show"
+msgstr "Antal kamp der skal vises"
+
+#: ../widgets/widget-football-pool-lastgames.php:80
+msgid "view predictions"
+msgstr "Se gæt"
+
+#: ../widgets/widget-football-pool-logout.php:10
+msgid "Log out Widget"
+msgstr "Log ud Widget"
+
+#: ../widgets/widget-football-pool-logout.php:11
+msgid "add a log out/log in button."
+msgstr "tilføje en log ud/log ind knap."
+
+#: ../widgets/widget-football-pool-logout.php:39
+msgid "Log out"
+msgstr "Log ud"
+
+#: ../widgets/widget-football-pool-logout.php:41
+msgid "Log in"
+msgstr "Log ind"
+
+#: ../widgets/widget-football-pool-next-prediction.php:10
+msgid "Countdown Next Prediction Widget"
+msgstr "Nedtælling til næste gæt Widget"
+
+#: ../widgets/widget-football-pool-next-prediction.php:11
+msgid ""
+"this widget displays the time that is left to predict the next match "
+"(optionally only for a given team)."
+msgstr ""
+"denne Widget viser hvor lang tid der er tilbage indtil næste kamp "
+"(potentielt kun for et givet hold)."
+
+#: ../widgets/widget-football-pool-next-prediction.php:12
+msgid "countdown"
+msgstr "nedtælling"
+
+#: ../widgets/widget-football-pool-next-prediction.php:13
+msgid "Team"
+msgstr "Hold"
+
+#: ../widgets/widget-football-pool-next-prediction.php:14
+msgid "Also show when not logged in?"
+msgstr "Vis også når man ikke er logget ind?"
+
+#: ../widgets/widget-football-pool-next-prediction.php:75
+msgid "Just "
+msgstr "Bare"
+
+#: ../widgets/widget-football-pool-next-prediction.php:76
+msgid " until"
+msgstr "indtil"
+
+#: ../widgets/widget-football-pool-next-prediction.php:77
+msgid "started "
+msgstr "startet"
+
+#: ../widgets/widget-football-pool-next-prediction.php:78
+msgid " ago:"
+msgstr "siden:"
+
+#: ../widgets/widget-football-pool-next-prediction.php:83
+msgid "click to enter prediction"
+msgstr "klik her for at give dine gæt"
+
+#: ../widgets/widget-football-pool-ranking.php:10
+msgid "Ranking Widget"
+msgstr "Stillings Widget"
+
+#: ../widgets/widget-football-pool-ranking.php:11
+msgid "this widget displays the top X players in the pool."
+msgstr "denne Widget viser de bedste X deltagere i stillingen."
+
+#: ../widgets/widget-football-pool-ranking.php:14
+msgid "Number of users to show"
+msgstr "Antal af deltagere der skal vises"
+
+#: ../widgets/widget-football-pool-ranking.php:15
+msgid "Show players from this league"
+msgstr "Vis deltagere fra denne liga"
+
+#: ../widgets/widget-football-pool-shoutbox.php:10
+msgid "Shoutbox Widget"
+msgstr "Shoutbox Widget"
+
+#: ../widgets/widget-football-pool-shoutbox.php:11
+msgid "a shoutbox for your players. Leave short messages."
+msgstr "en shoutbox for dine deltagere. Efterlad korte beskeder."
+
+#: ../widgets/widget-football-pool-shoutbox.php:12
+msgid "shoutbox"
+msgstr "shoutbox"
+
+#: ../widgets/widget-football-pool-shoutbox.php:13
+msgid "Number of messages to display"
+msgstr "Antal af beskeder der skal vises"
+
+#: ../widgets/widget-football-pool-shoutbox.php:85
+#, php-format
+msgid "(<span>%s</span> characters remaining)"
+msgstr "(<span>%s</span> karakterer tilbage)"
+
+#: ../widgets/widget-football-pool-shoutbox.php:92
+#, php-format
+msgid "all text longer than %s characters will be removed!"
+msgstr "al tekst som er længere end %s karakterer vil blive fjernet!"
+
+#: ../widgets/widget-football-pool-shoutbox.php:96
+msgid "save"
+msgstr "gem"
+
+#: ../widgets/widget-football-pool-userselector.php:10
+msgid "User Selector Widget"
+msgstr "Deltager Vælger Widget"
+
+#: ../widgets/widget-football-pool-userselector.php:11
+msgid ""
+"this widget displays a list of users that can be selected. Only for use on "
+"the Statistics page; it won't even show on all other pages."
+msgstr ""
+"denne Widget viser en liste af deltagere som kan vælges. Kan kun benyttes på "
+"statistik siden; den vil ikke engang viser sig på andre sider."
+
+#: ../widgets/widget-football-pool-userselector.php:12
+msgid "players"
+msgstr "spillere"
+
+#: ../widgets/widget-football-pool-userselector.php:13
+msgid "height (px)"
+msgstr "højde (px)"
+
+#: ../widgets/widget-football-pool-userselector.php:79
+msgid "Change charts"
+msgstr "Ændre diagrammer"
+
+#: ../widgets/widget-football-pool-userselector.php:83
+msgid "No users in the pool."
+msgstr "Ingen spillere i stillingen"
+
+#~ msgid "d M Y, H:i"
+#~ msgstr "d M Y, H:i"
+
+#~ msgid "Advanced Options"
+#~ msgstr "Avancerede indstillinger"
+
+#~ msgid "false answer"
+#~ msgstr "forkert svar"
+
+#~ msgid "Add, change or delete bonus questions"
+#~ msgstr "Tilføj, ændre eller slet bonus spørgsmål"
+
+#~ msgid ""
+#~ "After saving bonus question data the pool ranking is recalculated. If you "
+#~ "have a lot of users this may take a while."
+#~ msgstr ""
+#~ "Når bonus spørgsmåls data er gemt vil stillingen blive beregnet. Hvis du "
+#~ "har mange brugere vil dette tage et stykke tid."
+
+#~ msgid ""
+#~ "On this page you can edit if a user answered the question correctly. If "
+#~ "you entered the correct answer with the question, it is displayed on this "
+#~ "page as a reference."
+#~ msgstr ""
+#~ "På denne side kan du ændre hvis en bruger har svaret korrekt. Hvis du har "
+#~ "skrevet det korrekte svar på sprøgsmålet, vil det vises på denne side."
+
+#~ msgid ""
+#~ "<strong>Important:</strong> The points for getting a correct answer are "
+#~ "only awarded once you saved this admin page."
+#~ msgstr ""
+#~ "<strong>Vigtigt:</strong> Point'ne for at have det korrekte svar er kun "
+#~ "givet når du har gemt admin siden."
+
+#~ msgid ""
+#~ "You can give a user more points (or less) for a question. Use the field "
+#~ "'points' for this; leave the field empty for standard points."
+#~ msgstr ""
+#~ "Du kan give en bruger flere (eller færre) point for et spørgsmål. Benyt "
+#~ "feltet 'point' til dette; undlad at udfylde feltet hvis der skal gives "
+#~ "standard point."
+
+#~ msgid ""
+#~ "Use the \"User Answers\" link to check if users answered the questions "
+#~ "correctly."
+#~ msgstr ""
+#~ "Benyt \"Bruger svar\" link til at kontrollere at brugerne har besvaret "
+#~ "spørgsmålet korrekt."
+
+#~ msgid ""
+#~ "After saving the match data the pool ranking is recalculated. If you have "
+#~ "a lot of users this may take a while."
+#~ msgstr ""
+#~ "Efter at have gemt kamp data vil stillingen blive beregnet. Hvis du har "
+#~ "mange brugere kan dette tage et stykke tid."
+
+#~ msgid ""
+#~ "You can (temporarily) disable the automatic recalculation of scores in "
+#~ "the Plugin Options."
+#~ msgstr ""
+#~ "Du kan (midlertidigt) slå den automatiske beregning af point fra i Plugin "
+#~ "Options."
+
+#~ msgid ""
+#~ "More information about the csv file import can be found in the <a href="
+#~ "\"%s\">help file</a>."
+#~ msgstr ""
+#~ "Mere information om csv fil importering kan findes i <a href=\"%s\">help "
+#~ "file</a>."
+
+#~ msgid "Add, change or delete groups."
+#~ msgstr "Tilføj, ændre eller slet grupper."
+
+#~ msgid "Add, change or delete match types."
+#~ msgstr "Tilføj, ændre eller slet kamp typer."
+
+#~ msgid "Default"
+#~ msgstr "Standard"
+
+#~ msgid "Add, change or delete user defined rankings."
+#~ msgstr "Tilføj, ændre eller slet bruger definerede stillinger."
+
+#~ msgid ""
+#~ "On this page you can select the matches and/or questions you want to "
+#~ "include in your custom ranking."
+#~ msgstr ""
+#~ "På denne side kan du vælge de kampe og/eller spørgsmål som du vil "
+#~ "inkludere i den specielle stilling."
+
+#~ msgid "Add, change or delete messages in the shoutbox."
+#~ msgstr "Tilføj, ændre eller slette beskeder i shoutbox."
+
+#~ msgid "Scores recalculated."
+#~ msgstr "Score beregnet."
+
+#~ msgid "Change users in the football pool."
+#~ msgstr "Ændre brugere i footbal pool"
+
+#~ msgid "Close (re)calculation"
+#~ msgstr "Luk beregning"
+
+#~ msgid "days"
+#~ msgstr "dage"

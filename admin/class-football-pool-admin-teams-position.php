@@ -52,4 +52,3 @@ class Football_Pool_Admin_Teams_Position extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 }
-?>

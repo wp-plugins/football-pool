@@ -7,12 +7,15 @@ defined( 'ABSPATH' ) or die( 'Cannot access widgets directly.' );
 add_action( "widgets_init", create_function( '', 'register_widget( "Football_Pool_Shoutbox_Widget" );' ) );
 
 // dummy var for translation files
+$fp_translate_this = __( 'Shoutbox Widget', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'a shoutbox for your players. Leave short messages.', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'shoutbox', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Number of messages to display', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 	protected $widget = array(
 		'name' => 'Shoutbox Widget',
-		'description' => 'Football pool plugin: a shoutbox for your players. Leave short messages.',
+		'description' => 'a shoutbox for your players. Leave short messages.',
 		'do_wrapper' => true, 
 		
 		'fields' => array(
@@ -64,11 +67,11 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 			foreach ( $messages as $message ) {
 				$time_format = get_option( 'time_format', FOOTBALLPOOL_TIME_FORMAT );
 				$date_format = get_option( 'date_format', FOOTBALLPOOL_DATE_FORMAT );
-				$url = esc_url( add_query_arg( array( 'user' => $message['userId'] ), $userpage ) );
-				$shout_date = new DateTime( Football_Pool_Utils::date_from_gmt( $message['shoutDate'] ) );
-				echo '<p><a class="name" href="', $url, '">', $message['userName'], '</a>&nbsp;
+				$url = esc_url( add_query_arg( array( 'user' => $message['user_id'] ), $userpage ) );
+				$shout_date = new DateTime( Football_Pool_Utils::date_from_gmt( $message['shout_date'] ) );
+				echo '<p><a class="name" href="', $url, '">', $message['user_name'], '</a>&nbsp;
 					<span class="date">(', $shout_date->format( "{$date_format}, {$time_format}" ), ')</span></p>
-					<p class="text">', htmlspecialchars( $message['shoutText'], null, 'UTF-8' ), '</p><hr />';
+					<p class="text">', htmlspecialchars( $message['shout_text'], null, 'UTF-8' ), '</p><hr />';
 			}
 			echo '</div>';
 		} else {
@@ -107,4 +110,3 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		);
 	}
 }
-?>

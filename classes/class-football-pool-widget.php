@@ -1,7 +1,7 @@
 <?php
 /**
- * Based on Empty Widget template
- * https://gist.github.com/1229641
+ * Based on a prehistoric version of the Empty Widget template (https://gist.github.com/1229641), 
+ * nowadays a more powerful widget plugin, but I haven't had time to look into its new features yet :)
  */
 
 /**
@@ -106,6 +106,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 	 */
 	public function __construct( $classname, $widgetname, $description ) {
 		// widget actual processes
+		$description = __( 'Football pool plugin', FOOTBALLPOOL_TEXT_DOMAIN ) . ': ' . __( $description, FOOTBALLPOOL_TEXT_DOMAIN );
 		parent::__construct( $classname, $widgetname, array( 'description' => $description ) );
 	}
 	
@@ -118,7 +119,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		$this->widget['number'] = $this->number;
 		if ( isset( $instance['title'] ) )
-			$title = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
+			$title = apply_filters( 'widget_title', __( $instance['title'], FOOTBALLPOOL_TEXT_DOMAIN ), $instance, $this->id_base );
 		else
 			$title = '';
 		
@@ -169,20 +170,22 @@ abstract class Football_Pool_Widget extends WP_Widget {
 			'std' => '',
 		);
 		
-		//do_action( get_class( $this ) . '_before' );
+		// do_action( get_class( $this ) . '_before' );
 		foreach ( $this->widget['fields'] as $field ) {
-			//making sure we don't throw strict errors
+			// making sure we don't throw strict errors
 			$field = wp_parse_args( $field, $defaults );
 
 			$meta = false;
-			if ( isset( $field['id'] ) && array_key_exists( $field['id'], $instance ) )
+			if ( isset( $field['id'] ) && array_key_exists( $field['id'], $instance ) ) {
 				@$meta = attribute_escape( $instance[ $field['id'] ] );
-
+			}
+			
 			if ( $field['type'] != 'custom' && $field['type'] != 'metabox' ) {
 				echo '<p><label for="', $this->get_field_id(  $field['id'] ), '">';
 			}
-			if ( isset( $field['name'] ) && $field['name'] ) echo $field['name'], ':';
-
+			if ( isset( $field['name'] ) && $field['name'] ) echo __( $field['name'], FOOTBALLPOOL_TEXT_DOMAIN ), ': ';
+			if ( $field['type'] != 'checkbox' ) echo '<br />';
+			
 			switch ( $field['type'] ) {
 				case 'text':
 					echo '<input type="text" name="', $this->get_field_name( $field['id'] ), '" id="', $this->get_field_id( $field['id'] ), '" value="', ( $meta ? $meta : @$field['std'] ), '" class="vibe_text" />', 
@@ -213,7 +216,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 					break;
 				case 'checkbox':
 					echo '<input type="hidden" name="', $this->get_field_name( $field['id'] ), '" id="', $this->get_field_id( $field['id'] ), '" /> ', 
-						 '<input class="vibe_checkbox" type="checkbox" name="', $this->get_field_name( $field['id'] ), '" id="', $this->get_field_id( $field['id'] ), '"', $meta ? ' checked="checked"' : '', ' /> ', 
+						 '<input style="margin-left: 1em" class="vibe_checkbox" type="checkbox" name="', $this->get_field_name( $field['id'] ), '" id="', $this->get_field_id( $field['id'] ), '"', $meta ? ' checked="checked"' : '', ' /> ', 
 					'<br/><span class="description">', @$field['desc'], '</span>';
 					break;
 				case 'custom':
@@ -225,7 +228,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 				echo '</label></p>';
 			}
 		}
-		//do_action( get_class( $this ) . '_after' );
+		// do_action( get_class( $this ) . '_after' );
 		return true;
 	}
 
@@ -247,4 +250,3 @@ abstract class Football_Pool_Widget extends WP_Widget {
 		return $instance;
 	}
 }
-?>
