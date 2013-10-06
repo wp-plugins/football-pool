@@ -79,13 +79,13 @@ class Football_Pool_Admin {
 			true
 		);
 		
-		if ( FOOTBALLPOOL_SCORE_DEBUG ) {
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			self::add_submenu_page(
 				$slug,
-				'Debug Score Calc',
-				'Debug Score Calc',
+				'Score Calculation',
+				'Score Calculation',
 				$capability, 
-				'footballpool-score-debug',
+				'footballpool-score-calculation',
 				'Football_Pool_Admin_Score_Calculation'
 			);
 		}
@@ -959,14 +959,24 @@ class Football_Pool_Admin {
 		echo "<script> calculate_score_history({$single_ranking}) </script>";
 	}
 	
-	private function recalculate_manual( $ranking_id = 0 ) {
-		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
-		
-		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-								, array( '', "calculate_score_history({$single_ranking})" )
-								, false
-								, 'js-button' 
-		);
+	public function recalculate_button( $ranking_id = 0 ) {
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+			self::secondary_button( 
+						__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+						, "admin.php?page=footballpool-score-calculation&fp_recalc_nonce={$nonce}"
+						, false
+						, 'link'
+					);
+		} else {
+			$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
+			
+			self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
+									, array( '', "calculate_score_history({$single_ranking})" )
+									, false
+									, 'js-button' 
+			);
+		}
 	}
 	
 	public function update_score_history( $force = 'no', $ranking_id = 0 ) {
@@ -974,10 +984,10 @@ class Football_Pool_Admin {
 														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
 														, 'int' );
 		
-		if ( $auto_calc == 1 || $force == 'force' ) {
+		if ( ! FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX && ( $auto_calc == 1 || $force == 'force' ) ) {
 			self::recalculate_scorehistory_lightbox( $ranking_id );
 		} else {
-			self::recalculate_manual( $ranking_id );
+			self::recalculate_button( $ranking_id );
 		}
 		return true;
 	}

@@ -352,12 +352,22 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 					// array( 'boolean', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'active', '' ),
 				);
 		
-		$link = self::link_button( 
-					__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
-					, array( '', 'calculate_score_history( 0, %d )' )
-					, false
-					, array( 'id' => 'button-calculate-single-ranking-%d' )
-				);
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+			$link = self::link_button( 
+						__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+						, array( "admin.php?page=footballpool-score-calculation&single_ranking=%d&fp_recalc_nonce={$nonce}" )
+						, false
+						, array( 'id' => 'button-calculate-single-ranking-%d' )
+					);
+		} else {
+			$link = self::link_button( 
+						__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+						, array( '', 'calculate_score_history( 0, %d )' )
+						, false
+						, array( 'id' => 'button-calculate-single-ranking-%d' )
+					);
+		}
 		$rows = array();
 		foreach( $items as $item ) {
 			$rows[] = array(

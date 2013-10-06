@@ -93,7 +93,7 @@ Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is
 If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
 
 = I installed the plugin, but there are no matches. What happened? =
-Version 2.0.0 does not add the matches on install. But it does contain a match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
+Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
@@ -157,7 +157,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 == Changelog ==
 
 = 2.3.0 =
-* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
+* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling (with fallback to 'normal' calculation).
 * Added pagination to the user admin page (default is 20 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
 * Added pagination to the matches admin page (default is 50 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
 * New feature: link a question to a match. Linked questions are displayed beneath the match on the prediction form.

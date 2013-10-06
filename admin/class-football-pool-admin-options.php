@@ -391,11 +391,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-								, array( '', 'calculate_score_history()' )
-								, false
-								, 'js-button' 
-		);
+		self::recalculate_button();
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -413,11 +409,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-								, array( '', 'calculate_score_history()' )
-								, false
-								, 'js-button' 
-		);
+		self::recalculate_button();
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'League Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -428,11 +420,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							);
 		echo '<p class="submit">';
 		submit_button( null, 'primary', null, false );
-		self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-								, array( '', 'calculate_score_history()' )
-								, false
-								, 'js-button' 
-		);
+		self::recalculate_button();
 		echo '</p>';
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );

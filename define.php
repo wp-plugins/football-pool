@@ -5,13 +5,6 @@ global $wpdb;
 define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
 define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
 
-// WP constants
-if ( function_exists( 'wp_enqueue_media' ) ) {
-	define( 'FOOTBALLPOOL_WP_MEDIA', true );
-} else {
-	define( 'FOOTBALLPOOL_WP_MEDIA', false );
-}
-
 // database and path constants
 define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
 define( 'FOOTBALLPOOL_OPTIONS', 'footballpool_plugin_options' );
@@ -32,6 +25,7 @@ define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
 define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 
 // scorehistory
+define( 'FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX', false );
 define( 'FOOTBALLPOOL_RANKING_AUTOCALCULATION', 1 );
 define( 'FOOTBALLPOOL_RANKING_CALCULATION_FULL', 'full' );
 define( 'FOOTBALLPOOL_RANKING_CALCULATION_SMART', 'smart' );
@@ -87,9 +81,15 @@ define( 'FOOTBALLPOOL_NONCE_FIELD_BLOG', '_footballpool_wpnonce' );
 define( 'FOOTBALLPOOL_NONCE_SHOUTBOX', 'football-pool-shoutbox' );
 define( 'FOOTBALLPOOL_NONCE_FIELD_SHOUTBOX', '_footballpool_shoutbox_wpnonce' );
 
+// WP constants
+if ( function_exists( 'wp_enqueue_media' ) ) {
+	define( 'FOOTBALLPOOL_WP_MEDIA', true );
+} else {
+	define( 'FOOTBALLPOOL_WP_MEDIA', false );
+}
+
 // dev environment values
-define( 'FOOTBALLPOOL_SCORE_DEBUG', false );
-if ( FOOTBALLPOOL_SCORE_DEBUG || $_SERVER['HTTP_HOST'] == 'localhost' ) {
+if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
 	$wpdb->show_errors();
 	// http://wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405

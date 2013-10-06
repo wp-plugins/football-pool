@@ -135,10 +135,10 @@ div.ranking-log span { padding-right: 10px; }
 #progress .animation { text-align: center; }
 #progress .error { color: red; }
 
-#progress .ui-progressbar {
+.progress .ui-progressbar {
 	height: 15px;
 }
-#progress #progressbar {
+.progress #progressbar {
 	margin-top: 15px;
 }
 
