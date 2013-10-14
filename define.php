@@ -43,7 +43,7 @@ define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
 define( 'FOOTBALLPOOL_FULLPOINTS',   5 ); // 3
 define( 'FOOTBALLPOOL_TOTOPOINTS',   2 ); // 2
 define( 'FOOTBALLPOOL_GOALPOINTS',   0 ); // 1
-define( 'FOOTBALLPOOL_DIFFPOINTS',   0 ); // points for correct goal difference
+define( 'FOOTBALLPOOL_DIFFPOINTS',   0 ); // bonus points for correct goal difference
                                           // (e.g. match result is 4-0 and prediction is 6-2)
 
 // matches csv import and export
