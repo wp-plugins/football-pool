@@ -199,6 +199,22 @@ class Football_Pool_Admin {
 		);
 	}
 	
+	public function initialize_wp_media() {
+		if ( FOOTBALLPOOL_WP_MEDIA ) {
+			wp_enqueue_media();
+		} else {
+			if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
+				wp_enqueue_script( 'media-upload' );
+			}
+			if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_script( 'thickbox' );
+			}
+			if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
+				wp_enqueue_style( 'thickbox' );
+			}
+		}
+	}
+	
 	// tinymce extension
 	public function tinymce_addbuttons() {
 		// Don't bother doing this stuff if the current user lacks permissions

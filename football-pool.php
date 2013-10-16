@@ -3,13 +3,13 @@
  Plugin Name: Football pool
  Plugin URI: http://wordpressfootballpool.wordpress.com/
  Description: This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
- Version: 2.3.0
+ Version: 2.3.1
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
  Tags: football, pool, poule, voetbal, soccer, game, prediction, competition, fifa worldcup, uefa championship, american football, basketball, sport, sports
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '2.3.0' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.3.1' );
 
 /*
 The MIT License (MIT)
@@ -100,6 +100,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-score-calculation.php';
 	require_once 'admin/class-football-pool-admin-feature-pointers.php';
 	
+	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
 	add_filter( 'admin_body_class', array( 'Football_Pool_Admin', 'add_body_class' ) );
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	// add_action( 'user_deleted', array( 'Football_Pool_Admin_Users', 'admin_notice' ) );
@@ -109,6 +110,7 @@ if ( is_admin() ) {
 	add_action( 'edit_user_profile_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
 	add_action( 'admin_menu', array( 'Football_Pool_Admin', 'init' ) );
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
+	add_action( 'admin_enqueue_scripts', array( 'Football_Pool_Admin', 'initialize_wp_media' ) );
 	if ( FOOTBALLPOOL_WP_MEDIA === false ) {
 		add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
 	}
@@ -117,10 +119,8 @@ if ( is_admin() ) {
 		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
 	}
 	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );
-	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
 	add_action('wp_ajax_footballpool_calculate_scorehistory', array( 'Football_Pool_Admin_Score_Calculation', 'process' ) );
 	add_filter( 'set-screen-option', array( 'Football_Pool_Admin', 'set_screen_options', 10, 3 ) );
-	// new feature pointers
 	add_action( 'admin_enqueue_scripts', array( 'Football_Pool_Admin_Feature_Pointers', 'init' ) );
 }
 
