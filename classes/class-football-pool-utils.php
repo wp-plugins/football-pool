@@ -235,7 +235,7 @@ class Football_Pool_Utils {
 	public function debug( $var, $type = 'echo', $sleep = 0 ) {
 		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
 		
-		$type = str_replace( array( 'only', 'just', ' ', '-' ), array( '', '', '', '' ), $type );
+		$type = str_replace( array( 'only', 'just', ' ', '-' ), '', $type );
 		
 		if ( $type == 'once' || ( is_array( $type ) && $type[0] == 'once' ) ) {
 			$type = isset( $type[1] ) ? $type[1] : 'echo';

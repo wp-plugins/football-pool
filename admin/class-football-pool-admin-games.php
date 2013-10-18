@@ -141,7 +141,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
 			if ( $header[0] == '/*' ) {
 				while ( ( $header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false
-						&& str_replace( array( " ", "\t" ), array( "", "" ), $header[0] ) != '*/' ) {
+						&& str_replace( array( " ", "\t" ), '', $header[0] ) != '*/' ) {
 					// keep reading
 				}
 				// with meta gone, next line should contain the csv column definition

@@ -20,7 +20,6 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			$calculation_type = self::post_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 		}
 		
-		$nonce = '';
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			if ( $step > 0 ) check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
 		} else {
@@ -438,6 +437,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 												, $row['full'], $row['toto'], $row['goal_bonus'], $row['goal_diff_bonus']
 												, $score, $ranking_id
 										);
+						
 						$result = $wpdb->query( $sql );
 						$check = ( $result !== false ) && $check;
 					}
@@ -572,7 +572,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				printf( '<script>location.href = "%s";</script>', $url );
 			}
 		} else {
-			header( 'application/json' );
+			header( 'Content-Type: application/json' );
 			echo json_encode( $params );
 			// always die when doing ajax requests
 			die();

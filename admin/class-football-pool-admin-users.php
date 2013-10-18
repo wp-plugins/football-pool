@@ -293,7 +293,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		// log a recalculation for a ranking if applicable
-		$ranking_ids = get_ranking_ids_from_scorehistory_for_user( $id );
+		$ranking_ids = self::get_ranking_ids_from_scorehistory_for_user( $id );
 		if ( $ranking_ids ) {
 			foreach( $ranking_ids as $ranking_id ) {
 				self::update_ranking_log( 
@@ -334,7 +334,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
 			// if user is in a non-existing league, then force the update
-			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu 
+			$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}league_users lu 
 									LEFT OUTER JOIN {$prefix}leagues l
 										ON ( lu.league_id = l.id )
 									WHERE lu.user_id = %d AND l.id IS NULL"
@@ -511,8 +511,6 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	}
 	
 	public function delete_user_from_pool( $user_id ) {
-		// note: we are outside of the plugin admin scope here when this function is called, 
-		//       so no "self::" available
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -540,12 +538,4 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
 	}
-	
-	// public function admin_notice() {
-		// if ( ! is_admin() ) return;
-		
-		// $notice = '<strong>' . sprintf( __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN ) 
-				// . ':</strong> ' . __( 'User deleted, <a href="%s">score (re)calculation</a> may be needed.', FOOTBALLPOOL_TEXT_DOMAIN ), 'admin.php?page=footballpool-rankings' );
-		// Football_Pool_Admin::notice( $notice , 'important' );
-	// }
 }

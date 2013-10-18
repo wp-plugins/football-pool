@@ -655,7 +655,7 @@ class Football_Pool_Pool {
 			$output .= '<ul class="multi-select">';
 			foreach ( $options as $option ) {
 				// strip out any empty options
-				if ( str_replace( array( ' ', "\t", "\r", "\n" ), array( '', '', '', '' ), $option ) != '' ) {
+				if ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ) {
 					$answer = $question['answer'];
 					$js = sprintf( 'onclick="jQuery( \'#_bonus_%d_userinput\' ).val( \'\' )" ', $question['id'] );
 					

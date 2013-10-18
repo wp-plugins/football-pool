@@ -3,13 +3,13 @@
  Plugin Name: Football pool
  Plugin URI: http://wordpressfootballpool.wordpress.com/
  Description: This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
- Version: 2.3.1
+ Version: 2.3.2
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
  Tags: football, pool, poule, voetbal, soccer, game, prediction, competition, fifa worldcup, uefa championship, american football, basketball, sport, sports
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '2.3.1' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.3.2' );
 
 /*
 The MIT License (MIT)
@@ -103,7 +103,6 @@ if ( is_admin() ) {
 	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
 	add_filter( 'admin_body_class', array( 'Football_Pool_Admin', 'add_body_class' ) );
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
-	// add_action( 'user_deleted', array( 'Football_Pool_Admin_Users', 'admin_notice' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'edit_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'personal_options_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
