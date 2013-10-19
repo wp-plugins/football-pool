@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -159,9 +159,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 == Changelog ==
 
-= 2.3.2 =
+= 2.3.3 =
 * Bug fix: internal server error (bad header) in score calculation AJAX call (thanks Josh and sindris for reporting the bug and giving me the information from the error log).
-* Bug fix: removing users as a player resulted in a undefined function error (thanks Josh for reporting the bug).
+* Bug fix: removing users as a player resulted in an undefined function error (thanks Josh for reporting the bug).
 
 = 2.3.1 =
 * Bug fix: plugin broke the "featured image" function of WordPress (thanks CornelB for reporting the bug).

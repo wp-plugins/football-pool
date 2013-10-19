@@ -58,7 +58,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 		
 		$groups = new Football_Pool_Groups;
 		$output .= $groups->print_group_standing( $group, $layout );
-		echo apply_filters( 'footballpool_widget_html_group', $output ) );
+		echo apply_filters( 'footballpool_widget_html_group', $output );
 	}
 	
 	public function __construct() {
