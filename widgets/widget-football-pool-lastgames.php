@@ -41,8 +41,9 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		
 		$num_games = $instance['num_games'];
 		
+		$output = '';
 		if ( $title != '' ) {
-			echo $before_title, $title, $after_title;
+			$output .= $before_title . $title . $after_title;
 		}
 		
 		$matches = new Football_Pool_Matches;
@@ -51,9 +52,9 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 		$teampage = Football_Pool::get_page_link( 'teams' );
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		
-		$rows = $matches->get_last_games( $num_games );
+		$rows = apply_filters( 'footballpool_lastgames_query', $matches->get_last_games( $num_games ) );
 		if ( count( $rows ) > 0 ) {
-			echo '<table class="gamesbox">';
+			$output .= '<table class="gamesbox">';
 			
 			$url_home = $url_away = '';
 			$team_str = '%s%s';
@@ -65,25 +66,31 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 					$team_str = '<a href="%s">%s</a>';
 				}
 				$url_stats = esc_url( add_query_arg( 
-											array( 'view' => 'matchpredictions', 'match' => $row['id'] ),
-											$statisticspage 
+												array( 'view' => 'matchpredictions', 'match' => $row['id'] ),
+												$statisticspage 
 											) 
 									);
 				
-				printf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
-						, $url_home
-						, $teams->team_names[ (int) $row['home_team_id'] ]
-						, $url_away
-						, $teams->team_names[ (int) $row['away_team_id'] ]
-					);
+				$output .= sprintf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
+									, $url_home
+									, $teams->team_names[ (int) $row['home_team_id'] ]
+									, $url_away
+									, $teams->team_names[ (int) $row['away_team_id'] ]
+								);
 				
-				echo '<td class="score"><a href="', $url_stats, '" title="', __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ), '">', 
-					$row['home_score'], ' - ', $row['away_score'], '</a></td></tr>';
+				$output .= sprintf( '<td class="score"><a href="%s" title="%s">%s - %s</a></td></tr>'
+								, $url_stats
+								, esc_attr( __( 'view predictions', FOOTBALLPOOL_TEXT_DOMAIN ) )
+								, $row['home_score']
+								, $row['away_score']
+							);
 			}
-			echo '</table>';
+			$output .= '</table>';
 		} else {
-			echo '<p>', __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
+			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
+		
+		echo apply_filters( 'footballpool_widget_html_last-games', $output );
 	}
 	
 	public function __construct() {

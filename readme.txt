@@ -31,10 +31,11 @@ A special thank you to all the translators that found time to translate the many
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Several widgets and shortcodes to display info from the championship or the pool.
 * Extra info pages for venues and teams.
+* Extensible via filters and actions.
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch, Spanish, French, Danish, German, Albanian and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language. Available languages in the plugin can be found on the "<a href="http://wordpress.org/plugins/football-pool/other_notes/">Other notes</a>" tab.
 
 **Other things**
 
@@ -55,7 +56,7 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool users
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
-9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/highcharts-js/`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the highcharts.js file in the following directory: `/wp-content/plugins/highcharts-js/`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -158,6 +159,9 @@ Default language is now English. Change de `WPLANG` constant if you want to use 
 Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
+
+= 2.4.0 =
+* Added hooks to the plugin so the functionality and output can be extended by plugin or theme developers.
 
 = 2.3.3 =
 * Bug fix: internal server error (bad header) in score calculation AJAX call (thanks Josh and sindris for reporting the bug and giving me the information from the error log).

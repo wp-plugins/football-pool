@@ -70,19 +70,18 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		wp_cache_set( $cache_key, $id + 1 );
 		
-		$extra_texts = sprintf( 
-							"{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
+		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
 								, __( 'Just ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' until', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' ago:', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
-		printf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
+		$output = sprintf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
 				, $predictionpage
 				, $id
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
-		echo "<script>
+		$output .= "<script>
 				footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
 				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
 				</script>";
@@ -95,14 +94,16 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 			$url_home = $url_away = '';
 			$team_str = '%s%s';
 		}
-		printf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
-				, $url_home
-				, ( isset( $teams->team_names[ (int) $this->match['home_team_id'] ] ) ?
-							$teams->team_names[ (int) $this->match['home_team_id'] ] : '' )
-				, $url_away
-				, ( isset( $teams->team_names[ (int) $this->match['away_team_id'] ] ) ?
-							$teams->team_names[ (int) $this->match['away_team_id'] ] : '' )
-			);
+		$output .= sprintf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
+							, $url_home
+							, ( isset( $teams->team_names[ (int) $this->match['home_team_id'] ] ) ?
+										$teams->team_names[ (int) $this->match['home_team_id'] ] : '' )
+							, $url_away
+							, ( isset( $teams->team_names[ (int) $this->match['away_team_id'] ] ) ?
+										$teams->team_names[ (int) $this->match['away_team_id'] ] : '' )
+						);
+		
+		echo apply_filters( 'footballpool_widget_html_next-prediction', $output );
 	}
 	
 	public function __construct() {

@@ -26,7 +26,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#charts">Using charts</a></li>
-				<li><a href="#hooks">Actions and Filters</a></li>
+				<li><a href="#hooks">Extending the plugin: Actions and Filters</a></li>
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
 		</p>
@@ -679,7 +679,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For now you have to follow these steps:
 		<ol>
 			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
-			<li>Place the files in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
+			<li>Place the highcharts.js file in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
 		</ol>
 		</p>
@@ -692,23 +692,122 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
-		<h2 id="hooks">Actions and Filters</h2>
-		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Below is a list of all available hooks in the plugin.</p>
-		<p>
+		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
+		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>.</p>
+		
+		<script>
+		function show_footballpool_hooks() {
+			var hooks_table = jQuery( '#hooks-table' );
+			if ( hooks_table.is( ':hidden' ) ) {
+				hooks_table.slideDown( 'slow' );
+			} else {
+				hooks_table.slideUp( 'slow' );
+			}
+		}
+		</script>
+		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks. <a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.</p>
+		
+		<div id="hooks-table" style="display: none;">
 		<table class="widefat help">
 			<tr><th>hook</th><th>description</th><th>type</th></tr>
 			<tr>
 				<td class="row-title">footballpool_shortcode_html_{$shortcode}</td>
-				<td>Alters the HTML of a shortcode. Replace {$shortcode} with the actual shortcode name, e.g. <span class="code">footballpool_shortcode_html_fp-ranking</span>.</td>
+				<td>Alter the HTML of a shortcode. Replace {$shortcode} with the actual shortcode name, e.g. <span class="code">footballpool_shortcode_html_fp-ranking</span>.</td>
 				<td>filter</td>
 			</tr>
-			<!--tr>
+			<tr>
 				<td class="row-title">footballpool_widget_html_{$widget}</td>
-				<td>Alters the HTML of a widget. Replace {$widget} with the widget name, e.g. <span class="code">footballpool_widget_html_group</span>.</td>
+				<td>Alter the HTML of a widget. Replace {$widget} with the widget name, e.g. <span class="code">footballpool_widget_html_group</span>. Except for widgets with special hooks (see below): ranking widget</td>
 				<td>filter</td>
-			</tr-->
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_thead</td>
+				<td>Overwrite (or add) the table head of the ranking widget.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_before_rank</td>
+				<td>Perform an action before the rank of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_after_rank</td>
+				<td>Perform an action after the rank of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_before_points</td>
+				<td>Perform an action before the total points of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_after_points</td>
+				<td>Perform an action after the total points of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_lastgames_query</td>
+				<td>Query returns the last games from the tournament.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_matches</td>
+				<td>Alter the set of matches in the plugin.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_get_groups</td>
+				<td>Alter the set of groups.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_composition</td>
+				<td>Alter the array that holds the teams in a group.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_array</td>
+				<td>Alter the ranking array that is used for the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_plays</td>
+				<td>Alter the matches array for a given group.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_thead</td>
+				<td>Alter the html of the table header in the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_row</td>
+				<td>Alter the html of a row in the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_before_save</td>
+				<td>Perform an action before a shoutbox message is saved.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_after_save</td>
+				<td>Perform an action after a shoutbox message is saved.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_messages</td>
+				<td>Alter the array of shoutbox messages.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_widget_html</td>
+				<td>Alter the html of a single message in the shoutbox widget.</td>
+				<td>filter</td>
+			</tr>
+
 		</table>
-		</p>
+		</div>
 		
 		<h3>examples:</h3>
 		<pre class="code">

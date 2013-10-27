@@ -7,7 +7,9 @@ class Football_Pool_Groups {
 								VALUES ( %s )",
 								$name
 							);
+		do_action( 'footballpool_groups_before_add', $name );
 		$wpdb->query( $sql );
+		do_action( 'footballpool_groups_after_add', $name );
 		return $wpdb->insert_id;
 	}
 	
@@ -18,12 +20,10 @@ class Football_Pool_Groups {
 		if ( $id == 0 ) {
 			$id = self::add( $name );
 		} else {
-			$sql = $wpdb->prepare( "UPDATE {$prefix}groups SET
-										name = %s
-									WHERE id = %d",
-									$name, $id
-								);
+			$sql = $wpdb->prepare( "UPDATE {$prefix}groups SET name = %s WHERE id = %d", $name, $id );
+			do_action( 'footballpool_groups_before_update', $id, $name );
 			$wpdb->query( $sql );
+			do_action( 'footballpool_groups_after_update', $id, $name );
 		}
 		
 		return $id;
@@ -34,7 +34,7 @@ class Football_Pool_Groups {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = "SELECT id, name FROM {$prefix}groups ORDER BY name ASC";
-		return $wpdb->get_results( $sql );
+		return apply_filters( 'footballpool_get_groups', $wpdb->get_results( $sql ) );
 	}
 	
 	public function get_group_by_id( $id ) {
@@ -187,6 +187,7 @@ class Football_Pool_Groups {
 		
 		$match_ids = $wpdb->get_col( $sql );
 		if ( ! is_array( $match_ids ) ) $match_ids = array();
+		$match_ids = apply_filters( 'footballpool_group_plays', $match_ids, $group_id );
 		
 		$matches = new Football_Pool_Matches;
 		$matches = $matches->matches;
@@ -278,7 +279,7 @@ class Football_Pool_Groups {
 					FROM {$prefix}teams t, {$prefix}groups g 
 					WHERE t.group_id = g.id AND t.is_real = 1 AND t.is_active = 1
 					ORDER BY g.name ASC, t.group_order ASC, t.id ASC";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			$rows = apply_filters( 'footballpool_group_composition', $wpdb->get_results( $sql, ARRAY_A ) );
 			wp_cache_set( $cache_key, $rows );
 		}
 		
@@ -293,12 +294,12 @@ class Football_Pool_Groups {
 		$team_names = $teams->team_names;
 
 		$group_names = $this->get_group_names();
-		$ranking = $this->get_ranking_array();
+		$ranking = apply_filters( 'footballpool_group_standing_array', $this->get_ranking_array(), $group_id );
 
 		if ( $layout == 'wide' ) {
-			$wdl = sprintf( '<th class="wins"><span title="wins">w</span></th>
-							<th class="draws"><span title="draws">d</span></th>
-							<th class="losses"><span title="losses">l</span></th>'
+			$wdl = sprintf( '<th class="wins"><span title="%s">%s</span></th>
+							<th class="draws"><span title="%s">%s</span></th>
+							<th class="losses"><span title="%s">%s</span></th>'
 							, esc_attr( __( 'wins', FOOTBALLPOOL_TEXT_DOMAIN ) )
 							// Translators: this is a short notation for 'wins'
 							, _x( 'w', 'short for \'wins\'', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -345,17 +346,12 @@ class Football_Pool_Groups {
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {
 				$output .= sprintf( '<div class="ranking%s"><h2>%s</h2>', $class, $group_names[$group] );
-				$output .= '<table class="ranking">
-								<thead>
-									<tr>
-										<th class="team"></th>
-										<th class="plays">' . $th1 . '</th>';
-				$output .= $wdl;
-				$output .= '			<th class="points">' . $th2 . '</th>
-										<th class="goals"></th>
-									</tr>
-								</thead>
-								<tbody>';
+				$output .= '<table class="ranking">';
+				$thead = sprintf( '<thead><tr><th class="team"></th><th class="plays">%s</th>', $th1 );
+				$thead .= $wdl;
+				$thead .= sprintf( '<th class="points">%s</th><th class="goals"></th></tr></thead>', $th2 );
+				$output .= apply_filters( 'footballpool_group_standing_thead', $thead, $group_id, $layout );
+				$output .= '<tbody>';
 				foreach ( $rank as $teamranking ) {
 					if ( $teams->show_team_links ) {
 						$team_name = sprintf( '<a href="%s">%s</a>'
@@ -392,7 +388,8 @@ class Football_Pool_Groups {
 										);
 					}
 					
-					$output .= vsprintf( $format, $args_array );
+					$output .= apply_filters( 'footballpool_group_standing_row'
+												, vsprintf( $format, $args_array ), $group_id, $layout );
 				}
 				$output .= '</tbody></table></div>';
 			}

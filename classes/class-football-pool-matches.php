@@ -69,9 +69,6 @@ class Football_Pool_Matches {
 		return $next_match; // null if no match is found
 	}
 	
-	public function get_last_matches ( $num_games = 4 ) {
-		return $this->get_last_games( $num_games );
-	}
 	public function get_last_games( $num_games = 4 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -194,6 +191,7 @@ class Football_Pool_Matches {
 				$match_info[$i]['linked_questions'] = $linked_questions;
 			}
 			
+			$match_info = apply_filters( 'footballpool_matches', $match_info );
 			wp_cache_set( FOOTBALLPOOL_CACHE_MATCHES, $match_info );
 		}
 		
@@ -207,7 +205,7 @@ class Football_Pool_Matches {
 			return array();
 	}
 	
-	public function get_match_info_for_user( $user, $match_ids = array() ) {
+	public function get_match_info_for_user( $user_id, $match_ids = array() ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$order = self::get_match_sorting_method();
@@ -230,27 +228,27 @@ class Football_Pool_Matches {
 									ON ( p.match_id = m.id AND p.user_id = %d )
 								WHERE t.visibility = 1
 								ORDER BY {$order}",
-								$user
+								$user_id
 							);
 		
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return apply_filters( 'footballpool_matches_for_user', $wpdb->get_results( $sql, ARRAY_A ), $user_id );
 	}
 	
-	public function get_joker_value_for_user( $user ) {
+	public function get_joker_value_for_user( $user_id ) {
 		if ( ! $this->pool_has_jokers ) return 0;
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}predictions WHERE user_id = %d AND has_joker = 1"
-								, $user );
+								, $user_id );
 		$joker = $wpdb->get_var( $sql );
 		
 		return $joker;
 	}
 	
-	public function first_empty_match_for_user( $user ) {
-		if ( ! is_integer( $user ) ) return 0;
+	public function first_empty_match_for_user( $user_id ) {
+		if ( ! is_integer( $user_id ) ) return 0;
 
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -259,7 +257,7 @@ class Football_Pool_Matches {
 									ON ( p.match_id = m.id AND p.user_id = %d )
 								WHERE p.user_id IS NULL
 								ORDER BY m.play_date ASC, id ASC LIMIT 1",
-								$user
+								$user_id
 							);
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		

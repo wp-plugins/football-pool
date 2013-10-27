@@ -33,16 +33,13 @@ require_once 'classes/class-football-pool-stadiums.php';
 require_once 'classes/class-football-pool-stadium.php';
 require_once 'classes/class-football-pool-groups.php';
 require_once 'classes/class-football-pool-pool.php';
-require_once 'classes/class-football-pool-chart.php';
-require_once 'classes/class-football-pool-chart-data.php';
-require_once 'classes/class-football-pool-statistics.php';
 require_once 'classes/class-football-pool-shoutbox.php';
 require_once 'classes/class-football-pool-widget.php';
-require_once 'classes/class-football-pool-shortcodes.php';
 require_once 'classes/class-football-pool-pagination.php';
+require_once 'classes/class-football-pool-chart.php';
 
 if ( ! is_admin() ) {
-	// pages, not needed in the admin
+	// not needed in the admin
 	require_once 'pages/class-football-pool-tournament-page.php';
 	require_once 'pages/class-football-pool-teams-page.php';
 	require_once 'pages/class-football-pool-groups-page.php';
@@ -51,6 +48,9 @@ if ( ! is_admin() ) {
 	require_once 'pages/class-football-pool-statistics-page.php';
 	require_once 'pages/class-football-pool-user-page.php';
 	require_once 'pages/class-football-pool-pool-page.php';
+	require_once 'classes/class-football-pool-chart-data.php';
+	require_once 'classes/class-football-pool-statistics.php';
+	require_once 'classes/class-football-pool-shortcodes.php';
 }
 
 // widgets
