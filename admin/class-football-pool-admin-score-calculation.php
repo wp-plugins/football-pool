@@ -265,23 +265,20 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								, %d AS ranking_id
 							FROM {$wpdb->users} u ";
 					if ( $pool->has_leagues ) {
-						$sql .= "INNER JOIN {$prefix}league_users lu 
-									ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
+						$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 						$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 					} else {
-						$sql .= "LEFT OUTER JOIN {$prefix}league_users lu 
-									ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
+						$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 					}
 					$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 							LEFT OUTER JOIN {$prefix}predictions p
 								ON ( p.match_id = m.id AND ( p.user_id = u.ID OR p.user_id IS NULL ) )
-							WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL ";
+							WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL AND u.ID IN ( {$user_ids} ) ";
 					if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 					if ( $is_single_ranking ) $sql .= "AND m.id IN ( {$ranking_matches} ) ";
 					$sql .= "ORDER BY 1, 2, 3, 4";
 					
-					$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
-												, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP2_DIV ) );
+					$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking );
 					$result = $wpdb->query( $sql );			
 					$check = ( $result !== false );
 					
@@ -306,8 +303,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 													+ ( goal_bonus * {$goal} ) 
 													+ ( goal_diff_bonus * {$diff} ) ) 
 										WHERE type = %d AND ranking_id = %d 
-										AND user_id >= %d AND user_id < %d
-										ORDER BY type ASC, score_date ASC, score_order ASC, user_id ASC"
+										AND user_id >= %d AND user_id < %d"
 										, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
 										, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
 				$result = $wpdb->query( $sql );
@@ -360,9 +356,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 						if ( $is_single_ranking ) $sql .= "AND q.id IN ( {$ranking_questions} ) ";
 						$sql .= "ORDER BY 1, 2, 3, 4";
 						
-						$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, $calculate_this_ranking
-													, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP4_DIV ) );
-						$result = $wpdb->query( $sql );			
+						$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, $calculate_this_ranking );
+						$result = $wpdb->query( $sql );
 						$check = ( $result !== false );
 						
 						$params['step'] = 4;
@@ -396,7 +391,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 														AND rq.ranking_id = %d AND s.type = %d )
 												WHERE s.user_id = %%d AND s.ranking_id = %d 
 												AND ( rm.ranking_id IS NOT NULL OR rq.ranking_id IS NOT NULL )
-												ORDER BY score_date ASC, type ASC, score_order ASC"
+												ORDER BY s.score_date ASC, s.type ASC, s.score_order ASC"
 												, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
 												, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
 												, $base_ranking
@@ -405,9 +400,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				
 				// cumulate scores for each user
 				$offset = $user_set * FOOTBALLPOOL_RECALC_STEP5_DIV;
-				$number = FOOTBALLPOOL_RECALC_STEP5_DIV;
-				$sql = "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$number}";
-				$user_ids = $wpdb->get_col( $sql );
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP5_DIV );
 				// $users = get_users( "orderby=ID&order=ASC&offset={$offset}&number={$number}" );
 				
 				foreach ( $user_ids as $user_id ) {
@@ -484,8 +477,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 						}
 					}
 				} else {
-					$sub_step = 1;
 					$params['step'] = 7;
+					$sub_step = 1;
 					// this ranking is finished, so clear the update log for this ranking
 					if ( $check === true ) {
 						$sql = "DELETE FROM {$prefix}rankings_updatelog WHERE ranking_id = %d ";
@@ -512,13 +505,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 						$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
 						if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
-							$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+							$sql .= "JOIN {$prefix}rankings_updatelog l 
+										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
 						$sql .= "WHERE r.user_defined = 1 ORDER BY r.id ASC LIMIT 1";
 					} else {
 						$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
 						if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
-							$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+							$sql .= "JOIN {$prefix}rankings_updatelog l 
+										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
 						$sql .= "WHERE r.user_defined = 1 AND r.id > %d ORDER BY r.id ASC LIMIT 1";
 						$sql = $wpdb->prepare( $sql, $ranking_id );
@@ -553,15 +548,11 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								);
 		}
 		
+		// extra action for each step (0-8)
+		do_action( "footballpool_score_calc_step{$step}", $params );
+		
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			if ( $step > 0 ) {
-				// echo '<div class="progress"><div id="progressbar"></div></div>';
-				// echo "<script>
-						// jQuery( '#progressbar' ).progressbar({
-							// max: {$total_steps},
-							// value: {$progress}
-						// });
-						// </script>";
 				printf( '<p>%s...</p>', $msg[$step - 1] );
 			} else {
 				echo $output;
@@ -586,8 +577,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 	
 	private function get_user_set( $offset, $amount ) {
 		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT %d, %d"
-								, $offset, $amount );
+		$sql = $wpdb->prepare( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT %d, %d", $offset, $amount );
 		return $wpdb->get_col( $sql );
 	}
 	

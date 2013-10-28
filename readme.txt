@@ -160,8 +160,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 == Changelog ==
 
-= 2.4.0 =
-* Added hooks to the plugin so the functionality and output can be extended by plugin or theme developers.
+= 2.3.4 =
+* Bug fix: in some setups the division of the score calculation in multiple sub-steps caused the scores to be multiplied by the number of sub-steps (e.g. 2 or 3). Thanks Fares and Bart for reporting the bug and helping me with the needed debug info.
+* Bug fix: tinymce button added the wrong code for the [fp-predictions] shortcode to the text editor (thanks pjbursnall for reporting the bug).
 
 = 2.3.3 =
 * Bug fix: internal server error (bad header) in score calculation AJAX call (thanks Josh and sindris for reporting the bug and giving me the information from the error log).

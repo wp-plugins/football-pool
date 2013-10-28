@@ -679,7 +679,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For now you have to follow these steps:
 		<ol>
 			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
-			<li>Place the highcharts.js file in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
+			<li>Place the <span class="code">highcharts.js</span> file in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
 		</ol>
 		</p>
@@ -705,7 +705,9 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			}
 		}
 		</script>
-		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks. <a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.</p>
+		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
+		<!--
+		<a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.--></p>
 		
 		<div id="hooks-table" style="display: none;">
 		<table class="widefat help">
@@ -819,7 +821,7 @@ add_filter( 'footballpool_shortcode_html_fp-ranking', 'add_a_div' );
 		</pre>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
-
+		
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
