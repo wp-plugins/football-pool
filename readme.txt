@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.3.3
+Stable tag: 2.3.4
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -56,7 +56,7 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool users
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
-9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the highcharts.js file in the following directory: `/wp-content/plugins/highcharts-js/`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the `highcharts.js` file in the following directory: `/wp-content/plugins/highcharts-js/`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -161,7 +161,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.3.4 =
-* Bug fix: in some setups the division of the score calculation in multiple sub-steps caused the scores to be multiplied by the number of sub-steps (e.g. 2 or 3). Thanks Fares and Bart for reporting the bug and helping me with the needed debug info.
+* Bug fix: in some setups the division of the score calculation in multiple sub-steps caused the scores to be multiplied by the number of sub-steps (e.g. 2 or 3). Thanks Fares and Bart for reporting the bug and helping me with the debug info.
 * Bug fix: tinymce button added the wrong code for the [fp-predictions] shortcode to the text editor (thanks pjbursnall for reporting the bug).
 
 = 2.3.3 =
