@@ -1,14 +1,31 @@
 <?php
 class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
-	private static $debug = false;
 	private static $start = 0;
 	
 	public function process() {
-		$nonce = '';
-		if ( ! self::$debug ) {
-			check_ajax_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
-			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
+		// get step number and other parameters
+		$step = $sub_step = $total_steps = $progress = 0;
+		$user_set = $total_user_sets = $total_users = $calculation_type = 0;
+		$step_0_data = Football_Pool_Utils::post_string( 'step-0-data', '' );
+		if ( $step_0_data != '' ) {
+			extract( json_decode( $step_0_data, true ), EXTR_IF_EXISTS );
+		} else {
+			$step = self::post_int( 'step', self::$start );
+			$sub_step = self::post_int( 'sub_step', 1 );
+			$total_steps = self::post_int( 'total_steps', 0 );
+			$progress = self::post_int( 'progress', 0 );
+			$user_set = self::post_int( 'user_set', 0 );
+			$total_user_sets = self::post_int( 'total_user_sets', 0 );
+			$total_users = self::post_int( 'total_users', 0 );
+			$calculation_type = self::post_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 		}
+		
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+			if ( $step > 0 ) check_admin_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
+		} else {
+			check_ajax_referer( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce' );
+		}
+		$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -18,16 +35,6 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		$result = 0;
 		$output = '';
 		
-		// get step number and other parameters
-		$step = self::post_int( 'step', self::$start );
-		$sub_step = self::post_int( 'sub_step', 1 );
-		$progress = self::post_int( 'progress', 0 );
-		$user_set = self::post_int( 'user_set', 0 );
-		$total_user_sets = self::post_int( 'total_user_sets', 0 );
-		$total_users = self::post_int( 'total_users', 0 );
-		$total_steps = self::post_int( 'total_steps', 0 );
-		$calculation_type = self::post_string( 'calculation_type', FOOTBALLPOOL_RANKING_CALCULATION_FULL );
-
 		// is this a single ranking calculation?
 		$ranking_id = self::post_int( 'single_ranking', 0 );
 		$is_single_ranking = ( $ranking_id > 0 );
@@ -134,14 +141,22 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 																			'calculation_type_preference'
 																			, FOOTBALLPOOL_RANKING_CALCULATION_FULL );
 				
-				$output .= '<div id="progress">';
-				$output .= sprintf( '<h3>%s</h3>'
-									, __( 'Please do not interrupt this process.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				$output .= sprintf( '<p>%s</p>'
-									, __( 'Sit back and relax, this may take a while :-)', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				$output .= '<div id="progressbar"></div>';
-				$output .= '<p id="calculation-message">&nbsp;</p>';
-				$output .= '</div><form id="step-0-form">';
+				if ( ! FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+					$output .= '<div class="progress" id="progress">';
+					$output .= sprintf( '<h3>%s</h3>'
+										, __( 'Please do not interrupt this process.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+					$output .= sprintf( '<p>%s</p>'
+										, __( 'Sit back and relax, this may take a while :-)', FOOTBALLPOOL_TEXT_DOMAIN ) );
+					$output .= '<div id="progressbar"></div>';
+					$output .= '<p id="calculation-message">&nbsp;</p>';
+					$output .= '</div>';
+				}
+				
+				$form_action = '';
+				if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+					$form_action = ' action="admin.php?page=footballpool-score-calculation" method="post"';
+				}
+				$output .= sprintf( '<form id="step-0-form"%s>', $form_action );
 				$data = array(
 								'step' => 1,
 								'ranking' => $ranking_id,
@@ -153,7 +168,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								'single_ranking' => ( $is_single_ranking ? $ranking_id : 0 ),
 								'fp_recalc_nonce' => $nonce,
 							);
-				$output .= sprintf( "<input type='hidden' id='step-0-data' value='%s'>", json_encode( $data ) );
+				$output .= self::hidden_input( 'step-0-data', json_encode( $data ), 'return' );
+				$output .= self::hidden_input( 'action', 'choose_calculation_type', 'return' );
 				$output .= sprintf( '<p>%s</p>', __( 'You are about to recalculate the score table for the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				if ( ! $is_single_ranking ) {
 					$output .= '<p class="calculation-type-select">';
@@ -173,21 +189,26 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				}
 				
 				$output .= '<p class="submit">';
-				$output .= self::link_button( 
-												__( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ), 
-												array( '', 'calculate_score_history( 1 )' ), 
-												false, 
-												'js-button',
-												null,
-												'primary'
-											);
-				$output .= '&nbsp;';
-				$output .= self::link_button( 
-												__( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 
-												array( '', 'jQuery.colorbox.close()' ), 
-												false, 
-												'js-button' 
-											);
+				if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+					$output .= get_submit_button( __( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', null, false );
+					$output .= wp_nonce_field( FOOTBALLPOOL_NONCE_SCORE_CALC, 'fp_recalc_nonce', true, false );
+				} else {
+					$output .= self::link_button( 
+													__( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ), 
+													array( '', 'calculate_score_history( 1 )' ), 
+													false, 
+													'js-button',
+													null,
+													'primary'
+												);
+					$output .= '&nbsp;';
+					$output .= self::link_button( 
+													__( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ), 
+													array( '', 'jQuery.colorbox.close()' ), 
+													false, 
+													'js-button' 
+												);
+				}
 				$output .= '</p></form>';
 				break;
 			case 1:
@@ -244,23 +265,20 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								, %d AS ranking_id
 							FROM {$wpdb->users} u ";
 					if ( $pool->has_leagues ) {
-						$sql .= "INNER JOIN {$prefix}league_users lu 
-									ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
+						$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 						$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 					} else {
-						$sql .= "LEFT OUTER JOIN {$prefix}league_users lu 
-									ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
+						$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 					}
 					$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 							LEFT OUTER JOIN {$prefix}predictions p
 								ON ( p.match_id = m.id AND ( p.user_id = u.ID OR p.user_id IS NULL ) )
-							WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL ";
+							WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL AND u.ID IN ( {$user_ids} ) ";
 					if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 					if ( $is_single_ranking ) $sql .= "AND m.id IN ( {$ranking_matches} ) ";
 					$sql .= "ORDER BY 1, 2, 3, 4";
 					
-					$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
-												, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP2_DIV ) );
+					$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking );
 					$result = $wpdb->query( $sql );			
 					$check = ( $result !== false );
 					
@@ -285,8 +303,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 													+ ( goal_bonus * {$goal} ) 
 													+ ( goal_diff_bonus * {$diff} ) ) 
 										WHERE type = %d AND ranking_id = %d 
-										AND user_id >= %d AND user_id < %d
-										ORDER BY type ASC, score_date ASC, score_order ASC, user_id ASC"
+										AND user_id >= %d AND user_id < %d"
 										, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
 										, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
 				$result = $wpdb->query( $sql );
@@ -339,9 +356,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 						if ( $is_single_ranking ) $sql .= "AND q.id IN ( {$ranking_questions} ) ";
 						$sql .= "ORDER BY 1, 2, 3, 4";
 						
-						$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, $calculate_this_ranking
-													, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP4_DIV ) );
-						$result = $wpdb->query( $sql );			
+						$sql = $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION, $calculate_this_ranking );
+						$result = $wpdb->query( $sql );
 						$check = ( $result !== false );
 						
 						$params['step'] = 4;
@@ -375,7 +391,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 														AND rq.ranking_id = %d AND s.type = %d )
 												WHERE s.user_id = %%d AND s.ranking_id = %d 
 												AND ( rm.ranking_id IS NOT NULL OR rq.ranking_id IS NOT NULL )
-												ORDER BY score_date ASC, type ASC, score_order ASC"
+												ORDER BY s.score_date ASC, s.type ASC, s.score_order ASC"
 												, $ranking_id, FOOTBALLPOOL_TYPE_MATCH
 												, $ranking_id, FOOTBALLPOOL_TYPE_QUESTION
 												, $base_ranking
@@ -384,9 +400,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				
 				// cumulate scores for each user
 				$offset = $user_set * FOOTBALLPOOL_RECALC_STEP5_DIV;
-				$number = FOOTBALLPOOL_RECALC_STEP5_DIV;
-				$sql = "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$number}";
-				$user_ids = $wpdb->get_col( $sql );
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP5_DIV );
 				// $users = get_users( "orderby=ID&order=ASC&offset={$offset}&number={$number}" );
 				
 				foreach ( $user_ids as $user_id ) {
@@ -416,6 +430,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 												, $row['full'], $row['toto'], $row['goal_bonus'], $row['goal_diff_bonus']
 												, $score, $ranking_id
 										);
+						
 						$result = $wpdb->query( $sql );
 						$check = ( $result !== false ) && $check;
 					}
@@ -462,8 +477,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 						}
 					}
 				} else {
-					$sub_step = 1;
 					$params['step'] = 7;
+					$sub_step = 1;
 					// this ranking is finished, so clear the update log for this ranking
 					if ( $check === true ) {
 						$sql = "DELETE FROM {$prefix}rankings_updatelog WHERE ranking_id = %d ";
@@ -490,13 +505,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 						$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
 						if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
-							$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+							$sql .= "JOIN {$prefix}rankings_updatelog l 
+										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
 						$sql .= "WHERE r.user_defined = 1 ORDER BY r.id ASC LIMIT 1";
 					} else {
 						$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
 						if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
-							$sql .= "JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
+							$sql .= "JOIN {$prefix}rankings_updatelog l 
+										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
 						$sql .= "WHERE r.user_defined = 1 AND r.id > %d ORDER BY r.id ASC LIMIT 1";
 						$sql = $wpdb->prepare( $sql, $ranking_id );
@@ -531,35 +548,41 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								);
 		}
 		
-		if ( ! self::$debug ) {
-			header( 'application/json' );
+		// extra action for each step (0-8)
+		do_action( "footballpool_score_calc_step{$step}", $params );
+		
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
+			if ( $step > 0 ) {
+				printf( '<p>%s...</p>', $msg[$step - 1] );
+			} else {
+				echo $output;
+			}
+			unset( $params['colorbox_html'] );
+			$url = add_query_arg( $params, "{$_SERVER['PHP_SELF']}?page=footballpool-score-calculation" );
+			if ( $params['step'] > 0 && $params['step'] <= 8 ) {
+				printf( '<script>location.href = "%s";</script>', $url );
+			}
+		} else {
+			header( 'Content-Type: application/json' );
 			echo json_encode( $params );
 			// always die when doing ajax requests
 			die();
-		} else {
-			unset( $params['colorbox_html'] );
-			$url = add_query_arg( $params, "{$_SERVER['PHP_SELF']}?page=footballpool-score-debug" );
-			printf( '<p>step %d completed.</p><p><a href="%s">&raquo; next step</a></p>', $step, $url );
-			var_dump( $params );
 		}
 	}
 	
 	public function admin() {
-		// add to admin menu for debugging
-		self::$start = 1;
-		self::$debug = true;
+		self::$start = ( Football_Pool_Utils::post_string( 'action' ) == 'choose_calculation_type' ) ? 1 : 0;
 		self::process();
 	}
 	
 	private function get_user_set( $offset, $amount ) {
 		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT %d, %d"
-								, $offset, $amount );
+		$sql = $wpdb->prepare( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT %d, %d", $offset, $amount );
 		return $wpdb->get_col( $sql );
 	}
 	
 	private function post_int( $key, $default = 0 ) {
-		if ( self::$debug ) {
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			return Football_Pool_Utils::get_int( $key, $default );
 		} else {
 			return Football_Pool_Utils::post_int( $key, $default );
@@ -567,7 +590,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 	}
 	
 	private function post_string( $key, $default = '' ) {
-		if ( self::$debug ) {
+		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			return Football_Pool_Utils::get_str( $key, $default );
 		} else {
 			return Football_Pool_Utils::post_str( $key, $default );

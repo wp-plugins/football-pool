@@ -1,7 +1,6 @@
 <?php
 class Football_Pool_Groups_Page {
-	public function page_content()
-	{
+	public function page_content() {
 		$group_id = Football_Pool_Utils::get_string( 'group' );
 		
 		$groups = new Football_Pool_Groups;
@@ -26,6 +25,6 @@ class Football_Pool_Groups_Page {
 			}
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_groups_page_html', $output );
 	}
 }

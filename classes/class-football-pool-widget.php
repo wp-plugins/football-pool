@@ -106,7 +106,7 @@ abstract class Football_Pool_Widget extends WP_Widget {
 	 */
 	public function __construct( $classname, $widgetname, $description ) {
 		// widget actual processes
-		$description = __( 'Football pool plugin', FOOTBALLPOOL_TEXT_DOMAIN ) . ': ' . __( $description, FOOTBALLPOOL_TEXT_DOMAIN );
+		$description = __( 'Football pool plugin', FOOTBALLPOOL_TEXT_DOMAIN ) . ' &raquo; ' . __( $description, FOOTBALLPOOL_TEXT_DOMAIN );
 		parent::__construct( $classname, $widgetname, array( 'description' => $description ) );
 	}
 	

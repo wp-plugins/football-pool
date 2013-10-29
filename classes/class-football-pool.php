@@ -186,9 +186,6 @@ class Football_Pool {
 			/** END UPDATES **/
 		}
 		
-		// all database installs and updates are finished, so update the db version value
-		Football_Pool_Utils::update_fp_option( 'db_version', FOOTBALLPOOL_DB_VERSION );
-
 		// don't (re)install data if user option is set to keep all data (option = 1)
 		if ( Football_Pool_Utils::get_fp_option( 'keep_data_on_uninstall', 0, 'int' ) == 0 ) {
 			// create pages
@@ -210,6 +207,13 @@ class Football_Pool {
 				self::create_page($page);
 			}
 		}
+		
+		// if this is a first time install, set the 'keep_data_on_uninstall' to true
+		$plugin_ver = self::get_db_version();
+		if ( $plugin_ver == false ) Football_Pool_Utils::update_fp_option( 'keep_data_on_uninstall', 1 );
+		
+		// all database installs and updates are finished, so update the db version value
+		Football_Pool_Utils::update_fp_option( 'db_version', FOOTBALLPOOL_DB_VERSION );
 	}
 	
 	// checks if plugin is at least a certain version (makes sure it has sufficient comparison decimals)
@@ -339,21 +343,6 @@ class Football_Pool {
 			);
 		} else {
 			// the admin
-			
-			// image uploader scripts
-			if ( FOOTBALLPOOL_WP_MEDIA ) {
-				wp_enqueue_media();
-			} else {
-				if ( ! wp_script_is( 'media-upload', 'queue' ) ) {
-					wp_enqueue_script( 'media-upload' );
-				}
-				if ( ! wp_script_is( 'thickbox', 'queue' ) ) {
-					wp_enqueue_script( 'thickbox' );
-				}
-				if ( ! wp_style_is( 'thickbox', 'queue' ) ) {
-					wp_enqueue_style( 'thickbox' );
-				}
-			}
 			
 			// global admin js & css
 			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );

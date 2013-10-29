@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.2.5
+Stable tag: 2.3.4
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -31,10 +31,11 @@ A special thank you to all the translators that found time to translate the many
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Several widgets and shortcodes to display info from the championship or the pool.
 * Extra info pages for venues and teams.
+* Extensible via filters and actions.
 
 **Translations**
 
-At the moment the plugin is available in English, Dutch, Spanish, French and (partly in) Polish. If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language.
+If someone wants to help translate the plugin in another language, or make the existing translations better ;), please contact me at wordpressfootballpool [at] gmail [dot] com. The <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> contains information on how to use a different language. Available languages in the plugin can be found on the "<a href="http://wordpress.org/plugins/football-pool/other_notes/">Other notes</a>" tab.
 
 **Other things**
 
@@ -44,7 +45,7 @@ At the moment the plugin is available in English, Dutch, Spanish, French and (pa
 If you find bugs, please contact me via the <a href="http://wordpress.org/support/plugin/football-pool">support forum</a>, or at wordpressfootballpool [at] gmail [dot] com. If you like the plugin, please rate it on the <a href="http://wordpress.org/extend/plugins/football-pool/">plugin page</a> on WordPress.org.
 
 == Installation ==
-**Important:** If you want to use a translated version of the pool, make sure you set the correct WPLANG. To use your own custom translation see FAQ for more information on translating the plugin.
+**Important:** If you want to use a translated version of the pool, make sure you set the correct <a href="http://codex.wordpress.org/Installing_WordPress_in_Your_Language">WPLANG</a>. To use your own custom translation see the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> for more information on translating the plugin.
 
 1. Download `football-pool.zip` from the plugin panel or unzip the file and upload the folder `football-pool` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the `Plugins` panel in WordPress
@@ -55,13 +56,16 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool users
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
-9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the files in the following directory: `/wp-content/plugins/highcharts-js/`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the `highcharts.js` file in the following directory: `/wp-content/plugins/highcharts-js/`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
 For easier/front-end user registration you may consider using an extra plugin and widget. E.g. <a href="http://wordpress.org/extend/plugins/custom-user-registration-lite/">Custom User Registration Lite</a>. Just don't forget the extra user meta that this plugin needs. But you can also use the Login/logout button Widget that is included with this plugin; the plugin adds the needed extra inputs to the WordPress register screen.
 
 == Frequently Asked Questions ==
+
+= The plugin won't calculate the ranking =
+If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve this problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
 
 = The charts are gone! What happened? =
 I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
@@ -93,7 +97,7 @@ Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is
 If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
 
 = I installed the plugin, but there are no matches. What happened? =
-Version 2.0.0 does not add the matches on install. But it does contain a match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
+Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
@@ -122,7 +126,7 @@ The Football Pool plugin is available in the following languages:
 
 == Incompatible plugins ==
 
-The following plugins have been reported as not compatible with the Football Pool plugin. If you have a solution and/or are the author of the plugin you can contact me on wordpressfootballpool [at] gmail [dot] com. If you're having problems with another plugin that is not in the list please let me know.
+The following plugins have been reported as not compatible with the Football Pool plugin. If you have a solution and/or are the author of the plugin you can contact me on wordpressfootballpool [at] gmail [dot] com. If you're having problems with another plugin that is not in the list, please let me know.
 
 * DB Cache Reloaded Fix (v2.3)
 
@@ -152,12 +156,24 @@ Shortcodes have changed in this version. Old shortcodes are still supported but 
 Default language is now English. Change de `WPLANG` constant if you want to use another language. If you're upgrading from a version prior to v1.3 you get a warning that the column `max_answers` already exists. That's fine, the plugin will work and you won't get the warning again. 
 
 = 1.4.5 =
-Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
+Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
 
+= 2.3.4 =
+* Bug fix: in some setups the division of the score calculation in multiple sub-steps caused the scores to be multiplied by the number of sub-steps (e.g. 2 or 3). Thanks Fares and Bart for reporting the bug and helping me with the debug info.
+* Bug fix: tinymce button added the wrong code for the [fp-predictions] shortcode to the text editor (thanks pjbursnall for reporting the bug).
+
+= 2.3.3 =
+* Bug fix: internal server error (bad header) in score calculation AJAX call (thanks Josh and sindris for reporting the bug and giving me the information from the error log).
+* Bug fix: removing users as a player resulted in an undefined function error (thanks Josh for reporting the bug).
+
+= 2.3.1 =
+* Bug fix: plugin broke the "featured image" function of WordPress (thanks CornelB for reporting the bug).
+* Option to keep data on uninstall is now enabled by default.
+
 = 2.3.0 =
-* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling.
+* Updated score calculation: better support for a large user base and moved the calculation to a modal pop-up with AJAX handling (with fallback to 'normal' calculation).
 * Added pagination to the user admin page (default is 20 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
 * Added pagination to the matches admin page (default is 50 per page; because of a bug in WP 3.6 and below it is not possible to change it in the screen options tab, so change it in the define.php file).
 * New feature: link a question to a match. Linked questions are displayed beneath the match on the prediction form.
@@ -300,7 +316,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Added Polish translation. (thanks Łukasz Ciastoń)
 
 = 1.4 =
-* Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See FAQ for more information. (thanks dcollis)
+* Translations (i18n) are working. Plugin contains en_GB translation for my Dutch version of the pool and a pot-file for users that want to make their own translation. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> for more information. (thanks dcollis)
 * Bonus questions and user answers can now contain more than 200 characters.
 * Style updates.
 
@@ -349,7 +365,7 @@ Highcharts API was removed from the plugin. See FAQ or the <a href="http://wordp
 * Fix for the problem that - on a clean install - the default data for the pool was not loaded (matches, teams, etc.) in the database. (Thanks Okoth1)
 
 = 1.1.2 =
-* Fixed a bug in the shoutbox admin (unexpected T_PAAMAYIM_NEKUDOTAYIM).
+* Fixed a bug in the shoutbox admin (`unexpected T_PAAMAYIM_NEKUDOTAYIM`).
 
 = 1.1.1 =
 * Added pot/po/mo files with the new texts from the shoutbox widget.

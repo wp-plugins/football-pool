@@ -26,6 +26,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#charts">Using charts</a></li>
+				<li><a href="#hooks">Extending the plugin: Actions and Filters</a></li>
 				<li><a href="#the-end">Anything else?</a></li>
 			</ol>
 		</p>
@@ -94,7 +95,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<th>user predicted</th>
 			<th>points scored</th>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>3-1</td>
 			<td>1-0</td>
 			<td>
@@ -110,7 +111,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $totopoints; ?> + <?php echo $diffpoints; ?> = <?php echo $totopoints + $diffpoints; ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>3-1</td>
 			<td>3-0</td>
 			<td>
@@ -126,7 +127,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>2-1</td>
 			<td>1-1</td>
 			<td>
@@ -139,7 +140,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>0-0</td>
 			<td>no points</td>
 		</tr>
-		<tr class="alternate">
+		<tr>
 			<td>1-1</td>
 			<td>1-1</td>
 			<td>
@@ -260,27 +261,27 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help" caption="Minimal data">
 			<tr><th>column</th><th>description</th><th>example</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">play_date</td>
 				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
 				<td>2012-10-28 18:00</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">home_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>The Netherlands</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">away_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>England</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">stadium</td>
 				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
 				<td>Olympic Stadium</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">match_type</td>
 				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
 				<td>Quarter final</td>
@@ -294,92 +295,92 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help" caption="Full data">
 			<tr><th>column</th><th>description</th><th>example</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">play_date</td>
 				<td>The date and start time of the match in Y-m-d H:i notation (<a href="#times">UTC</a>).</td>
 				<td>2012-10-28 18:00</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">home_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>The Netherlands</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">away_team</td>
 				<td>Name of a team. Teams may be added upfront on the <a href="?page=footballpool-teams">teams admin page</a>.</td>
 				<td>England</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">stadium</td>
 				<td>Name of a stadium. Stadiums may be added upfront on the <a href="?page=footballpool-venues">venues admin page</a>.</td>
 				<td>Olympic Stadium</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">match_type</td>
 				<td>Matches may be grouped with a match type. Match types may be added upfront on the <a href="?page=footballpool-matchtypes">match type admin page</a>.</td>
 				<td>Quarter final</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">home_team_photo</td>
 				<td>Team photo for the home team. Full URL or path relative to "assets/images/teams/".</td>
 				<td>netherlands.jpg</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">home_team_flag</td>
 				<td>Flag image for the home team. Full URL or path relative to "assets/images/flags/".</td>
 				<td>netherlands.png</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">home_team_link</td>
 				<td>Link to a page or website with information about the home team.</td>
 				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=95/index.html</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">home_team_group</td>
 				<td>The group in which the home team is placed.</td>
 				<td>Group A</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">home_team_group_order</td>
 				<td>The order in a group in case multiple teams have the same scores.</td>
 				<td>1</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">home_team_is_real</td>
 				<td>Is the home team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
 				<td>1</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">away_team_photo</td>
 				<td>Team photo for the away team. Full URL or path relative to "assets/images/teams/".</td>
 				<td>england.jpg</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">away_team_flag</td>
 				<td>Flag image for the away team. Full URL or path relative to "assets/images/flags/".</td>
 				<td>england.png</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">away_team_link</td>
 				<td>Link to a page or website with information about the away team.</td>
 				<td>http://www.uefa.com/uefaeuro/season=2012/teams/team=39/index.html</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">away_team_group</td>
 				<td>The group in which the away team is placed.</td>
 				<td>Group A</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">away_team_group_order</td>
 				<td>The order in a group in case multiple teams have the same scores.</td>
 				<td>1</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">away_team_is_real</td>
 				<td>Is the away team a real team? Example of a real team "The Netherlands", a non-real team "Winner match 30". Can be 1 or 0.</td>
 				<td>1</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">stadium_photo</td>
 				<td>Photo of the stadium where the match is played. Full URL or path relative to "assets/images/stadiums/".</td>
 				<td>olympic-stadium.jpg</td>
@@ -402,19 +403,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">match</td>
 				<td>The numeric id for the match</td>
 				<td>match id (integer)</td>
 				<td>none</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">question</td>
 				<td>The numeric id for the question</td>
 				<td>question id (integer)</td>
 				<td>none</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">text</td>
 				<td>text to display if no predictions can be shown (invalid id, or predictions not publicly viewable)</td>
 				<td>string</td>
@@ -431,25 +432,25 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">user</td>
 				<td>The numeric id for user</td>
 				<td><a href="users.php">user id</a> (integer)</td>
 				<td>current user</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">ranking</td>
 				<td>The numeric id for the ranking from which the score has to be taken</td>
 				<td><a href="?page=footballpool-groups">ranking id</a> (integer)</td>
 				<td>default ranking</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">date</td>
 				<td>Calculate the score untill this date.</td>
 				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
 				<td>now</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">text</td>
 				<td>text to display if no user or no score is found</td>
 				<td>string</td>
@@ -469,7 +470,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">id</td>
 				<td>The numeric id for the group</td>
 				<td><a href="?page=footballpool-groups">group id</a> (integer)</td>
@@ -487,31 +488,31 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">num</td>
 				<td>The number of rows in the ranking (top N)</td>
 				<td>1..n (integer)</td>
 				<td>5</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">league</td>
 				<td>Show ranking for this league.<br />If the pool does not use leagues, then this parameter is ignored.</td>
 				<td><a href="?page=footballpool-leagues">league id</a> (integer)</td>
 				<td>all users</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">date</td>
 				<td>Calculate the ranking untill this date.</td>
 				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
 				<td>now</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">ranking</td>
 				<td>Show scores calculated in this ranking.<br />Defaults to all matches and all questions.</td>
 				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
 				<td></td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">show_num_predictions</td>
 				<td>If set to true also the number of predictions a user saved (matches and answers to questions) is shown in the ranking.</td>
 				<td>1 = true<br/>0 = false</td>
@@ -541,19 +542,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">match</td>
 				<td>Collection of <a href="?page=footballpool-games">match ids</a>.</td>
 				<td>see formats above</td>
 				<td></td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">matchtype</td>
 				<td>Collection of <a href="?page=footballpool-matchtypes">match type ids</a>.</td>
 				<td>see formats above</td>
 				<td></td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">question</td>
 				<td>Collection of <a href="?page=footballpool-bonus">question ids</a>.</td>
 				<td>see formats above</td>
@@ -581,13 +582,13 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">match</td>
 				<td>Collection of <a href="?page=footballpool-games">match ids</a>.</td>
 				<td>see formats above</td>
 				<td></td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">matchtype</td>
 				<td>Collection of <a href="?page=footballpool-matchtypes">match type ids</a>.</td>
 				<td>see formats above</td>
@@ -606,13 +607,13 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">title</td>
 				<td>Title parameter for the &lt;a href&gt;</td>
 				<td>string</td>
 				<td>empty; don't display a tooltip</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">new</td>
 				<td>Open link in a new window/tab.</td>
 				<td>integer: 0 (no) or 1 (yes)</td>
@@ -630,19 +631,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">date</td>
 				<td>The date and time to count down to.</td>
 				<td>Y-m-d H:i</td>
 				<td>empty</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">match</td>
 				<td>ID of the match to count down to.</td>
 				<td><a href="?page=footballpool-games">match id</a> (integer)</td>
 				<td>empty</td>
 			</tr>
-			<tr class="alternate">
+			<tr>
 				<td class="row-title">texts</td>
 				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
 				If value is "none" then no texts are added.<br />
@@ -650,7 +651,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td>One of the following:<ul><li>- string;string;string;string</li><li>- none</li></ul></td>
 				<td>empty; default texts are used.</td>
 			</tr>
-			<tr class="">
+			<tr>
 				<td class="row-title">display</td>
 				<td>Display counter inline or as a separate block.</td>
 				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
@@ -678,7 +679,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For now you have to follow these steps:
 		<ol>
 			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
-			<li>Place the files in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
+			<li>Place the <span class="code">highcharts.js</span> file in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
 		</ol>
 		</p>
@@ -691,6 +692,136 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
+		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
+		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>.</p>
+		
+		<script>
+		function show_footballpool_hooks() {
+			var hooks_table = jQuery( '#hooks-table' );
+			if ( hooks_table.is( ':hidden' ) ) {
+				hooks_table.slideDown( 'slow' );
+			} else {
+				hooks_table.slideUp( 'slow' );
+			}
+		}
+		</script>
+		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
+		<!--
+		<a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.--></p>
+		
+		<div id="hooks-table" style="display: none;">
+		<table class="widefat help">
+			<tr><th>hook</th><th>description</th><th>type</th></tr>
+			<tr>
+				<td class="row-title">footballpool_shortcode_html_{$shortcode}</td>
+				<td>Alter the HTML of a shortcode. Replace {$shortcode} with the actual shortcode name, e.g. <span class="code">footballpool_shortcode_html_fp-ranking</span>.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_widget_html_{$widget}</td>
+				<td>Alter the HTML of a widget. Replace {$widget} with the widget name, e.g. <span class="code">footballpool_widget_html_group</span>. Except for widgets with special hooks (see below): ranking widget</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_thead</td>
+				<td>Overwrite (or add) the table head of the ranking widget.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_before_rank</td>
+				<td>Perform an action before the rank of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_after_rank</td>
+				<td>Perform an action after the rank of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_before_points</td>
+				<td>Perform an action before the total points of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_ranking_widget_after_points</td>
+				<td>Perform an action after the total points of a player is displayed. User ID of current player is passed to the callback.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_lastgames_query</td>
+				<td>Query returns the last games from the tournament.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_matches</td>
+				<td>Alter the set of matches in the plugin.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_get_groups</td>
+				<td>Alter the set of groups.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_composition</td>
+				<td>Alter the array that holds the teams in a group.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_array</td>
+				<td>Alter the ranking array that is used for the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_plays</td>
+				<td>Alter the matches array for a given group.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_thead</td>
+				<td>Alter the html of the table header in the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_group_standing_row</td>
+				<td>Alter the html of a row in the group standing table.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_before_save</td>
+				<td>Perform an action before a shoutbox message is saved.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_after_save</td>
+				<td>Perform an action after a shoutbox message is saved.</td>
+				<td>action</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_messages</td>
+				<td>Alter the array of shoutbox messages.</td>
+				<td>filter</td>
+			</tr>
+			<tr>
+				<td class="row-title">footballpool_shoutbox_widget_html</td>
+				<td>Alter the html of a single message in the shoutbox widget.</td>
+				<td>filter</td>
+			</tr>
+
+		</table>
+		</div>
+		
+		<h3>examples:</h3>
+		<pre class="code">
+// to add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
+function add_a_div( $html ) {
+	return '&lt;div class="extra-div">' . $html . '&lt;/div>';
+}
+add_filter( 'footballpool_shortcode_html_fp-ranking', 'add_a_div' );		
+		</pre>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>

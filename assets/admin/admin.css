@@ -27,6 +27,8 @@ input.score { width: 3em; }
 
 table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
+table.help tr:nth-of-type(1) { background-color: #e0e0e0; }
+table.help tr:nth-of-type(even) { background-color: #fcfcfc; }
 
 table.user-list tr:hover, 
 table.user-answers tr:hover { 
@@ -135,10 +137,10 @@ div.ranking-log span { padding-right: 10px; }
 #progress .animation { text-align: center; }
 #progress .error { color: red; }
 
-#progress .ui-progressbar {
+.progress .ui-progressbar {
 	height: 15px;
 }
-#progress #progressbar {
+.progress #progressbar {
 	margin-top: 15px;
 }
 

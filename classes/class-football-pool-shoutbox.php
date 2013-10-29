@@ -9,10 +9,9 @@ class Football_Pool_Shoutbox {
 				FROM {$prefix}shoutbox s, {$wpdb->users} u 
 				WHERE s.user_id = u.ID 
 				ORDER BY s.date_entered DESC, s.id DESC";
-		if ( $nr > 0 )
-			$sql .= " LIMIT %d";
+		if ( $nr > 0 ) $sql .= " LIMIT %d";
 		$sql = $wpdb->prepare( $sql, $nr );
-		return $wpdb->get_results( $sql, ARRAY_A );
+		return apply_filters( 'footballpool_shoutbox_messages', $wpdb->get_results( $sql, ARRAY_A ) );
 	}
 	
 	public function get_message( $id ) {
@@ -39,7 +38,9 @@ class Football_Pool_Shoutbox {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}shoutbox ( user_id, shout_text, date_entered ) 
 									VALUES ( %d, %s, %s )",
 									$user, $text, $shout_date );
+			do_action( 'footballpool_shoutbox_before_save', $text, $user );
 			$wpdb->query( $sql );
+			do_action( 'footballpool_shoutbox_after_save', $text, $user );
 		}
 	}
 	

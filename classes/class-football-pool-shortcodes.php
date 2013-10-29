@@ -75,7 +75,7 @@ class Football_Pool_Shortcodes {
 		}
 		
 		if ( count( $the_matches ) > 0 ) $output .= $matches->print_matches( $the_matches );
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-matches', $output );
 	}
 	
 	//[fp-predictions] 
@@ -124,7 +124,7 @@ class Football_Pool_Shortcodes {
 			}
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-predictions', $output );
 	}
 	
 	//[fp-user-score] 
@@ -156,7 +156,7 @@ class Football_Pool_Shortcodes {
 			if ( $score != null ) $output = $score;
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-user-score', $output );
 	}
 	
 	//[fp-predictionform] 
@@ -203,7 +203,7 @@ class Football_Pool_Shortcodes {
 		$output .= $pool->prediction_form_questions( $questions, true, $id );
 		$output .= $pool->prediction_form_end();
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-predictionform', $output );
 	}
 	
 	//[fp-group]
@@ -223,7 +223,7 @@ class Football_Pool_Shortcodes {
 			$output = $groups->print_group_standing( $id, 'wide', 'shortcode' );
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-group', $output );
 	}
 	
 	//[fp-ranking] 
@@ -317,10 +317,10 @@ class Football_Pool_Shortcodes {
 			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-ranking', $output );
 	}
 	
-	//[countdown]
+	//[fp-countdown]
 	public function shortcode_countdown( $atts ) {
 		extract( shortcode_atts( array(
 					'date' => '',
@@ -379,19 +379,19 @@ class Football_Pool_Shortcodes {
 					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
 					</script>";
 		
-		return $output;
+		return apply_filters( 'footballpool_shortcode_html_fp-countdown', $output );
 	}
 	
-	//[link slug=""]
+	//[fp-link slug=""]
 	public function shortcode_link( $atts ) {
-		$link = '';
+		$output = '';
 		if ( isset( $atts['slug'] ) ) {
 			$id = Football_Pool_Utils::get_fp_option( 'page_id_' . $atts['slug'] );
 			if ( $id ) {
-				$link = get_page_link( $id );
+				$output = get_page_link( $id );
 			}
 		}
-		return $link;
+		return apply_filters( 'footballpool_shortcode_html_fp-link', $output );
 	}
 	
 	//[fp-register]
@@ -409,52 +409,61 @@ class Football_Pool_Shortcodes {
 		$content = ( $content > '' ) ? $content : __( 'register', FOOTBALLPOOL_TEXT_DOMAIN );
 		$target = ( $new == '1' ) ? ' target="_blank"' : '';
 		
-		return sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
+		$output = sprintf( '<a href="%s/wp-login.php?action=register%s"%s%s>%s</a>'
 						, $site_url
 						, $redirect
 						, $title
 						, $target
 						, $content
-				);
+					);
+		return apply_filters( 'footballpool_shortcode_html_fp-register', $output );
 	}
 	
 	//[webmaster]
 	public function shortcode_webmaster( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'webmaster' );
+		$output = Football_Pool_Utils::get_fp_option( 'webmaster' );
+		return apply_filters( 'footballpool_shortcode_html_fp-webmaster', $output );
 	}
 
 	//[bank]
 	public function shortcode_bank( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'bank' );
+		$output = Football_Pool_Utils::get_fp_option( 'bank' );
+		return apply_filters( 'footballpool_shortcode_html_fp-bank', $output );
 	}
 
 	//[money]
 	public function shortcode_money( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'money' );
+		$output = Football_Pool_Utils::get_fp_option( 'money' );
+		return apply_filters( 'footballpool_shortcode_html_fp-money', $output );
 	}
 
 	//[start]
 	public function shortcode_start( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'start' );
+		$output = Football_Pool_Utils::get_fp_option( 'start' );
+		return apply_filters( 'footballpool_shortcode_html_fp-start', $output );
 	}
 
 	//[totopoints]
 	public function shortcode_totopoints( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		$output = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		return apply_filters( 'footballpool_shortcode_html_fp-totopoints', $output );
 	}
 
 	//[fullpoints]
 	public function shortcode_fullpoints( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$output = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		return apply_filters( 'footballpool_shortcode_html_fp-fullpoints', $output );
 	}
 
 	//[goalpoints]
 	public function shortcode_goalpoints( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+		$output = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+		return apply_filters( 'footballpool_shortcode_html_fp-goalpoints', $output );
 	}
 
 	//[fp-diffpoints]
 	public function shortcode_diffpoints( $atts ) {
-		return Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		$output = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		return apply_filters( 'footballpool_shortcode_html_fp-diffpoints', $output );
 	}
 }

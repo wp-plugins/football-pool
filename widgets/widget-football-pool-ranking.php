@@ -93,22 +93,28 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 			
 			$i = 1;
 			echo '<table class="pool-ranking ranking-widget">';
-			if ( $show_num_predictions ) {
-				printf( '<tr>
-							<th></th>
-							<th class="user">%s</th>
-							<th class="num-predictions">%s</th>
-							<th class="score">%s</th>
-						</tr>'
-						, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
-						, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
-						, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
-				);
+			if ( has_action( 'footballpool_ranking_widget_thead' ) ) {
+				// overwrite standard thead if action is defined
+				do_action( 'footballpool_ranking_widget_thead', $instance );
+			} else {
+				if ( $show_num_predictions ) {
+					printf( '<tr>
+								<th></th>
+								<th class="user">%s</th>
+								<th class="num-predictions">%s</th>
+								<th class="score">%s</th>
+							</tr>'
+							, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
+					);
+				}
 			}
-			
 			foreach ( $rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
+				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
+				
 				if ( $show_num_predictions ) {
 					if ( array_key_exists( $row['user_id'], $predictions ) ) {
 						$num_predictions = $predictions[$row['user_id']];
@@ -120,20 +126,20 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 					$num_predictions = '';
 				}
 				
-				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
-				printf( '<tr class="%s">
-							<td>%d.</td>
-							<td><a href="%s">%s%s</a></td>
-							%s<td class="score">%d</td>
-						</tr>'
-						, $class
-						, $i++
+				printf( '<tr class="%s">', $class );
+				do_action( 'footballpool_ranking_widget_before_rank', $row['user_id'], $instance );
+				printf( '<td>%d.</td>', $i++ );
+				do_action( 'footballpool_ranking_widget_after_rank', $row['user_id'], $instance );
+				printf( '<td><a href="%s">%s%s</a></td>'
 						, $url
 						, $pool->get_avatar( $row['user_id'], 'small' )
-						, $row["user_name"]
-						, $num_predictions
-						, $row['points']
+						, $row["user_name"] 
 				);
+				echo $num_predictions;
+				do_action( 'footballpool_ranking_widget_before_points', $row['user_id'], $instance );
+				printf('<td class="score">%d</td>', $row['points'] );
+				do_action( 'footballpool_ranking_widget_after_points', $row['user_id'], $instance );
+				echo '</tr>';
 			}
 			echo '</table>';
 		} else {

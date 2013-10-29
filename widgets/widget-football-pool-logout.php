@@ -32,14 +32,25 @@ class Football_Pool_Logout_Widget extends Football_Pool_Widget {
 		
 		//$return_url = apply_filters( 'the_permalink', get_permalink( @get_the_ID() ) );
 		$return_url = Football_Pool_Utils::full_url();
+		$output = '';
 		
 		global $current_user;
 		get_currentuserinfo();
 		if ( $current_user->ID > 0 ) {
-			echo '<a class="widget button logout" href="', wp_logout_url( $return_url ), '" title="Logout">', __( 'Log out', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
+			$output .= sprintf( '<a class="widget button logout" href="%s" title="%s">%s</a>'
+								, wp_logout_url( $return_url )
+								, esc_attr( __( 'Log out', FOOTBALLPOOL_TEXT_DOMAIN ) )
+								, __( 'Log out', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 		} else {
-			echo '<a class="widget button login" href="', wp_login_url( $return_url ), '" title="Login">', __( 'Log in', FOOTBALLPOOL_TEXT_DOMAIN ), '</a>';
+			$output .= sprintf( '<a class="widget button logout" href="%s" title="%s">%s</a>'
+								, wp_login_url( $return_url )
+								, esc_attr( __( 'Log in', FOOTBALLPOOL_TEXT_DOMAIN ) )
+								, __( 'Log in', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 		}
+		
+		echo apply_filters( 'footballpool_widget_html_logout', $output );
 	}
 	
 	public function __construct() {

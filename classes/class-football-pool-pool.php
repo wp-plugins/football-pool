@@ -226,52 +226,54 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( is_array( $users ) && count( $users ) > 0 ) {
-			$num_predictions = array();
 			$users = implode( ',', $users );
-			
-			// matches
-			if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-				$sql = "SELECT user_id, COUNT(*) AS num_predictions 
-						FROM {$prefix}predictions
-						WHERE user_id IN ( {$users} ) GROUP BY user_id";
-			} else {
-				$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
-						FROM {$prefix}predictions p
-						JOIN {$prefix}rankings_matches r 
-							ON ( r.match_id = p.match_id AND r.ranking_id = {$ranking_id} ) 
-						WHERE p.user_id IN ( {$users} ) GROUP BY p.user_id";
-			}
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			
-			foreach ( $rows as $row ) {
-				$num_predictions[$row['user_id']] = $row['num_predictions'];
-			}
-			
-			// questions
-			if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
-				$sql = "SELECT user_id, COUNT(*) AS num_predictions 
-						FROM {$prefix}bonusquestions_useranswers
-						WHERE user_id IN ( {$users} ) GROUP BY user_id";
-			} else {
-				$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
-						FROM {$prefix}bonusquestions_useranswers p
-						JOIN {$prefix}rankings_bonusquestions r 
-							ON ( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
-						WHERE p.user_id IN ( {$users} ) GROUP BY p.user_id";
-			}
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			
-			foreach ( $rows as $row ) {
-				if ( array_key_exists( $row['user_id'], $num_predictions) ) {
-					$num_predictions[$row['user_id']] += $row['num_predictions'];
-				}
-			}
-			
-			// return resulting array of user ids with their total number of predictions
-			return $num_predictions;
+			$users = "WHERE p.user_id IN ( {$users} )";
 		} else {
-			return false;
+			$users = '';
 		}
+		
+		$num_predictions = array();
+		
+		// matches
+		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
+			$sql = "SELECT p.user_id, COUNT( * ) AS num_predictions 
+					FROM {$prefix}predictions p
+					{$users} GROUP BY p.user_id";
+		} else {
+			$sql = "SELECT p.user_id, COUNT( * ) AS num_predictions 
+					FROM {$prefix}predictions p
+					JOIN {$prefix}rankings_matches r 
+						ON ( r.match_id = p.match_id AND r.ranking_id = {$ranking_id} ) 
+					{$users} GROUP BY p.user_id";
+		}
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		
+		foreach ( $rows as $row ) {
+			$num_predictions[$row['user_id']] = $row['num_predictions'];
+		}
+		
+		// questions
+		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
+			$sql = "SELECT p.user_id, COUNT( * ) AS num_predictions 
+					FROM {$prefix}bonusquestions_useranswers p
+					{$users} GROUP BY p.user_id";
+		} else {
+			$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
+					FROM {$prefix}bonusquestions_useranswers p
+					JOIN {$prefix}rankings_bonusquestions r 
+						ON ( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
+					{$users} GROUP BY p.user_id";
+		}
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		
+		foreach ( $rows as $row ) {
+			if ( array_key_exists( $row['user_id'], $num_predictions) ) {
+				$num_predictions[$row['user_id']] += $row['num_predictions'];
+			}
+		}
+		
+		// return resulting array of user ids with their total number of predictions
+		return $num_predictions;
 	}
 	
 	public function print_pool_ranking( $league, $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
@@ -655,7 +657,7 @@ class Football_Pool_Pool {
 			$output .= '<ul class="multi-select">';
 			foreach ( $options as $option ) {
 				// strip out any empty options
-				if ( str_replace( array( ' ', "\t", "\r", "\n" ), array( '', '', '', '' ), $option ) != '' ) {
+				if ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ) {
 					$answer = $question['answer'];
 					$js = sprintf( 'onclick="jQuery( \'#_bonus_%d_userinput\' ).val( \'\' )" ', $question['id'] );
 					
