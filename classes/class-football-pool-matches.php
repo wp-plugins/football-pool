@@ -113,10 +113,8 @@ class Football_Pool_Matches {
 					s.name AS stadium_name, s.id AS stadium_id,
 					t.name AS matchtype, t.id AS type_id, t.id AS match_type_id
 				FROM {$prefix}matches m
-				JOIN {$prefix}stadiums s
-					ON ( m.stadium_id = s.id )
-				JOIN {$prefix}matchtypes t 
-					ON ( m.matchtype_id = t.id AND t.visibility = 1 )
+				JOIN {$prefix}stadiums s ON ( m.stadium_id = s.id )
+				JOIN {$prefix}matchtypes t ON ( m.matchtype_id = t.id AND t.visibility = 1 )
 				{$where_clause}
 				ORDER BY {$sorting}";
 	}

@@ -707,7 +707,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</script>
 		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
 		<!--
-		<a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.--></p>
+		<a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.-->
+		</p>
 		
 		<div id="hooks-table" style="display: none;">
 		<table class="widefat help">

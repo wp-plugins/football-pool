@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.3.4
+Stable tag: 2.3.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -11,7 +11,7 @@ This plugin adds a fantasy sports pool to your blog. Play against other users, p
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin also deletes all the plugin's data from the database (by default), but you may choose to keep the data by setting the 'keep data on uninstall' option on the settings page.
+This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin may also delete all the plugin's data from the database, please check the 'keep data on uninstall' option on the settings page (it is on by default since version 2.3.1).
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship and World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
@@ -159,6 +159,9 @@ Default language is now English. Change de `WPLANG` constant if you want to use 
 Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
+
+= 2.3.5 =
+* Bug fix: matches admin added timezone offset on every save (thanks BruceFeuillette for reporting the bug).
 
 = 2.3.4 =
 * Bug fix: in some setups the division of the score calculation in multiple sub-steps caused the scores to be multiplied by the number of sub-steps (e.g. 2 or 3). Thanks Fares and Bart for reporting the bug and helping me with the debug info.

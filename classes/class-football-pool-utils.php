@@ -229,11 +229,20 @@ class Football_Pool_Utils {
 		self::debug( $var, $type, $sleep );
 	}
 	
+	// debug function, but defaults to mail log instead of echoing the debug info and pauses by default for 100ms
+	public function debugm( $var, $type = 'mail', $sleep = 100 ) {
+		self::debug( $var, $type, $sleep );
+	}
+	
 	// Print information about a variable in a human readable way.
 	// If argument sleep is set, the execution will halt after the debug for the given 
 	// amount of micro seconds (one micro second = one millionth of a second).
 	public function debug( $var, $type = 'echo', $sleep = 0 ) {
-		if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
+		if ( defined( 'FOOTBALLPOOL_DEBUG_FORCE' ) ) {
+			$type = FOOTBALLPOOL_DEBUG_FORCE;
+		} else {
+			if ( ! FOOTBALLPOOL_ENABLE_DEBUG ) return;
+		}
 		
 		$type = str_replace( array( 'only', 'just', ' ', '-' ), '', $type );
 		
@@ -256,6 +265,13 @@ class Football_Pool_Utils {
 		$pre .= "<div style='padding:2px;color:#fff;background-color:#000;'>debug</div><div style='padding:2px;'>";
 		$post = "</div></pre>";
 		switch ( $type ) {
+			case 'mail':
+			case 'email':
+			case 'e-mail':
+				$subject = date('D d/M/Y H:i P') . ': error log';
+				$message = var_export( $var, true );
+				wp_mail( FOOTBALLPOOL_DEBUG_EMAIL, $subject, $message );
+				break;
 			case 'log':
 			case 'file':
 				$pre  = "[" . date('D d/M/Y H:i P') . "]\n";

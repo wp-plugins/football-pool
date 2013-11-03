@@ -88,7 +88,9 @@ if ( function_exists( 'wp_enqueue_media' ) ) {
 	define( 'FOOTBALLPOOL_WP_MEDIA', false );
 }
 
-// dev environment values
+// debug
+// define( 'FOOTBALLPOOL_DEBUG_FORCE', 'file' );
+define( 'FOOTBALLPOOL_DEBUG_EMAIL', 'wordpressfootballpool@gmail.com' );
 if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
 	$wpdb->show_errors();

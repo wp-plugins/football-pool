@@ -408,8 +408,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->matches;
 		
-		$num_matches = count( $rows );
-		$pagination = new Football_Pool_Pagination( $num_matches );
+		$pagination = new Football_Pool_Pagination( count( $rows ) );
 		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
 		$pagination->wrap = true;
 		
@@ -516,7 +515,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	
 	private function edit( $item_id ) {
 		$values = array(
-						'date' => '',
+						'play_date' => '',
 						'home_team_id' => '',
 						'away_team_id' => '',
 						'home_score' => '',
@@ -560,11 +559,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			return;
 		}
 		
-		$matchdate = new DateTime( $values['date'] );
+		$matchdate = new DateTime( $values['play_date'] );
 		$matchdate = $matchdate->format( 'Y-m-d H:i' );
-		$matchdate_local = Football_Pool_Utils::date_from_gmt( $matchdate );
+		$matchdate_local = Football_Pool_Utils::date_from_gmt( $values['play_date'] );
 		$cols = array(
-					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_date', $matchdate, sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ),
+					array( 'text', __( 'match date (UTC)', FOOTBALLPOOL_TEXT_DOMAIN ), 'match_date', $matchdate, sprintf( '<span title="%s">%s</span>', __( 'time of the match as it is displayed in the blog', FOOTBALLPOOL_TEXT_DOMAIN ), sprintf( __( 'local time is %s', FOOTBALLPOOL_TEXT_DOMAIN ), $matchdate_local ) ) ),
 					array( 'dropdown', __( 'home team', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_team_id', $values['home_team_id'], $teams, '' ),
 					array( 'dropdown', __( 'away team', FOOTBALLPOOL_TEXT_DOMAIN ), 'away_team_id', $values['away_team_id'], $teams, '' ),
 					array( 'text', __( 'home score', FOOTBALLPOOL_TEXT_DOMAIN ), 'home_score', $values['home_score'], '' ),
@@ -589,6 +588,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$match_date = Football_Pool_Utils::post_string( 'match_date', '0000-00-00 00:00' );
 		$stadium_id = Football_Pool_Utils::post_integer( 'stadium_id', -1 );
 		$match_type_id = Football_Pool_Utils::post_integer( 'match_type_id', -1 );
+Football_Pool_Utils::debugf("update: {$match_date}");
 		
 		$success = self::update_match( $item_id, $home_team, $away_team, $home_score, $away_score, 
 										$match_date, $stadium_id, $match_type_id );
@@ -638,14 +638,15 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			}
 			
 			$matchdate = new DateTime( $row['play_date'] );
-			$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate->format( 'Y-m-d H:i' ) ) );
-			$localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
+			$matchdate = $matchdate->format( 'Y-m-d H:i' );
+			$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate ) );
+			// $localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
 			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
 											, $localdate->format( 'U' ) );
 			if ( $date_title != $localdate_formatted ) {
 				$date_title = $localdate_formatted;
 				echo '<tr><td class="sidebar-name"></td>',
-						'<td class="sidebar-name">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
+						'<td class="sidebar-name" title="', __( 'time of the match as it is displayed in the blog', FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
 						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
 						'<td class="sidebar-name date-title" colspan="7">', $date_title, '</td>',
 						'</tr>';
@@ -662,7 +663,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			echo '<tr>',
 					'<td class="time">', $row['id'], self::hidden_input( "_match_id_{$row['id']}", $row['id'], 'return' ), '</td>',
 					'<td class="time local">', $localdate->format( 'Y-m-d H:i' ), '</td>',
-					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate->format( 'Y-m-d H:i' ), 16, '' ), '</td>',
+					'<td title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate, 16, '' ), '</td>',
 					'<td class="home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
 					'<td class="score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',
 					'<td>-</td>',
@@ -738,11 +739,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			$old_date = $old_date->format( 'Y-m-d H:i' );
 			$old_home_id = $match['home_team_id'];
 			$old_away_id = $match['away_team_id'];
-			if ( ! is_integer( $stadium_id ) || ! is_integer( $match_type_id ) ) {
-				$stadium_id = $match['stadium_id'];
-				$match_type_id = $match['match_type_id'];
-			}
+			if ( ! is_integer( $stadium_id ) ) $stadium_id = $match['stadium_id'];
+			if ( ! is_integer( $match_type_id ) ) $match_type_id = $match['match_type_id'];
 			
+Football_Pool_Utils::debugf("update 2: {$match_date}");
 			if ( ! is_integer( $home_score ) || ! is_integer( $away_score ) ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}matches SET 
 											home_team_id = %d, away_team_id = %d, 
