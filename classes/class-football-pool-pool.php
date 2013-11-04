@@ -242,8 +242,8 @@ class Football_Pool_Pool {
 		} else {
 			$sql = "SELECT p.user_id, COUNT( * ) AS num_predictions 
 					FROM {$prefix}predictions p
-					JOIN {$prefix}rankings_matches r 
-						ON ( r.match_id = p.match_id AND r.ranking_id = {$ranking_id} ) 
+					JOIN {$prefix}rankings_matches r ON 
+						( r.match_id = p.match_id AND r.ranking_id = {$ranking_id} ) 
 					{$users} GROUP BY p.user_id";
 		}
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -260,8 +260,8 @@ class Football_Pool_Pool {
 		} else {
 			$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
 					FROM {$prefix}bonusquestions_useranswers p
-					JOIN {$prefix}rankings_bonusquestions r 
-						ON ( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
+					JOIN {$prefix}rankings_bonusquestions r ON 
+						( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
 					{$users} GROUP BY p.user_id";
 		}
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -300,6 +300,9 @@ class Football_Pool_Pool {
 				$output .= '<p>'. __( 'No users have registered for this pool (yet).', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 			}
 		}
+		
+		$ranking = apply_filters( 'footballpool_ranking_array', $ranking );
+		$users = apply_filters( 'footballpool_ranking_users', $users );
 		
 		if ( count( $ranking ) > 0 ) {
 			// get number of predictions per user if option is set

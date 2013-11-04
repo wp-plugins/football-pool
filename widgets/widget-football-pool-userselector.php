@@ -57,7 +57,7 @@ class Football_Pool_User_Selector_Widget extends Football_Pool_Widget {
 		$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 		
 		$pool = new Football_Pool_Pool;
-		$rows = $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL );
+		$rows = apply_filters( 'footballpool_userselector_widget_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
 		if ( count($rows) > 0 ) {
 			$ranking = Football_Pool_Utils::request_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
 			printf( '<form action="%s" method="get">', $statisticspage );
