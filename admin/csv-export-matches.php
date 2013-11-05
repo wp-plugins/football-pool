@@ -49,15 +49,12 @@ header( 'Content-Type: text/csv', true );
 header( 'Expires: 0' );
 header( 'Pragma: public' );
 
-$header_added = false;
-
 $fp = @fopen( 'php://output', 'w' );
-foreach ( $matches as $match ) {
-	if ( ! $header_added ) {
-		fputcsv( $fp, array_keys( $match ), FOOTBALLPOOL_CSV_DELIMITER );
-		$header_added = true;
+if ( $fp && count( $matches ) > 0 ) {
+	fputcsv( $fp, array_keys( $matches[0] ), FOOTBALLPOOL_CSV_DELIMITER );
+	foreach ( $matches as $match ) {
+		fputcsv( $fp, $match, FOOTBALLPOOL_CSV_DELIMITER );
 	}
-	fputcsv( $fp, $match, FOOTBALLPOOL_CSV_DELIMITER );
 }
 fclose( $fp );
 exit;

@@ -362,7 +362,7 @@ class Football_Pool_Pool {
 			$output .= '</table>';
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_ranking_html', $output );
 	}
 	
 	private function league_image( $id ) {

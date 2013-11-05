@@ -53,6 +53,6 @@ class Football_Pool_Ranking_Page {
 
 		$output .= $pool->print_pool_ranking( $league, $current_user->ID, $ranking );
 		
-		return $output;
+		return apply_filters( 'footballpool_ranking_page_html', $output );
 	}
 }
