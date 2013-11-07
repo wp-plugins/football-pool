@@ -333,7 +333,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 
 			update_user_meta( $id, 'footballpool_league', $default_league );
-			// if user is in a non-existing league, then force the update
+			
 			$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}league_users lu 
 									LEFT OUTER JOIN {$prefix}leagues l
 										ON ( lu.league_id = l.id )
@@ -341,6 +341,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 									, $id
 							);
 			$non_existing_league = ( $wpdb->get_var( $sql ) == 1 );
+			// if user is in a non-existing league, then force the update
 			if ( $non_existing_league )
 				$pool->update_league_for_user( $id, $default_league, 'update league' );
 			else
@@ -349,6 +350,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}league_users WHERE user_id = %d AND league_id = 0", $id );
 			$wpdb->query( $sql );
 		}
+		do_action( 'footballpool_admin_add_user', $id, $default_league );
 	}
 
 	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {

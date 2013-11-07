@@ -154,6 +154,20 @@ class Football_Pool_Pool {
 		return $wpdb->get_var( $sql ); // return null if nothing found
 	}
 	
+	public function get_user_rank( $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT, $score_date = '' ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$sql = $wpdb->prepare( 
+						sprintf( "SELECT ranking FROM {$prefix}scorehistory 
+								WHERE user_id = %%d AND ranking_id = %%d 
+								AND ( %s score_date <= %%s )
+								ORDER BY score_date DESC LIMIT 1"
+								, ( $score_date == '' ? '1 = 1 OR' : '' ) 
+						) , $user, $ranking_id, $score_date );
+		return $wpdb->get_var( $sql ); // return null if nothing found
+	}
+	
 	// use league=0 to include all users
 	public function get_ranking_from_score_history( 
 									$league, 
@@ -166,7 +180,7 @@ class Football_Pool_Pool {
 				. "	COALESCE( MAX( s.total_score ), 0 ) AS points, 
 					COUNT( IF( s.full = 1, 1, NULL ) ) AS full, 
 					COUNT( IF( s.toto = 1, 1, NULL ) ) AS toto,
-					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus 
+					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus
 				FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ? '1 = 1 OR' : '' );
@@ -204,7 +218,14 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
 		$sql = $wpdb->prepare( $sql, $num_users );
-		return $wpdb->get_results( $sql, ARRAY_A );
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		$ranking = array();
+		$i = 1;
+		foreach( $rows as $row ) {
+			$row['ranking'] = $i++;
+			$ranking[] = $row;
+		}
+		return $ranking;
 	}
 	
 	public function get_pool_ranking( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
@@ -215,7 +236,14 @@ class Football_Pool_Pool {
 			global $wpdb;
 			$sql = $this->get_ranking_from_score_history( $league, $ranking_id );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( $cache_key, $rows );
+			$ranking = array();
+			$i = 1;
+			foreach( $rows as $row ) {
+				$row['ranking'] = $i++;
+				$ranking[] = $row;
+			}
+			$rows = $ranking;
+			wp_cache_set( $cache_key, $ranking );
 		}
 		
 		return $rows;
@@ -301,14 +329,14 @@ class Football_Pool_Pool {
 			}
 		}
 		
-		$ranking = apply_filters( 'footballpool_ranking_array', $ranking );
-		$users = apply_filters( 'footballpool_ranking_users', $users );
+		$filtered_ranking = apply_filters( 'footballpool_ranking_array', $ranking );
+		$filtered_users = apply_filters( 'footballpool_ranking_users', $users );
 		
-		if ( count( $ranking ) > 0 ) {
+		if ( count( $filtered_ranking ) > 0 ) {
 			// get number of predictions per user if option is set
 			$show_num_predictions = ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 );
 			if ( $show_num_predictions ) {
-				$predictions = $this->get_prediction_count_per_user( $users, $ranking_id );
+				$predictions = $this->get_prediction_count_per_user( $filtered_users, $ranking_id );
 			}
 			
 			$userpage = Football_Pool::get_page_link( 'user' );
@@ -329,7 +357,7 @@ class Football_Pool_Pool {
 									, ( $all_user_view ? '<th></th>' : '' )
 							);
 			}
-			foreach ( $ranking as $row ) {
+			foreach ( $filtered_ranking as $row ) {
 				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
 				if ( $all_user_view ) $class .= ' league-' . $row['league_id'];
 				if ( $row['user_id'] == $user ) $class .= ' currentuser';
@@ -348,7 +376,7 @@ class Football_Pool_Pool {
 									%s<td class="ranking score">%d</td>%s
 									</tr>',
 								$class,
-								$i++,
+								$row['ranking'],//$i++,
 								esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
 								$this->get_avatar( $row['user_id'], 'medium' ),
 								$row['user_name'],
@@ -362,7 +390,7 @@ class Football_Pool_Pool {
 			$output .= '</table>';
 		}
 		
-		return apply_filters( 'footballpool_ranking_html', $output );
+		return apply_filters( 'footballpool_ranking_html', $output, $ranking, $filtered_ranking );
 	}
 	
 	private function league_image( $id ) {

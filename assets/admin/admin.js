@@ -1,3 +1,5 @@
+// minified with http://closure-compiler.appspot.com/home
+
 jQuery( document ).ready( function() {
 	jQuery( 'body.football-pool input.current-page' ).keydown( function( event ) {
 		if ( event.which == 13 ) jQuery( 'input[name="action"]' ).val( '' );
@@ -132,6 +134,17 @@ function footballpool_tinymce_insert_shortcode() {
 			if ( text != '' ) atts += ' text="' + text + '"';
 			var date = jQuery( 'input:radio[name=user-score-date]:checked', panel_id ).val();
 			if ( date == 'custom' ) date = jQuery( '#user-score-date-custom-value', panel_id ).val();
+			if ( date != '' ) atts += ' date="' + date + '"';
+			break;
+		case 'fp-user-ranking':
+			var ranking = jQuery( '#user-ranking-ranking-id', panel_id ).val();
+			if ( ranking > 0 ) atts += ' ranking="' + ranking + '"';
+			var user = jQuery( '#user-ranking-user-id', panel_id ).val();
+			if ( user != '' ) atts += ' user="' + user + '"';
+			var text = jQuery( '#user-ranking-text', panel_id ).val();
+			if ( text != '' ) atts += ' text="' + text + '"';
+			var date = jQuery( 'input:radio[name=user-ranking-date]:checked', panel_id ).val();
+			if ( date == 'custom' ) date = jQuery( '#user-ranking-date-custom-value', panel_id ).val();
 			if ( date != '' ) atts += ' date="' + date + '"';
 			break;
 		case 'fp-predictionform':

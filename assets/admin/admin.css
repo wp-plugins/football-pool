@@ -151,3 +151,6 @@ div.ranking-log span { padding-right: 10px; }
 #step-0-form .submit { clear: both; }
 
 .tablenav.no-pages { display: none; }
+
+code.block { display: block; margin: 0 0 1em; }
+code.inline { display: inline; }

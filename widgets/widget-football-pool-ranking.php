@@ -128,7 +128,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				
 				printf( '<tr class="%s">', $class );
 				do_action( 'footballpool_ranking_widget_before_rank', $row['user_id'], $instance );
-				printf( '<td>%d.</td>', $i++ );
+				printf( '<td>%d.</td>', $row['ranking'] );
 				do_action( 'footballpool_ranking_widget_after_rank', $row['user_id'], $instance );
 				printf( '<td><a href="%s">%s%s</a></td>'
 						, $url

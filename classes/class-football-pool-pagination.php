@@ -12,7 +12,7 @@ class Football_Pool_Pagination {
 	public function __construct( $num_items, $wrap = false ) {
 		$this->total_items = $num_items;
 		$this->total_pages = $this->calc_total_pages( $num_items, $this->page_size );
-		$this->current_page = $this->get_pagenum();
+		$this->current_page = $this->get_page_num();
 		$this->wrap = $wrap;
 	}
 	
@@ -22,7 +22,7 @@ class Football_Pool_Pagination {
 	public function set_page_size( $size ) {
 		$this->page_size = $size;
 		$this->total_pages = $this->calc_total_pages( $this->total_items, $this->page_size );
-		$this->current_page = $this->get_pagenum();
+		$this->current_page = $this->get_page_num();
 	}
 	
 	public function show( $return = 'echo' ) {
@@ -103,7 +103,7 @@ class Football_Pool_Pagination {
 		return ceil( $num_items / $page_size );
 	}
 	
-	private function get_pagenum() {
+	private function get_page_num() {
 		$page_num = Football_Pool_Utils::request_int( $this->page_param, 0 );
 
 		if( $page_num > $this->total_pages ) {

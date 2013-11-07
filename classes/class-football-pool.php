@@ -438,7 +438,8 @@ class Football_Pool {
 		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
-		self::update_user_custom_tables( $user_id, $default_league );
+		self::update_user_custom_tables( $user_id, $default_league ); 
+		do_action( 'footballpool_new_user', $user_id, $league );
 	}
 	
 	private function update_user_custom_tables( $user_id, $league_id ) {

@@ -160,6 +160,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 == Changelog ==
 
+= 2.3.6 =
+* New shortcode: display the ranking of a single user with [fp-user-ranking].
+
 = 2.3.5 =
 * Bug fix: matches admin added timezone offset on every save (thanks BruceFeuillette for reporting the bug).
 

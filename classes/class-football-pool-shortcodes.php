@@ -2,6 +2,7 @@
 // shortcodes
 add_shortcode( 'fp-predictions', array( 'Football_Pool_Shortcodes', 'shortcode_predictions' ) );
 add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
+add_shortcode( 'fp-user-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_user_ranking' ) );
 add_shortcode( 'fp-predictionform', array( 'Football_Pool_Shortcodes', 'shortcode_predictionform' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
@@ -125,6 +126,38 @@ class Football_Pool_Shortcodes {
 		}
 		
 		return apply_filters( 'footballpool_shortcode_html_fp-predictions', $output );
+	}
+	
+	//[fp-user-ranking] 
+	//  Displays the ranking for a given user in the given ranking.  
+	//
+	//    user    : user Id, defaults to the logged in user 
+	//    ranking : ranking Id, defaults to the default ranking
+	//    date    : show score up until this date, 
+	//              possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
+	//              defaults to 'now'
+	//    text    : text to display if no user or no ranking is found, defaults to ""
+	public function shortcode_user_ranking( $atts ) {
+		extract( shortcode_atts( array(
+					'user' => '',
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
+					'date' => 'now',
+					'text' => '',
+				), $atts ) );
+		
+		$output = $text;
+		
+		if ( $user == '' || ! is_numeric( $user ) ) {
+			$user = get_current_user_id();
+		}
+		
+		if ( ( int ) $user > 0 ) {
+			$pool = new Football_Pool_Pool;
+			$rank = $pool->get_user_rank( $user, $ranking, self::date_helper( $date ) );
+			if ( $rank != null ) $output = $rank;
+		}
+		
+		return apply_filters( 'footballpool_shortcode_html_fp-user-ranking', $output );
 	}
 	
 	//[fp-user-score] 
@@ -304,7 +337,7 @@ class Football_Pool_Shortcodes {
 										<td><a href="%s">%s</a>%s</td>
 										%s<td class="score">%d</td></tr>'
 									, $class
-									, $i++
+									, $row['ranking']
 									, $url
 									, $row['user_name']
 									, Football_Pool::user_name( $row['user_id'], 'label' )

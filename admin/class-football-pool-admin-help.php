@@ -406,13 +406,13 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr>
 				<td class="row-title">match</td>
 				<td>The numeric id for the match</td>
-				<td>match id (integer)</td>
+				<td><a href="?page=footballpool-games">match id</a> (integer)</td>
 				<td>none</td>
 			</tr>
 			<tr>
 				<td class="row-title">question</td>
 				<td>The numeric id for the question</td>
-				<td>question id (integer)</td>
+				<td><a href="?page=footballpool-bonus">question id</a> (integer)</td>
 				<td>none</td>
 			</tr>
 			<tr>
@@ -441,7 +441,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr>
 				<td class="row-title">ranking</td>
 				<td>The numeric id for the ranking from which the score has to be taken</td>
-				<td><a href="?page=footballpool-groups">ranking id</a> (integer)</td>
+				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
 				<td>default ranking</td>
 			</tr>
 			<tr>
@@ -462,6 +462,43 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-user-score user=1 text="no score"]</span><br />
 		<span class="code">[fp-user-score user=58 ranking=2 text="no score"]</span><br />
 		<span class="code">[fp-user-score user=5 date="2013-06-01 12:00"]</span><br />
+		</p>
+		
+		<h3>[fp-user-ranking]</h3>
+		<p>Shows the ranking for a given user.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr>
+				<td class="row-title">user</td>
+				<td>The numeric id for user</td>
+				<td><a href="users.php">user id</a> (integer)</td>
+				<td>current user</td>
+			</tr>
+			<tr>
+				<td class="row-title">ranking</td>
+				<td>The numeric id for the ranking from which the ranking has to be taken</td>
+				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
+				<td>default ranking</td>
+			</tr>
+			<tr>
+				<td class="row-title">date</td>
+				<td>Get the ranking for this date.</td>
+				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>now</td>
+			</tr>
+			<tr>
+				<td class="row-title">text</td>
+				<td>text to display if no user or no ranking is found</td>
+				<td>string</td>
+				<td>empty string</td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-user-ranking user=1 text="not ranked"]</span><br />
+		<span class="code">[fp-user-ranking user=58 ranking=2 text="not ranked"]</span><br />
+		<span class="code">[fp-user-ranking user=5 date="2013-06-01 12:00"]</span><br />
 		</p>
 		
 		<h3>[fp-group]</h3>
@@ -813,13 +850,45 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</div>
 		
 		<h3>examples:</h3>
-		<pre class="code">
+		<?php 
+		Football_Pool_Utils::highlight_string( '<?php
 // to add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
 function add_a_div( $html ) {
-	return '&lt;div class="extra-div">' . $html . '&lt;/div>';
+	return \'<div class="extra-div">\' . $html . \'</div>\';
 }
-add_filter( 'footballpool_shortcode_html_fp-ranking', 'add_a_div' );		
-		</pre>
+add_filter( \'footballpool_shortcode_html_fp-ranking\', \'add_a_div\' );
+?>' );
+
+		Football_Pool_Utils::highlight_string( '<?php
+// only show the first 20 users in the user selector
+function just_20_users( $a ) {
+	return array_slice( $a, 0, 20 );
+}
+add_filter( \'footballpool_userselector_widget_users\', \'just_20_users\' );
+?>' );
+
+		Football_Pool_Utils::highlight_string( '<?php
+// add a simple pagination to the ranking page
+add_filter( \'footballpool_ranking_array\', \'ranking_pagination\' );
+add_filter( \'footballpool_ranking_html\', \'ranking_pagination_html\', 10, 2 );
+
+function ranking_pagination( $ranking ) {
+	$pagination = new Football_Pool_Pagination( count( $ranking ) );
+	$pagination->page_param = \'paged_ranking\';
+	$pagination->set_page_size( 10 );
+	$offset = ( ( $pagination->current_page - 1 ) * $pagination->get_page_size() );
+	$length = $pagination->get_page_size();
+	return array_slice( $ranking, $offset, $length );
+}
+
+function ranking_pagination_html( $html, $ranking ) {
+	$pagination = new Football_Pool_Pagination( count( $ranking ), true );
+	$pagination->page_param = \'paged_ranking\';
+	$pagination->set_page_size( 10 );
+	return $pagination->show( \'return\' ) . $html;
+}
+?>' );
+		?>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		

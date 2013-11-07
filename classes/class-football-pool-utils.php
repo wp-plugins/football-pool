@@ -1,5 +1,25 @@
 <?php
 class Football_Pool_Utils {
+	public function highlight_string( $str, $return = false, $class = 'block' ) {
+		$highlight = "";
+		if ( version_compare( PHP_VERSION, '4.2.0', '<' ) === 1 ) {
+			ob_start(); // start output buffering to capture contents of highlight
+			highlight_string( $str );
+			$highlight = ob_get_contents(); // capture output
+			ob_end_clean(); // clear buffer cleanly
+		} else {
+			$highlight = highlight_string( $str, true );
+		}
+
+		$highlight = preg_replace( '/<code>/i', "<code class='{$class}'>", $highlight );
+		
+		if ( $return === true ) {
+			return $highlight;
+		} else {
+			echo $highlight;
+		}
+	}
+	
 	// Replace placeholders in a string with a text.
 	//	 input:			  the string with %placeholders%
 	//	 params:			 array of placeholders and texts, format: array( 'placeholder' => 'text', ... )
