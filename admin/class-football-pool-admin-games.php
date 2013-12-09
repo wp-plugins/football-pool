@@ -119,24 +119,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		
 		if ( $file != '' && ( $fp = @fopen( FOOTBALLPOOL_CSV_UPLOAD_DIR . $file, 'r' ) ) !== false ) {
-			if ( $action == 'import_csv_overwrite' ) {
-				// ranking update log
-				$sql = "SELECT ranking_id FROM {$prefix}rankings_matches";
-				$ranking_ids = $wpdb->get_col( $sql );
-				foreach( $ranking_ids as $ranking_id ) {
-					self::update_ranking_log( $ranking_id, null, null, 
-								__( 'match import with overwrite', FOOTBALLPOOL_TEXT_DOMAIN )
-							);
-				}
-				// remove all match data except matchtypes
-				self::empty_table( 'scorehistory' );
-				self::empty_table( 'predictions' );
-				self::empty_table( 'stadiums' );
-				self::empty_table( 'rankings_matches' );
-				self::empty_table( 'matches' );
-				self::empty_table( 'teams' );
-			}
-			
 			// check if metadata is set in the csv, if not it should contain the csv column definition
 			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
 			if ( $header[0] == '/*' ) {
@@ -174,6 +156,26 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				}
 				if ( count( $err ) == 0 ) {
 					// import the data (note: teams are always imported as active)
+					
+					// if action is 'overwrite' then first empty all tables
+					if ( $action == 'import_csv_overwrite' ) {
+						// ranking update log
+						$sql = "SELECT ranking_id FROM {$prefix}rankings_matches";
+						$ranking_ids = $wpdb->get_col( $sql );
+						foreach( $ranking_ids as $ranking_id ) {
+							self::update_ranking_log( $ranking_id, null, null, 
+										__( 'match import with overwrite', FOOTBALLPOOL_TEXT_DOMAIN )
+									);
+						}
+						// remove all match data except matchtypes
+						self::empty_table( 'scorehistory' );
+						self::empty_table( 'predictions' );
+						self::empty_table( 'stadiums' );
+						self::empty_table( 'rankings_matches' );
+						self::empty_table( 'matches' );
+						self::empty_table( 'teams' );
+					}
+					
 					while ( ( $data = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false ) {
 						$play_date = $data[0];
 						// home
@@ -365,7 +367,10 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 					__( 'Import CSV & Overwrite', FOOTBALLPOOL_TEXT_DOMAIN ), 
 					array( 
 						'import_csv_overwrite', 
-						'return confirm(\'' . __( 'Are you sure you want to overwrite the game schedule with this schedule?\nAll predictions and scores will also be overwritten!', FOOTBALLPOOL_TEXT_DOMAIN ) . '\')' 
+						sprintf( 'return ( confirm( \'%s\' ) ? confirm( \'%s\' ) : false )'
+								, __( 'Are you sure you want to overwrite the game schedule with this schedule?\n\nAll predictions and scores will also be overwritten!', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( 'Are you really, really, really sure?', FOOTBALLPOOL_TEXT_DOMAIN )
+						)
 					), 
 					false 
 				);

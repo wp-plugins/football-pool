@@ -293,23 +293,28 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				// update score for matches
 				$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
 				$offset = FOOTBALLPOOL_RECALC_STEP3_DIV * ( $sub_step - 1 );
-				$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-				$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
-				$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
-				$diff = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
-				$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory 
-										SET score = score * ( ( full * {$full} ) 
-													+ ( toto * {$toto} ) 
-													+ ( goal_bonus * {$goal} ) 
-													+ ( goal_diff_bonus * {$diff} ) ) 
-										WHERE type = %d AND ranking_id = %d 
-										AND user_id >= %d AND user_id < %d"
-										, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
-										, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
-				$result = $wpdb->query( $sql );
-				$check = ( $result !== false );
-				
-				if ( $result > 0 ) {
+				// get the user set for this step
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP3_DIV );
+				if ( is_array( $user_ids ) && count( $user_ids ) > 0 ) {
+					$user_ids = implode( ',', $user_ids );
+					
+					$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+					$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+					$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+					$diff = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+					
+					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory 
+											SET score = score * ( ( full * {$full} ) 
+														+ ( toto * {$toto} ) 
+														+ ( goal_bonus * {$goal} ) 
+														+ ( goal_diff_bonus * {$diff} ) ) 
+											WHERE type = %d AND ranking_id = %d 
+											AND user_id >= %d AND user_id < %d"
+											, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
+											, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
+					$result = $wpdb->query( $sql );
+					$check = ( $result !== false );
+					
 					$params['step'] = 3;
 					$sub_step++;
 				} else {

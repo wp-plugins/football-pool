@@ -1,3 +1,5 @@
+// minified with http://closure-compiler.appspot.com/home
+
 jQuery( document ).ready( function() {
 	// colorbox
 	jQuery( ".fp-lightbox" ).colorbox( {
@@ -29,6 +31,7 @@ function footballpool_do_countdown( el, extra_text, year, month, day, hour, minu
 	var date_now = new Date().getTime();
 	var diff = Math.abs(Math.round((date_to - date_now) / 1000));
 	var pre, post, txt = '';
+	var tmp;
 	
 	if ( extra_text == null ) {
 		extra_text = { 
@@ -44,8 +47,6 @@ function footballpool_do_countdown( el, extra_text, year, month, day, hour, minu
 	} else {
 		pre = extra_text['pre_before'], post = extra_text['post_before'];
 	}
-	
-	var tmp;
 	
 	switch ( format ) {
 		case 1: // only seconds
@@ -111,9 +112,10 @@ function check_max_answers( id, max ) {
 // based on http://www.frequency-decoder.com/2006/07/20/correctly-calculating-a-date-suffix
 // suffixes must be an array of format ["th", "st", "nd", "rd", "th"];
 function ordinal_suffix( d ) {
-	suffixes = arguments[1] || ["th", "st", "nd", "rd", "th"];
+	var suffix = '';
+	var suffixes = arguments[1] || ["th", "st", "nd", "rd", "th"];
 	d = String( d );
-	if ( d.substr( -( Math.min( d.length, 2 ) ) ) > 3 && d.substr( -(Math.min( d.length, 2 ) ) ) < 21 ) {
+	if ( d.substr( -( Math.min( d.length, 2 ) ) ) > 3 && d.substr( -( Math.min( d.length, 2 ) ) ) < 21 ) {
 		suffix = suffixes[0];
 	} else {
 		suffix = suffixes[Math.min( Number( d ) % 10, 4 )];

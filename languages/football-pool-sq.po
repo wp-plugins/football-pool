@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool 2.3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/football-pool\n"
-"POT-Creation-Date: 2013-10-06 23:24+0100\n"
-"PO-Revision-Date: 2013-10-06 23:37+0100\n"
+"POT-Creation-Date: 2013-11-26 22:41+0100\n"
+"PO-Revision-Date: 2013-11-26 22:46+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Migen Nepravishta <wordpressfootballpool@gmail.com>\n"
 "Language: sq\n"
@@ -113,7 +113,7 @@ msgstr "Pyejtja u ruajt."
 #: ../admin/class-football-pool-admin-bonusquestions.php:117
 #: ../admin/class-football-pool-admin-bonusquestions.php:159
 #: ../admin/class-football-pool-admin-bonusquestions.php:259
-#: ../admin/class-football-pool-admin-games.php:578
+#: ../admin/class-football-pool-admin-games.php:582
 #: ../admin/class-football-pool-admin-groups.php:36
 #: ../admin/class-football-pool-admin-groups.php:78
 #: ../admin/class-football-pool-admin-leagues.php:33
@@ -157,15 +157,15 @@ msgstr "pyejtje"
 #: ../admin/class-football-pool-admin-bonusquestions.php:126
 #: ../admin/class-football-pool-admin-bonusquestions.php:221
 #: ../admin/class-football-pool-admin-bonusquestions.php:275
-#: ../classes/class-football-pool-pool.php:750
-#: ../classes/class-football-pool-pool.php:1021
+#: ../classes/class-football-pool-pool.php:789
+#: ../classes/class-football-pool-pool.php:1060
 #: ../classes/class-football-pool-statistics.php:91
 #: ../classes/class-football-pool-statistics.php:116
 msgid "answer"
 msgstr "përgjigje"
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:111
-#: ../classes/class-football-pool-pool.php:762
+#: ../classes/class-football-pool-pool.php:801
 msgid "variable"
 msgstr "variabël"
 
@@ -176,15 +176,15 @@ msgstr "pikë(t)"
 #: ../admin/class-football-pool-admin-bonusquestions.php:113
 #: ../admin/class-football-pool-admin-bonusquestions.php:211
 #: ../admin/class-football-pool-admin-bonusquestions.php:273
-#: ../classes/class-football-pool-pool.php:745
+#: ../classes/class-football-pool-pool.php:784
 msgid "answer before"
 msgstr "përgjigju perpara"
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:125
-#: ../classes/class-football-pool-pool.php:321
-#: ../classes/class-football-pool-shortcodes.php:282
+#: ../classes/class-football-pool-pool.php:360
+#: ../classes/class-football-pool-shortcodes.php:315
 #: ../classes/class-football-pool-statistics.php:115
-#: ../widgets/widget-football-pool-ranking.php:103
+#: ../widgets/widget-football-pool-ranking.php:107 ../_dev/hooks.php:24
 msgid "user"
 msgstr "përdorues"
 
@@ -208,14 +208,14 @@ msgstr "Lini bosh në qoftë se ju nuk doni të ndryshoni piket standarte."
 #: ../admin/class-football-pool-admin-bonusquestions.php:210
 #: ../admin/class-football-pool-admin-bonusquestions.php:272
 #: ../classes/class-football-pool-chart.php:186
-#: ../classes/class-football-pool-groups.php:331
-#: ../classes/class-football-pool-pool.php:323
-#: ../classes/class-football-pool-pool.php:765
-#: ../classes/class-football-pool-pool.php:1005
-#: ../classes/class-football-pool-shortcodes.php:284
+#: ../classes/class-football-pool-groups.php:332
+#: ../classes/class-football-pool-pool.php:362
+#: ../classes/class-football-pool-pool.php:804
+#: ../classes/class-football-pool-pool.php:1044
+#: ../classes/class-football-pool-shortcodes.php:317
 #: ../classes/class-football-pool-statistics.php:93
 #: ../pages/class-football-pool-statistics-page.php:259
-#: ../widgets/widget-football-pool-ranking.php:105
+#: ../widgets/widget-football-pool-ranking.php:109 ../_dev/hooks.php:26
 msgid "points"
 msgstr "pikë"
 
@@ -314,7 +314,7 @@ msgstr ""
 "ose më shumë përgjigje."
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:253
-#: ../classes/class-football-pool-pool.php:725
+#: ../classes/class-football-pool-pool.php:764
 msgid "photo question"
 msgstr "pyejtje fotografike"
 
@@ -351,7 +351,7 @@ msgid "You are about to delete one or more bonus questions."
 msgstr "Ju jeni duke fshirë një ose më shumë pyejtje bonus."
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:292
-#: ../admin/class-football-pool-admin-games.php:661
+#: ../admin/class-football-pool-admin-games.php:666
 #: ../admin/class-football-pool-admin-groups.php:99
 #: ../admin/class-football-pool-admin-leagues.php:134
 #: ../admin/class-football-pool-admin-matchtypes.php:151
@@ -528,7 +528,7 @@ msgstr "Faqa e opsioneve te pluginit"
 #: ../admin/class-football-pool-admin-games.php:33
 #: ../admin/class-football-pool-admin-games.php:44
 #: ../admin/class-football-pool-admin.php:105
-#: ../assets/admin/tinymce/tinymce-dialog.php:123
+#: ../assets/admin/tinymce/tinymce-dialog.php:131
 msgid "Matches"
 msgstr "Ndeshjet"
 
@@ -549,37 +549,37 @@ msgstr "Uplodimi i dokumentit csv dështoj."
 msgid "Upload of csv file successful."
 msgstr "Uplodimi i dokumentit csv u krye me sukses."
 
-#: ../admin/class-football-pool-admin-games.php:128
-msgid "match import with overwrite"
-msgstr "importo dhe mbishkruaj ndeshjet"
-
-#: ../admin/class-football-pool-admin-games.php:168
+#: ../admin/class-football-pool-admin-games.php:150
 #, php-format
 msgid "Column %d header should be \"%s\" &rArr; not \"%s\""
 msgstr "Koka e kollones %d duhet të jetë \"%s\" &rArr; jo \"%s\""
 
-#: ../admin/class-football-pool-admin-games.php:199
-#: ../admin/class-football-pool-admin-games.php:223
+#: ../admin/class-football-pool-admin-games.php:167
+msgid "match import with overwrite"
+msgstr "importo dhe mbishkruaj ndeshjet"
+
+#: ../admin/class-football-pool-admin-games.php:201
+#: ../admin/class-football-pool-admin-games.php:225
 #, php-format
 msgid "Team %d added: %s"
 msgstr "Skuadra %d e shtuar: %s"
 
-#: ../admin/class-football-pool-admin-games.php:236
+#: ../admin/class-football-pool-admin-games.php:238
 #, php-format
 msgid "Stadium %d added: %s"
 msgstr "Stadium %d u shtua: %s"
 
-#: ../admin/class-football-pool-admin-games.php:245
+#: ../admin/class-football-pool-admin-games.php:247
 #, php-format
 msgid "Match Type %d added: %s"
 msgstr "Lloji i ndeshjes %d u shtua: %s"
 
-#: ../admin/class-football-pool-admin-games.php:256
+#: ../admin/class-football-pool-admin-games.php:258
 #, php-format
 msgid "Match %d imported: %s - %s for date \"%s\""
 msgstr "Ndeshja %d importuar: %s - %s për datën \"%s\""
 
-#: ../admin/class-football-pool-admin-games.php:264
+#: ../admin/class-football-pool-admin-games.php:266
 #, php-format
 msgid ""
 "Imported csv file should contain %d columns (header contains %d columns). "
@@ -588,15 +588,15 @@ msgstr ""
 "Skedari i importuar CSV duhet të përmbajë kolonat %d (kreu permban kollonat "
 "%d ). Shih faqen e Ndihmës për formatin e duhur."
 
-#: ../admin/class-football-pool-admin-games.php:268
+#: ../admin/class-football-pool-admin-games.php:270
 msgid "No csv file selected."
 msgstr "Nuk u seleksionua asnjë dokument csv."
 
-#: ../admin/class-football-pool-admin-games.php:270
+#: ../admin/class-football-pool-admin-games.php:272
 msgid "Please check if the csv file exists and is readable."
 msgstr "Ju lutem kontrolloni ne dokumenti csv ekziston dhe është i lezueshëm."
 
-#: ../admin/class-football-pool-admin-games.php:301
+#: ../admin/class-football-pool-admin-games.php:303
 msgid ""
 "Please make sure that the directory 'upload' exists in the plugin directory "
 "and that it is readable!"
@@ -604,7 +604,7 @@ msgstr ""
 "Ju lutem sigurohuni që direktoria 'upload' ekziston në directorinë e "
 "pluginit dhe se ai është i lexueshëm!"
 
-#: ../admin/class-football-pool-admin-games.php:304
+#: ../admin/class-football-pool-admin-games.php:306
 msgid ""
 "Uploading of new csv files is not possible at the moment. Directory 'upload' "
 "is not writable."
@@ -612,11 +612,11 @@ msgstr ""
 "Ngarkimi i skedarëve të reja CSV nuk është e mundur në këtë moment. 'Upload' "
 "directory nuk është e shkruajtshme."
 
-#: ../admin/class-football-pool-admin-games.php:308
+#: ../admin/class-football-pool-admin-games.php:310
 msgid "Choose a new game schedule"
 msgstr "Zgjidh një skedar të ri ndeshjesh"
 
-#: ../admin/class-football-pool-admin-games.php:309
+#: ../admin/class-football-pool-admin-games.php:311
 msgid ""
 "Import any of the following files. Overwrite the existing game schedule or "
 "add to the existing schedule."
@@ -624,90 +624,94 @@ msgstr ""
 "Importojë ndonjë prej skedarëve vijues. Mbishkruaj skedulën ekzistuese të "
 "ndeshjeve ose shtoni në skedulën ekzistuese."
 
-#: ../admin/class-football-pool-admin-games.php:316
+#: ../admin/class-football-pool-admin-games.php:318
 msgid "all files"
 msgstr "të gjitha dokumentat"
 
-#: ../admin/class-football-pool-admin-games.php:317
+#: ../admin/class-football-pool-admin-games.php:319
 #, php-format
 msgid "only '%s' files"
 msgstr "vetëm dokumentat '%s'"
 
-#: ../admin/class-football-pool-admin-games.php:322
+#: ../admin/class-football-pool-admin-games.php:324
 msgid "change"
 msgstr "ndrysho"
 
-#: ../admin/class-football-pool-admin-games.php:330
+#: ../admin/class-football-pool-admin-games.php:332
 msgid "File"
 msgstr "Dokument"
 
-#: ../admin/class-football-pool-admin-games.php:331
+#: ../admin/class-football-pool-admin-games.php:333
 msgid "Contributor"
 msgstr "Kontributori"
 
-#: ../admin/class-football-pool-admin-games.php:332
+#: ../admin/class-football-pool-admin-games.php:334
 msgid "Assets"
 msgstr "Asetet"
 
-#: ../admin/class-football-pool-admin-games.php:344
+#: ../admin/class-football-pool-admin-games.php:346
 msgid "Upload these files to your assets folder in the plugin directory"
 msgstr ""
 "Ngarko këto dokumente në folderin e aseteve tuaja në direktorine e pluginit"
 
-#: ../admin/class-football-pool-admin-games.php:344
+#: ../admin/class-football-pool-admin-games.php:346
 msgid "download files"
 msgstr "shkarko dokumentat"
 
-#: ../admin/class-football-pool-admin-games.php:357
+#: ../admin/class-football-pool-admin-games.php:359
 msgid "Import CSV"
 msgstr "Importo CSV"
 
-#: ../admin/class-football-pool-admin-games.php:360
+#: ../admin/class-football-pool-admin-games.php:362
 msgid "Are you sure you want to add these matches to the existing schedule?"
 msgstr "A jeni i sigurtë në shtimin e këtyre ndeshjeve në skedulën ekzistuese?"
 
-#: ../admin/class-football-pool-admin-games.php:365
+#: ../admin/class-football-pool-admin-games.php:367
 msgid "Import CSV & Overwrite"
 msgstr "Importo CSV % Mbishkruaj"
 
-#: ../admin/class-football-pool-admin-games.php:368
+#: ../admin/class-football-pool-admin-games.php:371
 msgid ""
-"Are you sure you want to overwrite the game schedule with this schedule?"
+"Are you sure you want to overwrite the game schedule with this schedule?\\n"
 "\\nAll predictions and scores will also be overwritten!"
 msgstr ""
 "Jeni të sigurtë që doni të mbishkruani skedulën e ndeshjeve me ketë skedulë?"
-"Të gjitha parashikimet dhe rezultatet gjithashtu do të mbishkruhen!"
+"\\n\\nTë gjitha parashikimet dhe rezultatet gjithashtu do të mbishkruhen!"
 
-#: ../admin/class-football-pool-admin-games.php:375
+#: ../admin/class-football-pool-admin-games.php:372
+msgid "Are you really, really, really sure?"
+msgstr ""
+
+#: ../admin/class-football-pool-admin-games.php:380
 msgid "No csv files found in 'upload' directory."
 msgstr "Nuk u gjet asnjë dokument csv në direktorinë 'upload'."
 
-#: ../admin/class-football-pool-admin-games.php:384
+#: ../admin/class-football-pool-admin-games.php:389
 msgid "Upload new game schedule"
 msgstr "Ngarko nje skedulë të re ndeshjesh"
 
-#: ../admin/class-football-pool-admin-games.php:391
+#: ../admin/class-football-pool-admin-games.php:396
 msgid "Upload CSV"
 msgstr "Ngarko CSV"
 
-#: ../admin/class-football-pool-admin-games.php:431
+#: ../admin/class-football-pool-admin-games.php:435
 msgid "Bulk change game schedule"
 msgstr "Ndryshimi i skedulës së ndeshjeve me shumicë"
 
-#: ../admin/class-football-pool-admin-games.php:433
+#: ../admin/class-football-pool-admin-games.php:437
 msgid "Download game schedule"
 msgstr "Shkarko skedulën e ndeshjeve"
 
-#: ../admin/class-football-pool-admin-games.php:462
+#: ../admin/class-football-pool-admin-games.php:466
 msgid "Values updated."
 msgstr "Vlerat u përditësuan"
 
-#: ../admin/class-football-pool-admin-games.php:483
+#: ../admin/class-football-pool-admin-games.php:487
 #, php-format
 msgid "match %d deleted"
 msgstr "ndeshja %d u fshi."
 
-#: ../admin/class-football-pool-admin-games.php:558
+#: ../admin/class-football-pool-admin-games.php:562
 #, php-format
 msgid ""
 "You have to enter some <a href=\"%s\">teams</a>, <a href=\"%s\">venues</a> "
@@ -716,89 +720,94 @@ msgstr ""
 "Së pari, ju duhet të shtoni disa <a href=\"%s\">skuadra</a>, <a href=\"%s"
 "\">stadiume</a> dhe <a href=\"%s\">lloje ndeshjes</a>."
 
-#: ../admin/class-football-pool-admin-games.php:559
+#: ../admin/class-football-pool-admin-games.php:563
 #: ../admin/class-football-pool-admin-users.php:71
 msgid "Back"
 msgstr "Prapa"
 
-#: ../admin/class-football-pool-admin-games.php:567
+#: ../admin/class-football-pool-admin-games.php:571
 msgid "match date (UTC)"
 msgstr "data e ndeshjes (UTC)"
 
-#: ../admin/class-football-pool-admin-games.php:567
+#: ../admin/class-football-pool-admin-games.php:571
+#: ../admin/class-football-pool-admin-games.php:653
+msgid "time of the match in local time (WordPress setting)"
+msgstr ""
+
+#: ../admin/class-football-pool-admin-games.php:571
 #, php-format
 msgid "local time is %s"
 msgstr "ora lokale është %s"
 
-#: ../admin/class-football-pool-admin-games.php:568
+#: ../admin/class-football-pool-admin-games.php:572
 msgid "home team"
 msgstr "skuadra pritëse"
 
-#: ../admin/class-football-pool-admin-games.php:569
+#: ../admin/class-football-pool-admin-games.php:573
 msgid "away team"
 msgstr "skuadra udhëtuese"
 
-#: ../admin/class-football-pool-admin-games.php:570
+#: ../admin/class-football-pool-admin-games.php:574
 msgid "home score"
 msgstr "golat e pritësit"
 
-#: ../admin/class-football-pool-admin-games.php:571
+#: ../admin/class-football-pool-admin-games.php:575
 msgid "away score"
 msgstr "golat e udhëtuesit"
 
-#: ../admin/class-football-pool-admin-games.php:572
+#: ../admin/class-football-pool-admin-games.php:576
 msgid "stadium"
 msgstr "stadiumi"
 
-#: ../admin/class-football-pool-admin-games.php:573
+#: ../admin/class-football-pool-admin-games.php:577
 #: ../admin/class-football-pool-admin-matchtypes.php:138
 msgid "match type"
 msgstr "lloji i ndeshjes"
 
-#: ../admin/class-football-pool-admin-games.php:579
-#: ../classes/class-football-pool-pool.php:1067
+#: ../admin/class-football-pool-admin-games.php:583
+#: ../classes/class-football-pool-pool.php:1106
 #: ../pages/class-football-pool-pool-page.php:75
 msgid "Save"
 msgstr "Ruaj"
 
 #. #-#-#-#-#  1extracted.pot (PACKAGE VERSION)  #-#-#-#-#
 #. Translators: this is a date format string (see http://php.net/date)
-#: ../admin/class-football-pool-admin-games.php:643
-#: ../classes/class-football-pool-matches.php:338
-#: ../classes/class-football-pool-matches.php:428
+#: ../admin/class-football-pool-admin-games.php:648
+#: ../classes/class-football-pool-matches.php:334
+#: ../classes/class-football-pool-matches.php:424
 msgid "M d, Y"
 msgstr "M d, Y"
 
-#: ../admin/class-football-pool-admin-games.php:648
+#: ../admin/class-football-pool-admin-games.php:653
 msgid "local time"
 msgstr "ora lokale"
 
-#: ../admin/class-football-pool-admin-games.php:649
+#: ../admin/class-football-pool-admin-games.php:654
 msgid "UTC"
 msgstr "UTC"
 
-#: ../admin/class-football-pool-admin-games.php:658
+#: ../admin/class-football-pool-admin-games.php:663
 #, php-format
 msgid "You are about to delete match %d."
 msgstr "Ju jeni duke fshirë ndeshjen %d."
 
-#: ../admin/class-football-pool-admin-games.php:665
+#: ../admin/class-football-pool-admin-games.php:670
 msgid "change match time"
 msgstr "ndrysho orarin e ndeshjes"
 
-#: ../admin/class-football-pool-admin-games.php:671
+#: ../admin/class-football-pool-admin-games.php:676
 msgid "edit"
 msgstr "edito"
 
-#: ../admin/class-football-pool-admin-games.php:672
+#: ../admin/class-football-pool-admin-games.php:677
 msgid "delete"
 msgstr "fshij"
 
-#: ../admin/class-football-pool-admin-games.php:723
+#: ../admin/class-football-pool-admin-games.php:728
 msgid "match with end score added to pool"
 msgstr "ndeshja me rezultat perfundimtar u shtua ne database"
 
-#: ../admin/class-football-pool-admin-games.php:763
+#: ../admin/class-football-pool-admin-games.php:766
 #, php-format
 msgid "match %d changed"
 msgstr "ndeshja %d ndryshoje"
@@ -860,7 +869,7 @@ msgstr "Ju jeni duke fshirë një ose disa grupe."
 #: ../admin/class-football-pool-admin-help.php:12
 #: ../admin/class-football-pool-admin.php:194
 #: ../admin/class-football-pool-admin.php:195
-#: ../admin/class-football-pool-admin.php:230
+#: ../admin/class-football-pool-admin.php:246
 msgid "Help"
 msgstr "Ndihmë"
 
@@ -1036,7 +1045,7 @@ msgstr ""
 "fshihen nga database kur plugini te c-instalohet."
 
 #: ../admin/class-football-pool-admin-options.php:77
-#: ../assets/admin/tinymce/tinymce-dialog.php:395
+#: ../assets/admin/tinymce/tinymce-dialog.php:444
 msgid "Webmaster"
 msgstr "Webmaster"
 
@@ -1045,7 +1054,7 @@ msgid "This value is used for the shortcode [fp-webmaster]."
 msgstr "Kjo vlerë përdoret për shortcode [fp-webmaster]."
 
 #: ../admin/class-football-pool-admin-options.php:79
-#: ../assets/admin/tinymce/tinymce-dialog.php:397
+#: ../assets/admin/tinymce/tinymce-dialog.php:446
 msgid "Money"
 msgstr "Të holla"
 
@@ -1058,7 +1067,7 @@ msgstr ""
 "paguajnë. Shortcode [fp-money] shton këtë vlerë në përmbajtjen."
 
 #: ../admin/class-football-pool-admin-options.php:81
-#: ../assets/admin/tinymce/tinymce-dialog.php:396
+#: ../assets/admin/tinymce/tinymce-dialog.php:445
 msgid "Bank"
 msgstr "Bank"
 
@@ -1071,7 +1080,7 @@ msgstr ""
 "jepni të holla.Shortcode [fp-bankë] shton këtë vlerë në përmbajtjen."
 
 #: ../admin/class-football-pool-admin-options.php:83
-#: ../assets/admin/tinymce/tinymce-dialog.php:398
+#: ../assets/admin/tinymce/tinymce-dialog.php:447
 msgid "Start date"
 msgstr "Data e fillimit"
 
@@ -1114,7 +1123,7 @@ msgstr ""
 "llogaritjet e pikëve të turneut."
 
 #: ../admin/class-football-pool-admin-options.php:89
-#: ../assets/admin/tinymce/tinymce-dialog.php:394
+#: ../assets/admin/tinymce/tinymce-dialog.php:443
 msgid "Goal bonus"
 msgstr "Gol Bonus"
 
@@ -1437,8 +1446,8 @@ msgstr ""
 "Normalisht, lloji i ndeshjes id: %d."
 
 #: ../admin/class-football-pool-admin-options.php:226
-#: ../assets/admin/tinymce/tinymce-dialog.php:309
-#: ../assets/admin/tinymce/tinymce-dialog.php:354
+#: ../assets/admin/tinymce/tinymce-dialog.php:360
+#: ../assets/admin/tinymce/tinymce-dialog.php:403
 msgid "Use CTRL+click to select multiple values."
 msgstr "Përdor CTRL + Klik për të seleksionuar disa vlera."
 
@@ -1588,7 +1597,7 @@ msgstr ""
 "perdorin xholin per te shumefishuar piket e marra nga nje parashikim."
 
 #: ../admin/class-football-pool-admin-options.php:314
-#: ../assets/admin/tinymce/tinymce-dialog.php:179
+#: ../assets/admin/tinymce/tinymce-dialog.php:184
 #: ../widgets/widget-football-pool-ranking.php:16
 msgid "Show number of predictions?"
 msgstr "Shfaq numrin e parashikimeve?"
@@ -1619,8 +1628,8 @@ msgid "Plugin Options"
 msgstr "Opsionet e Pluginit"
 
 #: ../admin/class-football-pool-admin-options.php:324
-#: ../admin/class-football-pool-admin.php:966
-#: ../admin/class-football-pool-admin.php:974
+#: ../admin/class-football-pool-admin.php:982
+#: ../admin/class-football-pool-admin.php:990
 msgid "Recalculate Scores"
 msgstr "Rillogarit piket"
 
@@ -1631,12 +1640,12 @@ msgstr "opsionet e pluginit ndryshuan"
 #: ../admin/class-football-pool-admin-options.php:370
 #: ../admin/class-football-pool-admin-teams-position.php:14
 #: ../admin/class-football-pool-admin-users.php:76
-#: ../classes/class-football-pool-pool.php:792
+#: ../classes/class-football-pool-pool.php:831
 msgid "Changes saved."
 msgstr "Ndryshimet u Ruajtën"
 
 #: ../admin/class-football-pool-admin-options.php:375
-#: ../classes/class-football-pool.php:578
+#: ../classes/class-football-pool.php:568
 #, php-format
 msgid ""
 "Charts are enabled but Highcharts API was not found! See <a href=\"%s\">Help "
@@ -1740,7 +1749,7 @@ msgid "Definition of"
 msgstr "Percaktimi i"
 
 #: ../admin/class-football-pool-admin-rankings.php:90
-#: ../classes/class-football-pool-groups.php:326
+#: ../classes/class-football-pool-groups.php:327
 #: ../classes/class-football-pool.php:3
 #: ../pages/class-football-pool-pool-page.php:42
 #: ../pages/class-football-pool-stadiums-page.php:25
@@ -1804,75 +1813,75 @@ msgstr "Ju jeni duke fshire nje ose me shume renditje"
 msgid "Ranking composition"
 msgstr "Kompozicioni i renditjes"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:73
+#: ../admin/class-football-pool-admin-score-calculation.php:72
 #, php-format
 msgid "(users %d - %d of %d)"
 msgstr "(lojtar %d - %d of %d)"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:82
+#: ../admin/class-football-pool-admin-score-calculation.php:81
 #, php-format
 msgid "(step %d)"
 msgstr "(hapi %d)"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:86
+#: ../admin/class-football-pool-admin-score-calculation.php:85
 msgid "empty ranking table"
 msgstr "Boshatis tabelen e rënditjes"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:87
+#: ../admin/class-football-pool-admin-score-calculation.php:86
 #, php-format
 msgid "check user predictions with actual results %s"
 msgstr "kontrolloni parashikimet e lojtareve me rezultatet aktuale %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:89
+#: ../admin/class-football-pool-admin-score-calculation.php:88
 #, php-format
 msgid "update score with points %s"
 msgstr "përditëso rezultatin me pikë %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:91
+#: ../admin/class-football-pool-admin-score-calculation.php:90
 #, php-format
 msgid "add bonus question points %s"
 msgstr "shtoni pyetje pikë bonus %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:93
+#: ../admin/class-football-pool-admin-score-calculation.php:92
 #, php-format
 msgid "ranking %d: update total score incrementally %s"
 msgstr "rënditja %d: përditëso piket totale ne ngritje %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:95
+#: ../admin/class-football-pool-admin-score-calculation.php:94
 #, php-format
 msgid "ranking %d: update ranking for users %s"
 msgstr "rënditja %d: përditëso rënditjen e lojtaret %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:97
+#: ../admin/class-football-pool-admin-score-calculation.php:96
 #, php-format
 msgid "ranking %d: calculate user ranking %s"
 msgstr "rënditja %d: llogarit rënditjen e lojtarit %s"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:99
+#: ../admin/class-football-pool-admin-score-calculation.php:98
 msgid "score (re)calculation finished"
 msgstr "rillogaritja e pikëve perfundojë"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:102
+#: ../admin/class-football-pool-admin-score-calculation.php:101
 msgid "Score (re)calculation"
 msgstr "(ri)llogaritje e pikëve"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:148
+#: ../admin/class-football-pool-admin-score-calculation.php:147
 msgid "Please do not interrupt this process."
 msgstr "Ju lutemi, mos e ndalo këtë proces."
 
-#: ../admin/class-football-pool-admin-score-calculation.php:150
+#: ../admin/class-football-pool-admin-score-calculation.php:149
 msgid "Sit back and relax, this may take a while :-)"
 msgstr "Uluni dhe relaksohuni, kjo mund te marri pak kohe :-)"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:174
+#: ../admin/class-football-pool-admin-score-calculation.php:173
 msgid "You are about to recalculate the score table for the plugin."
 msgstr "Ju jeni duke rellogaritur tabelen e rezultateve per kete plugin"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:180
+#: ../admin/class-football-pool-admin-score-calculation.php:179
 msgid "Smart calculation"
 msgstr "Llogaritje Inteligjente"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:181
+#: ../admin/class-football-pool-admin-score-calculation.php:180
 msgid ""
 "A smart calculation tries to determine which rankings need an update. A "
 "smart calculation will in most cases be faster than a full calculation."
@@ -1881,11 +1890,11 @@ msgstr ""
 "perditesim. Nje llogaritje inteligjente, ne shumicen e rasteve do te jete me "
 "e shpejte se nje llogaritje e plote."
 
-#: ../admin/class-football-pool-admin-score-calculation.php:186
+#: ../admin/class-football-pool-admin-score-calculation.php:185
 msgid "Full calculation"
 msgstr "Llogaritje e plote"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:187
+#: ../admin/class-football-pool-admin-score-calculation.php:186
 msgid ""
 "A full calculation recalculates all rankings. If you want to be absolutely "
 "sure everything is recalculated, choose this option."
@@ -1893,23 +1902,23 @@ msgstr ""
 "Nje llogaritje e plote, rillogarit te gjitha renditjet. Nese ju doni te jeni "
 "plotesisht i sugurt qe cdo gje u rillogarit, zgjidhni kete opsion."
 
-#: ../admin/class-football-pool-admin-score-calculation.php:194
-#: ../admin/class-football-pool-admin-score-calculation.php:198
+#: ../admin/class-football-pool-admin-score-calculation.php:193
+#: ../admin/class-football-pool-admin-score-calculation.php:197
 msgid "Continue"
 msgstr "Vazhdoni"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:207
-#: ../admin/class-football-pool-admin.php:1125
-#: ../assets/admin/tinymce/tinymce-dialog.php:519
+#: ../admin/class-football-pool-admin-score-calculation.php:206
+#: ../admin/class-football-pool-admin.php:1141
+#: ../assets/admin/tinymce/tinymce-dialog.php:568
 msgid "Cancel"
 msgstr "Anullo"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:550
+#: ../admin/class-football-pool-admin-score-calculation.php:545
 msgid "Step"
 msgstr "Hapi"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:552
-#: ../classes/class-football-pool.php:378
+#: ../admin/class-football-pool-admin-score-calculation.php:547
+#: ../classes/class-football-pool.php:367
 msgid ""
 "Something went wrong while (re)calculating the scores. Please check if "
 "TRUNCATE/DROP or DELETE rights are available at the database and try again."
@@ -1945,8 +1954,9 @@ msgid "%s messages deleted."
 msgstr "%s mesazhi u fshi."
 
 #: ../admin/class-football-pool-admin-shoutbox.php:64
-#: ../assets/admin/tinymce/tinymce-dialog.php:190
-#: ../assets/admin/tinymce/tinymce-dialog.php:285
+#: ../assets/admin/tinymce/tinymce-dialog.php:195
+#: ../assets/admin/tinymce/tinymce-dialog.php:283
+#: ../assets/admin/tinymce/tinymce-dialog.php:336
 msgid "now"
 msgstr "tani"
 
@@ -2284,7 +2294,7 @@ msgstr "Seksioni i Ndihmes per ligat"
 
 #: ../admin/class-football-pool-admin-users.php:35
 #: ../admin/class-football-pool-admin-users.php:45
-#: ../admin/class-football-pool-admin-users.php:475
+#: ../admin/class-football-pool-admin-users.php:477
 #: ../admin/class-football-pool-admin.php:96
 msgid "Users"
 msgstr "Përdorues"
@@ -2292,7 +2302,7 @@ msgstr "Përdorues"
 #: ../admin/class-football-pool-admin-users.php:44
 #: ../admin/class-football-pool-admin.php:63
 #: ../admin/class-football-pool-admin.php:64
-#: ../classes/class-football-pool.php:577
+#: ../classes/class-football-pool.php:567
 msgid "Football Pool"
 msgstr "Football Pool"
 
@@ -2333,7 +2343,7 @@ msgid "%d users added as user."
 msgstr "%d perdoruesit u shtuan"
 
 #: ../admin/class-football-pool-admin-users.php:146
-#: ../admin/class-football-pool-admin-users.php:483
+#: ../admin/class-football-pool-admin-users.php:485
 msgid "unknown"
 msgstr "i panjohur"
 
@@ -2398,17 +2408,17 @@ msgstr "Nuk eshte lojtar"
 msgid "user %d removed from pool"
 msgstr "lojtari %d u fshi nga pool"
 
-#: ../admin/class-football-pool-admin-users.php:397
-#: ../admin/class-football-pool-admin.php:816
+#: ../admin/class-football-pool-admin-users.php:399
+#: ../admin/class-football-pool-admin.php:832
 msgid "no data"
 msgstr "ska te dhena"
 
-#: ../admin/class-football-pool-admin-users.php:472
-#: ../classes/class-football-pool.php:475
+#: ../admin/class-football-pool-admin-users.php:474
+#: ../classes/class-football-pool.php:465
 msgid "Play in league"
 msgstr "Luaj në ligën"
 
-#: ../admin/class-football-pool-admin-users.php:475
+#: ../admin/class-football-pool-admin-users.php:477
 msgid ""
 "<strong>Important:</strong> An administrator can change users in the "
 "plugin's admin page for"
@@ -2416,11 +2426,11 @@ msgstr ""
 "<strong>E rendesishme:</strong> Nje administrator mund te ndryshoje "
 "perdoruesit ne faqen e adminit per "
 
-#: ../admin/class-football-pool-admin-users.php:486
+#: ../admin/class-football-pool-admin-users.php:488
 msgid "The webmaster put you in this league"
 msgstr "Webmasteri ju vendosi juve ne kete lige"
 
-#: ../admin/class-football-pool-admin-users.php:489
+#: ../admin/class-football-pool-admin-users.php:491
 msgid ""
 "if this value is different from the one you entered on registration, then "
 "the webmaster did not approve it yet."
@@ -2428,11 +2438,11 @@ msgstr ""
 "nese kjo vlere eshte e ndryshme nga ajo qe ju vendoset ne regjistrimin tuaj, "
 "atehere webmasteri nuk e ka aprovuar ende."
 
-#: ../admin/class-football-pool-admin-users.php:494
+#: ../admin/class-football-pool-admin-users.php:496
 msgid "Status for user"
 msgstr "Statusi per perdoruesin"
 
-#: ../admin/class-football-pool-admin-users.php:497
+#: ../admin/class-football-pool-admin-users.php:499
 msgid ""
 "Extra meta information for the user. If filled this will be shown behind the "
 "user's name on the ranking page and ranking shortcode."
@@ -2497,294 +2507,311 @@ msgstr "Edito llojet e ndeshjes"
 msgid "Edit groups"
 msgstr "Edito grupet"
 
-#: ../admin/class-football-pool-admin.php:229
+#: ../admin/class-football-pool-admin.php:245
 msgid "Settings"
 msgstr "Konfigurimet"
 
-#: ../admin/class-football-pool-admin.php:253
-#: ../admin/class-football-pool-admin.php:334
+#: ../admin/class-football-pool-admin.php:269
+#: ../admin/class-football-pool-admin.php:350
 msgid "Choose Image"
 msgstr "Zgjidh imazhin"
 
-#: ../admin/class-football-pool-admin.php:705
+#: ../admin/class-football-pool-admin.php:721
 msgid "For more information:"
 msgstr "Per me teper informacion:"
 
-#: ../admin/class-football-pool-admin.php:741
+#: ../admin/class-football-pool-admin.php:757
 msgid "Add New"
 msgstr "Shto te re"
 
-#: ../admin/class-football-pool-admin.php:834
+#: ../admin/class-football-pool-admin.php:850
 msgid "yes"
 msgstr "po"
 
-#: ../admin/class-football-pool-admin.php:835
+#: ../admin/class-football-pool-admin.php:851
 msgid "no"
 msgstr "jo"
 
-#: ../admin/class-football-pool-admin.php:1157
+#: ../admin/class-football-pool-admin.php:1173
 msgid "Use Image"
 msgstr "Perdor Imazh"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:38
-#: ../assets/admin/tinymce/tinymce-dialog.php:115
-#: ../assets/admin/tinymce/tinymce-dialog.php:389
-#: ../assets/admin/tinymce/tinymce-dialog.php:409
-#: ../assets/admin/tinymce/tinymce-dialog.php:447
+#: ../assets/admin/tinymce/tinymce-dialog.php:45
+#: ../assets/admin/tinymce/tinymce-dialog.php:122
+#: ../assets/admin/tinymce/tinymce-dialog.php:438
+#: ../assets/admin/tinymce/tinymce-dialog.php:458
+#: ../assets/admin/tinymce/tinymce-dialog.php:496
 msgid "Select a shortcode"
 msgstr "Seleksiono nje shortcode"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:103
+#: ../assets/admin/tinymce/tinymce-dialog.php:110
 msgid "Pool"
 msgstr "Pool"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:104
+#: ../assets/admin/tinymce/tinymce-dialog.php:111
 msgid "Options"
 msgstr "Opsionet"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:105
+#: ../assets/admin/tinymce/tinymce-dialog.php:112
 msgid "Links"
 msgstr "Lidhjet"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:106
+#: ../assets/admin/tinymce/tinymce-dialog.php:113
 msgid "Other"
 msgstr "Te tjera"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:118
+#: ../assets/admin/tinymce/tinymce-dialog.php:125
 #: ../widgets/widget-football-pool-ranking.php:13
 msgid "Ranking"
 msgstr "Renditja"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:119
+#: ../assets/admin/tinymce/tinymce-dialog.php:126
 msgid "Predictions for match or question"
 msgstr "Parashikimi per ndeshje ose pergjigja pyejtjes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:120
+#: ../assets/admin/tinymce/tinymce-dialog.php:127
 msgid "Score for a user"
 msgstr "Piket per nje lojtar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:121
+#: ../assets/admin/tinymce/tinymce-dialog.php:128
+msgid "Ranking for a user"
+msgstr ""
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:129
 msgid "Group"
 msgstr "Grupi"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:122
+#: ../assets/admin/tinymce/tinymce-dialog.php:130
 msgid "Prediction form"
 msgstr "Forma parashikimeve"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:129
-#: ../assets/admin/tinymce/tinymce-dialog.php:254
+#: ../assets/admin/tinymce/tinymce-dialog.php:137
+#: ../assets/admin/tinymce/tinymce-dialog.php:257
+#: ../assets/admin/tinymce/tinymce-dialog.php:310
 msgid "Select a ranking"
 msgstr "Seleksiono nje renditje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:133
-#: ../assets/admin/tinymce/tinymce-dialog.php:153
-#: ../assets/admin/tinymce/tinymce-dialog.php:238
-#: ../assets/admin/tinymce/tinymce-dialog.php:258
-#: ../assets/admin/tinymce/tinymce-dialog.php:477
+#: ../assets/admin/tinymce/tinymce-dialog.php:141
+#: ../assets/admin/tinymce/tinymce-dialog.php:158
+#: ../assets/admin/tinymce/tinymce-dialog.php:241
+#: ../assets/admin/tinymce/tinymce-dialog.php:261
+#: ../assets/admin/tinymce/tinymce-dialog.php:294
+#: ../assets/admin/tinymce/tinymce-dialog.php:314
+#: ../assets/admin/tinymce/tinymce-dialog.php:526
 msgid "default"
 msgstr "parazgjedhur"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:134
-#: ../assets/admin/tinymce/tinymce-dialog.php:259
+#: ../assets/admin/tinymce/tinymce-dialog.php:142
+#: ../assets/admin/tinymce/tinymce-dialog.php:262
+#: ../assets/admin/tinymce/tinymce-dialog.php:315
 msgid "all scores"
 msgstr "te gjitha rezultatet"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:136
-#: ../assets/admin/tinymce/tinymce-dialog.php:261
+#: ../assets/admin/tinymce/tinymce-dialog.php:144
+#: ../assets/admin/tinymce/tinymce-dialog.php:264
+#: ../assets/admin/tinymce/tinymce-dialog.php:317
 msgid "or choose a user defined ranking"
 msgstr "ose zgjidh nje renditje te percaktuar nga perdoruesi"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:149
+#: ../assets/admin/tinymce/tinymce-dialog.php:154
 msgid "Select a league"
 msgstr "Sleksiono nje lige"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:154
+#: ../assets/admin/tinymce/tinymce-dialog.php:159
 msgid "all players"
 msgstr "te gjithe lojtaret"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:156
+#: ../assets/admin/tinymce/tinymce-dialog.php:161
 msgid "or choose a league"
 msgstr "ose zgjidh nje lige"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:171
+#: ../assets/admin/tinymce/tinymce-dialog.php:176
 msgid "Number of players"
 msgstr "Numri i lojtareve"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:187
-#: ../assets/admin/tinymce/tinymce-dialog.php:282
-#: ../assets/admin/tinymce/tinymce-dialog.php:465
+#: ../assets/admin/tinymce/tinymce-dialog.php:192
+#: ../assets/admin/tinymce/tinymce-dialog.php:280
+#: ../assets/admin/tinymce/tinymce-dialog.php:333
+#: ../assets/admin/tinymce/tinymce-dialog.php:514
 msgid "information about PHP's date format"
 msgstr "informacion mbi formatin PHP te dates"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:187
-#: ../assets/admin/tinymce/tinymce-dialog.php:282
-#: ../assets/admin/tinymce/tinymce-dialog.php:460
-#: ../assets/admin/tinymce/tinymce-dialog.php:465
+#: ../assets/admin/tinymce/tinymce-dialog.php:192
+#: ../assets/admin/tinymce/tinymce-dialog.php:280
+#: ../assets/admin/tinymce/tinymce-dialog.php:333
+#: ../assets/admin/tinymce/tinymce-dialog.php:509
+#: ../assets/admin/tinymce/tinymce-dialog.php:514
 msgid "Date"
 msgstr "Data"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:191
-#: ../assets/admin/tinymce/tinymce-dialog.php:286
+#: ../assets/admin/tinymce/tinymce-dialog.php:196
+#: ../assets/admin/tinymce/tinymce-dialog.php:284
+#: ../assets/admin/tinymce/tinymce-dialog.php:337
 msgid "postdate"
 msgstr "postdate"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:192
-#: ../assets/admin/tinymce/tinymce-dialog.php:287
+#: ../assets/admin/tinymce/tinymce-dialog.php:197
+#: ../assets/admin/tinymce/tinymce-dialog.php:285
+#: ../assets/admin/tinymce/tinymce-dialog.php:338
 msgid "custom date"
 msgstr "date e definuar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:197
-#: ../assets/admin/tinymce/tinymce-dialog.php:459
-#: ../assets/admin/tinymce/tinymce-dialog.php:473
+#: ../assets/admin/tinymce/tinymce-dialog.php:202
+#: ../assets/admin/tinymce/tinymce-dialog.php:508
+#: ../assets/admin/tinymce/tinymce-dialog.php:522
 msgid "Match"
 msgstr "Ndeshja"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:201
+#: ../assets/admin/tinymce/tinymce-dialog.php:206
 msgid "Select a match"
 msgstr "Seleksiono nje ndeshje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:209
+#: ../assets/admin/tinymce/tinymce-dialog.php:212
 msgid "and/or"
 msgstr "dhe/ose"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:213
+#: ../assets/admin/tinymce/tinymce-dialog.php:216
 msgid "Question"
 msgstr "Pyejtje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:217
+#: ../assets/admin/tinymce/tinymce-dialog.php:220
 msgid "Select a question"
 msgstr "Seleksiono nje pyejtje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:226
-#: ../assets/admin/tinymce/tinymce-dialog.php:274
+#: ../assets/admin/tinymce/tinymce-dialog.php:229
+#: ../assets/admin/tinymce/tinymce-dialog.php:272
+#: ../assets/admin/tinymce/tinymce-dialog.php:325
 msgid "Text"
 msgstr "Tekst"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:229
+#: ../assets/admin/tinymce/tinymce-dialog.php:232
 msgid "Text to display if there is nothing to show"
 msgstr "Teksti per tu shfaqur ne nuk ka asgje per te treguar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:234
+#: ../assets/admin/tinymce/tinymce-dialog.php:237
+#: ../assets/admin/tinymce/tinymce-dialog.php:290
 msgid "Select a user"
 msgstr "Seleksiono nje lojtar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:239
+#: ../assets/admin/tinymce/tinymce-dialog.php:242
+#: ../assets/admin/tinymce/tinymce-dialog.php:295
 msgid "logged in user"
 msgstr "perdorues i identifikuar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:241
+#: ../assets/admin/tinymce/tinymce-dialog.php:244
+#: ../assets/admin/tinymce/tinymce-dialog.php:297
 msgid "or choose another user"
 msgstr "ose zgjidh nje lojtar tjeter"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:292
+#: ../assets/admin/tinymce/tinymce-dialog.php:343
 msgid "Select a group"
 msgstr "Seleksiono nje grup"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:307
-#: ../assets/admin/tinymce/tinymce-dialog.php:352
+#: ../assets/admin/tinymce/tinymce-dialog.php:358
+#: ../assets/admin/tinymce/tinymce-dialog.php:401
 msgid "Click a label to show the options."
 msgstr "Kliko nje etikete per te shfaqur opsionet"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:314
-#: ../assets/admin/tinymce/tinymce-dialog.php:359
+#: ../assets/admin/tinymce/tinymce-dialog.php:365
+#: ../assets/admin/tinymce/tinymce-dialog.php:408
 msgid "Select one or more matches"
 msgstr "Seleksiono një ose me shumë ndeshje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:324
-#: ../assets/admin/tinymce/tinymce-dialog.php:369
+#: ../assets/admin/tinymce/tinymce-dialog.php:375
+#: ../assets/admin/tinymce/tinymce-dialog.php:418
 msgid "Select one or more match types"
 msgstr "Seleksiono një ose disa lloje ndeshjes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:339
+#: ../assets/admin/tinymce/tinymce-dialog.php:390
 msgid "Select one or more questions"
 msgstr "Seleksiono nje ose disa pyejtje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:392
+#: ../assets/admin/tinymce/tinymce-dialog.php:441
 msgid "Full points"
 msgstr "Parashikim i sakte"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:393
+#: ../assets/admin/tinymce/tinymce-dialog.php:442
 msgid "Toto points"
 msgstr "Parashikim Lloto"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:412
+#: ../assets/admin/tinymce/tinymce-dialog.php:461
 msgid "Link to page"
 msgstr "Lidhje ne faqe"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:413
+#: ../assets/admin/tinymce/tinymce-dialog.php:462
 msgid "Link to registration"
 msgstr "Lidhje per regjistrimin"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:418
+#: ../assets/admin/tinymce/tinymce-dialog.php:467
 msgid "Select a page"
 msgstr "Seleksiono nje faqe"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:432
+#: ../assets/admin/tinymce/tinymce-dialog.php:481
 msgid "Link title"
 msgstr "Titulli i lidhjes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:433
+#: ../assets/admin/tinymce/tinymce-dialog.php:482
 msgid "New window?"
 msgstr "Dritare e re?"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:450
+#: ../assets/admin/tinymce/tinymce-dialog.php:499
 msgid "Countdown"
 msgstr "Numërimi mbrapsht"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:456
+#: ../assets/admin/tinymce/tinymce-dialog.php:505
 msgid "Countdown to"
 msgstr "Numërimi mbrapsht per"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:478
+#: ../assets/admin/tinymce/tinymce-dialog.php:527
 msgid "first match"
 msgstr "ndeshja e parë"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:480
+#: ../assets/admin/tinymce/tinymce-dialog.php:529
 msgid "or choose a match"
 msgstr "ose zgjidhni një ndeshje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:488
+#: ../assets/admin/tinymce/tinymce-dialog.php:537
 msgid "More information about this on the Help page."
 msgstr "Me teper informacion rreth kesaj ne Faqen e Ndihmes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:488
+#: ../assets/admin/tinymce/tinymce-dialog.php:537
 msgid "Texts for counter"
 msgstr "Teksti per numeriesin"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:492
+#: ../assets/admin/tinymce/tinymce-dialog.php:541
 msgid "no texts"
 msgstr "pa tekst"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:495
+#: ../assets/admin/tinymce/tinymce-dialog.php:544
 msgid "before - time not passed"
 msgstr "perpara - koha nuk ka kaluar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:495
-#: ../assets/admin/tinymce/tinymce-dialog.php:496
-#: ../assets/admin/tinymce/tinymce-dialog.php:499
-#: ../assets/admin/tinymce/tinymce-dialog.php:500
+#: ../assets/admin/tinymce/tinymce-dialog.php:544
+#: ../assets/admin/tinymce/tinymce-dialog.php:545
+#: ../assets/admin/tinymce/tinymce-dialog.php:548
+#: ../assets/admin/tinymce/tinymce-dialog.php:549
 msgid ""
 "Leave empty for the default texts. Don't forget spaces between a text and "
 "the timer."
 msgstr "Lere bosh pre tekstin e parazhgjedhur"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:496
+#: ../assets/admin/tinymce/tinymce-dialog.php:545
 msgid "after - time not passed"
 msgstr "pas - koha nuk ka kaluar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:499
+#: ../assets/admin/tinymce/tinymce-dialog.php:548
 msgid "before - time passed"
 msgstr "perpara - koha kaloje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:500
+#: ../assets/admin/tinymce/tinymce-dialog.php:549
 msgid "after - time passed"
 msgstr "pas - koha kaloje"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:506
+#: ../assets/admin/tinymce/tinymce-dialog.php:555
 msgid "Display inline"
 msgstr "Shfaq inline"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:522
+#: ../assets/admin/tinymce/tinymce-dialog.php:571
 msgid "Insert"
 msgstr "Fut"
 
@@ -2844,7 +2871,7 @@ msgid "no answer"
 msgstr "ska pergjigje"
 
 #: ../classes/class-football-pool-chart-data.php:337
-#: ../classes/class-football-pool-matches.php:368
+#: ../classes/class-football-pool-matches.php:364
 msgid "match"
 msgstr "Ndeshja"
 
@@ -2869,64 +2896,64 @@ msgstr "Kliko dhe tërhiq në fushën e mëposhtëme për të zmadhuar"
 msgid "Drag your finger over the plot to zoom in"
 msgstr "Tërhiq Miun në fushën e mëposhtëme për të zmadhuar"
 
-#: ../classes/class-football-pool-groups.php:302
+#: ../classes/class-football-pool-groups.php:303
 msgid "wins"
 msgstr "fitore"
 
 #. Translators: this is a short notation for 'wins'
-#: ../classes/class-football-pool-groups.php:304
+#: ../classes/class-football-pool-groups.php:305
 msgctxt "short for 'wins'"
 msgid "w"
 msgstr "f"
 
-#: ../classes/class-football-pool-groups.php:305
+#: ../classes/class-football-pool-groups.php:306
 msgid "draws"
 msgstr "b"
 
 #. Translators: this is a short notation for 'draws'
-#: ../classes/class-football-pool-groups.php:307
+#: ../classes/class-football-pool-groups.php:308
 msgctxt "short for 'draws'"
 msgid "d"
 msgstr "b"
 
-#: ../classes/class-football-pool-groups.php:308
+#: ../classes/class-football-pool-groups.php:309
 msgid "losses"
 msgstr "humbje"
 
 #. Translators: this is a short notation for 'losses'
-#: ../classes/class-football-pool-groups.php:310
+#: ../classes/class-football-pool-groups.php:311
 msgctxt "short for 'losses'"
 msgid "l"
 msgstr "h"
 
 #. Translators: this is a short notation for 'matches'
-#: ../classes/class-football-pool-groups.php:328
+#: ../classes/class-football-pool-groups.php:329
 msgctxt "short for 'matches'"
 msgid "m"
 msgstr "n"
 
 #. Translators: this is a short notation for 'points'
-#: ../classes/class-football-pool-groups.php:333
+#: ../classes/class-football-pool-groups.php:334
 msgctxt "short for 'points'"
 msgid "p"
 msgstr "p"
 
 #. Translators: this is a date format string (see http://php.net/date)
-#: ../classes/class-football-pool-matches.php:344
+#: ../classes/class-football-pool-matches.php:340
 msgctxt "a date format string (see http://php.net/date)"
 msgid "l"
 msgstr "l"
 
-#: ../classes/class-football-pool-matches.php:474
+#: ../classes/class-football-pool-matches.php:470
 #: ../classes/class-football-pool-statistics.php:184
 msgid "score"
 msgstr "rezultat"
 
-#: ../classes/class-football-pool-matches.php:584
+#: ../classes/class-football-pool-matches.php:580
 msgid "view other users predictions"
 msgstr "shfaq parashikimet e perdoruesve te tjere"
 
-#: ../classes/class-football-pool-matches.php:641
+#: ../classes/class-football-pool-matches.php:637
 msgid "use your joker?"
 msgstr "do përdorni Xholin tuaj?"
 
@@ -2937,41 +2964,41 @@ msgid_plural "%s items"
 msgstr[0] "1 artikull"
 msgstr[1] "%s artikuj"
 
-#: ../classes/class-football-pool-pool.php:292
+#: ../classes/class-football-pool-pool.php:328
 msgid "No results yet. Below is a list of all users."
 msgstr "Ska rezultate ende. Me poshte eshte nje liste e te gjithe perdoruesve."
 
-#: ../classes/class-football-pool-pool.php:298
+#: ../classes/class-football-pool-pool.php:334
 msgid "No users have registered for this pool (yet)."
 msgstr "Asnje perdorues nuk eshte regjistruar per Football Pool ende."
 
-#: ../classes/class-football-pool-pool.php:322
-#: ../classes/class-football-pool-shortcodes.php:283
+#: ../classes/class-football-pool-pool.php:361
+#: ../classes/class-football-pool-shortcodes.php:316
 #: ../classes/class-football-pool.php:11
-#: ../widgets/widget-football-pool-ranking.php:104
+#: ../widgets/widget-football-pool-ranking.php:108 ../_dev/hooks.php:25
 msgid "predictions"
 msgstr "parashikimet"
 
-#: ../classes/class-football-pool-pool.php:741
+#: ../classes/class-football-pool-pool.php:780
 msgid "Important:"
 msgstr "E rendesishme:"
 
-#: ../classes/class-football-pool-pool.php:744
+#: ../classes/class-football-pool-pool.php:783
 msgid "answer this question before this date"
 msgstr "Pergjigju kesaj pyejtje perpara kesaj date"
 
-#: ../classes/class-football-pool-pool.php:756
+#: ../classes/class-football-pool-pool.php:795
 msgid ""
 "it's is no longer possible to answer this question, or change your answer"
 msgstr ""
 "nuk eshte me e mundur ti pergjigjesh kesaj pyejtje, ose te ndryshosh "
 "pergjigjen tende"
 
-#: ../classes/class-football-pool-pool.php:757
+#: ../classes/class-football-pool-pool.php:796
 msgid "closed on"
 msgstr "mbyllur ne"
 
-#: ../classes/class-football-pool-pool.php:796
+#: ../classes/class-football-pool-pool.php:835
 msgid ""
 "Something went wrong during the save. Check if you are still logged in. If "
 "the problems persist, then contact your webmaster."
@@ -2979,18 +3006,18 @@ msgstr ""
 "Dicka nuk funksionoje sic duhet ne procesin e ruajtjes. Sigurohuni qe jeni "
 "ende i identifikuar. Nese problemi vazhdon, atehere kontaktoni webmasterin."
 
-#: ../classes/class-football-pool-pool.php:1009
-#: ../classes/class-football-pool-pool.php:1018
+#: ../classes/class-football-pool-pool.php:1048
+#: ../classes/class-football-pool-pool.php:1057
 msgid "view other users answers"
 msgstr "shiko pergjigjet e perdoruesve te tjere"
 
-#: ../classes/class-football-pool-shortcodes.php:317
-#: ../widgets/widget-football-pool-lastgames.php:85
-#: ../widgets/widget-football-pool-ranking.php:140
+#: ../classes/class-football-pool-shortcodes.php:350
+#: ../widgets/widget-football-pool-lastgames.php:90
+#: ../widgets/widget-football-pool-ranking.php:146
 msgid "No match data available."
 msgstr "Asnjë të dhënë rreth ndeshje(s)"
 
-#: ../classes/class-football-pool-shortcodes.php:409
+#: ../classes/class-football-pool-shortcodes.php:442
 msgid "register"
 msgstr "regjistrohu"
 
@@ -3043,7 +3070,7 @@ msgid "Click to enlarge:"
 msgstr "Kliko per te zmadhuar:"
 
 #: ../classes/class-football-pool-team.php:84
-#: ../classes/class-football-pool.php:376
+#: ../classes/class-football-pool.php:365
 msgid "close"
 msgstr "mbyll"
 
@@ -3093,75 +3120,75 @@ msgstr "jo monetare"
 msgid "default ranking"
 msgstr "renditje e parazgjedhur"
 
-#: ../classes/class-football-pool.php:324
+#: ../classes/class-football-pool.php:328
 msgid "second"
 msgstr "sekondë"
 
-#: ../classes/class-football-pool.php:325
+#: ../classes/class-football-pool.php:329
 msgid "seconds"
 msgstr "sekonda"
 
-#: ../classes/class-football-pool.php:326
-#: ../classes/class-football-pool.php:327
+#: ../classes/class-football-pool.php:330
+#: ../classes/class-football-pool.php:331
 msgid "day"
 msgstr "ditë"
 
-#: ../classes/class-football-pool.php:328
+#: ../classes/class-football-pool.php:332
 msgid "hour"
 msgstr "orë"
 
-#: ../classes/class-football-pool.php:329
+#: ../classes/class-football-pool.php:333
 msgid "hours"
 msgstr "orë"
 
-#: ../classes/class-football-pool.php:330
+#: ../classes/class-football-pool.php:334
 msgid "minute"
 msgstr "minutë"
 
-#: ../classes/class-football-pool.php:331
+#: ../classes/class-football-pool.php:335
 msgid "minutes"
 msgstr "minuta"
 
-#: ../classes/class-football-pool.php:332
+#: ../classes/class-football-pool.php:336
 msgid "Wait "
 msgstr "Prit"
 
-#: ../classes/class-football-pool.php:333
+#: ../classes/class-football-pool.php:337
 msgid " before the tournament starts"
 msgstr "Perpara se turneu te filloje"
 
-#: ../classes/class-football-pool.php:336
+#: ../classes/class-football-pool.php:340
 msgid " ago the tournament started."
 msgstr "me pare, turneu filloje"
 
-#: ../classes/class-football-pool.php:379
+#: ../classes/class-football-pool.php:368
 msgid "Error message"
 msgstr "Mesazh gabimi"
 
-#: ../classes/class-football-pool.php:489
+#: ../classes/class-football-pool.php:479
 msgid "<strong>ERROR:</strong> You must choose a league to play in!"
 msgstr "<strong>GABIM:</strong> Ju duhet te zgjidhni nje lige per te luajtur!"
 
-#: ../classes/class-football-pool.php:499
+#: ../classes/class-football-pool.php:489
 msgid ""
 "Click below to go to the football pool and predict your scores. Good luck!"
 msgstr ""
 "Kliko me poshte per te shkuar ne Football Pool dhe te parashikosh "
 "rezultatet. Fat te mbare!"
 
-#: ../classes/class-football-pool.php:500
+#: ../classes/class-football-pool.php:490
 msgid "Fill in your predictions."
 msgstr "Ploteso parashikimet e tua."
 
-#: ../classes/class-football-pool.php:506
+#: ../classes/class-football-pool.php:496
 msgid "Start immediately with your predictions"
 msgstr "Fillo menjehere me parashikimet e tua"
 
-#: ../pages/class-football-pool-groups-page.php:13
+#: ../pages/class-football-pool-groups-page.php:12
 msgid "matches in the group stage"
 msgstr "ndjeshjet në fazën e grupeve"
 
-#: ../pages/class-football-pool-groups-page.php:24
+#: ../pages/class-football-pool-groups-page.php:23
 msgid "view all groups"
 msgstr "shiko te gjitha grupet"
 
@@ -3314,11 +3341,11 @@ msgstr "Shfaq kete grup"
 msgid "Layout of the widget"
 msgstr "Vizualiteti i widgetit"
 
-#: ../widgets/widget-football-pool-group.php:76
+#: ../widgets/widget-football-pool-group.php:78
 msgid "wide"
 msgstr "e gjere"
 
-#: ../widgets/widget-football-pool-group.php:77
+#: ../widgets/widget-football-pool-group.php:79
 msgid "small"
 msgstr "e vogel"
 
@@ -3338,7 +3365,7 @@ msgstr "ndeshjet e fundit"
 msgid "Number of games to show"
 msgstr "Numri i ndeshjeve per tu shfaqur"
 
-#: ../widgets/widget-football-pool-lastgames.php:80
+#: ../widgets/widget-football-pool-lastgames.php:83
 msgid "view predictions"
 msgstr "shiko parashikimet"
 
@@ -3350,11 +3377,13 @@ msgstr "Widget per C'identifikim"
 msgid "add a log out/log in button."
 msgstr "shto nje buton per identifikim/dalje."
 
-#: ../widgets/widget-football-pool-logout.php:39
+#: ../widgets/widget-football-pool-logout.php:42
+#: ../widgets/widget-football-pool-logout.php:43
 msgid "Log out"
 msgstr "Dilni"
 
-#: ../widgets/widget-football-pool-logout.php:41
+#: ../widgets/widget-football-pool-logout.php:48
+#: ../widgets/widget-football-pool-logout.php:49
 msgid "Log in"
 msgstr "Identifikohu"
 
@@ -3382,23 +3411,23 @@ msgstr "Skuadra"
 msgid "Also show when not logged in?"
 msgstr "Gjithashtu shfaq dhe kur nuk jane identifikuar?"
 
-#: ../widgets/widget-football-pool-next-prediction.php:75
+#: ../widgets/widget-football-pool-next-prediction.php:74
 msgid "Just "
 msgstr "Vetem"
 
-#: ../widgets/widget-football-pool-next-prediction.php:76
+#: ../widgets/widget-football-pool-next-prediction.php:75
 msgid " until"
 msgstr "deri"
 
-#: ../widgets/widget-football-pool-next-prediction.php:77
+#: ../widgets/widget-football-pool-next-prediction.php:76
 msgid "started "
 msgstr "filloje"
 
-#: ../widgets/widget-football-pool-next-prediction.php:78
+#: ../widgets/widget-football-pool-next-prediction.php:77
 msgid " ago:"
 msgstr "me pare:"
 
-#: ../widgets/widget-football-pool-next-prediction.php:83
+#: ../widgets/widget-football-pool-next-prediction.php:82
 msgid "click to enter prediction"
 msgstr "kliko per te shtuar parashikimin"
 
@@ -3434,17 +3463,17 @@ msgstr "shoutbox"
 msgid "Number of messages to display"
 msgstr "Numri i mesazheve per tu shfaqur"
 
-#: ../widgets/widget-football-pool-shoutbox.php:85
+#: ../widgets/widget-football-pool-shoutbox.php:89
 #, php-format
 msgid "(<span>%s</span> characters remaining)"
 msgstr "(<span>%s</span> karaktere te mbetura)"
 
-#: ../widgets/widget-football-pool-shoutbox.php:92
+#: ../widgets/widget-football-pool-shoutbox.php:96
 #, php-format
 msgid "all text longer than %s characters will be removed!"
 msgstr "i gjithe teksti me i gjate se %s karaktere, do te hiqet"
 
-#: ../widgets/widget-football-pool-shoutbox.php:96
+#: ../widgets/widget-football-pool-shoutbox.php:100
 msgid "save"
 msgstr "ruaj"
 

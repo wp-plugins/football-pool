@@ -23,8 +23,11 @@
 
 #sidebar ul .widget_footballpoolnextpredictionwidget p a { display: inline; }
 
+/*
 img.flag { width: 18px; height: 18px; border: 0; }
 img.fp-joker { width: 13px;  height: 13px; }
+*/
+td.flag img { border: 1px solid #ccc; }
 
 tr.odd { }
 

@@ -215,16 +215,22 @@ class Football_Pool_Pool {
 	public function get_pool_ranking_limited( $league, $num_users
 											, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT
 											, $score_date = '' ) {
-		global $wpdb;
-		$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
-		$sql = $wpdb->prepare( $sql, $num_users );
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
-		$ranking = array();
-		$i = 1;
-		foreach( $rows as $row ) {
-			$row['ranking'] = $i++;
-			$ranking[] = $row;
+		// if score_date is empty we can profit from the WP cache
+		if ( $score_date == '' ) {
+			$ranking = array_slice( $this->get_pool_ranking( $league, $ranking_id ), 0, $num_users );
+		} else {
+			global $wpdb;
+			$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
+			$sql = $wpdb->prepare( $sql, $num_users );
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			$ranking = array();
+			$i = 1;
+			foreach( $rows as $row ) {
+				$row['ranking'] = $i++;
+				$ranking[] = $row;
+			}
 		}
+		
 		return $ranking;
 	}
 	
@@ -243,7 +249,7 @@ class Football_Pool_Pool {
 				$ranking[] = $row;
 			}
 			$rows = $ranking;
-			wp_cache_set( $cache_key, $ranking );
+			wp_cache_set( $cache_key, $rows );
 		}
 		
 		return $rows;

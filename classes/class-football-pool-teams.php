@@ -52,7 +52,7 @@ class Football_Pool_Teams {
 		$result = $wpdb->get_row( $sql );
 		
 		if ( $addnew == 'addnew' && $result == null ) {
-			$photo = $flag = $link = '';
+			$photo = $flag = $link = $comments = '';
 			$group_id = $group_order = 0;
 			$is_active = $is_real = 1;
 			

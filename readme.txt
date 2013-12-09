@@ -102,14 +102,7 @@ Since version 2.0.0 the plugin does not add the matches on install. But it does 
 Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
 = I installed the plugin, but it does not look like your screenshots. =
-That's correct. The plugin has some basic styling, but it will not change your entire blog. If you want to take the style I used, then follow these steps:
-
-* Install the Simply Works Core theme (http://wordpress.org/extend/themes/simply-works-core).
-* Take the ek2012.css file from the plugin-dir (`wp-content/plugins/football-pool/assets/simply works core skin/`) and place it in the WordPress theme dir (`wp-content/themes/simply-works-core/skins`).
-* Go to the theme options in de WordPress admin and select the ek2012 skin (Appearance &raquo; Theme Options &raquo; Theme Colors). If you also want the sidebar on the left you can change this under Layout Options.
-* Change the background (Appearance &raquo; Background) to the `background.jpg` file (Display Options: center, no repeat) that came with the plugin ('simply works core skin' directory).
-* Remove the header (Appearance &raquo; Header) and remove all standard widgets from the Header Ad sidebar (Appearance &raquo; Widgets), or move them to the Sidebar Top.
-* Create 2 menu's (Appearance &raquo; Menus). Primary menu for the Pool menu-items, and a Secondary menu for information about the tournament (teams, etc.).
+That's correct. The plugin has some basic styling, but it will not change your entire blog. You will have to fit the styling to your site yourself. Change your theme to overwrite/change the style of the plugin, or use a plugin to add extra custom stylesheets. Please don't change the css in the plugin folder; if you update the plugin, all your hard work will be gone.
 
 == Localizations ==
 
@@ -161,7 +154,12 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.3.6 =
+* Added the match schedule for the 2014 World Cup in Brazil.
 * New shortcode: display the ranking of a single user with [fp-user-ranking].
+* Several hooks (filters and actions) that make the plugin extensible. See help page for details.
+* Import CSV & Overwrite will now exit with an error when the file is invalid. The data will not be erased.
+* Import CSV & Overwrite will ask for an extra confirmation.
+* Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.
 
 = 2.3.5 =
 * Bug fix: matches admin added timezone offset on every save (thanks BruceFeuillette for reporting the bug).

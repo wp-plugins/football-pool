@@ -152,5 +152,5 @@ div.ranking-log span { padding-right: 10px; }
 
 .tablenav.no-pages { display: none; }
 
-code.block { display: block; margin: 0 0 1em; }
+code.block { display: block; margin: 0 0 15px; }
 code.inline { display: inline; }

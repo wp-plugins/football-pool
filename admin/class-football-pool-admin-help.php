@@ -730,7 +730,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
-		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>.</p>
+		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin.</p>
 		
 		<script>
 		function show_footballpool_hooks() {
@@ -852,19 +852,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<h3>examples:</h3>
 		<?php 
 		Football_Pool_Utils::highlight_string( '<?php
-// to add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
+// add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
+add_filter( \'footballpool_shortcode_html_fp-ranking\', \'add_a_div\' );
 function add_a_div( $html ) {
 	return \'<div class="extra-div">\' . $html . \'</div>\';
 }
-add_filter( \'footballpool_shortcode_html_fp-ranking\', \'add_a_div\' );
 ?>' );
 
 		Football_Pool_Utils::highlight_string( '<?php
 // only show the first 20 users in the user selector
+add_filter( \'footballpool_userselector_widget_users\', \'just_20_users\' );
 function just_20_users( $a ) {
 	return array_slice( $a, 0, 20 );
 }
-add_filter( \'footballpool_userselector_widget_users\', \'just_20_users\' );
 ?>' );
 
 		Football_Pool_Utils::highlight_string( '<?php
