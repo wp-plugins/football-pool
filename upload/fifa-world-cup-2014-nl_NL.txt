@@ -2,7 +2,7 @@
  Contributor: Antoine Hurkmans
  Assets URI: https://dl.dropbox.com/u/397845/wordpressfootballpool/fifa-world-cup-2014.zip
 */
-play_date;home_team;away_team;stadium;wedstrijd_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo
+play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;home_team_link;home_team_group;home_team_group_order;home_team_is_real;away_team_photo;away_team_flag;away_team_link;away_team_group;away_team_group_order;away_team_is_real;stadium_photo
 "2014-06-12 20:00:00";Brazilië;Kroatië;"Arena De Sao Paulo, Sao Paulo";"Poulefase";brazil.jpg;brazil.png;http://www.fifa.com/worldcup/teams/team=43924/index.html;"Poule A";1;1;croatia.jpg;croatia.png;http://www.fifa.com/worldcup/teams/team=43938/index.html;"Poule A";2;1;arena-de-sao-paulo.jpg
 "2014-06-13 16:00:00";Mexico;Kameroen;"Estadio Das Dunas, Natal";"Poulefase";mexico.jpg;mexico.png;http://www.fifa.com/worldcup/teams/team=43911/index.html;"Poule A";3;1;cameroon.jpg;cameroon.png;http://www.fifa.com/worldcup/teams/team=43849/index.html;"Poule A";4;1;estadio-das-dunas.jpg
 "2014-06-13 19:00:00";Spanje;Nederland;"Arena Fonte Nova, Salvador";"Poulefase";spain.jpg;spain.png;http://www.fifa.com/worldcup/teams/team=43969/index.html;"Poule B";1;1;netherlands.jpg;netherlands.png;http://www.fifa.com/worldcup/teams/team=43960/index.html;"Poule B";2;1;arena-fonte-nova.jpg
