@@ -36,6 +36,12 @@ table.user-answers tr:hover {
 }
 
 label.radio { font-weight: normal; }
+label.radio {
+	display: block;
+	padding-left: 22px;
+	text-indent: -22px;
+	margin-bottom: 5px;
+}
 
 img.screenshot { 
 	box-shadow: 5px 5px 5px #888;
@@ -51,7 +57,7 @@ input.date-i { width: 2.5em; }
 
 .placeholder, .hint { font-style: italic; color: #ccc; }
 
-.email-addresses textarea { width: 500px; height: 50px; }
+.email-addresses textarea { width: 500px; height: 100px; }
 .email-addresses.players textarea { border: 1px solid green; }
 .email-addresses.not-players textarea { border: 1px solid red; }
 .email-addresses { margin-bottom: 20px; }
@@ -65,7 +71,7 @@ div.donate form { margin-left: 2em; }
 table.fp-radio-list { border-collapse: collapse; }
 .fp-radio-list label { display: block; padding-right: 5em; }
 .fp-radio-list td { padding: 5px 4px; vertical-align: top; }
-.fp-radio-list tr.csv-file:hover { background-color: #eaf2fa; }
+.fp-radio-list tr.csv-file:hover { background-color: #2ea2cc; color: #fff; }
 .fp-radio-list input[type=radio] { margin-right: 1.5em; }
 .fp-radio-list td.file {  }
 .fp-radio-list th { text-align: left; font-weight: normal; font-style: italic; }
@@ -115,6 +121,7 @@ div.ranking-definition div.matchtype {
 	background-color: rgb( 223, 223, 223 );
 }
 
+table.fp-options  td, table.fp-options  th { vertical-align: top; }
 table.fp-options  tr { border-top: 1px solid rgb( 223, 223, 223 ); }
 table.fp-options  tr.no-border { border: none; }
 table.fp-options  tr:last-child { border-bottom: 1px solid rgb( 223, 223, 223 ); }
@@ -144,11 +151,18 @@ div.ranking-log span { padding-right: 10px; }
 	margin-top: 15px;
 }
 
-#step-0-form input[type="radio"] { margin-right: 5px; width: 20px; }
+#step-0-form input[type="radio"] { margin-right: 5px; }
 #step-0-form .calculation-type-select { margin: 1em 0 0; }
-#step-0-form .calculation-type-select label { clear: both; display: block; margin-bottom: 4px; font-weight: bold; cursor: pointer; }
-#step-0-form .calculation-type-select label span { float: left; padding-left: 30px; font-style: italic; font-weight: normal; }
-#step-0-form .submit { clear: both; }
+#step-0-form .calculation-type-select label { 
+	display: block; 
+	margin-bottom: 4px; 
+	font-weight: bold; 
+	cursor: pointer;
+	padding-left: 30px;
+	text-indent: -30px;
+}
+#step-0-form .calculation-type-select label span { font-style: italic; font-weight: normal; }
+#step-0-form .submit { }
 
 .tablenav.no-pages { display: none; }
 

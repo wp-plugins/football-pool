@@ -326,9 +326,12 @@ class Football_Pool_Pool {
 			$rows = $this->get_users( $league );
 			if ( count( $rows ) > 0 ) {
 				$output .= '<p>' . __( 'No results yet. Below is a list of all users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
+				$i = 0;
 				foreach ( $rows as $row ) {
-					$ranking[] = $row;
-					$users[] = $row['user_id'];
+					$ranking[$i] = $row;
+					$ranking[$i]['ranking'] = $i + 1;
+					$users[$i] = $row['user_id'];
+					$i++;
 				}
 			} else {
 				$output .= '<p>'. __( 'No users have registered for this pool (yet).', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';

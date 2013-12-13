@@ -2,7 +2,7 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
-Tested up to: 3.6.1
+Tested up to: 3.7.1
 Stable tag: 2.3.5
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
@@ -11,7 +11,7 @@ This plugin adds a fantasy sports pool to your blog. Play against other users, p
 == Description ==
 Logged in users of your blog can predict outcomes of matches and earn extra points with bonus questions. Every player can view scores and charts of the other pool contenders.
 
-This plugin installs some custom tables in the database and ships with match information for the 2012 UEFA championship, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin may also delete all the plugin's data from the database, please check the 'keep data on uninstall' option on the settings page (it is on by default since version 2.3.1).
+This plugin installs some custom tables in the database and ships with match information for the 2014 FIFA World Cup in Brazil, but it can be easily manipulated with the match info for other championships or sports. Please note that deactivating this plugin may also delete all the plugin's data from the database, please check the 'keep data on uninstall' option on the settings page (it is set by default since version 2.3.1).
 
 I originally coded this pool in PHP as a standalone site for the UEFA 2000 championship and rewrote the damn thing several times for every European Championship and World Cup since. Every year I added new features. In 2012 I decided to transform it into a WordPress plugin. I hope you like it.
 
@@ -156,10 +156,12 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 = 2.3.6 =
 * Added the match schedule for the 2014 World Cup in Brazil.
 * New shortcode: display the ranking of a single user with [fp-user-ranking].
+* Small updates for WordPress 3.8.
 * Several hooks (filters and actions) that make the plugin extensible. See help page for details.
 * Import CSV & Overwrite will now exit with an error when the file is invalid. The data will not be erased.
 * Import CSV & Overwrite will ask for an extra confirmation.
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.
+* Bug fix: undefined index 'ranking' on the ranking page.
 
 = 2.3.5 =
 * Bug fix: matches admin added timezone offset on every save (thanks BruceFeuillette for reporting the bug).

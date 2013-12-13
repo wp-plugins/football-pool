@@ -438,7 +438,7 @@ class Football_Pool_Admin {
 			}
 			$selected = ( self::check_selected_value( $value, $option['value'] ) ? 'checked="checked" ' : '' );
 			$input .= sprintf( '<label class="radio"><input name="%s" type="radio" id="%s_answer_%d" 
-								value="%s" %s %s> %s</label><br />'
+								value="%s" %s %s> %s</label>'
 								, esc_attr( $key )
 								, esc_attr( $key )
 								, $i++

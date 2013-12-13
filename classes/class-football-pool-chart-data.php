@@ -18,9 +18,11 @@ class Football_Pool_Chart_Data {
 									, COUNT( IF( goal_diff_bonus = 1, 1, NULL ) ) AS diffbonus
 									, COUNT( user_id ) AS scoretotal
 								FROM {$prefix}scorehistory 
-								WHERE `type` = 0 AND ranking_id = %d
-								GROUP BY score_order HAVING score_order = %d", 
-							$ranking_id, $match
+								WHERE `type` = %d AND ranking_id = %d
+								GROUP BY score_order HAVING score_order = %d" 
+								, FOOTBALLPOOL_TYPE_MATCH
+								, $ranking_id
+								, $match
 						);
 		return $wpdb->get_row( $sql, ARRAY_A );
 	}
@@ -51,12 +53,12 @@ class Football_Pool_Chart_Data {
 			} else {
 				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 			}
-			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = 0 
+			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = %d 
 						AND s.user_id IN ( {$user_ids} ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 			$sql .= "GROUP BY s.user_id";
 			
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH ), ARRAY_A );
 			foreach ( $rows as $row ) {
 				$data[ $row['user_name'] ] = array(
 													'scorefull'  => $row['scorefull'],
@@ -81,9 +83,10 @@ class Football_Pool_Chart_Data {
 			
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$users = implode( ',', $users );
 			$sql = "SELECT
-						COUNT( IF(s.score > 0, 1, NULL ) ) AS bonuscorrect, 
-						COUNT( IF(s.score = 0, 1, NULL ) ) AS bonuswrong,
+						COUNT( IF( s.score > 0, 1, NULL ) ) AS bonuscorrect, 
+						COUNT( IF( s.score = 0, 1, NULL ) ) AS bonuswrong,
 						COUNT( s.score_order ) AS bonustotal,
 						u.display_name AS user_name
 					FROM {$prefix}scorehistory s
@@ -94,11 +97,12 @@ class Football_Pool_Chart_Data {
 			} else {
 				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 			}
-			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = 1 
-						AND s.user_id IN ( " . implode(',', $users) . " ) ";
+			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = %d 
+						AND s.user_id IN ( {$users} ) ";
 			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 			$sql .= "GROUP BY s.user_id";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION ), ARRAY_A );
 			
 			foreach ( $rows as $row ) {
 				$data[ $row['user_name'] ] = array(
@@ -158,7 +162,8 @@ class Football_Pool_Chart_Data {
 		$output['total_score'] = ( $data != null ) ? $data : 0;
 		// get the number of matches for which there are results
 		$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}scorehistory
-								WHERE type = 0 AND user_id = %d AND ranking_id = %d", $user, $ranking_id );
+								WHERE type = %d AND user_id = %d AND ranking_id = %d"
+								, FOOTBALLPOOL_TYPE_MATCH, $user, $ranking_id );
 		$data = $wpdb->get_var( $sql );
 		$num_matches = ( $data != null ) ? $data : 0;
 		

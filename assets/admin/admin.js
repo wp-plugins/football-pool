@@ -210,7 +210,7 @@ function calculate_score_history() {
 												arrowKey: false,
 												close: FootballPoolAjax.colorbox_close,
 												innerWidth: "500px",
-												innerHeight: "250px"
+												innerHeight: "285px"
 											} );
 							jQuery( "#cboxClose" ).hide();
 						}, 'json' )

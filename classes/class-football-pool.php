@@ -376,7 +376,7 @@ class Football_Pool {
 	}
 	
 	public function the_content( $content ) {
-		if ( is_page() ) {
+		if ( is_page() && is_main_query() ) { // http://pippinsplugins.com/playing-nice-with-the-content-filter/
 			$page_id = get_the_ID();
 			switch ( $page_id ) {
 				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
