@@ -161,6 +161,10 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'checkbox', __( 'Use Apple touch icon', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_touchicon', __( "Switch off if you don't want to use the icons in the plugin.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'show_team_link' =>
 							array( 'checkbox', __( 'Show team names as links', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_team_link', __( "Switch off if you don't want to link the team names to a team info page.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						// 'show_team_link' =>
+							// array( 'checkbox', __( 'Show team names as links', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_team_link', __( "Switch off if you don't want to link the team names to a team info page.", FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-show_team_link_use_external\').toggle()"' ),
+						// 'show_team_link_use_external' =>
+							// array( 'checkbox', __( 'Use the external link for the link team names', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_team_link_use_external', __( ".", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'show_venues_on_team_page' =>
 							array( 'checkbox', __( 'Show venues on team page', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_venues_on_team_page', __( "Switch off if you don't want to show all venues a team plays in during a season or tournament (in national competitions the venue list is a bit useless).", FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'use_charts' =>
@@ -430,6 +434,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['match_time_display'],
 									$options['match_time_offset'],
 									$options['show_team_link'],
+									// $options['show_team_link_use_external'],
 									$options['show_venues_on_team_page'],
 									$options['listing_show_team_thumb'],
 									$options['listing_show_team_comments'],

@@ -86,6 +86,7 @@ class Football_Pool {
 		$options['stop_time_method_matches'] = 0; // 0: dynamic, 1: one stop date
 		$options['stop_time_method_questions'] = 0; // 0: dynamic, 1: one stop date
 		$options['show_team_link'] = 1; // 1: yes, 0: no
+		// $options['show_team_link_use_external'] = 0; // 1: yes, 0: no
 		$options['show_venues_on_team_page'] = 1; // 1: yes, 0: no
 		$options['use_charts'] = 0; // 1: yes, 0: no
 		$options['export_format'] = 0; // 0: full, 1: minimal

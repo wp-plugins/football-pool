@@ -53,7 +53,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$output = '';
 		if ( $title != '' ) {
-			$output .= $before_title, $title, $after_title;
+			$output .= $before_title . $title . $after_title;
 		}
 		
 		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['play_date'] ) );
