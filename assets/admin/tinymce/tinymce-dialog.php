@@ -7,6 +7,14 @@ $admin_url = get_admin_url();
 $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 $pool = new Football_Pool_Pool;
 
+function group_options() {
+	$o = new Football_Pool_Groups;
+	$groups = $o->get_groups();
+	foreach ( $groups as $group ) {
+		printf( '<option value="%d">%s</option>', $group->id, $group->name );
+	}
+}
+
 function ranking_options() {
 	global $pool;
 	$rankings = $pool->get_rankings( 'user defined' );
@@ -425,6 +433,16 @@ function match_options() {
 						printf( '<option value="%d">%s</option>', $match_type->id, $match_type->name );
 					}
 					?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-matches atts">
+				<td>
+					<label for="matches-group-id" onclick="toggle_select_row( this, 'matches' )"><?php _e( 'Select a group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="matches-group-id" style="width:320px; display:none;">
+					<?php group_options(); ?>
 					</select>
 				</td>
 			</tr>

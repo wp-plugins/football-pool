@@ -381,35 +381,35 @@ class Football_Pool {
 			switch ( $page_id ) {
 				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
 					$page = new Football_Pool_Ranking_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_teams' ):
 					$page = new Football_Pool_Teams_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_stadiums' ):
 					$page = new Football_Pool_Stadiums_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_groups' ):
 					$page = new Football_Pool_Groups_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_statistics' ):
 					$page = new Football_Pool_Statistics_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_tournament' ):
 					$page = new Football_Pool_Tournament_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_user' ):
 					$page = new Football_Pool_User_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				case Football_Pool_Utils::get_fp_option( 'page_id_pool' ):
 					$page = new Football_Pool_Pool_Page();
-					$content .= $page->page_content();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
 					break;
 				default:
 					// nothing

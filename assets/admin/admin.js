@@ -148,17 +148,19 @@ function footballpool_tinymce_insert_shortcode() {
 			if ( date != '' ) atts += ' date="' + date + '"';
 			break;
 		case 'fp-predictionform':
-			var matches = jQuery( '#match-id' ).val() || [];
-			var matchtypes = jQuery( '#matchtype-id' ).val() || [];
-			var questions = jQuery( '#question-id' ).val() || [];
+			var matches = jQuery( '#match-id', panel_id ).val() || [];
 			if ( matches.length > 0 ) atts += ' match="' + matches.join( ',' ) + '"';
+			var matchtypes = jQuery( '#matchtype-id', panel_id ).val() || [];
 			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
+			var questions = jQuery( '#question-id', panel_id ).val() || [];
 			if ( questions.length > 0 ) atts += ' question="' + questions.join( ',' ) + '"';
 			break;
 		case 'fp-matches':
-			var matches = jQuery( '#matches-match-id' ).val() || [];
-			var matchtypes = jQuery( '#matches-matchtype-id' ).val() || [];
+			var group_id = jQuery( '#matches-group-id', panel_id ).val();
+			if ( group_id != '' ) atts += ' group="' + group_id + '"';
+			var matches = jQuery( '#matches-match-id', panel_id ).val() || [];
 			if ( matches.length > 0 ) atts += ' match="' + matches.join( ',' ) + '"';
+			var matchtypes = jQuery( '#matches-matchtype-id', panel_id ).val() || [];
 			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
 			break;
 		default:

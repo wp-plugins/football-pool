@@ -2,8 +2,8 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable tag: 2.3.5
+Tested up to: 3.8
+Stable tag: 2.3.6
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -31,7 +31,7 @@ A special thank you to all the translators that found time to translate the many
 * Users have charts where their scores are plotted. And they can compare themselves to other players. (Only available if Highcharts chart API is downloaded seperately, see Help for details).
 * Several widgets and shortcodes to display info from the championship or the pool.
 * Extra info pages for venues and teams.
-* Extensible via filters and actions.
+* Extensible via filters and actions (see help page in the admin).
 
 **Translations**
 
@@ -64,19 +64,14 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Frequently Asked Questions ==
 
-= The plugin won't calculate the ranking =
-If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve this problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
+= I installed the plugin, but there are no matches. What happened? =
+Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
-= The charts are gone! What happened? =
-I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
+Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
 = Do I need the "Predictions" page? =
 Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
 Some themes or WordPress configurations automatically put all top level pages in the navigation. See information from the theme maker on how to make a custom menu or how to exclude pages from the menu.
-
-= I don't see my blog users as players of the pool. =
-Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
-If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = I want to use the plugin for a national competition. Is that possible? =
 Yes. There are two ways to do this: 
@@ -84,6 +79,16 @@ Yes. There are two ways to do this:
 2. Use the admin screens to edit the teams, groups, match types, matches, etc.
 
 And, of course, choose a theme or make one yourself that fits your competition or blog. If you have a custom game schedule that other users can also use, it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
+
+= The plugin won't calculate the ranking =
+If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve this problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
+
+= The charts are gone! What happened? =
+I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
+
+= I don't see my blog users as players of the pool. =
+Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = Is there a translation available? =
 See the 'Other notes' section for the available languages (and their translators). The translations are in the 'languages' dir. To use translations, change the WPLANG constant in the wp-config.php to the right language code (e.g. "nl_NL").
@@ -95,11 +100,6 @@ You can put your custom translation files in the plugin-dir, but be careful they
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
 
 If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
-
-= I installed the plugin, but there are no matches. What happened? =
-Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
-
-Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
 
 = I installed the plugin, but it does not look like your screenshots. =
 That's correct. The plugin has some basic styling, but it will not change your entire blog. You will have to fit the styling to your site yourself. Change your theme to overwrite/change the style of the plugin, or use a plugin to add extra custom stylesheets. Please don't change the css in the plugin folder; if you update the plugin, all your hard work will be gone.
@@ -154,9 +154,10 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.3.6 =
+* Small styling updates for WordPress 3.8.
 * Added the match schedule for the 2014 World Cup in Brazil.
 * New shortcode: display the ranking of a single user with [fp-user-ranking].
-* Small updates for WordPress 3.8.
+* New parameter 'group' for the [fp-matches] shortcode.
 * Several hooks (filters and actions) that make the plugin extensible. See help page for details.
 * Import CSV & Overwrite will now exit with an error when the file is invalid. The data will not be erased.
 * Import CSV & Overwrite will ask for an extra confirmation.

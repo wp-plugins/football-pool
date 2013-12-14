@@ -17,7 +17,7 @@
 .widget div.football-pool-widget h3 a:hover, 
 .widget div.football-pool-widget h3 a:active { color: #fff; }
 .widget div.football-pool-widget div { padding: 0 0 .25em; }
-.widget div.football-pool-widget p, .widget div.football-pool-widget div div { padding: 0 .5em!important; }
+.widget div.football-pool-widget p, .widget div.football-pool-widget div div { padding: 0 .5em; }
 .widget div.football-pool-widget input.text, .widget input.textarea { width: 80%; }
 .widget div.football-pool-widget { padding: 0; margin: 0; }
 
@@ -85,7 +85,7 @@ table.ranking td { padding: .1em .5em; }
 th.wins, td.wins, th.draws, td.draws, th.losses, td.losses { background-color: #ddd; }
 th.plays, td.plays, th.points, td.points { background-color: #ccc; }
 th.team, td.team, th.goals, td.goals { background-color: #e1dfdf; }
-td.goals, th.goals { font-size: .6em!important; padding: .1em .2em; }
+td.goals, th.goals { font-size: .6em; padding: .1em .2em; }
 th.team, th.points, td.points, th.plays, td.plays { font-weight: bolder; }
 td.team, th.team { width: 45%; }
 
@@ -214,8 +214,14 @@ div.football-pool-widget .widget.button:hover {
 
 #respond { margin-top: 50px; padding: 0 0 0 3px; }
 
-.widget_footballpoolshoutboxwidget div.wrapper { width: 190px; height: 240px; overflow: auto; overflow-x: hidden; overflow-y: scroll; margin: 0 0 1em 0; }
-.widget_footballpoolshoutboxwidget textarea { width: 90%; }
+.widget_footballpoolshoutboxwidget div.wrapper { 
+	height: 240px; 
+	overflow: auto; 
+	overflow-x: hidden; 
+	overflow-y: scroll; 
+	margin: 0 0 1em 0; 
+}
+.widget_footballpoolshoutboxwidget textarea { width: 100%; }
 .widget_footballpoolshoutboxwidget a.name { font-weight: bolder; }
 .widget_footballpoolshoutboxwidget span.date { font-size: 70%; float: right; }
 .widget_footballpoolshoutboxwidget span.notice { font-size: 75%; }

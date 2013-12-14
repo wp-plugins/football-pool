@@ -51,8 +51,9 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
 		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['id'];
 		
+		$output = '';
 		if ( $title != '' ) {
-			echo $before_title, $title, $after_title;
+			$output .= $before_title, $title, $after_title;
 		}
 		
 		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['play_date'] ) );
@@ -76,7 +77,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' ago:', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
-		$output = sprintf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
+		$output .= sprintf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
 				, $predictionpage
 				, $id
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )

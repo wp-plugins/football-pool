@@ -606,8 +606,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 
 		<h3>[fp-matches]</h3>
-		<p>Shows the info table for the selected matches and/or matches in a matchtype. All parameters are cumulative, so all given matches and matches in a matchtype are put together in one table.</p>
-		<p>All arguments can be entered in the following formats (example for matches):
+		<p>Shows the info table for the selected matches, matches in a matchtype or matches for a group in the group phase. The matches and match types parameter are cumulative, so all given match ids and matches in a matchtype are put together in one table.</p>
+		<p>All arguments (except the group parameter) can be entered in the following formats (example for matches):
 		<table>
 			<tr><td>match 1</td><td>&rarr;</td><td>match="1"</td></tr>
 			<tr><td>matches 1 to 5</td><td>&rarr;</td><td>match="1-5"</td></tr>
@@ -615,7 +615,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr><td>matches 1 to 5 and 10</td><td>&rarr;</td><td>match="1-5,10"</td></tr>
 		</table>
 		</p>
-		<p>If an argument is left empty it is ignored.</p>
+		<p>If an argument is left empty it is ignored. If a group ID is given the other parameters are ignored.</p>
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
@@ -631,12 +631,19 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td>see formats above</td>
 				<td></td>
 			</tr>
+			<tr>
+				<td class="row-title">group</td>
+				<td>The <a href="?page=footballpool-groups">group id</a> for which the matches have to be displayed.</td>
+				<td><a href="?page=footballpool-groups">group id</a> (integer)</td>
+				<td></td>
+			</tr>
 		</table>
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-matches match="1-5"]</span><br />
 		<span class="code">[fp-matches match="1-4,9-12" matchtype="2"]</span><br />
 		<span class="code">[fp-matches matchtype="1"]</span><br />
+		<span class="code">[fp-matches group="1"]</span><br />
 		</p>
 
 		<h3>[fp-register]link text[/fp-register]</h3>
@@ -888,6 +895,15 @@ function ranking_pagination_html( $html, $ranking ) {
 	return $pagination->show( \'return\' ) . $html;
 }
 ?>' );
+
+		Football_Pool_Utils::highlight_string( '<?php
+// show the page ID at the top of a page from the plugin
+add_filter( \'footballpool_pages_html\', \'show_page_id\', null, 2 );
+function show_page_id( $content, $id ) {
+	return "<p>page id = {$id}</p>{$content}";
+}
+?>' );
+
 		?>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>

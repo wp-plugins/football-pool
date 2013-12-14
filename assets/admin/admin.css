@@ -1,16 +1,14 @@
 /* menu and screen icons */
-#adminmenu .toplevel_page_footballpool-options .wp-menu-image {
+.toplevel_page_footballpool-options.wp-has-current-submenu.wp-menu-open div.wp-menu-image,
+.toplevel_page_footballpool-options div.wp-menu-image {
 	background: url(images/admin-menu-16.png) 0 -33px no-repeat
 }
 
-#adminmenu .toplevel_page_footballpool-options:hover div.wp-menu-image,
-#adminmenu .toplevel_page_footballpool-options.wp-has-current-submenu div.wp-menu-image,
-#adminmenu .toplevel_page_footballpool-options.current div.wp-menu-image {
+body.admin-color-fresh .toplevel_page_footballpool-options.wp-not-current-submenu:hover div.wp-menu-image {
 	background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0;
 }
 
 #icon-footballpool-options.icon32 {
-/*	background: url(images/admin-menu-32.png) 0 -33px no-repeat; */
 	background: url(images/admin-menu-32.png) 0 0 no-repeat;
 }
 
@@ -23,6 +21,7 @@ th.manage-column { vertical-align: top; }
 
 /* matches */
 /* .matchinfo { width: 500px; } */
+.-matchinfo tr.match-row-edit { display: none; }
 input.score { width: 3em; }
 
 table.help th { text-align: left; text-decoration: underline; }
@@ -168,3 +167,6 @@ div.ranking-log span { padding-right: 10px; }
 
 code.block { display: block; margin: 0 0 15px; }
 code.inline { display: inline; }
+
+td.time.UTC input[type="text"] { width: 130px; }
+td.time.local { width: 130px; }
