@@ -322,9 +322,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 														+ ( goal_bonus * {$goal} ) 
 														+ ( goal_diff_bonus * {$diff} ) ) 
 											WHERE type = %d AND ranking_id = %d 
-											AND user_id >= %d AND user_id < %d"
-											, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking
-											, $offset, ( $offset + FOOTBALLPOOL_RECALC_STEP3_DIV ) );
+											AND user_id IN ( {$user_ids} )"
+											, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking );
 					$result = $wpdb->query( $sql );
 					$check = ( $result !== false );
 					
