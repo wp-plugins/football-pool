@@ -72,6 +72,7 @@ class Football_Pool {
 		$options['totopoints'] = FOOTBALLPOOL_TOTOPOINTS;
 		$options['goalpoints'] = FOOTBALLPOOL_GOALPOINTS;
 		$options['diffpoints'] = FOOTBALLPOOL_DIFFPOINTS;
+		$options['joker_multiplier'] = FOOTBALLPOOL_JOKERMULTIPLIER;
 		$options['maxperiod'] = FOOTBALLPOOL_MAXPERIOD;
 		$options['use_leagues'] = 1; // 1: yes, 0: no
 		$options['shoutbox_max_chars'] = FOOTBALLPOOL_SHOUTBOX_MAXCHARS;
@@ -113,6 +114,8 @@ class Football_Pool {
 		$options['number_of_jokers'] = FOOTBALLPOOL_DEFAULT_JOKERS;
 		$options['calculation_type_preference'] = FOOTBALLPOOL_RANKING_CALCULATION_SMART;
 		$options['show_num_predictions_in_ranking'] = 0; // 1: yes, 0: no
+		$options['redirect_url_after_login'] = home_url(); // redirect users to this url after login
+		$options['responsive_layout'] = 1; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
@@ -183,6 +186,12 @@ class Football_Pool {
 			if ( ! self::is_at_least_version( '2.3.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.3.0.txt' ) );
 				self::db_actions( $update_sql );
+			}
+			if ( ! self::is_at_least_version( '2.4.0' ) ) {
+				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.4.0.txt' ) );
+				self::db_actions( $update_sql );
+				// for upgrades the responsive layout is "off" by default
+				Football_Pool_Utils::set_fp_option( 'responsive_layout', 0 );
 			}
 			/** END UPDATES **/
 		}
@@ -371,6 +380,11 @@ class Football_Pool {
 			);
 		}
 		
+		// pure grids for responsive layout
+		if ( Football_Pool_Utils::get_fp_option( 'responsive_layout' ) == 1 ) {
+			self::include_css( 'assets/grids-min.css', 'css-pure-grids' );
+			self::include_css( 'assets/responsive.css', 'css-responsive' );
+		}
 		// colorbox jQuery plugin for lightboxes
 		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
 		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
@@ -441,6 +455,20 @@ class Football_Pool {
 		
 		self::update_user_custom_tables( $user_id, $default_league ); 
 		do_action( 'footballpool_new_user', $user_id, $league );
+	}
+	
+	function player_login_redirect( $redirect_to, $request, $user ){
+		//is there a user to check?
+		global $user;
+		if( isset( $user->roles ) && is_array( $user->roles ) ) {
+			//check for non admins
+			if( ! in_array( 'administrator', $user->roles ) ) {
+				$default_url = Football_Pool_Utils::get_fp_option( 'redirect_url_after_login', home_url() );
+				$redirect_to = ( $request == admin_url() ) ? $default_url : $request;
+			}
+		}
+		
+		return $redirect_to;
 	}
 	
 	private function update_user_custom_tables( $user_id, $league_id ) {
@@ -646,7 +674,7 @@ class Football_Pool {
 		}
 	}
 	
-	// replaces {prefix} in string with actual database prefix
+	// replaces {$prefix} in string with actual database prefix
 	private function prepare( $sql ) {
 		return str_replace( '{$prefix}', FOOTBALLPOOL_DB_PREFIX, $sql );
 	}
@@ -657,13 +685,8 @@ class Football_Pool {
 		if ( count( $array ) > 0 ) {
 			foreach ( $array as $sql ) {
 				// check if string contains data other than spaces, tabs and/or newlines
-				$check = str_replace(
-							array( " ", "\n", "\r", "\t" ), 
-							array( "",  "",   "",   "" ), 
-							$sql
-						);
-				
-				if ( !empty( $check ) ) {
+				$check = str_replace( array( " ", "\n", "\r", "\t" ), "", $sql );
+				if ( ! empty( $check ) ) {
 					$wpdb->query( $sql );
 				}
 			}

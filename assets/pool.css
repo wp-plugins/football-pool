@@ -100,18 +100,18 @@ li.widget div.football-pool-widget div.ranking th { font-size: 80%; }
 /* group ranking as shortcode */
 div.entry div.ranking.shortcode { float: none; }
 
-table.pool-ranking.ranking-page { width: 500px; }
-table.pool-ranking { border-collapse: collapse; font-size: 75%; }
+table.pool-ranking { border-collapse: collapse; }
 table.pool-ranking td { padding-left: .5em; }
 table.pool-ranking tr.currentuser { background-color: #e1dfdf; } 
 #rankingsbox table.pool-ranking tr.currentuser { background-color: #transparent; } 
 table.pool-ranking tr.currentuser td, 
 table.pool-ranking tr.currentuser td a, 
 table.pool-ranking tr.currentuser td a:visited { color: #000; font-weight: bolder; }
-
 table.pool-ranking td.score  { text-align:right; padding-right: 1em; }
-
-.entry table.pool-ranking { font-size: 100%; width: 300px; }
+table.pool-ranking { font-size: 100%; }
+table.ranking-shortcode { width: 300px; }
+table.pool-ranking.ranking-widget { font-size: 75%; }
+table.pool-ranking.ranking-page { width: 500px; }
 
 table.gamesbox td { padding: 1px 2px; font-size: 75%; }
 table.gamesbox td.score { white-space: nowrap; }

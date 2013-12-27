@@ -4,6 +4,35 @@ class Football_Pool_Admin_Feature_Pointers {
 	private static $dismissed = array();
 	
 	private function define_pointers() {
+		// define the pointers for v2.4.0
+		$version = '240';
+		self::add_pointer( $version
+							, 'resplayout'
+							, __( 'Responsive layout', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'A new layout option that is optimized for mobile devices.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, '#responsive_layout'
+						);
+		self::add_pointer( $version
+							, 'recalc'
+							, 'Important'
+							, 'After upgrading the Football Pool plugin to version 2.4.0 you have to do a full recalculation: '
+							, '#adminmenu'
+							, 'left'
+							, 'top'
+							, '<a href="admin.php?page=footballpool-options" onclick="calculate_score_history(); return false;">recalculate</a>.'
+						);
+		self::add_pointer( $version
+							, 'redirecturl'
+							, __( 'Page after registration', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'You can set the page where users must be redirected to after registration (and first time login).', FOOTBALLPOOL_TEXT_DOMAIN )
+							, '#redirect_url_after_login'
+						);
+		self::add_pointer( $version
+							, 'jokermultiplier'
+							, __( 'Joker multiplier', FOOTBALLPOOL_TEXT_DOMAIN )
+							, __( 'Alter the default multiplier for the joker.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, '#joker_multiplier'
+						);
 		// define the pointers for v2.3.0
 		$version = '230';
 		self::add_pointer( $version

@@ -19,7 +19,7 @@ class Football_Pool_Chart_Data {
 									, COUNT( user_id ) AS scoretotal
 								FROM {$prefix}scorehistory 
 								WHERE `type` = %d AND ranking_id = %d
-								GROUP BY score_order HAVING score_order = %d" 
+								GROUP BY source_id HAVING source_id = %d" 
 								, FOOTBALLPOOL_TYPE_MATCH
 								, $ranking_id
 								, $match
@@ -43,7 +43,7 @@ class Football_Pool_Chart_Data {
 						, COUNT( IF( s.toto = 1, 1, NULL ) ) AS scoretoto
 						, COUNT( IF( s.goal_bonus = 1, IF( s.toto = 1, NULL, 1 ), NULL ) ) AS single_goal_bonus
 						, COUNT( IF( s.goal_diff_bonus = 1, 1, NULL ) ) AS goal_diff_bonus
-						, COUNT( s.score_order ) AS scoretotal
+						, COUNT( s.source_id ) AS scoretotal
 						, u.display_name AS user_name 
 					FROM {$prefix}scorehistory s 
 					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
@@ -87,7 +87,7 @@ class Football_Pool_Chart_Data {
 			$sql = "SELECT
 						COUNT( IF( s.score > 0, 1, NULL ) ) AS bonuscorrect, 
 						COUNT( IF( s.score = 0, 1, NULL ) ) AS bonuswrong,
-						COUNT( s.score_order ) AS bonustotal,
+						COUNT( s.source_id ) AS bonustotal,
 						u.display_name AS user_name
 					FROM {$prefix}scorehistory s
 					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
@@ -155,7 +155,7 @@ class Football_Pool_Chart_Data {
 		// get the user's score
 		$sql = $wpdb->prepare( "SELECT total_score FROM {$prefix}scorehistory 
 								WHERE user_id = %d AND ranking_id = %d
-								ORDER BY score_date DESC, score_order DESC, type DESC LIMIT 1", 
+								ORDER BY score_date DESC, source_id DESC, type DESC LIMIT 1", 
 								$user, $ranking_id
 							);
 		$data = $wpdb->get_var( $sql );
@@ -170,7 +170,7 @@ class Football_Pool_Chart_Data {
 		// on a full score you get the fullpoints and two times the goal bonus
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
 				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
-		$output['max_score'] = $full * 2; // count first match with joker
+		$output['max_score'] = $full * Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' ); // count first match with joker
 		$output['max_score'] += ( (int) $num_matches - 1 ) * $full; // all other matches
 		// add the bonusquestions
 		$sql = "SELECT SUM( q.points ) FROM {$prefix}bonusquestions q ";
@@ -204,11 +204,11 @@ class Football_Pool_Chart_Data {
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
 			$user_ids = implode( ',', $users );
-			$sql = $wpdb->prepare( "SELECT h.score_order, h.{$history_data_to_plot}, u.display_name, h.type 
+			$sql = $wpdb->prepare( "SELECT h.source_id, h.{$history_data_to_plot}, u.display_name, h.type 
 									FROM {$prefix}scorehistory h, {$wpdb->users} u 
 									WHERE h.ranking_id = %d AND u.ID = h.user_id 
 										AND h.user_id IN ( {$user_ids} )
-									ORDER BY h.score_date ASC, h.type ASC, h.score_order ASC, h.user_id ASC"
+									ORDER BY h.score_date ASC, h.type ASC, h.source_id ASC, h.user_id ASC"
 									, $ranking_id
 								);
 								
@@ -216,7 +216,7 @@ class Football_Pool_Chart_Data {
 			
 			foreach ( $rows as $row ) {
 				$data[] = array(
-								'match'    => $row['score_order'],
+								'match'    => $row['source_id'],
 								'type'     => $row['type'],
 								'value'    => $row[$history_data_to_plot],
 								'user_name' => $row['display_name']

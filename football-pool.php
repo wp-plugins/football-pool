@@ -1,15 +1,15 @@
 <?php 
 /*
  Plugin Name: Football pool
- Plugin URI: http://wordpressfootballpool.wordpress.com/
+ Plugin URI: http://wordpress.org/support/plugin/football-pool
  Description: This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
- Version: 2.3.8
+ Version: 2.4.0
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
  Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
  */
 
-define( 'FOOTBALLPOOL_DB_VERSION', '2.3.8' );
+define( 'FOOTBALLPOOL_DB_VERSION', '2.4.0' );
 
 /*
 The MIT License (MIT)
@@ -70,17 +70,20 @@ register_deactivation_hook( __FILE__, array( 'Football_Pool', 'deactivate' ) );
 add_action( 'plugins_loaded', array( 'Football_Pool', 'update_db_check' ) );
 
 // admin bar and content handling
-add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
 add_action( 'init', array( 'Football_Pool', 'init' ) );
-add_filter( 'the_content', array( 'Football_Pool', 'the_content' ) );
-add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
-
+if ( ! is_admin() ) {
+	add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
+	add_filter( 'the_content', array( 'Football_Pool', 'the_content' ) );
+	add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
+}
 
 // user registration extension
 add_action( 'user_register', array( 'Football_Pool', 'new_pool_user' ) );
 add_action( 'register_form', array( 'Football_Pool', 'registration_form_extra_fields' ) );
 add_action( 'register_post', array( 'Football_Pool', 'registration_form_post' ), 10, 3 );
 add_filter( 'registration_errors', array( 'Football_Pool', 'registration_check_fields' ), 10, 3 );
+// redirect players of the pool after login
+add_filter( 'login_redirect', array( 'Football_Pool', 'player_login_redirect' ), 10, 3);
 
 if ( is_admin() ) {
 	// admin pages
@@ -101,26 +104,23 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-feature-pointers.php';
 	
 	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
-	add_filter( 'admin_body_class', array( 'Football_Pool_Admin', 'add_body_class' ) );
 	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'edit_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'personal_options_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
 	add_action( 'edit_user_profile_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );
 	add_action( 'admin_menu', array( 'Football_Pool_Admin', 'init' ) );
-	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
 	add_action( 'admin_enqueue_scripts', array( 'Football_Pool_Admin', 'initialize_wp_media' ) );
-	if ( FOOTBALLPOOL_WP_MEDIA === false ) {
-		add_filter( 'gettext', array( 'Football_Pool_Admin', 'replace_text_in_thickbox' ), 1, 3 );
-	}
 	add_action( 'wp_dashboard_setup', array( 'Football_Pool', 'add_dashboard_widgets' ) );
 	if ( Football_Pool_Utils::get_fp_option( 'add_tinymce_button' ) == 1 ) {
-		add_action( 'init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
+		add_action( 'admin_init', array( 'Football_Pool_Admin', 'tinymce_addbuttons' ) );
 	}
 	add_action( 'admin_notices', array( 'Football_Pool', 'admin_notice' ) );
-	add_action('wp_ajax_footballpool_calculate_scorehistory', array( 'Football_Pool_Admin_Score_Calculation', 'process' ) );
-	add_filter( 'set-screen-option', array( 'Football_Pool_Admin', 'set_screen_options', 10, 3 ) );
+	add_action( 'wp_ajax_footballpool_calculate_scorehistory', array( 'Football_Pool_Admin_Score_Calculation', 'process' ) );
 	add_action( 'admin_enqueue_scripts', array( 'Football_Pool_Admin_Feature_Pointers', 'init' ) );
+	add_filter( 'admin_body_class', array( 'Football_Pool_Admin', 'add_body_class' ) );
+	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
+	add_filter( 'set-screen-option', array( 'Football_Pool_Admin', 'set_screen_options', 10, 3 ) );
 }
 
 if ( FOOTBALLPOOL_ENABLE_DEBUG && defined( 'SAVE_QUERIES' ) && constant( 'SAVE_QUERIES' ) == true ) {

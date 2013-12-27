@@ -39,12 +39,13 @@ define( 'FOOTBALLPOOL_RECALC_STEP5_DIV', 50 );
 define( 'FOOTBALLPOOL_RECALC_STEP6_DIV', 4 );
 
 // matches and scores
-define( 'FOOTBALLPOOL_MAXPERIOD',  900 );
-define( 'FOOTBALLPOOL_FULLPOINTS',   5 ); // 3
-define( 'FOOTBALLPOOL_TOTOPOINTS',   2 ); // 2
-define( 'FOOTBALLPOOL_GOALPOINTS',   0 ); // 1
-define( 'FOOTBALLPOOL_DIFFPOINTS',   0 ); // bonus points for correct goal difference
-                                          // (e.g. match result is 4-0 and prediction is 6-2)
+define( 'FOOTBALLPOOL_MAXPERIOD', 900 );
+define( 'FOOTBALLPOOL_JOKERMULTIPLIER', 2 );
+define( 'FOOTBALLPOOL_FULLPOINTS', 5 ); // 3
+define( 'FOOTBALLPOOL_TOTOPOINTS', 2 ); // 2
+define( 'FOOTBALLPOOL_GOALPOINTS', 0 ); // 1
+define( 'FOOTBALLPOOL_DIFFPOINTS', 0 ); // bonus points for correct goal difference
+                                        // (e.g. match result is 4-0 and prediction is 6-2)
 
 // matches csv import and export
 define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
@@ -58,6 +59,7 @@ define( 'FOOTBALLPOOL_TEAM_POINTS_DRAW', 1 );
 define( 'FOOTBALLPOOL_DEFAULT_JOKERS', 1 );
 
 // others
+define( 'FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE', 20 );
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
 define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=S83YHERL39GHA');
 define( 'FOOTBALLPOOL_MATCH_SORT', 0 ); // date asc

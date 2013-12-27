@@ -24,7 +24,7 @@ class Football_Pool_Statistics {
 		$single_match = ( $match > 0 ) ? '' : '1 = 1 OR';
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
 								WHERE ranking_id = {$ranking_id} 
-									AND ( {$single_match} ( type = 0 AND score_order = %d ) )", 
+									AND ( {$single_match} ( type = 0 AND source_id = %d ) )", 
 								$match
 							);
 		$num = $wpdb->get_var( $sql );

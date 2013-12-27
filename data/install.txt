@@ -115,9 +115,11 @@ CREATE TABLE IF NOT EXISTS `{$prefix}rankings_updatelog` (
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
+  `ranking_id` int(10) unsigned NOT NULL,
+  `score_order` int(10) unsigned NOT NULL DEFAULT '0',
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `score_date` datetime NOT NULL,
-  `score_order` int(11) unsigned NOT NULL,
+  `source_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
   `score` int(11) unsigned NOT NULL,
   `full` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -126,12 +128,10 @@ CREATE TABLE IF NOT EXISTS `{$prefix}scorehistory` (
   `goal_diff_bonus` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `total_score` int(11) unsigned NOT NULL DEFAULT '0',
   `ranking` int(11) unsigned NOT NULL,
-  `ranking_id` int(11) unsigned DEFAULT NULL,
-  KEY `ixScoreDate` (`score_date`),
-  KEY `ixScoreDateUserId` (`score_date`,`user_id`),
-  KEY `ixTotalScore` (`total_score`),
-  KEY `ixType` (`type`,`score_date`,`score_order`),
-  KEY `ixRankingId` (`ranking_id`)
+  KEY `scoreDate` (`score_date`),
+  KEY `scoreDate_2` (`score_date`,`user_id`),
+  KEY `totalScore` (`total_score`),
+  KEY `type` (`type`,`score_date`,`source_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `{$prefix}shoutbox` (

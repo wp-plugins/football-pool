@@ -860,18 +860,16 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<?php 
 		Football_Pool_Utils::highlight_string( '<?php
 // add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
-add_filter( \'footballpool_shortcode_html_fp-ranking\', \'add_a_div\' );
-function add_a_div( $html ) {
+add_filter( \'footballpool_shortcode_html_fp-ranking\', function ( $html ) {
 	return \'<div class="extra-div">\' . $html . \'</div>\';
-}
+} );
 ?>' );
 
 		Football_Pool_Utils::highlight_string( '<?php
 // only show the first 20 users in the user selector
-add_filter( \'footballpool_userselector_widget_users\', \'just_20_users\' );
-function just_20_users( $a ) {
+add_filter( \'footballpool_userselector_widget_users\', function ( $a ) {
 	return array_slice( $a, 0, 20 );
-}
+} );
 ?>' );
 
 		Football_Pool_Utils::highlight_string( '<?php

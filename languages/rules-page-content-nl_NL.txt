@@ -47,7 +47,7 @@ De laatste score-optie is de goalverschilbonus: als je de juiste winnaar voorspe
 </table>
 Aan de linkerzijde van het scherm zie je de top 5 van spelers die meespelen voor de pot. Als je de complete stand wil zien, of als je wil zien wie er op de eerste plek staat in de <em>voor nop</em> pool, moet je naar de menu optie <a href="[fp-link slug='ranking']">stand</a> gaan en daar de juiste groep kiezen. Als je bent ingelogd, dan wordt standaard de pool waarvoor je je hebt ingeschreven voor je gekozen.
 <h3>De joker</h3>
-Elke speler heeft tijdens het toernooi de beschikking over 1 joker. Met deze joker kan je het aantal punten voor een zelfgekozen wedstrijd verdubbelen. Je kan de joker inzetten voor elke wedstrijd die je wil, zolang je voor deze wedstrijd nog de mogelijkheid hebt om de score bij te werken. De joker wordt actief als de voorspellingstermijn voor de wedstrijd is verlopen, een geactiveerde joker kan niet meer worden verplaatst of opnieuw worden ingezet. Een joker kan niet bij een bonusvraag worden ingezet.
+Elke speler heeft tijdens het toernooi de beschikking over 1 joker. Met deze joker kan je het aantal punten voor een zelfgekozen wedstrijd vermenigvuldigen met [fp-jokermultiplier]. Je kan de joker inzetten voor elke wedstrijd die je wil, zolang je voor deze wedstrijd nog de mogelijkheid hebt om de score bij te werken. De joker wordt actief als de voorspellingstermijn voor de wedstrijd is verlopen, een geactiveerde joker kan niet meer worden verplaatst of opnieuw worden ingezet. Een joker kan niet bij een bonusvraag worden ingezet.
 <h3>Gelijke stand?</h3>
 Wanneer meerdere spelers een gelijk aantal punten hebben, dan bepalen onderstaande zaken de volgorde in de stand (belangrijkste bovenaan):
 <ol>

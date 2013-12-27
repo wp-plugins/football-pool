@@ -1,5 +1,5 @@
 <h3>Rules page</h3>
-<strong>On this page you may add some information on how to play as a contender in the pool. The plugin supports several shortcodes that you can put in this text. See the help page in the admin for more information about the shortcodes.</strong>
+<strong>On this page you can add some information on how to play as a contender in the pool. The plugin supports several shortcodes that you can put in this text. See the help page in the admin for more information about the shortcodes.</strong>
 
 <strong>The text below is an example for such a page.</strong>
 
@@ -55,7 +55,7 @@ You get points for predicting the correct winner of the match or prediction of a
 If you want to view the ranking, then go to the <a href="[fp-link slug='ranking']">ranking page</a> and pick the correct league. If you're logged in, then the league for which you subscribed, is automatically picked.
 
 <h3>The golden ball</h3>
-Each player has one golden ball. If you place this ball next to a match the score for that match is doubled. You may place the golden ball next to every match and you can change your mind and move the golden ball, as long this match is still changeable. The golden ball is activated after the prediction for the match is locked. Once activated the golden ball cannot be moved anymore.
+Each player has one golden ball. If you place this ball next to a match the score for that match is multiplied by [fp-jokermultiplier]. You may place the golden ball next to every match and you can change your mind and move the golden ball, as long this match is still changeable. The golden ball is activated after the prediction for the match is locked. Once activated the golden ball cannot be moved anymore.
 
 <h3>Same ranking?</h3>
 When multiple players have the exact same amount of points, then the following sorting rules are applied on the ranking (most important one at the top):

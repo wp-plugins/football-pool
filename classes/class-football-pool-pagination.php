@@ -7,7 +7,7 @@ class Football_Pool_Pagination {
 	
 	private $total_pages = 0;
 	private $total_items = 0;
-	private $page_size = 20;
+	private $page_size = FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE;
 	
 	public function __construct( $num_items, $wrap = false ) {
 		$this->total_items = $num_items;
@@ -100,6 +100,7 @@ class Football_Pool_Pagination {
 	}
 	
 	private function calc_total_pages( $num_items, $page_size ) {
+		if ( $page_size <= 0 ) $page_size = FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE;
 		return ceil( $num_items / $page_size );
 	}
 	

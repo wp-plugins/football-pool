@@ -456,6 +456,7 @@ function match_options() {
 				<td><label for="shortcode"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
 					<select id="shortcode" class="shortcode">
+						<option value="fp-jokermultiplier"><?php _e( 'Joker multiplier', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-fullpoints"><?php _e( 'Full points', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-totopoints"><?php _e( 'Toto points', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-goalpoints"><?php _e( 'Goal bonus', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>

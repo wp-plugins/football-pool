@@ -1,5 +1,8 @@
 <?php
 class Football_Pool_Admin_Users extends Football_Pool_Admin {
+	// private static $screen_option_name = 'fp_users_per_page';
+	private static $screen_option_name = 'users_per_page';
+	
 	public function __construct() {}
 
 	public function help() {
@@ -34,7 +37,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$args = array(
 			'label' => __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ),
 			'default' => FOOTBALLPOOL_ADMIN_USERS_PER_PAGE,
-			'option' => 'users_per_page'
+			'option' => self::$screen_option_name
 		);
 		add_screen_option( 'per_page', $args );
 	}
@@ -174,7 +177,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		
 		$num_users = $wpdb->get_var( "SELECT COUNT( * ) FROM {$wpdb->users}" );
 		$pagination = new Football_Pool_Pagination( $num_users );
-		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
+		$pagination->set_page_size( self::get_screen_option( self::$screen_option_name ) );
 		
 		// @TODO: add user search
 		$users = self::get_users( 

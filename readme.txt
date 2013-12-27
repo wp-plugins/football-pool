@@ -132,6 +132,9 @@ The following plugins have been reported as not compatible with the Football Poo
 
 == Upgrade Notice ==
 
+= 2.4.0 =
+After upgrading to version 2.4.0, a full recalculation is needed. Please back up your database before updating!
+
 = 2.3.0 =
 Please back up your database before updating! If you made changes to the plugin, also make a backup of your changes.
 
@@ -152,6 +155,11 @@ Default language is now English. Change de `WPLANG` constant if you want to use 
 Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
 
 == Changelog ==
+
+= 2.4.0 =
+* **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
+* Finally a layout that is more optimized for mobile devices. Choose the new layout in the options (default "off" for upgrades and "on" for new installs).
+* New option: Users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.

@@ -10,11 +10,13 @@ class Football_Pool_Pool {
 	public $always_show_predictions = 0;
 	public $show_avatar = false;
 	private $pool_has_jokers;
+	public $responsive_layout;
 	
 	public function __construct() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$this->responsive_layout = Football_Pool_Utils::get_fp_option( 'responsive_layout', 1, 'int' );
 		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
 		$this->pool_has_jokers = ( $this->num_jokers > 0 );
 		
@@ -82,7 +84,7 @@ class Football_Pool_Pool {
 			$score += $goal_diff_bonus;
 		}
 		
-		if ( $joker == 1 ) $score *= 2;
+		if ( $joker == 1 ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 		
 		return $score;
 	}
@@ -172,56 +174,53 @@ class Football_Pool_Pool {
 	public function get_ranking_from_score_history( 
 									$league, 
 									$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
-									$score_date = '', $type = 0 ) {
+									$score_date = '' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sql = "SELECT u.ID AS user_id, u.display_name AS user_name, u.user_email AS email, " 
-				. ( $this->has_leagues ? "lu.league_id, " : "" ) 
-				. "	COALESCE( MAX( s.total_score ), 0 ) AS points, 
-					COUNT( IF( s.full = 1, 1, NULL ) ) AS full, 
-					COUNT( IF( s.toto = 1, 1, NULL ) ) AS toto,
-					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus
-				FROM {$wpdb->users} u ";
+		
+		$date_switch = ( $score_date == '' ) ? '1 = 1 OR ' : '';
+		$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ) ? '1 = 1 OR' : '' ;
+		
+		$sql = "SELECT 
+					s.ranking
+					, u.ID AS user_id, u.display_name AS user_name, u.user_email AS email
+					, s.total_score AS points, s.score AS last_score ";
+		if ( $this->has_leagues ) $sql .= ", lu.league_id ";
+		$sql .= "FROM {$prefix}scorehistory AS s
+				JOIN (
+					SELECT user_id, MAX( score_order ) AS last_row
+					FROM {$prefix}scorehistory
+					WHERE ranking_id = %d AND ( {$date_switch} score_date <= %s ) ";
+		$sql .= "GROUP BY user_id
+				) AS s2 ON ( s2.user_id = s.user_id AND s2.last_row = s.score_order )
+				JOIN {$wpdb->users} u ON ( u.ID = s.user_id )";
 		if ( $this->has_leagues ) {
-			$league_switch = ( $league <= FOOTBALLPOOL_LEAGUE_ALL ? '1 = 1 OR' : '' );
 			$sql .= "INNER JOIN {$prefix}league_users lu 
-						ON (
-							u.ID = lu.user_id
-							AND ( {$league_switch} lu.league_id = %d )
-							) ";
+						ON ( u.ID = lu.user_id
+							AND ( {$league_switch} lu.league_id = %d ) ) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
 			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 		}
-		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
-					(
-						s.user_id = u.ID AND s.ranking_id = %d 
-						AND ( " . ( $score_date == '' ? '1 = 1 OR' : '' ) . " s.score_date <= %s )
-						AND ( " . ( $type == 0 ? '1 = 1 OR' : '' ) . " s.type = %d )
-					) ";
-		$sql .= "WHERE s.ranking_id IS NOT NULL ";
-		if ( ! $this->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
-		$sql .= "GROUP BY u.ID
-				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " 
-				. ( $this->has_leagues ? "lu.league_id ASC, " : "" ) 
-				. "LOWER( u.display_name ) ASC";
-		
+		$sql .= "WHERE s.ranking_id = %d  AND ( {$date_switch} score_date <= %s ) ";
+		$sql .= "ORDER BY s.ranking ASC";
 		if ( $this->has_leagues )
-			return $wpdb->prepare( $sql, $league, $ranking_id, $score_date, $type );
+			$sql = $wpdb->prepare( $sql, $ranking_id, $score_date, $league, $ranking_id, $score_date );
 		else
-			return $wpdb->prepare( $sql, $ranking_id, $score_date, $type );
+			$sql = $wpdb->prepare( $sql, $ranking_id, $score_date, $ranking_id, $score_date );
+		return $sql;
 	}
 	
 	public function get_pool_ranking_limited( $league, $num_users
 											, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT
 											, $score_date = '' ) {
-		// if score_date is empty we can profit from the WP cache
+		// if score_date is empty we can get the data from the WP cache
 		if ( $score_date == '' ) {
 			$ranking = array_slice( $this->get_pool_ranking( $league, $ranking_id ), 0, $num_users );
 		} else {
 			global $wpdb;
-			$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date ) . ' LIMIT %d';
-			$sql = $wpdb->prepare( $sql, $num_users );
+			$sql = $this->get_ranking_from_score_history( $league, $ranking_id, $score_date );
+			$sql = $wpdb->prepare( "{$sql} LIMIT %d", $num_users );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			$ranking = array();
 			$i = 1;
@@ -248,8 +247,7 @@ class Football_Pool_Pool {
 				$row['ranking'] = $i++;
 				$ranking[] = $row;
 			}
-			$rows = $ranking;
-			wp_cache_set( $cache_key, $rows );
+			wp_cache_set( $cache_key, $ranking );
 		}
 		
 		return $rows;

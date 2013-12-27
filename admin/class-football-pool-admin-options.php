@@ -69,8 +69,51 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		}
 		$match_types = $options;
 		
+		// get the pages for the redirect option
+		$redirect_pages = array();
+		$redirect_pages[] = array( 
+									'value' => home_url(), 
+									'text' => __( 'homepage', FOOTBALLPOOL_TEXT_DOMAIN )
+							);
+		$redirect_pages[] = array( 
+									'value' => admin_url( 'profile.php' ),
+									'text' => __( 'edit profile', FOOTBALLPOOL_TEXT_DOMAIN ) 
+							);
+		$args = array(
+			'sort_order' => 'ASC',
+			'sort_column' => 'post_title',
+			'hierarchical' => 0,
+			'exclude' => '',
+			'include' => '',
+			'meta_key' => '',
+			'meta_value' => '',
+			'authors' => '',
+			'child_of' => 0,
+			'parent' => -1,
+			'exclude_tree' => '',
+			'number' => '',
+			'offset' => 0,
+			'post_type' => 'page',
+			'post_status' => 'publish'
+		); 
+		$pages = get_pages( $args );
+		foreach( $pages as $page ) {
+			$redirect_pages[] = array( 'value' => $page->guid, 'text' => $page->post_title );
+		}
+		
 		// definition of all configurable options
 		$options = array(
+						'responsive_layout' =>
+							array( 'checkbox', __( 'Responsive layout', FOOTBALLPOOL_TEXT_DOMAIN ), 'responsive_layout', __( 'If checked the output for the pool is better optimized for mobile devices. Make sure your theme is also optimized.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'redirect_url_after_login' => 
+							array( 
+								array( 'select', 'string' ), 
+								__( 'Page after registration', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'redirect_url_after_login', 
+								$redirect_pages,
+								__( 'You can set the page where users must be redirected to after registration (and first time login).', FOOTBALLPOOL_TEXT_DOMAIN ),
+								''
+							),
 						'keep_data_on_uninstall' =>
 							array( 'checkbox', __( 'Keep data on uninstall', FOOTBALLPOOL_TEXT_DOMAIN ), 'keep_data_on_uninstall', __( 'If checked the options and pool data (teams, matches, predictions, etc.) are not removed when deactivating the plugin.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'webmaster' => 
@@ -81,6 +124,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							array( 'text', __( 'Bank', FOOTBALLPOOL_TEXT_DOMAIN ), 'bank', __( 'If you play for money, then this is the person you have to give the money. The shortcode [fp-bank] adds this value in the content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'start' =>
 							array( 'text', __( 'Start date', FOOTBALLPOOL_TEXT_DOMAIN ), 'start', __( 'The start date of the tournament or pool. The shortcode [fp-start] adds this value in the content.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'joker_multiplier' =>
+							array( 'text', __( 'Joker multiplier', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'joker_multiplier', __( 'Multiplier used for predictions with a joker set. The shortcode [fp-jokermultiplier] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'fullpoints' =>
 							array( 'text', __( 'Full score', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'fullpoints', __( 'The points a user gets for getting the exact outcome of a match. The shortcode [fp-fullpoints] adds this value in the content. This value is also used for the calculations in the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'totopoints' =>
@@ -381,13 +426,23 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		self::admin_sectiontitle( __( 'Ranking Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_sectiontitle( __( 'Scoring Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
-									$options['auto_calculation'],
+									$options['joker_multiplier'],
 									$options['fullpoints'],
 									$options['totopoints'],
 									$options['goalpoints'],
 									$options['diffpoints'],
+								)
+							);
+		echo '<p class="submit">';
+		submit_button( null, 'primary', null, false );
+		self::recalculate_button();
+		echo '</p>';
+		
+		self::admin_sectiontitle( __( 'Ranking Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['auto_calculation'],
 									$options['ranking_display'],
 									$options['show_ranking'],
 									$options['show_num_predictions_in_ranking'],
@@ -429,6 +484,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['responsive_layout'],
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],
@@ -456,7 +512,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
+									$options['keep_data_on_uninstall'],
 									$options['use_charts'],
+									$options['redirect_url_after_login'],
 									$options['export_format'],
 									$options['shoutbox_max_chars'],
 									$options['dashboard_image'], 
@@ -464,7 +522,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['use_touchicon'], 
 									$options['hide_admin_bar'], 
 									$options['add_tinymce_button'], 
-									$options['keep_data_on_uninstall'],
 								) 
 							);
 		submit_button( null, 'primary', null, true );

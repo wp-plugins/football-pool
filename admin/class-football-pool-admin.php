@@ -34,8 +34,9 @@ class Football_Pool_Admin {
 	private function add_submenu_page( $parent_slug, $page_title, $menu_title
 									, $capability, $menu_slug, $class, $toplevel = false ) {
 		if ( is_array( $class ) ) {
-			$function = array( $class, 'admin' );
-			$help_class = $screen_options_class = $class['help'];
+			$function = array( $class['admin'], 'admin' );
+			$help_class = $class['help'];
+			$screen_options_class = $class['screen_options'];
 		} else {
 			$function = array( $class, 'admin' );
 			$help_class = $screen_options_class = $class;
@@ -48,6 +49,7 @@ class Football_Pool_Admin {
 			$menu_level = $toplevel ? 'toplevel' : 'football-pool';
 			add_action( "admin_head-{$menu_level}_page_{$menu_slug}", array( $help_class, 'help' ) );
 		}
+		
 		// screen options
 		if ( $hook && method_exists( $screen_options_class, 'screen_options' ) ) {
 			add_action( "load-{$hook}", array( $screen_options_class, 'screen_options' ) );
@@ -98,7 +100,7 @@ class Football_Pool_Admin {
 			'footballpool-users',
 			'Football_Pool_Admin_Users'
 		);
-		
+
 		self::add_submenu_page(
 			$slug,
 			__( 'Edit matches', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -389,7 +391,8 @@ class Football_Pool_Admin {
 			}
 			
 			$selected = ( self::check_selected_value( $value, $option['value'] ) ? 'selected="selected" ' : '' );
-			$output .= sprintf( '<option id="answer_%d" value="%s" %s %s>%s</option>'
+			$output .= sprintf( '<option id="%s_answer_%d" value="%s" %s %s>%s</option>'
+								, esc_attr( $key )
 								, $i
 								, esc_attr( $option['value'] )
 								, $selected
@@ -1154,26 +1157,6 @@ class Football_Pool_Admin {
 		} else {
 			return $str;
 		}
-	}
-	
-	/**
-	 * Somewhat hacky way of replacing "Insert into Post" with "Use Image"
-	 *
-	 * @param string $translated_text text that has already been translated (normally passed straight through)
-	 * @param string $source_text text as it is in the code
-	 * @param string $domain domain of the text
-	 * @author Modern Tribe, Inc. (Peter Chester)
-	 */
-	public function replace_text_in_thickbox( $translated_text, $source_text, $domain ) {
-		// only used for older versions of WP, WP3.5 and newer use the media library
-		if ( FOOTBALLPOOL_WP_MEDIA ) return;
-		
-		if ( Football_Pool_Utils::get_string( 'football_pool_admin' ) == 'footballpool-bonus' ) {
-			if ( 'Insert into Post' == $source_text ) {
-				return __( 'Use Image', FOOTBALLPOOL_TEXT_DOMAIN );
-			}
-		}
-		return $translated_text;
 	}
 	
 	public function example_date( $gmt = 'false', $offset = -1 ) {
