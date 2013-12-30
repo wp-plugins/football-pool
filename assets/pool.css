@@ -233,9 +233,6 @@ div.football-pool-widget .widget.button:hover {
 	height: 1px; /*whatever the total width of the border-top and border-bottom equal*/
 }
 
-.widget_footballpoolnextpredictionwidget  div.football-pool-widget a.next-prediction-countdown {
-	font-weight: bold;
-}
 .widget_footballpoolnextpredictionwidget div.football-pool-widget p {
 	margin-bottom: 5px;
 }

@@ -1,12 +1,22 @@
 /*.match-table { max-width: 700px; }*/
 
-.match-table .match-type { background-color: #ccc; }
+.match-table div[class *= "pure-u"] div { padding: 0 5px; }
+.match { margin-bottom: 10px; }
+
+.match-table .match-type { background-color: #000; color: #fff; }
 .match-table .match-date { background-color: #ddd; }
 
 .match-table .match-type,
 .match-table .match-result {
 	text-align: center;
 }
+
+.match-table .match-linked-question div.bonus {
+	border: none;
+	margin-top: 20px;
+}
+
+.match-table img.flag { border: 1px solid #ccc; }
 
 /* media queries
 
@@ -16,11 +26,24 @@
 		desktop		( min-width: 980px )
 */
 @media ( max-width: 767px ) {
+	/* match and prediction table */
 	.match-table .match-date { text-align: right; }
 	.match-table .match-time { background-color: #ddd; }
+	.match-table .match-type { margin-top: 20px; }
+	.match-table .match-linked-question .bonus { width: 100%; }
+	.match-table .home-team, .match-table .away-team, .match-table .match-result { font-size: 180%; }
+	/* widgets */
+	.widget div.football-pool-widget table.pool-ranking.ranking-widget { font-size: 100%; }
+	.widget div.football-pool-widget p, .widget div.football-pool-widget td { font-size: 120%; }
+	.widget div.football-pool-widget .wrapper.fp-shoutbox p { font-size: 130%; }
+	.widget div.football-pool-widget .wrapper.next-prediction-countdown { font-size: 130%; }
+	.widget div.football-pool-widget span.notice { font-size: 100%; }
+	.widget div.football-pool-widget .userselector li label { font-size: 120%; width: 100%; min-height: 30px; display: block; }
+	.widget div.football-pool-widget .userselector input[type=checkbox] { margin-right: 1em; }
 }
 @media ( min-width: 768px ) and ( max-width: 979px ) {
 	.match-table .match-type { text-align: left; }
+	.match-table .match-linked-question input.bonus, .match-table .match-linked-question div.bonus { width: 100%; }
 }
 @media ( max-width: 979px ) {
 	.match-table .home-team,

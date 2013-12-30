@@ -77,7 +77,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 								, __( 'started ', FOOTBALLPOOL_TEXT_DOMAIN )
 								, __( ' ago:', FOOTBALLPOOL_TEXT_DOMAIN )
 						);
-		$output .= sprintf( '<p><a href="%1$s" title="%3$s" class="next-prediction-countdown" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
+		$output .= sprintf( '<div class="wrapper next-prediction-countdown"><p><a href="%1$s" title="%3$s" id="next-prediction-countdown-%2$s">&nbsp;</a></p>'
 				, $predictionpage
 				, $id
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -95,7 +95,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 			$url_home = $url_away = '';
 			$team_str = '%s%s';
 		}
-		$output .= sprintf( '<p>' . $team_str . ' - ' . $team_str . '</p>'
+		$output .= sprintf( '<p>' . $team_str . ' - ' . $team_str . '</p></div>'
 							, $url_home
 							, ( isset( $teams->team_names[ (int) $this->match['home_team_id'] ] ) ?
 										$teams->team_names[ (int) $this->match['home_team_id'] ] : '' )

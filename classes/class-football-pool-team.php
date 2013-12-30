@@ -42,6 +42,26 @@ class Football_Pool_Team extends Football_Pool_Teams {
 		}
 	}
 	
+	public function get_team_link( $name_only = false ) {
+		if ( $this->name == '' ) return '';
+		
+		if ( $this->show_team_links && ! $name_only ) {
+			$team_name = sprintf( '<a href="%s">%s</a>'
+									, esc_url( 
+											add_query_arg( 
+												array( 'team' => $this->id ), 
+												$this->page 
+											) 
+										)
+									, htmlentities( $this->name, null, 'UTF-8' )
+							);
+		} else {
+			$team_name = htmlentities( $this->name, null, 'UTF-8' );
+		}
+		
+		return $team_name;
+	}
+	
 	private function get_photo_url( $photo ) {
 		$path = '';
 		if ( stripos( $photo, 'http://' ) !== 0 && stripos( $photo, 'https://' ) !== 0 ) {

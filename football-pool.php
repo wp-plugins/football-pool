@@ -56,7 +56,6 @@ if ( ! is_admin() ) {
 // widgets
 require_once 'widgets/widget-football-pool-ranking.php';
 require_once 'widgets/widget-football-pool-lastgames.php';
-require_once 'widgets/widget-football-pool-userselector.php';
 require_once 'widgets/widget-football-pool-logout.php';
 require_once 'widgets/widget-football-pool-shoutbox.php';
 require_once 'widgets/widget-football-pool-group.php';

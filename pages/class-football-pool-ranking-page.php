@@ -7,7 +7,6 @@ class Football_Pool_Ranking_Page {
 		
 		$output = '';
 		$pool = new Football_Pool_Pool;
-		// $userleague = get_the_author_meta( 'footballpool_league', $current_user->ID );
 		$userleague = $pool->get_league_for_user( $current_user->ID );
 		$userleague = ( isset( $userleague ) && is_integer( $userleague ) ) ? $userleague : FOOTBALLPOOL_LEAGUE_ALL;
 		$league =  Football_Pool_Utils::request_string( 'league', $userleague );

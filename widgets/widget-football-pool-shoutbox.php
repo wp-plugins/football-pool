@@ -65,7 +65,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 		if ( count( $messages ) > 0 ) {
 			$time_format = get_option( 'time_format', FOOTBALLPOOL_TIME_FORMAT );
 			$date_format = get_option( 'date_format', FOOTBALLPOOL_DATE_FORMAT );
-			echo '<div class="wrapper">';
+			echo '<div class="wrapper fp-shoutbox">';
 			foreach ( $messages as $message ) {
 				$url = esc_url( add_query_arg( array( 'user' => $message['user_id'] ), $userpage ) );
 				$shout_date = new DateTime( Football_Pool_Utils::date_from_gmt( $message['shout_date'] ) );

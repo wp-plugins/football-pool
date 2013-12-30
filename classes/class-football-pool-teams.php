@@ -1,12 +1,14 @@
 <?php
 class Football_Pool_Teams {
-	private $extra_teams;
+	public $teams;
 	public $team_types;
 	public $team_names;
 	public $team_flags;
 	public $show_team_links;
+	public $page;
 	
 	public function __construct() {
+		$this->teams = $this->get_teams();
 		// get the team_names
 		$this->team_types = $this->get_team_types();
 		// get the team_names
@@ -15,6 +17,8 @@ class Football_Pool_Teams {
 		$this->team_flags = $this->get_team_flags();
 		// show links?
 		$this->show_team_links = Football_Pool_Utils::get_fp_option( 'show_team_link', true );
+		
+		$this->page = Football_Pool::get_page_link( 'teams' );
 	}
 	
 	// returns array
@@ -151,6 +155,57 @@ class Football_Pool_Teams {
 		}
 	}
 	
+	public function get_teams() {
+		$teams = wp_cache_get( FOOTBALLPOOL_CACHE_TEAMS );
+		
+		if ( $teams === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$sql = "SELECT 
+						t.id, t.name, t.photo, t.flag, t.link, g.id AS group_id, g.name as group_name,
+						t.is_real, t.is_active, group_order, t.comments
+					FROM {$prefix}teams t
+					LEFT OUTER JOIN {$prefix}groups g ON t.group_id = g.id 
+					ORDER BY t.name ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			$teams = array();
+			foreach ( $rows as $row ) {
+				$teams[(int)$row['id']] = new Football_Pool_Team( $row );
+			}
+			wp_cache_set( FOOTBALLPOOL_CACHE_TEAMS, $teams );
+		}
+		
+		return $teams;
+	}
+
+	/* get an array containing all the team types (real or not) */
+	private function get_team_types() {
+		$team_types = array();
+		foreach( $this->teams as $team ) {
+			$team_types[$team->id] = ( $team->is_real == 1 );
+		}
+		return $team_types;
+	}
+	
+	/* get an array containing all the team names (those that are real and active) */
+	private function get_team_names() {
+		$team_names = array();
+		foreach( $this->teams as $team ) {
+			$team_names[$team->id] = $team->name;
+		}
+		return $team_names;
+	}
+	
+	/* get an array with all the team_flags (for real and active teams) */
+	private function get_team_flags() {
+		$flags = array();
+		foreach( $this->teams as $team ) {
+			$flags[$team->id] = $team->flag;
+		}
+		return $flags;
+	}
+	
 	/* return IMG tag for team flag or logo */
 	public function flag_image( $id ) {
 		if ( is_array( $this->team_flags ) && isset( $this->team_flags[$id] ) && $this->team_flags[$id] != '' ) {
@@ -170,59 +225,5 @@ class Football_Pool_Teams {
 		} else {
 			return '';
 		}
-	}
-	
-	public function get_teams() {
-		$rows = wp_cache_get( FOOTBALLPOOL_CACHE_TEAMS );
-		
-		if ( $rows === false ) {
-			global $wpdb;
-			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			
-			$sql = "SELECT 
-						t.id, t.name, t.photo, t.flag, t.link, g.id AS group_id, g.name as group_name,
-						t.is_real, t.is_active, group_order, t.comments
-					FROM {$prefix}teams t
-					LEFT OUTER JOIN {$prefix}groups g ON t.group_id = g.id 
-					ORDER BY t.name ASC";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			wp_cache_set( FOOTBALLPOOL_CACHE_TEAMS, $rows );
-		}
-		
-		$teams = array();
-		foreach ( $rows as $row ) {
-			$teams[] = new Football_Pool_Team( $row );
-		}
-		return $teams;
-	}
-
-	/* get an array containing all the team types (real or not) */
-	private function get_team_types() {
-		$teams = $this->get_teams();
-		$team_types = array();
-		while ( $team = array_shift( $teams ) ) {
-			$team_types[$team->id] = ( $team->is_real == 1 );
-		}
-		return $team_types;
-	}
-	
-	/* get an array containing all the team names (those that are real and active) */
-	private function get_team_names() {
-		$teams = $this->get_teams();
-		$team_names = array();
-		while ( $team = array_shift( $teams ) ) {
-			$team_names[$team->id] = $team->name;
-		}
-		return $team_names;
-	}
-	
-	/* get an array with all the team_flags (for real and active teams) */
-	private function get_team_flags() {
-		$teams = $this->get_teams();
-		$flags = array();
-		while ( $team = array_shift( $teams ) ) {
-			$flags[$team->id] = $team->flag;
-		}
-		return $flags;
 	}
 }

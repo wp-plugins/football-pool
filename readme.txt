@@ -67,8 +67,6 @@ For easier/front-end user registration you may consider using an extra plugin an
 = I installed the plugin, but there are no matches. What happened? =
 Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
 
-Versions 1.1.0-1.1.2 contained a bug that on a clean install did not insert the data in the custom tables. Users that did an update from the first version did not have this problem. The problem was fixed in version 1.1.3. If you experience this problem just deactivate the plugin and reinstall it. Just updating won't fix it.
-
 = Do I need the "Predictions" page? =
 Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
 Some themes or WordPress configurations automatically put all top level pages in the navigation. See information from the theme maker on how to make a custom menu or how to exclude pages from the menu.
@@ -81,7 +79,7 @@ Yes. There are two ways to do this:
 And, of course, choose a theme or make one yourself that fits your competition or blog. If you have a custom game schedule that other users can also use, it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
 
 = The plugin won't calculate the ranking =
-If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve this problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
+If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve your problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
 
 = The charts are gone! What happened? =
 I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
@@ -99,8 +97,6 @@ You can put your custom translation files in the plugin-dir, but be careful they
 
 Make sure you name the mo-file right: **football-pool-aa_BB.mo** (where aa_BB is your language code)
 
-If your language is not shipped with the plugin, you might try the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a>. Maybe I forgot to release a new version.
-
 = I installed the plugin, but it does not look like your screenshots. =
 That's correct. The plugin has some basic styling, but it will not change your entire blog. You will have to fit the styling to your site yourself. Change your theme to overwrite/change the style of the plugin, or use a plugin to add extra custom stylesheets. Please don't change the css in the plugin folder; if you update the plugin, all your hard work will be gone.
 
@@ -116,6 +112,29 @@ The Football Pool plugin is available in the following languages:
 * Danish (`da_DK`) by Morten Bilberg Rasmussen.
 * German (`de_DE`) by Frank Winter.
 * Polish (`pl_PL`) by Łukasz Ciastoń (partial translation; not updated for version 2.x).
+
+== Shortcodes ==
+The plugin has the following shortcodes (also see help page in the admin):
+
+* fp-predictions
+* fp-predictionform
+* fp-matches
+* fp-user-score
+* fp-user-ranking
+* fp-ranking
+* fp-countdown
+* fp-group
+* fp-link
+* fp-register
+* fp-webmaster
+* fp-bank
+* fp-money
+* fp-start
+* fp-totopoints
+* fp-fullpoints
+* fp-goalpoints
+* fp-diffpoints
+* fp-jokermultiplier
 
 == Incompatible plugins ==
 
@@ -158,8 +177,10 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 = 2.4.0 =
 * **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
-* Finally a layout that is more optimized for mobile devices. Choose the new layout in the options (default "off" for upgrades and "on" for new installs).
-* New option: Users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
+* New HTML and CSS that works better on mobile devices. Choose the new layout in the options (default "off" for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
+* New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
+* New option: joker multiplier can now be changed in the options.
+* Removed the userselector widget and placed the functionality on the charts page. This wasn't working for mobile devices where in a lot of themes widgets are placed at the bottom of the page.
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.

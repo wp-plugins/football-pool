@@ -612,7 +612,7 @@ class Football_Pool {
 		}
 		
 		if ( file_exists( $dir ) ) {
-			wp_register_style( $handle, $url );
+			wp_register_style( $handle, $url, null, FOOTBALLPOOL_DB_VERSION );
 			wp_enqueue_style( $handle );
 		} else {
             if ( $forced_exit ) wp_die( $dir . ' not found' );
@@ -629,7 +629,7 @@ class Football_Pool {
 		}
 		
 		if ( file_exists( $dir ) ) {
-			wp_register_script( $handle, $url, $deps );
+			wp_register_script( $handle, $url, $deps, FOOTBALLPOOL_DB_VERSION );
 			wp_enqueue_script( $handle );
 		} else {
             if ( $forced_exit ) wp_die( $dir . ' not found' );

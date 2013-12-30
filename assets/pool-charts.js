@@ -26,6 +26,6 @@ jQuery( document ).ready( function() {
 
 function footballpool_line_chart_control() {
 	jQuery( "input:checkbox", "ol.userselector" ).bind( "click", function() {
-		jQuery( this ).parent().toggleClass( "selected" );
+		jQuery( this ).parent().parent().toggleClass( "selected" );
 	} );
 }

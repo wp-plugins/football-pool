@@ -233,13 +233,13 @@ class Football_Pool_Pool {
 		return $ranking;
 	}
 	
-	public function get_pool_ranking( $league, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
-		$cache_key = 'fp_get_pool_ranking_' . $ranking_id;
+	public function get_pool_ranking( $league_id, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+		$cache_key = "fp_get_pool_ranking_r{$ranking_id}_l{$league_id}";
 		$rows = wp_cache_get( $cache_key );
 		
 		if ( $rows === false ) {
 			global $wpdb;
-			$sql = $this->get_ranking_from_score_history( $league, $ranking_id );
+			$sql = $this->get_ranking_from_score_history( $league_id, $ranking_id );
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			$ranking = array();
 			$i = 1;
@@ -247,7 +247,8 @@ class Football_Pool_Pool {
 				$row['ranking'] = $i++;
 				$ranking[] = $row;
 			}
-			wp_cache_set( $cache_key, $ranking );
+			$rows = $ranking;
+			wp_cache_set( $cache_key, $rows );
 		}
 		
 		return $rows;

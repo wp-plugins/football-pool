@@ -1,7 +1,6 @@
 <?php
 class Football_Pool_Admin_Games extends Football_Pool_Admin {
-	// private static $screen_option_name = 'fp_matches_per_page';
-	private static $screen_option_name = 'matches_per_page';
+	private static $screen_option_name = 'fp_matches_per_page';
 	
 	public function __construct() {}
 	
@@ -417,7 +416,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$rows = $matches->matches;
 		
 		$pagination = new Football_Pool_Pagination( count( $rows ) );
-		$pagination->set_page_size( self::get_screen_option( self::$screen_option_name ) );
+		// $pagination->set_page_size( self::get_screen_option( self::$screen_option_name ) );
+		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
 		$pagination->wrap = true;
 		
 		$rows = array_slice( 

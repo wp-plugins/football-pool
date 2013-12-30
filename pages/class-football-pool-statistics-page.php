@@ -1,7 +1,8 @@
 <?php
 class Football_Pool_Statistics_Page {
 	public function page_content() {
-		$output = '';
+		$output = sprintf( '<form action="%s" method="get">', get_page_link() );
+		
 		$view = Football_Pool_Utils::get_string( 'view', 'stats' );
 		$match = Football_Pool_Utils::get_integer( 'match' );
 		$question = Football_Pool_Utils::get_integer( 'question' );
@@ -17,6 +18,15 @@ class Football_Pool_Statistics_Page {
 		if ( $user > 0 && ! in_array( $user, $users ) ) $users[] = $user;
 		if ( $current_user->ID != 0 && ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
 		
+		$ranking_display = Football_Pool_Utils::get_fp_option( 'ranking_display', 0 );
+		if ( $ranking_display == 1 ) {
+			$ranking = Football_Pool_Utils::request_int( 'ranking', FOOTBALLPOOL_RANKING_DEFAULT );
+		} elseif ( $ranking_display == 2 ) {
+			$ranking = Football_Pool_Utils::get_fp_option( 'show_ranking', FOOTBALLPOOL_RANKING_DEFAULT );
+		} else {
+			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
+		}
+		
 		$stats = new Football_Pool_Statistics;
 		$pool = new Football_Pool_Pool;
 
@@ -28,40 +38,48 @@ class Football_Pool_Statistics_Page {
 		} else {
 			$chart_data = new Football_Pool_Chart_Data();
 			
+			// show the user selector
+			if ( $view != 'matchpredictions' && $view != 'bonusquestion' && $view != 'user' ) {  
+				$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
+				
+				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
+				if ( count( $rows ) > 0 ) {
+					$ranking = Football_Pool_Utils::request_int( 'ranking', $ranking );
+					// fix for the default permalink setting
+					$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
+					$output .= sprintf( '<input type="hidden" name="page_id" value="%d" />', $page_id );
+					
+					$output .=  '<ol class="userselector">';
+					foreach( $rows as $row ) {
+						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
+						$output .= sprintf( '<li class="user-%d%s"><label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label></li>'
+								, $row['user_id']
+								, ( $selected ? ' selected' : '' )
+								, $row['user_id']
+								, ( $selected ? 'checked="checked" ' : '' )
+								, $pool->get_avatar( $row['user_id'], 'small' )
+								, $row['user_name']
+						);
+					}
+					$output .= '</ol>';
+					$output .= sprintf( '<p><input type="submit" value="%s" /></p>'
+										, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
+								);
+				}
+			}
+			
 			$ranking_selector = '';
 			if ( in_array( $view, array( 'stats', 'user' ) ) ) {
 				// show the ranking selector if applicable
-				$ranking_display = Football_Pool_Utils::get_fp_option( 'ranking_display', 0 );
-				if ( $ranking_display == 1 ) {
-					$ranking = Football_Pool_Utils::request_int( 'ranking'
-																, FOOTBALLPOOL_RANKING_DEFAULT );
-				} elseif ( $ranking_display == 2 ) {
-					$ranking = Football_Pool_Utils::get_fp_option( 'show_ranking', FOOTBALLPOOL_RANKING_DEFAULT );
-				} else {
-					$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
-				}
-				
 				$user_defined_rankings = $pool->get_rankings( 'user defined' );
 				if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
-					$ranking_selector .= sprintf( '<form action="%s" method="get">
-											<div style="margin-bottom: 1em; clear: both;">'
-										, get_page_link() 
-								);
-					$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
-					$ranking_selector .= sprintf( '<input type="hidden" name="page_id" value="%d" />'
-													, $page_id
-											);
+					$ranking_selector .= '<div style="margin-bottom: 1em; clear: both;">';
 					$ranking_selector .= sprintf( '<input type="hidden" name="user" value="%d" />'
 													, $user
 											);
 					$ranking_selector .= sprintf( '<input type="hidden" name="view" value="%s" />'
 													, $view
 											);
-					foreach ( $users as $user ) {
-						$ranking_selector .= sprintf( '<input type="hidden" name="users[]" value="%d" />'
-														, $user
-												);
-					}
 					
 					if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
 						$options = array();
@@ -78,7 +96,7 @@ class Football_Pool_Statistics_Page {
 					$ranking_selector .= sprintf( '<input type="submit" value="%s" />'
 										, __(  'go', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
-					$ranking_selector .= '</div></form>';
+					$ranking_selector .= '</div>';
 				}
 			}
 			
@@ -187,9 +205,9 @@ class Football_Pool_Statistics_Page {
 					if ( $view != 'user' ) {
 						if ( count( $users ) < 1 ) {
 							$output .= sprintf( '<h2>%s</h2>', __( 'No users selected :\'(', FOOTBALLPOOL_TEXT_DOMAIN ) );
-							$output .= sprintf( '<p>%s</p>', __( 'You can select other users on the left side.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<p>%s</p>', __( 'You can select other users in the widget.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						} elseif ( count( $users ) == 1 ) {
-							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users on the left side.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users in the widget.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						}
 					}
 					
@@ -312,6 +330,7 @@ class Football_Pool_Statistics_Page {
 			}
 		}
 		
+		$output .= '</form>';
 		return $output;
 	}
 }
