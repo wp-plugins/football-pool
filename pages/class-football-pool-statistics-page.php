@@ -44,11 +44,6 @@ class Football_Pool_Statistics_Page {
 				
 				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
 				if ( count( $rows ) > 0 ) {
-					$ranking = Football_Pool_Utils::request_int( 'ranking', $ranking );
-					// fix for the default permalink setting
-					$page_id = Football_Pool_Utils::get_fp_option( 'page_id_statistics' );
-					$output .= sprintf( '<input type="hidden" name="page_id" value="%d" />', $page_id );
-					
 					$output .=  '<ol class="userselector">';
 					foreach( $rows as $row ) {
 						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
@@ -74,9 +69,6 @@ class Football_Pool_Statistics_Page {
 				$user_defined_rankings = $pool->get_rankings( 'user defined' );
 				if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
 					$ranking_selector .= '<div style="margin-bottom: 1em; clear: both;">';
-					$ranking_selector .= sprintf( '<input type="hidden" name="user" value="%d" />'
-													, $user
-											);
 					$ranking_selector .= sprintf( '<input type="hidden" name="view" value="%s" />'
 													, $view
 											);
@@ -90,10 +82,10 @@ class Football_Pool_Statistics_Page {
 						$ranking_selector .= sprintf( '<br />%s: %s'
 											, __( 'Choose ranking', FOOTBALLPOOL_TEXT_DOMAIN )
 											, Football_Pool_Utils::select( 
-																	'ranking', $options, $ranking )
+														'ranking', $options, $ranking, '', 'statistics-page ranking-select' )
 									);
 					}
-					$ranking_selector .= sprintf( '<input type="submit" value="%s" />'
+					$ranking_selector .= sprintf( '&nbsp;<input type="submit" value="%s" />'
 										, __(  'go', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 					$ranking_selector .= '</div>';
@@ -104,17 +96,16 @@ class Football_Pool_Statistics_Page {
 				case 'bonusquestion': 
 					$questionInfo = $stats->show_bonus_question_info( $question );
 					if ( $stats->stats_visible ) {
+						$output .= $stats->show_answers_for_bonus_question( $question );
 						if ( $stats->stats_enabled ) {
 							// chart 1: pie, what did the players score on this bonus question?
 							$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
-							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
+							$chart = new Football_Pool_Chart( 'chart1', 'pie' );
 							$chart->data = $chart_data->bonus_question_pie_series_one_question( $raw_data );
 							$chart->title = __( 'what dit other users score?', FOOTBALLPOOL_TEXT_DOMAIN );
-							$chart->custom_css = 'right';
+							$chart->custom_css = 'stats-page';
 							$output .= $chart->draw();
 						}
-						
-						$output .= $stats->show_answers_for_bonus_question( $question );
 					}
 					break;
 				case 'matchpredictions':
@@ -122,17 +113,17 @@ class Football_Pool_Statistics_Page {
 					$match_info = $m->get_match_info( $match );
 					$output .= $stats->show_match_info( $match_info );
 					if ( $stats->stats_visible ) {
+						$output .= $stats->show_predictions_for_match( $match_info );
 						if ( $stats->stats_enabled && $stats->data_available_for_match( $match ) ) {
 							// chart 1: pie, what did the players score with the game predictions for this match?
 							$raw_data = $chart_data->predictions_pie_chart_data( $match );
-							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 200 );
+							$chart = new Football_Pool_Chart( 'chart1', 'pie' );
 							$chart->data = $chart_data->predictions_pie_series( $raw_data );
 							$chart->title = __( 'other users scores', FOOTBALLPOOL_TEXT_DOMAIN );
-							//$chart->options[] = '';
-							$chart->custom_css = 'right';
+							// $chart->options[] = '';
+							$chart->custom_css = 'stats-page';
 							$output .= $chart->draw();
 						}
-						$output .= $stats->show_predictions_for_match( $match_info );
 					}
 					break;
 				case 'user':
@@ -161,11 +152,12 @@ class Football_Pool_Statistics_Page {
 						// chart 1: pie, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( array( $user ), $ranking );
 						if ( count( $raw_data ) > 0 ) {
-							$chart = new Football_Pool_Chart( 'chart1', 'pie', 300, 300 );
+							$chart = new Football_Pool_Chart( 'chart1', 'pie' );
 							// only one user
 							$chart->data = array_shift( $chart_data->score_chart_series( $raw_data ) );
 							$chart->title = __( 'scores in matches', FOOTBALLPOOL_TEXT_DOMAIN );
-							if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
+							$chart->custom_css = 'stats-page';
+							if ( $pool->has_bonus_questions ) $chart->custom_css .= ' stats-pie';
 							$output .= $chart->draw();
 						}
 						if ( $pool->has_bonus_questions ) {
@@ -175,11 +167,11 @@ class Football_Pool_Statistics_Page {
 																					$ranking 
 																				);
 							if ( count( $raw_data ) > 0 ) {
-								$chart = new Football_Pool_Chart( 'chart4', 'pie', 300, 300 );
+								$chart = new Football_Pool_Chart( 'chart4', 'pie' );
 								// only one user
 								$chart->data = array_shift( $chart_data->bonus_question_pie_series( $raw_data ) );
 								$chart->title = __( 'scores in bonus questions', FOOTBALLPOOL_TEXT_DOMAIN );
-								$chart->custom_css = 'stats-pie left';
+								$chart->custom_css = 'stats-page stats-pie';
 								$output .= $chart->draw();
 							}
 						}
@@ -187,7 +179,7 @@ class Football_Pool_Statistics_Page {
 						// chart 5: pie, percentage of total points scored
 						$raw_data = $chart_data->points_total_pie_chart_data( $user, $ranking );
 						if ( count( $raw_data ) ) {
-							$chart = new Football_Pool_Chart( 'chart5', 'pie', 300, 300 );
+							$chart = new Football_Pool_Chart( 'chart5', 'pie' );
 							$chart->data = $chart_data->points_total_pie_series( $raw_data );
 							/* xgettext:no-php-format */
 							$chart->title = __( '% of the max points', FOOTBALLPOOL_TEXT_DOMAIN );
@@ -195,8 +187,7 @@ class Football_Pool_Statistics_Page {
 														, __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) );
 							$chart->JS_options[] = "options.series[0].data[0].sliced = true";
 							$chart->JS_options[] = "options.series[0].data[0].selected = true";
-							//if ( $pool->has_bonus_questions ) $chart->custom_css = 'stats-pie left';
-							$chart->custom_css = 'stats-pie left';
+							$chart->custom_css = 'stats-page stats-pie';
 							$output .= $chart->draw();
 						}
 						$output .= "</div>";
@@ -217,9 +208,10 @@ class Football_Pool_Statistics_Page {
 						// chart6: column, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( $users, $ranking );
 						if ( count( $raw_data ) > 0 ) {
-							$chart = new Football_Pool_Chart( 'chart6', 'column', 720, 300 );
+							$chart = new Football_Pool_Chart( 'chart6', 'column' );
 							$chart->data = $chart_data->score_chart_series( $raw_data );
 							$chart->title = __( 'scores', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->custom_css = 'stats-page';
 							$axis = array();
 							$axis[] = __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ); 
 							$axis[] = __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ); 
@@ -246,9 +238,10 @@ class Football_Pool_Statistics_Page {
 						// chart7: bonus questions
 						$raw_data = $chart_data->bonus_question_for_users_pie_chart_data( $users, $ranking );
 						if ( count( $raw_data ) > 0 ) {
-							$chart = new Football_Pool_Chart( 'chart7', 'column', 720, 300 );
+							$chart = new Football_Pool_Chart( 'chart7', 'column' );
 							$chart->data = $chart_data->bonus_question_pie_series( $raw_data, 'no open questions' );
 							$chart->title = __( 'bonus question', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->custom_css = 'stats-page';
 							$chart->options[] = sprintf( "xAxis: { categories: [ '%s', '%s' ] }"
 														, __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN )
 														, __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -271,9 +264,10 @@ class Football_Pool_Statistics_Page {
 						$output .= '<br class="clear" />';
 						$raw_data = $chart_data->score_per_match_line_chart_data( $users, $ranking );
 						if ( count( $raw_data ) > 0 ) {
-							$chart = new Football_Pool_Chart( 'chart2', 'line', 720, 500 );
+							$chart = new Football_Pool_Chart( 'chart2', 'line' );
 							$chart->data = $chart_data->score_per_match_line_series( $raw_data );
 							$chart->title = __( 'points scored', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->custom_css = 'stats-page';
 							$txt = __( 'points', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->options[] = "tooltip: {
 													shared: true, crosshairs: true, 
@@ -296,9 +290,10 @@ class Football_Pool_Statistics_Page {
 						// chart 3: position of the players in the pool
 						$raw_data = $chart_data->ranking_per_match_line_chart_data( $users, $ranking );
 						if ( count( $raw_data ) > 0 ) {
-							$chart = new Football_Pool_Chart( 'chart3', 'line', 720, 500 );
+							$chart = new Football_Pool_Chart( 'chart3', 'line' );
 							$chart->data = $chart_data->ranking_per_match_line_series( $raw_data );
 							$chart->title = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );
+							$chart->custom_css = 'stats-page';
 							// Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
 							$ordinal_suffixes = __( '["th", "st", "nd", "rd", "th"]', FOOTBALLPOOL_TEXT_DOMAIN );
 							$txt = __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN );

@@ -302,11 +302,12 @@ class Football_Pool_Shortcodes {
 		$show_num_predictions = ( $show_num_predictions == 1 );
 		
 		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, self::date_helper( $date ) );
+		$filtered_rows = apply_filters( 'footballpool_ranking_array', $rows );
 		
 		$output = '';
-		if ( count( $rows ) > 0 ) {
+		if ( count( $filtered_rows ) > 0 ) {
 			$users = array();
-			foreach ( $rows as $row ) $users[] = $row['user_id'];
+			foreach ( $filtered_rows as $row ) $users[] = $row['user_id'];
 			if ( $show_num_predictions ) {
 				$predictions = $pool->get_prediction_count_per_user( $users, $ranking );
 			}
@@ -325,7 +326,7 @@ class Football_Pool_Shortcodes {
 									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 			}
-			foreach ( $rows as $row ) {
+			foreach ( $filtered_rows as $row ) {
 				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
 				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
 				if ( $show_num_predictions ) {
@@ -358,7 +359,7 @@ class Football_Pool_Shortcodes {
 			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
 		
-		return apply_filters( 'footballpool_shortcode_html_fp-ranking', $output );
+		return apply_filters( 'footballpool_shortcode_html_fp-ranking', $output, $rows, $filtered_rows );
 	}
 	
 	//[fp-countdown]

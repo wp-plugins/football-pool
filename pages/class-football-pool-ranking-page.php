@@ -41,7 +41,7 @@ class Football_Pool_Ranking_Page {
 				$output .= sprintf( '<br />%s: %s'
 									, __( 'Choose ranking', FOOTBALLPOOL_TEXT_DOMAIN )
 									, Football_Pool_Utils::select( 
-															'ranking', $options, $ranking )
+															'ranking', $options, $ranking, '', 'ranking-page ranking-select' )
 							);
 			}
 			$output .= sprintf( '<input type="submit" name="_submit" value="%s" />'

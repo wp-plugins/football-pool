@@ -82,8 +82,8 @@ class Football_Pool {
 		$options['matches_locktime'] = '';
 		$options['bonus_question_locktime'] = '';
 		$options['keep_data_on_uninstall'] = 0; // 1: yes, 0: no
-		$options['use_favicon'] = 1; // 1: yes, 0: no
-		$options['use_touchicon'] = 1; // 1: yes, 0: no
+		$options['use_favicon'] = 0; // 1: yes, 0: no
+		$options['use_touchicon'] = 0; // 1: yes, 0: no
 		$options['stop_time_method_matches'] = 0; // 0: dynamic, 1: one stop date
 		$options['stop_time_method_questions'] = 0; // 0: dynamic, 1: one stop date
 		$options['show_team_link'] = 1; // 1: yes, 0: no
@@ -457,13 +457,15 @@ class Football_Pool {
 		do_action( 'footballpool_new_user', $user_id, $league );
 	}
 	
-	function player_login_redirect( $redirect_to, $request, $user ){
+	public function player_login_redirect( $redirect_to, $request, $user ){
 		//is there a user to check?
 		global $user;
 		if( isset( $user->roles ) && is_array( $user->roles ) ) {
 			//check for non admins
 			if( ! in_array( 'administrator', $user->roles ) ) {
-				$default_url = Football_Pool_Utils::get_fp_option( 'redirect_url_after_login', home_url() );
+				$default_url = apply_filters( 'footballpool_login_redirect_url', 
+									Football_Pool_Utils::get_fp_option( 'redirect_url_after_login', home_url() )
+								);
 				$redirect_to = ( $request == admin_url() ) ? $default_url : $request;
 			}
 		}
@@ -549,14 +551,20 @@ class Football_Pool {
 		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
 		
 		if ( Football_Pool_Utils::get_fp_option( 'use_favicon' ) == 1 ) {
-			echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' />";
+			// made with http://iconifier.net/
+			echo "\n<link rel='shortcut icon' href='{$assets_dir}favicon.ico' type='image/x-icon' />";
 		}
 		
 		if ( Football_Pool_Utils::get_fp_option( 'use_touchicon' ) == 1 ) {
-			echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon-57x57.png' />";
-			echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-ipad-72x72.png' />";
-			echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-iphone4-114x114.png' />";
-			echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-ipad-highres-144x144.png' />";
+			// made with http://iconifier.net/
+			echo "\n<link rel='apple-touch-icon' href='{$assets_dir}apple-touch-icon.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='57x57' href='{$assets_dir}apple-touch-icon-57x57.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='72x72' href='{$assets_dir}apple-touch-icon-72x72.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='76x76' href='{$assets_dir}apple-touch-icon-76x76.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='114x114' href='{$assets_dir}apple-touch-icon-114x114.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='120x120' href='{$assets_dir}apple-touch-icon-120x120.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='144x144' href='{$assets_dir}apple-touch-icon-144x144.png' />";
+			echo "\n<link rel='apple-touch-icon' sizes='152x152' href='{$assets_dir}apple-touch-icon-152x152.png' />";
 		}
 	}
 	

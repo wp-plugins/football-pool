@@ -27,10 +27,10 @@ class Football_Pool_Utils {
 		return $input;
 	}
 
-	public function select( $id, $options, $selected_val, $name = '' ) {
+	public function select( $id, $options, $selected_val, $name = '', $css_class = '' ) {
 		if ( $name == '' ) $name = $id;
 		
-		$output = sprintf( '<select name="%s" id="%s">', $name, $id );
+		$output = sprintf( '<select name="%s" id="%s" class="%s">', $name, $id, $css_class );
 		foreach ( $options as $val => $text ) {
 			$output .= sprintf('<option value="%s"%s>%s</option>'
 								, $val

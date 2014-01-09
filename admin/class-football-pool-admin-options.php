@@ -49,7 +49,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			$user_defined_rankings[] = array( 'value' => $ranking['id'], 'text' => $ranking['name'] );
 		}
 		
-		// check if offset-dropdowns must be shown
 		if ( $action == 'update' ) {
 			// in case of a save action
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
@@ -68,6 +67,15 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			$options[] = array( 'value' => $type->id, 'text' => $type->name );
 		}
 		$match_types = $options;
+		
+		// get the leagues
+		$user_defined_leagues = $pool->get_leagues( true );
+		$options = array();
+		$options[] = array( 'value' => 0, 'text' => '' );
+		foreach ( $user_defined_leagues as $league ) {
+			$options[] = array( 'value' => $league['league_id'], 'text' => $league['league_name'] );
+		}
+		$user_defined_leagues = $options;
 		
 		// get the pages for the redirect option
 		$redirect_pages = array();
@@ -195,7 +203,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 						'use_leagues' => 
 							array( 'checkbox', __( 'Use leagues', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues', __( 'Set this if you want to use leagues in your pool. You can use this (e.g.) for paying and non-paying users, or different departments. Important: if you change this value when there are already points given, then the scoretable will not be automatically recalculated. Use the recalculate button on this page for that.', FOOTBALLPOOL_TEXT_DOMAIN ), 'onclick="jQuery(\'#r-default_league_new_user\').toggle()"' ),
 						'default_league_new_user' => 
-							array( 'text', __( 'Standard league for new users', FOOTBALLPOOL_TEXT_DOMAIN ), 'default_league_new_user', __( 'The standard league (<a href="?page=footballpool-leagues">fill in the league ID</a>) a new user will be placed after registration.', FOOTBALLPOOL_TEXT_DOMAIN ), 'use_leagues' ),
+							array( 
+								array( 'select', 'integer' ), 
+								__( 'Standard league for new users', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'default_league_new_user', 
+								$user_defined_leagues,
+								__( 'The standard league a new user will be placed after registration.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'use_leagues' 
+							),
 						'dashboard_image' =>
 							array( 'text', __( 'Image for Dashboard Widget', FOOTBALLPOOL_TEXT_DOMAIN ), 'dashboard_image', '<a href="' . get_admin_url() . '">Dashboard</a>' ),
 						'hide_admin_bar' => 

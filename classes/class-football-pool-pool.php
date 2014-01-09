@@ -498,7 +498,7 @@ class Football_Pool_Pool {
 			foreach ( $this->leagues as $row ) {
 				$options[ $row['league_id'] ] = $row['league_name'];
 			}
-			$output .= Football_Pool_Utils::select( $select, $options, $league );
+			$output .= Football_Pool_Utils::select( $select, $options, $league, '', 'league-select' );
 		}
 		
 		return $output;

@@ -14,7 +14,11 @@ class Football_Pool_Chart {
 	public $x_axis_step = 1;
 	public $API_loaded = false;
 	
-	public function __construct( $id = 'chart1', $type = 'line', $width = 600, $height = 400 ) {
+	/*
+	 * Omit width and/or height to make the charts responsive (width = 100%).
+	 * Or supply a width and height in pixels or a percentage to set the chart to a defined width.
+	 */ 
+	public function __construct( $id = 'chart1', $type = 'line', $width = null, $height = null ) {
 		$this->ID = $id;
 		$this->width = $width;
 		$this->height = $height;
@@ -56,12 +60,28 @@ class Football_Pool_Chart {
 		$output .= $this->render_options( $this->options );
 		$output .= $this->finish_chart();
 		
-		return $output;
+		return apply_filters( 'footballpool_chart_html', $output );
 	}
 	
 	private function render_base_HTML() {
-		$output = sprintf( '<div id="%s" class="%s" style="width:%dpx; height:%dpx;"></div>',
-							$this->ID, $this->css_class, $this->width, $this->height );
+		$output = '';
+		
+		if ( $this->width === null ) {
+			$output .= sprintf( '<div id="%s-wrapper" class="chart-wrapper %s-chart %s">'
+								, $this->ID, $this->type, $this->css_class);
+		} else {
+			$output .= sprintf( '<div id="%s-wrapper" class="chart-wrapper %s-chart %s" style="width:%s;height:%s;">'
+								, $this->ID, $this->type, $this->css_class, $this->width, $this->height );
+		}
+		
+		if ( is_numeric( $this->width ) && is_numeric( $this->height ) ) {
+			$output .= sprintf( '<div id="%s" style="width:%dpx; height:%dpx;"></div>'
+								, $this->ID, $this->width, $this->height );
+		} else {
+			$output .= sprintf( '<div id="%s" class="chart-inner"><div style="width:100%%; height:100%%;"></div></div>'
+								, $this->ID );
+		}
+		$output .= '</div>';
 		$output .= sprintf( "<script type='text/javascript'>
 							var chart_%s;
 							jQuery(document).ready(function() {
@@ -94,6 +114,7 @@ class Football_Pool_Chart {
 	
 	private function series_data_template( $name, $data = array(), $type = '', $options = array() ) {
 		$output = "{ name: '" . $name . "', data: " . json_encode($data);
+		
 		if ( count( $options ) > 0 )
 			$output .= implode(", ", $options) . ", ";
 		
