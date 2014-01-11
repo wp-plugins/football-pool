@@ -179,6 +179,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
 * New HTML and CSS that works better on mobile devices. Choose the new layout in the options (default "off" for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in the your themes css.
+* New question type: multiline text.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.

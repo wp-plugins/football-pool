@@ -313,10 +313,10 @@ class Football_Pool_Statistics_Page {
 							$chart->JS_options[] = sprintf( 'options.yAxis.title.text = "%s"'
 															, __( 'position in the pool', FOOTBALLPOOL_TEXT_DOMAIN )
 													);
-							//$chart->JS_options[] = 'options.yAxis.endOnTick = true';
+							// $chart->JS_options[] = 'options.yAxis.endOnTick = true';
 							$chart->JS_options[] = 'options.yAxis.reversed = true';
 							$chart->JS_options[] = 'options.yAxis.showFirstLabel = false';
-							//$chart->JS_options[] = 'options.yAxis.min = 1';
+							// $chart->JS_options[] = 'options.yAxis.min = 1';
 							$chart->JS_options[] = 'options.xAxis.labels.enabled = false';
 							$output .= $chart->draw();
 						}

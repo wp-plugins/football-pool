@@ -660,17 +660,26 @@ class Football_Pool_Pool {
 				return $this->bonus_question_multiple( $question, 'radio' );
 			case 3: // multiple n
 				return $this->bonus_question_multiple( $question, 'checkbox' );
+			case 4: // multiline text
+				return $this->bonus_question_single( $question, 'multiline' );
 			case 1: // text
 			default:
 				return $this->bonus_question_single( $question );
 		}
 	}
 	
-	private function bonus_question_single( $question ) {
-		return sprintf( '<input maxlength="200" class="bonus" name="_bonus_%d" type="text" value="%s" />'
-						, esc_attr( $question['id'] )
-						, esc_attr( $question['answer'] )
-				);
+	private function bonus_question_single( $question, $multiline = false ) {
+		if ( $multiline === 'multiline' ) {
+			return sprintf( '<textarea class="bonus multiline" name="_bonus_%d">%s</textarea>'
+							, esc_attr( $question['id'] )
+							, esc_attr( $question['answer'] )
+					);
+		} else {
+			return sprintf( '<input maxlength="200" class="bonus" name="_bonus_%d" type="text" value="%s" />'
+							, esc_attr( $question['id'] )
+							, esc_attr( $question['answer'] )
+					);
+		}
 	}
 	
 	// type = radio / checkbox / select
@@ -758,7 +767,7 @@ class Football_Pool_Pool {
 		}
 		$output = sprintf( '<div class="bonus" id="q%d"><p>%s%s</p>'
 							, $question['id']
-							, $nr, $question['question'] 
+							, $nr, $question['question']
 					);
 		if ( $question['image'] != '' ) {
 			$output .= sprintf( '<p class="bonus image"><img src="%s" alt="%s" /></p>'
@@ -790,7 +799,8 @@ class Football_Pool_Pool {
 							$question['id'],
 							__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN )
 					);
-			$output .= ( $question['answer'] != '' ? $question['answer'] : '<span class="no-answer"></span>' );
+			if ( $question['type'] == 4 ) $output .= '<br>';
+			$output .= ( $question['answer'] != '' ? nl2br( $question['answer'] ) : '<span class="no-answer"></span>' );
 			$output .= '</p>';
 			
 			$output .= sprintf( '<p><span class="bonus eindtijd" title="%s">%s %s</span>',

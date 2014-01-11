@@ -105,8 +105,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			$questiondate = new DateTime( $question['answer_before_date'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
-			echo '<h3>', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
-			echo '<p>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['answer'], '<br />';
+			// echo '<h3>', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
+			echo '<h3>', $question['question'], '</h3>';
+			echo '<p>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), ':<br>', nl2br( $question['answer'] ), '<br />';
 			
 			$points = $question['points'] == 0 ? __( 'variable', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
 			echo '<span style="font-size: 80%; font-style: italic;">', $points, ' ', __( 'point(s)', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -142,7 +143,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					}
 					$points = $answer['points'] == 0 ? '' : $answer['points'];
 					
-					echo '<tr><td>', $answer['name'], '</td><td>', $answer['answer'], '</td>';
+					echo '<tr><td>', $answer['name'], '</td><td>', nl2br( $answer['answer'] ), '</td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="1" type="radio" ', $correct, ' /></td>';
 					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="0" type="radio" ', $wrong, ' /></td>';
 					echo '<td><input name="_user_', $answer['user_id'], '_points" id="_user_', $answer['user_id'], '_points" title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
@@ -190,6 +191,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		// question types
 		$types = array( 
 						array( 'value' => '1', 'text' => __( 'text', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '4', 'text' => __( 'multiline text', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 						array( 'value' => '2', 'text' => __( 'multiple choice (1 answer)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 						array( 'value' => '3', 'text' => __( 'multiple choice (one or more answers)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 					);
@@ -208,8 +210,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date (for the charts). If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
+					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date. If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
 					array( 
 						'select', 
 						__( 'link to match', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -218,7 +220,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						$matches,
 						__( 'Linked questions are placed directly beneath the match on the prediction form.', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
-					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'textarea', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
 						'radiolist', 
 						__( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -227,6 +229,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						$types, 
 						'',
 						array(
+							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
 							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
 							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
 							'onclick="toggle_linked_radio_options( [ \'#r-options\', \'#r-max_answers\' ], null )"',

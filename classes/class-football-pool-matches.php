@@ -491,14 +491,6 @@ class Football_Pool_Matches {
 		
 		$output = '<table class="matchinfo">';
 		foreach ( $matches as $row ) {
-			if ( $is_input_form ) {
-				if ( (int) $row['has_joker'] === 1 ) {
-					$joker = (int) $row['id'];
-				}
-				
-				$info = $this->get_match_info( (int) $row['id'] );
-			}
-			
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];
 				$output .= sprintf( '<tr><td class="matchtype" colspan="6">%s</td></tr>'
