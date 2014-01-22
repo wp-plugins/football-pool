@@ -38,7 +38,6 @@ td.numeric { text-align: right; }
 
 table.matchinfo { border: none; width: 580px; }
 table.matchinfo.input { width: 580px; }
-
 table.matchinfo td { padding: 0 .2em 0 0; border: none; font-size: .9em; }
 table.matchinfo td.flag { text-align: center; }
 table.matchinfo td.time { text-align: left; font-size: .7em; vertical-align: bottom; padding-left: 1em; }
@@ -65,10 +64,7 @@ div.buttonblock { margin: 1em 0 3em; }
 
 img.team-photo.thumb { width: 150px; height: 79px; border: 0; cursor: pointer; }
 img.stadium-photo.thumb.stadium-list,
-img.team-photo.thumb.team-list { 
-	float: left; 
-	margin: 0 5px 10px 0; 
-}
+img.team-photo.thumb.team-list { float: left; margin: 0 5px 10px 0; }
 img.team-photo { width: 301px; height: 159px; border: 0; cursor: pointer; }
 img.stadium-photo { border: 0; }
 img.stadium-photo.thumb { width: 150px; border: 0; }
@@ -154,52 +150,28 @@ span.bonus { color: #aaa; font-size: 75%;  }
 span.bonus.points { float: right; }
 span.bonus.reminder { color: #ccc; font-weight: bolder; }
 span.extra { font-size: 80%; color: #666; }
-
 div.bonus ul.multi-select { list-style: none; margin: 0; padding: 0; }
 div.bonus p, div.bonus li { clear: both; }
-
-div.bonus ul.multi-select label { 
-	display: block; margin-bottom: 10px;
-}
-
+div.bonus ul.multi-select label { display: block; margin-bottom: 10px; }
 div.bonus ul.multi-select input[type=radio], 
-div.bonus ul.multi-select input[type=checkbox] {
-	float: left; display: block;
-	height: 13px; width: 15px;
-}
-
+div.bonus ul.multi-select input[type=checkbox] { float: left; display: block; height: 13px; width: 15px; }
 div.bonus ul.multi-select span { 
 	margin-left: 20px;
 	padding-left: 10px;
 	display: block;
 	width: 530px; /* standard column width = 550px */
 }
-
 /* handle the multi-select option with user input */
 div.bonus ul.multi-select label + span { width: 530px; float: left; }
 div.bonus ul.multi-select label + span input[type=text] { width: 100%; }
 div.bonus ul.multi-select label.user-input span { width: 530px; }
 
-/* example 4 column layout
+/* example 4 column layout for question with ID 1
 #q1 ul.multi-select li { float: left; width: 25%; }
 */
 
 .widget_footballpoollastgameswidget div.football-pool-widget p,
 .widget_footballpool-rankingwidget div.football-pool-widget p { padding: 2px 3px; margin: 0; font-size: 75%; }
-
-div.football-pool-widget ol.userselector { 
-	margin: 0; padding: 0; 
-	display: block; 
-	overflow: auto; 
-	width: 100%; 
-	border: none; 
-	list-style: none; 
-}
-div.football-pool-widget ol.userselector li.selected { background-color: #e1dfdf; }
-.widget.widget_footballpooluserselectorwidget div.football-pool-widget p { 
-	text-align: right; 
-	padding: 0 3px 0 0; 
-}
 
 div.football-pool-widget .widget.button { 
 	border: 1px solid #e1dfdf; 
@@ -215,8 +187,6 @@ div.football-pool-widget .widget.button:hover {
 	background-color: #e1dfdf;
 	color: #ccc;
 }
-
-#respond { margin-top: 50px; padding: 0 0 0 3px; }
 
 .widget_footballpoolshoutboxwidget div.wrapper { 
 	height: 240px; 
@@ -257,6 +227,7 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 	padding: 0 .5em 0 0; vertical-align: middle; 
 }
 
+/*
 .prediction-table-questions td { min-width: 16px; min-height: 16px; }
 .prediction-table-questions td.correct, .prediction-table-questions td.wrong {
 	background-repeat: no-repeat;
@@ -264,6 +235,9 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 }
 .prediction-table-questions td.correct { background-image: url('images/site/correct.png'); }
 .prediction-table-questions td.wrong { background-image: url('images/site/wrong.png'); }
+*/
+.prediction-table-questions td .correct { color: #12c312; }
+.prediction-table-questions td .wrong { color: #ff2133; }
 .prediction-table-questions.statistics { width: 390px; }
 
 p.bonus .no-answer:after { 
@@ -272,3 +246,19 @@ p.bonus .no-answer:after {
 }
 
 td.num-predictions, td.ranking.score { text-align: right; }
+
+span.charts-settings-switch { float: right; cursor: pointer; }
+
+/* userselector */
+#fp-charts-settings { display:none }
+.user-selector {  }
+.user-selector ol { 
+	margin: 0; padding: 0;
+	display: block;
+	overflow: auto;
+	width: 100%;
+	height: 150px;
+	border: none;
+	list-style: none;
+}
+.user-selector ol li.selected { background-color: #e1dfdf; }

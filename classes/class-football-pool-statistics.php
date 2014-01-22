@@ -21,11 +21,10 @@ class Football_Pool_Statistics {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT;
-		$single_match = ( $match > 0 ) ? '' : '1 = 1 OR';
-		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}scorehistory 
-								WHERE ranking_id = {$ranking_id} 
-									AND ( {$single_match} ( type = 0 AND source_id = %d ) )", 
-								$match
+		$single_match = ( $match > 0 ) ? '' : '--';
+		$sql = $wpdb->prepare( sprintf( "SELECT COUNT(*) FROM {$prefix}scorehistory 
+								WHERE ranking_id = %%d %s AND type = 0 AND source_id = %%d", $single_match )
+								, $ranking_id, $match
 							);
 		$num = $wpdb->get_var( $sql );
 		
@@ -116,19 +115,14 @@ class Football_Pool_Statistics {
 							, __( 'correct?', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
 		
-		$img = sprintf( '<img src="%sassets/images/site/correct.jpg" title="%s" alt="%s" width="16" height="16" />'
-						, FOOTBALLPOOL_PLUGIN_URL
-						, __( 'answer correct', FOOTBALLPOOL_TEXT_DOMAIN )
-						, __( 'correct', FOOTBALLPOOL_TEXT_DOMAIN )
-				);
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
 		foreach ( $answers as $answer ) {
 			if ( $answer['correct'] == 1 ) {
-				$class = 'correct';
+				$class = 'correct fa fa-check-circle';
 				$title = __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN );
 			} else {
-				$class = 'wrong';
+				$class = 'wrong fa fa-times-circle';
 				$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
 			$output .= sprintf( '<tr><td><a href="%s">%s</a></td><td>%s</td>'
@@ -136,7 +130,7 @@ class Football_Pool_Statistics {
 								, $answer['name']
 								, $answer['answer'] 
 						);
-			$output .= sprintf( '<td class="score %s" title="%s"></td></tr>'
+			$output .= sprintf( '<td class="score"><span class="score %s" title="%s"></span></td></tr>'
 								, $class 
 								, $title
 						);

@@ -1,5 +1,22 @@
 <?php
 class Football_Pool_Statistics_Page {
+	public function the_title( $title ) {
+		if ( in_the_loop() && is_page() && get_the_ID() == Football_Pool_Utils::get_fp_option( 'page_id_statistics' ) ) {
+			$view = Football_Pool_Utils::get_string( 'view', 'stats' );
+			if ( ! in_array( $view, array( 'bonusquestion' ,'matchpredictions' ) ) ) {
+				$title .= sprintf( '<span title="%s" class="fa fa-cog charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
+									, __( 'Change the charts', FOOTBALLPOOL_TEXT_DOMAIN )
+								);
+			}
+		}
+		
+		return $title;
+	}
+	
+	private function hide_charts_settings() {
+		wp_add_inline_style( 'css-pool', 'span.charts-settings-switch { display: none; }' );
+	}
+	
 	public function page_content() {
 		$output = sprintf( '<form action="%s" method="get">', get_page_link() );
 		
@@ -39,27 +56,29 @@ class Football_Pool_Statistics_Page {
 			$chart_data = new Football_Pool_Chart_Data();
 			
 			// show the user selector
-			if ( $view != 'matchpredictions' && $view != 'bonusquestion' && $view != 'user' ) {  
+			if ( $view != 'matchpredictions' && $view != 'bonusquestion' && $view != 'user' ) {
 				$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 				
 				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
+				$user_selector = '';
 				if ( count( $rows ) > 0 ) {
-					$output .=  '<ol class="userselector">';
+					$user_selector .=  '<div class="user-selector"><ol>';
 					foreach( $rows as $row ) {
 						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
-						$output .= sprintf( '<li class="user-%d%s"><label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label></li>'
-								, $row['user_id']
-								, ( $selected ? ' selected' : '' )
-								, $row['user_id']
-								, ( $selected ? 'checked="checked" ' : '' )
-								, $pool->get_avatar( $row['user_id'], 'small' )
-								, $row['user_name']
-						);
+						$user_selector .= sprintf( '<li class="user-%d%s"><label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label></li>'
+												, $row['user_id']
+												, ( $selected ? ' selected' : '' )
+												, $row['user_id']
+												, ( $selected ? 'checked="checked" ' : '' )
+												, $pool->get_avatar( $row['user_id'], 'small' )
+												, $row['user_name']
+										);
 					}
-					$output .= '</ol>';
-					$output .= sprintf( '<p><input type="submit" value="%s" /></p>'
+					$user_selector .= '</ol>';
+					$user_selector .= sprintf( '<p><input type="submit" value="%s" /></p>'
 										, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
 								);
+					$user_selector .= '</div>';
 				}
 			}
 			
@@ -196,14 +215,14 @@ class Football_Pool_Statistics_Page {
 					if ( $view != 'user' ) {
 						if ( count( $users ) < 1 ) {
 							$output .= sprintf( '<h2>%s</h2>', __( 'No users selected :\'(', FOOTBALLPOOL_TEXT_DOMAIN ) );
-							$output .= sprintf( '<p>%s</p>', __( 'You can select other users in the widget.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<p>%s</p>', __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						} elseif ( count( $users ) == 1 ) {
-							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users in the widget.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						}
 					}
 					
 					if ( $view != 'user' ) {
-						$output .= $ranking_selector;
+						$output .= sprintf( '<div id="fp-charts-settings">%s%s</div>', $user_selector, $ranking_selector );
 						// column charts
 						// chart6: column, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( $users, $ranking );
@@ -325,7 +344,7 @@ class Football_Pool_Statistics_Page {
 			}
 		}
 		
-		$output .= '</form>';
+		$output .= sprintf( '<input type="hidden" name="page_id" value="%d" /></form>', get_the_ID() );
 		return $output;
 	}
 }

@@ -98,7 +98,7 @@ if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	$wpdb->show_errors();
 	// http://wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405
 	define( 'ALTERNATE_WP_CRON', true );
+	if ( ! class_exists( 'ChromePhp' ) && file_exists( FOOTBALLPOOL_PLUGIN_DIR . '_dev/ChromePhp.php' ) ) require_once '_dev/ChromePhp.php';
 } else {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', false );
-	$wpdb->hide_errors();
 }

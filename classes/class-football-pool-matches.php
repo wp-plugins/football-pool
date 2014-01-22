@@ -197,10 +197,11 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_match_info( $match ) {
-		if ( is_integer( $match ) && array_key_exists( $match, $this->matches ) ) 
+		if ( is_integer( $match ) && array_key_exists( $match, $this->matches ) ) {
 			return $this->matches[$match];
-		else
+		} else {
 			return array();
+		}
 	}
 	
 	public function get_match_info_for_user( $user_id, $match_ids = array() ) {
@@ -214,11 +215,7 @@ class Football_Pool_Matches {
 			$ids = " AND m.id IN ( {$match_ids} ) ";
 		}
 		
-		$sql = $wpdb->prepare( "SELECT 
-									m.home_team_id, m.away_team_id, 
-									p.home_score, p.away_score, 
-									p.has_joker, t.name AS matchtype, 
-									m.id, m.play_date
+		$sql = $wpdb->prepare( "SELECT m.id, p.home_score, p.away_score, p.has_joker
 								FROM {$prefix}matches m 
 								JOIN {$prefix}matchtypes t 
 									ON ( m.matchtype_id = t.id {$ids})
@@ -229,7 +226,20 @@ class Football_Pool_Matches {
 								$user_id
 							);
 		
-		return apply_filters( 'footballpool_matches_for_user', $wpdb->get_results( $sql, ARRAY_A ), $user_id );
+		$match_info = array();
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		foreach ( $rows as $row ) {
+			$i = (int) $row['id'];
+			// get detailed match info from cache
+			$match_info[$i] = $this->get_match_info( $i );
+			// change match result to predictions from user
+			$match_info[$i]['home_score'] = $row['home_score'];
+			$match_info[$i]['away_score'] = $row['away_score'];
+			// add joker value
+			$match_info[$i]['has_joker'] = $row['has_joker'];
+		}
+		
+		return apply_filters( 'footballpool_matches_for_user', $match_info, $user_id );
 	}
 	
 	public function get_joker_value_for_user( $user_id ) {
@@ -587,6 +597,7 @@ class Football_Pool_Matches {
 		$joker = '';
 		
 		$output = sprintf( '<table id="matchinfo-%d" class="matchinfo input">', $form_id );
+		
 		foreach ( $matches as $row ) {
 			if ( $matchtype != $row['matchtype'] ) {
 				$matchtype = $row['matchtype'];

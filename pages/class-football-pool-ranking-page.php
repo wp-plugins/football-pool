@@ -44,8 +44,9 @@ class Football_Pool_Ranking_Page {
 															'ranking', $options, $ranking, '', 'ranking-page ranking-select' )
 							);
 			}
-			$output .= sprintf( '<input type="submit" name="_submit" value="%s" />'
+			$output .= sprintf( '<input type="submit" name="_submit" value="%s" /><input type="hidden" name="page_id" value="%d" />'
 								, __(  'go', FOOTBALLPOOL_TEXT_DOMAIN )
+								, get_the_ID()
 						);
 			$output .= '</div></form>';
 		}

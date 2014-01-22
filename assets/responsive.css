@@ -1,5 +1,7 @@
 /*.match-table { max-width: 700px; }*/
 
+div.bonus, p.bonus, input.bonus { width: 100%; }
+
 .match-table div[class *= "pure-u"] div { padding: 0 5px; }
 .match { margin-bottom: 10px; }
 

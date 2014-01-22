@@ -53,7 +53,7 @@ class Football_Pool_Pool_Page {
 						$output .= $pool->print_bonus_question( $question, $nr++ );
 					}
 				}
-				$output .= $this->save_button();
+				$output .= $pool->save_button( 'pool-page' );
 			}
 			
 			$output .= $pool->prediction_form_end();
@@ -70,9 +70,4 @@ class Football_Pool_Pool_Page {
 		return $output;
 	}
 	
-	private function save_button() {
-		return sprintf( '<div class="buttonblock"><input type="submit" name="_submit" value="%s" /></div>',
-						__( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
-				);
-	}
 }

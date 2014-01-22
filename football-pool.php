@@ -73,6 +73,7 @@ add_action( 'init', array( 'Football_Pool', 'init' ) );
 if ( ! is_admin() ) {
 	add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
 	add_filter( 'the_content', array( 'Football_Pool', 'the_content' ) );
+	add_filter( 'the_title', array( 'Football_Pool_Statistics_Page', 'the_title' ) );
 	add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
 }
 
@@ -120,9 +121,4 @@ if ( is_admin() ) {
 	add_filter( 'admin_body_class', array( 'Football_Pool_Admin', 'add_body_class' ) );
 	add_filter( 'plugin_action_links', array( 'Football_Pool_Admin', 'add_plugin_settings_link' ), 10, 2 );
 	add_filter( 'set-screen-option', array( 'Football_Pool_Admin', 'set_screen_options', 10, 3 ) );
-}
-
-if ( FOOTBALLPOOL_ENABLE_DEBUG && defined( 'SAVE_QUERIES' ) && constant( 'SAVE_QUERIES' ) == true ) {
-	// save db queries to file
-	add_action( 'shutdown', array( 'Football_Pool_Utils', 'sql_logger' ) );
 }

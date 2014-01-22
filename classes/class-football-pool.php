@@ -328,6 +328,8 @@ class Football_Pool {
 				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery' ) );
 			}
 			
+			// font awesome
+			self::include_css( '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', 'css-awesome', null, null, null, 'external' );
 			// pool js & css
 			self::include_css( 'assets/pool.css', 'css-pool' );
 			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
@@ -359,13 +361,6 @@ class Football_Pool {
 			self::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
 								, array( 'jquery', 'jquery-ui-core', 'jquery-ui-progressbar' ) );
 			
-			// score calculation css, ajax & progressbar
-			if ( ! wp_script_is( 'jquery-ui-core', 'queue' ) ) {
-				wp_enqueue_script( 'jquery-ui-core' );
-			}
-			if ( ! wp_script_is( 'jquery-ui-progressbar', 'queue' ) ) {
-				wp_enqueue_script( 'jquery-ui-progressbar' );
-			}
 			self::include_css( 'assets/admin/jquery-ui/css/start/jquery-ui-1.10.0.custom.min.css'
 								, 'css-pool-admin-custom-jquery-ui' );
 			wp_localize_script( 'js-pool-admin'
@@ -610,33 +605,35 @@ class Football_Pool {
 	
 //======================================================================================================//
 	
-	private function include_css( $file, $handle, $forced_exit = true, $custom_path = '' ) {
-		if ( $custom_path != '' ) {
-			$url = $file;
+	private function include_css( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false ) {
+		$external = ( $external === 'external' );
+		if ( $external || $custom_path != '' ) {
+			$url = $external ? esc_url_raw( $file ) : $file;
 			$dir = $custom_path;
 		} else {
 			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
 			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
 		}
 		
-		if ( file_exists( $dir ) ) {
-			wp_register_style( $handle, $url, null, FOOTBALLPOOL_DB_VERSION );
+		if ( $external || file_exists( $dir ) ) {
+			wp_register_style( $handle, $url, $deps, FOOTBALLPOOL_DB_VERSION );
 			wp_enqueue_style( $handle );
 		} else {
             if ( $forced_exit ) wp_die( $dir . ' not found' );
 		}
 	}
 	
-	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '' ) {
-		if ( $custom_path != '' ) {
-			$url = $file;
+	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false ) {
+		$external = ( $external === 'external' );
+		if ( $external || $custom_path != '' ) {
+			$url = $external ? esc_url_raw( $file ) : $file;
 			$dir = $custom_path;
 		} else {
 			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
 			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
 		}
 		
-		if ( file_exists( $dir ) ) {
+		if ( $external || file_exists( $dir ) ) {
 			wp_register_script( $handle, $url, $deps, FOOTBALLPOOL_DB_VERSION );
 			wp_enqueue_script( $handle );
 		} else {

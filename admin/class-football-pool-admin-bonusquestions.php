@@ -441,8 +441,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 		
 		// If the score date for this question is not set, then set it to the current time and date.
-		$now = new DateTime();
-		$now = $now->setTimestamp( time() );
+		// $now = new DateTime();
+		// $now = $now->setTimestamp( time() );
+		$ts = time();
+		$now = new DateTime( "@$ts" );
 		$now = $now->format( 'Y-m-d H:i' );
 		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions
 								SET score_date = %s

@@ -372,7 +372,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 									ON ( 1 = 1 )
 								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
 									ON ( a.question_id = q.id AND ( a.user_id = u.ID OR a.user_id IS NULL ) )
-								WHERE q.score_date IS NOT NULL ";
+								WHERE q.score_date IS NOT NULL AND lu.user_id IS NOT NULL ";
 						if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 						if ( $is_single_ranking ) $sql .= "AND q.id IN ( {$ranking_questions} ) ";
 						$sql .= "ORDER BY 1, 2, 3, 4";

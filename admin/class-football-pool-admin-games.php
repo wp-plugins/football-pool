@@ -122,14 +122,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		
 		if ( $file != '' && ( $fp = @fopen( FOOTBALLPOOL_CSV_UPLOAD_DIR . $file, 'r' ) ) !== false ) {
 			// check if metadata is set in the csv, if not it should contain the csv column definition
-			$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
+			$header = fgetcsv( $fp, 0, FOOTBALLPOOL_CSV_DELIMITER );
 			if ( $header[0] == '/*' ) {
-				while ( ( $header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false
+				while ( ( $header = fgetcsv( $fp, 0, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false
 						&& str_replace( array( " ", "\t" ), '', $header[0] ) != '*/' ) {
 					// keep reading
 				}
 				// with meta gone, next line should contain the csv column definition
-				$header = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER );
+				$header = fgetcsv( $fp, 0, FOOTBALLPOOL_CSV_DELIMITER );
 			}
 			
 			// check the columns
@@ -178,7 +178,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						self::empty_table( 'teams' );
 					}
 					
-					while ( ( $data = fgetcsv( $fp, 1000, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false ) {
+					while ( ( $data = fgetcsv( $fp, 0, FOOTBALLPOOL_CSV_DELIMITER ) ) !== false ) {
 						$play_date = $data[0];
 						// home
 						$extra_data = '';

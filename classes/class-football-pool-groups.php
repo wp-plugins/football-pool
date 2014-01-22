@@ -92,7 +92,7 @@ class Football_Pool_Groups {
 	
 	private function order_groups( $arr ) {
 		foreach ( $arr as $group => $teams ) {
-			uasort( $arr[$group], array( 'Football_Pool_Groups', 'compare_teams' ) );
+			@uasort( $arr[$group], array( 'Football_Pool_Groups', 'compare_teams' ) );
 		}
 		return $arr;
 	}
@@ -135,6 +135,7 @@ class Football_Pool_Groups {
 				}
 			}
 		}
+		
 		return array( $wins, $draws, $losses, $for, $against );
 	}
 	
@@ -257,7 +258,7 @@ class Football_Pool_Groups {
 	}
 	
 	private function set_standing_array( $arr, $id ) {
-		$id = (integer) $id;
+		$id = (int) $id;
 		
 		if ( isset( $arr[$id] ) && $arr[$id] != null ) {
 			$arr[$id]++;

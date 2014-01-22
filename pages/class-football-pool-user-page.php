@@ -1,8 +1,8 @@
 <?php
 class Football_Pool_User_Page {
 	public function page_content() {
-		$user_ID = Football_Pool_Utils::get_integer( 'user', 0 );
-		$user = get_userdata( $user_ID );
+		$user_id = Football_Pool_Utils::get_integer( 'user', 0 );
+		$user = get_userdata( $user_id );
 		
 		$output = '';
 		
@@ -37,12 +37,12 @@ class Football_Pool_User_Page {
 							);
 			}
 			
-			$result = $matches->get_match_info_for_user( $user_ID );
+			$result = $matches->get_match_info_for_user( $user_id );
 			
-			$output .= $matches->print_matches_for_input( $result, 1, $user_ID );
+			$output .= $matches->print_matches_for_input( $result, 1, $user_id );
 			
 			$pool = new Football_Pool_Pool;
-			$questions = $pool->get_bonus_questions_for_user( $user_ID );
+			$questions = $pool->get_bonus_questions_for_user( $user_id );
 			if ( $pool->has_bonus_questions ) {
 				$output .= sprintf( '<h2>%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$output .= $pool->print_bonus_question_for_user( $questions );

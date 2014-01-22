@@ -981,7 +981,7 @@ class Football_Pool_Pool {
 			}
 			
 			if ( $nr > $start_at_nr ) {
-				$output .= $this->save_button();
+				$output .= $this->save_button( 'questions', $id );
 			}
 			
 			if ( $wrap ) $output .= $this->prediction_form_end( $id );
@@ -1012,7 +1012,7 @@ class Football_Pool_Pool {
 			}
 			
 			if ( count( $matches ) > 0 ) {
-				$output .= $this->save_button();
+				$output .= $this->save_button( 'matches', $id );
 			}
 			
 			if ( $wrap ) $output .= $this->prediction_form_end( $id );
@@ -1113,9 +1113,11 @@ class Football_Pool_Pool {
 		return $rows;
 	}
 	
-	private function save_button() {
-		return sprintf( '<div class="buttonblock"><input type="submit" name="_submit" value="%s" /></div>',
-						__( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
+	public function save_button( $type = 'matches', $id = 0 ) {
+		return sprintf( '<div class="buttonblock button-%s form-%d"><input type="submit" name="_submit" value="%s" /></div>'
+						, $type
+						, $id
+						, __( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
 	}
 	
