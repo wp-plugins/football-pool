@@ -180,13 +180,13 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 = 2.4.0 =
 * **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
 * New HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
-* Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in the your themes css.
+* Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme css.
 * New bonus question type: multiline text.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
 * New favicon and touch icons in the 2014 World Cup style.
-* Bug fix: score calculations went wrong for bonus questions when not using the the leagues options (thanks sillery4ever for reporting the bug).
+* Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).
 

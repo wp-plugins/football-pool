@@ -4,17 +4,24 @@ class Football_Pool_Statistics_Page {
 		if ( in_the_loop() && is_page() && get_the_ID() == Football_Pool_Utils::get_fp_option( 'page_id_statistics' ) ) {
 			$view = Football_Pool_Utils::get_string( 'view', 'stats' );
 			if ( ! in_array( $view, array( 'bonusquestion' ,'matchpredictions' ) ) ) {
-				$title .= sprintf( '<span title="%s" class="fa fa-cog charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
+				$class = ( Football_Pool_Utils::wordpress_is_at_least_version( '3.8' ) ) ? 'fa fa-cog' : 'chart-settings-text';
+				$title .= sprintf( '<span title="%s" class="%s charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
 									, __( 'Change the charts', FOOTBALLPOOL_TEXT_DOMAIN )
+									, $class
 								);
 			}
 		}
 		
 		return $title;
 	}
-	
-	private function hide_charts_settings() {
-		wp_add_inline_style( 'css-pool', 'span.charts-settings-switch { display: none; }' );
+	private function settings_panel( $panel_content ) {
+		$output = sprintf( '<div id="fp-charts-settings">%s<p><input type="submit" value="%s" /></p></div>'
+							, $panel_content
+							, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
+						);
+		$output .= sprintf( '<input type="hidden" name="view" value="%s" />', Football_Pool_Utils::get_string( 'view', 'stats' ) );
+		$output .= sprintf( '<input type="hidden" name="user" value="%d" />', Football_Pool_Utils::get_int( 'user' ) );
+		return $output;
 	}
 	
 	public function page_content() {
@@ -65,7 +72,9 @@ class Football_Pool_Statistics_Page {
 					$user_selector .=  '<div class="user-selector"><ol>';
 					foreach( $rows as $row ) {
 						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
-						$user_selector .= sprintf( '<li class="user-%d%s"><label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label></li>'
+						$user_selector .= sprintf( '<li class="user-%d%s">
+													<label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label>
+													</li>'
 												, $row['user_id']
 												, ( $selected ? ' selected' : '' )
 												, $row['user_id']
@@ -74,11 +83,7 @@ class Football_Pool_Statistics_Page {
 												, $row['user_name']
 										);
 					}
-					$user_selector .= '</ol>';
-					$user_selector .= sprintf( '<p><input type="submit" value="%s" /></p>'
-										, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
-								);
-					$user_selector .= '</div>';
+					$user_selector .= '</ol></div>';
 				}
 			}
 			
@@ -88,9 +93,6 @@ class Football_Pool_Statistics_Page {
 				$user_defined_rankings = $pool->get_rankings( 'user defined' );
 				if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
 					$ranking_selector .= '<div style="margin-bottom: 1em; clear: both;">';
-					$ranking_selector .= sprintf( '<input type="hidden" name="view" value="%s" />'
-													, $view
-											);
 					
 					if ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) {
 						$options = array();
@@ -100,13 +102,9 @@ class Football_Pool_Statistics_Page {
 						}
 						$ranking_selector .= sprintf( '<br />%s: %s'
 											, __( 'Choose ranking', FOOTBALLPOOL_TEXT_DOMAIN )
-											, Football_Pool_Utils::select( 
-														'ranking', $options, $ranking, '', 'statistics-page ranking-select' )
+											, Football_Pool_Utils::select( 'ranking', $options, $ranking, '', 'statistics-page ranking-select' )
 									);
 					}
-					$ranking_selector .= sprintf( '&nbsp;<input type="submit" value="%s" />'
-										, __(  'go', FOOTBALLPOOL_TEXT_DOMAIN )
-								);
 					$ranking_selector .= '</div>';
 				}
 			}
@@ -163,8 +161,7 @@ class Football_Pool_Statistics_Page {
 											, $user_info->display_name
 									);
 						
-						$output .= $ranking_selector;
-						$output .= "<div>";
+						$output .= $this->settings_panel( $ranking_selector );
 						
 						$pool = new Football_Pool_Pool;
 						$pool->get_bonus_questions_for_user( $user );
@@ -222,7 +219,7 @@ class Football_Pool_Statistics_Page {
 					}
 					
 					if ( $view != 'user' ) {
-						$output .= sprintf( '<div id="fp-charts-settings">%s%s</div>', $user_selector, $ranking_selector );
+						$output .= $this->settings_panel( $user_selector . $ranking_selector );
 						// column charts
 						// chart6: column, what did the players score with the game predictions?
 						$raw_data = $chart_data->score_chart_data( $users, $ranking );

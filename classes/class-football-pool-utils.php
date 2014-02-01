@@ -1,5 +1,22 @@
 <?php
 class Football_Pool_Utils {
+	/**
+	* Checks if WordPress is at least at version $version
+	* @param $version
+	* @return bool
+	*/
+	public function wordpress_is_at_least_version( $is_ver ) {
+		$wp_ver = explode( '.', get_bloginfo( 'version' ) );
+		$is_ver = explode( '.', $is_ver );
+		for ( $i = 0; $i <= count( $is_ver ); $i++ )
+			if( ! isset( $wp_ver[$i] ) ) array_push( $wp_ver, 0 );
+	 
+		foreach ( $is_ver as $i => $is_val )
+			if ( (int) $wp_ver[$i] < (int) $is_val ) return false;
+		
+		return true;
+	}
+	
 	public function highlight_string( $str, $return = false, $class = 'block' ) {
 		$highlight = highlight_string( $str, true );
 		$highlight = preg_replace( '/<code>/i', "<code class='{$class}'>", $highlight );
@@ -168,7 +185,7 @@ class Football_Pool_Utils {
 	}
 	public function request_integer($key, $default = 0)
 	{
-		return ($_POST ? self::post_integer($key, $default) : self::get_integer($key, $default));
+		return ( $_POST ? self::post_integer( $key, $default ) : self::get_integer( $key, $default ) );
 	}
 	public function get_integer( $key, $default = 0 ) {
 		return ( isset( $_GET[$key] ) && is_numeric( $_GET[$key] )? (integer) $_GET[$key] : $default );
@@ -313,12 +330,12 @@ class Football_Pool_Utils {
 	// http://stackoverflow.com/questions/4660692/is-it-possible-to-print-a-log-of-all-database-queries-for-a-page-request-in-word
 	function sql_logger() {
 		global $wpdb;
-		$log_file = fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
-		fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );
+		$log_file = @fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
+		@fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );
 		foreach( $wpdb->queries as $q ) {
-			fwrite( $log_file, $q[0] . " - ({$q[1]} s)" . "\n\n" );
+			@fwrite( $log_file, $q[0] . " - ({$q[1]} s)" . "\n\n" );
 		}
-		fclose( $log_file );
+		@fclose( $log_file );
 	}
 	
 }

@@ -352,12 +352,12 @@ class Football_Pool_Matches {
 				$home_score = $this->show_pool_input( '_home_' . $info['id'], $row['home_score'], $info['match_timestamp'] );
 				$away_score = $this->show_pool_input( '_away_' . $info['id'], $row['away_score'], $info['match_timestamp'] );
 				
-				$match_class = ( $info['match_is_editable'] ? 'open' : 'closed' );
+				$match_class = ( $info['match_is_editable'] ? 'match open' : 'match closed' );
 			} else {
 				$home_score = sprintf( '<a href="%s">%s</a>', $match_url, $row['home_score'] );
 				$away_score = sprintf( '<a href="%s">%s</a>', $match_url, $row['away_score'] );
 				
-				$match_class = ( $row['match_is_editable'] ? 'open' : 'closed' );
+				$match_class = ( $row['match_is_editable'] ? 'match open' : 'match closed' );
 			}
 			
 			$matchdate = new DateTime( $row['play_date'] );
@@ -441,7 +441,8 @@ class Football_Pool_Matches {
 							);
 			}
 			
-			$output .= '</div>'; // end desktop
+			$output .= '</div>';
+			// end desktop
 			
 			// mobile
 			$output .= '<div class="pure-g match-table pure-hidden-tablet pure-hidden-desktop">';
@@ -466,7 +467,8 @@ class Football_Pool_Matches {
 			$output .= sprintf( '<div class="pure-u-11-24 away-team result"><div>%s</div></div>' 
 								, $away_score
 						);
-			$output .= '</div>'; // end mobile
+			$output .= '</div>';
+			// end mobile
 			
 			// linked questions
 			if ( $is_input_form ) {
@@ -483,7 +485,8 @@ class Football_Pool_Matches {
 				}
 			}
 			
-			$output .= '</div>'; // end match
+			$output .= '</div>';
+			// end match
 		}
 		
 		$this->joker_value = $joker;
@@ -540,7 +543,7 @@ class Football_Pool_Matches {
 									<td class="home">%s</td>
 									<td class="flag">%s</td>',
 							$row['id'],
-							( $row['match_is_editable'] ? 'open' : 'closed' ),
+							( $row['match_is_editable'] ? 'match open' : 'match closed' ),
 							__( 'match', FOOTBALLPOOL_TEXT_DOMAIN ),
 							$row['id'],
 							$localdate->format( $this->time_format ),
@@ -643,7 +646,7 @@ class Football_Pool_Matches {
 								</tr>',
 							$info['id'],
 							$form_id,
-							( $info['match_is_editable'] ? 'open' : 'closed' ),
+							( $info['match_is_editable'] ? 'match open' : 'match closed' ),
 							$localdate->format( $this->time_format ),
 							$home_team,
 							$teams->flag_image( (int) $info['home_team_id'] ),

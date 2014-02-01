@@ -248,6 +248,7 @@ p.bonus .no-answer:after {
 td.num-predictions, td.ranking.score { text-align: right; }
 
 span.charts-settings-switch { float: right; cursor: pointer; }
+span.charts-settings-text:before { content: "settings"; font-size: 75%; }
 
 /* userselector */
 #fp-charts-settings { display:none }
