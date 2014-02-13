@@ -172,6 +172,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		The players of the plugin are ranked in a list (a ranking) that adds up the points scored for all matches and all questions in the pool (this is called the default ranking). <br />
 		But the plugin also has the ability to calculate a ranking of just a subset of the matches and/or bonus questions (e.g. a ranking for the first half of the season and one for the second half). If you want to use this feature make a new <a href="?page=footballpool-rankings">ranking</a> and attach the required matches and/or questions; this is the ranking definition. The custom rankings can be used with the ranking shortcode, in a ranking widget or on the ranking and charts page.
 		</p>
+		<p>A custom ranking can be excluded from the recalculation process with the 'calculate' option for that ranking (set it in the <a href="?page=footballpool-rankings">ranking admin</a>). So if you have some matches grouped in a custom ranking that won't change anymore, you have the option to not recalculate them everytime a recalculation is done. This might speed up the calculation process for you. Custom rankings that are excluded from the calculation can still be manually recalculated with the single calculation button on the <a href="?page=footballpool-rankings">ranking admin</a> screen.
+		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
 		<h3>Ranking calculation</h3>
@@ -723,7 +725,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p>For now you have to follow these steps:
 		<ol>
 			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
-			<li>Place the <span class="code">highcharts.js</span> file in the directory <span class="code">/wp-content/plugins/highcharts-js/</span>.</li>
+			<li>Place the <span class="code">highcharts.js</span> file in the following path <span class="code">/wp-content/plugins/highcharts-js/highcharts.js</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
 		</ol>
 		</p>

@@ -4,10 +4,9 @@ class Football_Pool_Statistics_Page {
 		if ( in_the_loop() && is_page() && get_the_ID() == Football_Pool_Utils::get_fp_option( 'page_id_statistics' ) ) {
 			$view = Football_Pool_Utils::get_string( 'view', 'stats' );
 			if ( ! in_array( $view, array( 'bonusquestion' ,'matchpredictions' ) ) ) {
-				$class = ( Football_Pool_Utils::wordpress_is_at_least_version( '3.8' ) ) ? 'fa fa-cog' : 'chart-settings-text';
-				$title .= sprintf( '<span title="%s" class="%s charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
-									, __( 'Change the charts', FOOTBALLPOOL_TEXT_DOMAIN )
-									, $class
+				// $class = ( Football_Pool_Utils::wordpress_is_at_least_version( '3.8' ) ) ? 'fa fa-cog' : 'chart-settings-text';
+				$title .= sprintf( '<span title="%s" class="fp-icon-cog charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
+									, __( 'Chart settings', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 			}
 		}

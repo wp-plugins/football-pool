@@ -14,6 +14,11 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 						'title' => __( 'Log', FOOTBALLPOOL_TEXT_DOMAIN ),
 						'content' => __( '<p>The log shows actions in the plugin that may have an affect on a  particular ranking (e.g. when a score is entered for a match). If a ranking shows a log you may want to consider doing a recalculation of that ranking.</p><p>Log is only effective when <em>Automatic Calculation</em> is off</p>', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
+					array(
+						'id' => 'exclude',
+						'title' => __( 'Exclude from recalculation', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'content' => __( '<p>If you don\'t want a ranking to be recalculated everytime a score calculation is done, you can set the  <em>calculate</em> option for the ranking to "no". Rankings with this option set to "no" will only be recalculated with a single calculation in the Ranking overview screen or in a full recalculation.</p>', FOOTBALLPOOL_TEXT_DOMAIN )
+					),
 				);
 		$help_sidebar = sprintf( '<a href="?page=footballpool-help#rankings">%s</a>'
 								, __( 'Help section about rankings', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -33,6 +38,15 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 			$action = Football_Pool_Utils::request_string( 'action2', 'list' );
 		
 		switch ( $action ) {
+			case 'set_calculate_option':
+			case 'unset_calculate_option':
+				if ( count( $bulk_ids) > 0 ) {
+					$value = ( $action == 'set_calculate_option' ) ? 1 : 0;
+					self::set_calculate_option( $bulk_ids, $value );
+					self::notice( sprintf( _n( '%d ranking changed.', '%d rankings changed', FOOTBALLPOOL_TEXT_DOMAIN ), count( $bulk_ids ) ) );
+				}
+				self::view();
+				break;
 			case 'save-definition':
 				check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 				self::save_ranking_definition( $item_id );
@@ -79,6 +93,15 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 		
 		self::admin_footer();
+	}
+	
+	private function set_calculate_option( $ids, $value ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$ids = implode( ',', $ids );
+		$sql = "UPDATE {$prefix}rankings SET calculate = {$value} WHERE id IN ( {$ids} )";
+		$wpdb->query( $sql );
 	}
 	
 	private function define_ranking( $id ) {
@@ -252,6 +275,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 	private function edit( $id ) {
 		$values = array(
 						'name' => '',
+						'calculate' => 1,
 						// 'active' => 1,
 					);
 		
@@ -261,7 +285,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 		$cols = array(
 					array( 'text', __( 'name', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', $values['name'], '' ),
-					// array( 'checkbox', __( 'visible on the website', FOOTBALLPOOL_TEXT_DOMAIN ), 'visible', $values['visible'], '' ),
+					array( 'checkbox', __( 'calculate', FOOTBALLPOOL_TEXT_DOMAIN ), 'calculate', $values['calculate'], '' ),
+					// array( 'checkbox', __( 'visible on the website', FOOTBALLPOOL_TEXT_DOMAIN ), 'active', $values['active'], '' ),
 					array( 'hidden', '', 'item_id', $id ),
 					array( 'hidden', '', 'action', 'save' )
 				);
@@ -290,6 +315,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		if ( $ranking != null && is_array( $ranking ) ) {
 			$output = array(
 							'name' => $ranking['name'],
+							'calculate' => $ranking['calculate'],
 							'log' => $log,
 							// 'active' => $ranking['active'],
 							);
@@ -309,7 +335,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 			foreach ( $log as $line ) {
 				if ( $j-- == 0 ) {
 					$summary .= '</div>';
-					$summary .= sprintf( '<a class="ranking-log-summary" href="">%s >></a>'
+					$summary .= sprintf( '<a class="ranking-log-summary" href="">%s &raquo;</a>'
 											, __( 'show more', FOOTBALLPOOL_TEXT_DOMAIN ) 
 										);
 					$summary .= '<div class="ranking-log ranking-log-rest">';
@@ -335,6 +361,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 			$output[] = array(
 							'id' => $ranking['id'], 
 							'name' => $ranking['name'],
+							'calculate' => $ranking['calculate'],
 							'log' => $log,
 							// 'active' => $ranking['active'],
 						);
@@ -347,22 +374,23 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'ranking', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
+					array( 'boolean', __( 'calculate', FOOTBALLPOOL_TEXT_DOMAIN ), 'calculate', '' ),
 					array( 'text', __( 'log', FOOTBALLPOOL_TEXT_DOMAIN ), 'log', '' ),
-					array( 'text', __( 'calculate', FOOTBALLPOOL_TEXT_DOMAIN ), 'calculate', '' ),
+					array( 'text', __( 'single calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 'single_calculation', '' ),
 					// array( 'boolean', __( 'active', FOOTBALLPOOL_TEXT_DOMAIN ), 'active', '' ),
 				);
 		
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
 			$link = self::link_button( 
-						__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+						__( 'single calculation', FOOTBALLPOOL_TEXT_DOMAIN )
 						, array( "admin.php?page=footballpool-score-calculation&single_ranking=%d&fp_recalc_nonce={$nonce}" )
 						, false
 						, array( 'id' => 'button-calculate-single-ranking-%d' )
 					);
 		} else {
 			$link = self::link_button( 
-						__( 'Recalculate this ranking', FOOTBALLPOOL_TEXT_DOMAIN )
+						__( 'single calculation', FOOTBALLPOOL_TEXT_DOMAIN )
 						, array( '', 'calculate_score_history( 0, %d )' )
 						, false
 						, array( 'id' => 'button-calculate-single-ranking-%d' )
@@ -372,6 +400,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		foreach( $items as $item ) {
 			$rows[] = array(
 						$item['name'], 
+						$item['calculate'], 
 						sprintf( '<div id="log-ranking-%d">%s</div>', $item['id'], $item['log'] ),
 						( $item['log'] != '' ) ? sprintf( $link, $item['id'], $item['id'] ) : '', 
 						// $item['active'], 
@@ -380,6 +409,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 		
 		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'set_calculate_option', __( 'Enable calculation' ), __( 'You are about to set the calculate option on one or more rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'unset_calculate_option', __( 'Disable calculation' ), __( 'You are about to exclude one or more rankings from the calculation.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$rowactions[] = array( 'define', __( 'Ranking composition', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
@@ -388,6 +419,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
+						Football_Pool_Utils::post_int( 'calculate' ),
 						// Football_Pool_Utils::post_int( 'active' ),
 					);
 		
@@ -425,18 +457,19 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		
 		$id = $input[0];
 		$name = $input[1];
-		// $active = $input[2];
+		$calculate = $input[2];
+		// $active = $input[3];
 		
 		if ( $id == 0 ) {
-			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings ( name )
-									VALUES ( %s )",
-									$name
+			$sql = $wpdb->prepare( "INSERT INTO {$prefix}rankings ( name, calculate )
+									VALUES ( %s, %d )"
+									, $name
+									, $calculate
 								);
 		} else {
-			$sql = $wpdb->prepare( "UPDATE {$prefix}rankings SET
-										name = %s
+			$sql = $wpdb->prepare( "UPDATE {$prefix}rankings SET name = %s, calculate = %d
 									WHERE id = %d",
-									$name, $id
+									$name, $calculate, $id
 								);
 		}
 		

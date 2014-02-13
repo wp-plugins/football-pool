@@ -1,6 +1,7 @@
-ALTER TABLE  `{$prefix}scorehistory` CHANGE  `score_order`  `source_id` INT( 11 ) UNSIGNED NOT NULL;
-ALTER TABLE  `{$prefix}scorehistory` ADD  `score_order` INT UNSIGNED NOT NULL DEFAULT '0' FIRST;
-ALTER TABLE  `{$prefix}scorehistory` ADD  `ranking_id2` INT UNSIGNED NOT NULL FIRST;
+ALTER TABLE  `{$prefix}scorehistory` CHANGE `score_order` `source_id` INT( 11 ) UNSIGNED NOT NULL;
+ALTER TABLE  `{$prefix}scorehistory` ADD `score_order` INT UNSIGNED NOT NULL DEFAULT '0' FIRST;
+ALTER TABLE  `{$prefix}scorehistory` ADD `ranking_id2` INT UNSIGNED NOT NULL FIRST;
 UPDATE `{$prefix}scorehistory` SET ranking_id2 = ranking_id;
-ALTER TABLE  `{$prefix}scorehistory` DROP  `ranking_id`;
-ALTER TABLE  `{$prefix}scorehistory` CHANGE  `ranking_id2`  `ranking_id` INT( 10 ) UNSIGNED NOT NULL;
+ALTER TABLE  `{$prefix}scorehistory` DROP `ranking_id`;
+ALTER TABLE  `{$prefix}scorehistory` CHANGE `ranking_id2` `ranking_id` INT( 10 ) UNSIGNED NOT NULL;
+ALTER TABLE  `{$prefix}rankings` ADD `calculate` TINYINT UNSIGNED NOT NULL DEFAULT '1';

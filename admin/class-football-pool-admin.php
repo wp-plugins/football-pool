@@ -921,16 +921,20 @@ class Football_Pool_Admin {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( $ranking_id == 'all' ) {
+			// $sql = "SELECT id FROM {$prefix}rankings WHERE calculate = 0";
+			// $do_not_delete_these = implode( ',', array_merge( $wpdb->get_col( $sql ), array( 0 ) ) );
+			// $sql = "DELETE FROM {$prefix}scorehistory WHERE ranking_id NOT IN ( {$do_not_delete_these} )";
+			// $check = ( $wpdb->query( $sql ) !== false );
 			$check = self::empty_table( 'scorehistory' );
 		} elseif ( $ranking_id == 'smart set' ) {
-			$sql = "SELECT DISTINCT( ranking_id ) 
-					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 0";
+			$sql = "SELECT DISTINCT( ranking_id ) FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 0";
 			$delete_these = implode( 
 								',', 
 								array_merge( $wpdb->get_col( $sql ), array( FOOTBALLPOOL_RANKING_DEFAULT ) ) 
 							);
-			$sql = "SELECT DISTINCT( ranking_id ) 
-					FROM {$prefix}rankings_updatelog WHERE is_single_calculation = 1";
+			$sql = "SELECT DISTINCT( rl.ranking_id ) FROM {$prefix}rankings_updatelog rl
+					JOIN {$prefix}rankings r ON ( r.id = rl.ranking_id ) 
+					WHERE rl.is_single_calculation = 1 OR r.calculate = 0";
 			$do_not_delete_these = implode( ',', array_merge( $wpdb->get_col( $sql ), array( 0 ) ) );
 			$sql = "DELETE FROM {$prefix}scorehistory 
 					WHERE ranking_id IN ( {$delete_these} ) AND ranking_id NOT IN ( {$do_not_delete_these} )";

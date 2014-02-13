@@ -107,7 +107,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		if ( $step > 0 && $total_steps == 0 ) {
 			// determine total calculation steps (sub steps are not counted)
 			if ( $is_single_ranking ) {
-				// only one loop through the steps, no pre-calculation of the default ranking
+				// only one loop through the steps, no re-calculation of the default ranking
 				$rankings = 0;
 			} else {
 				if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
@@ -115,10 +115,10 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					$sql = "SELECT COUNT( DISTINCT( r.id ) ) 
 							FROM {$prefix}rankings r
 							JOIN {$prefix}rankings_updatelog l ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) 
-							WHERE r.user_defined = 1";
+							WHERE r.user_defined = 1 AND r.calculate = 1";
 				} else {
 					// get all user defined rankings
-					$sql = "SELECT COUNT( * ) FROM {$prefix}rankings WHERE user_defined = 1";
+					$sql = "SELECT COUNT( * ) FROM {$prefix}rankings WHERE user_defined = 1 AND calculate = 1";
 				}
 				$rankings = $wpdb->get_var( $sql );
 			}
@@ -537,14 +537,14 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 							$sql .= "JOIN {$prefix}rankings_updatelog l 
 										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
-						$sql .= "WHERE r.user_defined = 1 ORDER BY r.id ASC LIMIT 1";
+						$sql .= "WHERE r.user_defined = 1 AND r.calculate = 1 ORDER BY r.id ASC LIMIT 1";
 					} else {
 						$sql = "SELECT DISTINCT( r.id ) AS id FROM {$prefix}rankings r ";
 						if ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
 							$sql .= "JOIN {$prefix}rankings_updatelog l 
 										ON ( r.id = l.ranking_id AND l.is_single_calculation = 0 ) ";
 						}
-						$sql .= "WHERE r.user_defined = 1 AND r.id > %d ORDER BY r.id ASC LIMIT 1";
+						$sql .= "WHERE r.user_defined = 1 AND r.calculate = 1 AND r.id > %d ORDER BY r.id ASC LIMIT 1";
 						$sql = $wpdb->prepare( $sql, $ranking_id );
 					}
 					$ranking_id = $wpdb->get_var( $sql );

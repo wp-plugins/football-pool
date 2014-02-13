@@ -56,7 +56,7 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 6. Optional: add bonus questions
 7. Optional: 'upgrade' existing users in your blog to pool users
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
-9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the `highcharts.js` file in the following directory: `/wp-content/plugins/highcharts-js/`
+9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the `highcharts.js` file in the following path: `/wp-content/plugins/highcharts-js/highcharts.js`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
 
@@ -181,6 +181,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
 * New HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme css.
+* Added option to custom rankings to exclude them from a recalculation.
 * New bonus question type: multiline text.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.

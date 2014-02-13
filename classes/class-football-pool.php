@@ -329,7 +329,7 @@ class Football_Pool {
 			}
 			
 			// font awesome
-			self::include_css( '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', 'css-awesome', null, null, null, 'external' );
+			// self::include_css( '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', 'css-awesome', null, null, null, 'external' );
 			// pool js & css
 			self::include_css( 'assets/pool.css', 'css-pool' );
 			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );

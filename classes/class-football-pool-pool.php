@@ -450,8 +450,8 @@ class Football_Pool_Pool {
 			
 			$filter = $only_user_defined ? 'WHERE user_defined = 1' : '';
 			
-			$sql = "SELECT id, name, user_defined 
-					FROM {$prefix}rankings {$filter} ORDER BY user_defined ASC, name ASC";
+			$sql = "SELECT `id`, `name`, `user_defined`, `calculate` 
+					FROM `{$prefix}rankings` {$filter} ORDER BY `user_defined` ASC, `name` ASC";
 			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
 			$rankings = array();
@@ -468,7 +468,7 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT name, user_defined FROM {$prefix}rankings WHERE id = %d", $id );
+		$sql = $wpdb->prepare( "SELECT `name`, `user_defined`, `calculate` FROM `{$prefix}rankings` WHERE `id` = %d", $id );
 		return $wpdb->get_row( $sql, ARRAY_A ); // returns null if no ranking found
 	}
 	
@@ -476,8 +476,8 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = $wpdb->prepare( "SELECT match_id FROM {$prefix}rankings_matches 
-								WHERE ranking_id = %d", $id );
+		$sql = $wpdb->prepare( "SELECT `match_id` FROM `{$prefix}rankings_matches` 
+								WHERE `ranking_id` = %d", $id );
 		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
 	}
 	
