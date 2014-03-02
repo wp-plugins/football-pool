@@ -37,7 +37,7 @@ class Football_Pool_User_Page {
 							);
 			}
 			
-			$result = $matches->get_match_info_for_user( $user_id );
+			$result = apply_filters( 'footballpool_user_page_matches', $matches->get_match_info_for_user( $user_id ) );
 			
 			$output .= $matches->print_matches_for_input( $result, 1, $user_id );
 			
@@ -51,6 +51,6 @@ class Football_Pool_User_Page {
 			$output .= sprintf( '<p>%s</p>', __( 'No user selected.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 
-		return $output;
+		return apply_filters( 'footballpool_user_page_html', $output );
 	}
 }

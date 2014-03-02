@@ -8,8 +8,8 @@ class Football_Pool_Ranking_Page {
 		$output = '';
 		$pool = new Football_Pool_Pool;
 		$userleague = $pool->get_league_for_user( $current_user->ID );
-		$userleague = ( isset( $userleague ) && is_integer( $userleague ) ) ? $userleague : FOOTBALLPOOL_LEAGUE_ALL;
-		$league =  Football_Pool_Utils::request_string( 'league', $userleague );
+		if ( ! isset( $userleague ) && ! is_integer( $userleague ) ) $userleague = FOOTBALLPOOL_LEAGUE_ALL;
+		$league = apply_filters( 'footballpool_rankingpage_league', Football_Pool_Utils::request_string( 'league', $userleague ) );
 		
 		$ranking_display = Football_Pool_Utils::get_fp_option( 'ranking_display', 0 );
 		if ( $ranking_display == 1 ) {
@@ -21,12 +21,13 @@ class Football_Pool_Ranking_Page {
 		}
 		
 		$user_defined_rankings = $pool->get_rankings( 'user defined' );
+		
 		if ( $pool->has_leagues || ( $ranking_display == 1 && count( $user_defined_rankings ) > 0 ) ) {
-			$output .= sprintf( '<form action="%s" method="get"><div style="margin-bottom: 1em;">'
+			$output .= sprintf( '<form class="ranking-select-form" action="%s" method="get"><div class="ranking-select-block">'
 								, get_page_link() 
 						);
 			if ( $pool->has_leagues ) {
-				$output .= sprintf( '%s: %s',
+				$output .= sprintf( '<div class="league-select">%s: %s</div>',
 									__( 'Choose league', FOOTBALLPOOL_TEXT_DOMAIN ),
 									$pool->league_filter( $league )
 							);
@@ -38,7 +39,7 @@ class Football_Pool_Ranking_Page {
 				foreach( $user_defined_rankings as $user_defined_ranking ) {
 					$options[$user_defined_ranking['id']] = $user_defined_ranking['name'];
 				}
-				$output .= sprintf( '<br />%s: %s'
+				$output .= sprintf( '<br /><div class="ranking-select">%s: %s</div>'
 									, __( 'Choose ranking', FOOTBALLPOOL_TEXT_DOMAIN )
 									, Football_Pool_Utils::select( 
 															'ranking', $options, $ranking, '', 'ranking-page ranking-select' )

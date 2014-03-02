@@ -321,3 +321,5 @@ span.charts-settings-text:before { content: "settings"; font-size: 75%; }
 	list-style: none;
 }
 .user-selector ol li.selected { background-color: #e1dfdf; }
+
+.ranking-select-block { margin-bottom: 1em; }

@@ -435,9 +435,6 @@ class Football_Pool {
 	}
 	
 	public function new_pool_user( $user_id ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
 		// add extra meta fields
 		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 		$league = Football_Pool_Utils::post_int( 'league', $default_league );
@@ -448,7 +445,7 @@ class Football_Pool {
 		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
-		self::update_user_custom_tables( $user_id, $default_league ); 
+		self::update_user_custom_tables( $user_id, $default_league );
 		do_action( 'footballpool_new_user', $user_id, $league );
 	}
 	
@@ -468,7 +465,7 @@ class Football_Pool {
 		return $redirect_to;
 	}
 	
-	private function update_user_custom_tables( $user_id, $league_id ) {
+	public function update_user_custom_tables( $user_id, $league_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

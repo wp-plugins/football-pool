@@ -10,15 +10,18 @@ add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_cou
 add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
-add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
-add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
-add_shortcode( 'fp-money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
-add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
 add_shortcode( 'fp-totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totopoints' ) );
 add_shortcode( 'fp-fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
 add_shortcode( 'fp-goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalpoints' ) );
 add_shortcode( 'fp-diffpoints', array( 'Football_Pool_Shortcodes', 'shortcode_diffpoints' ) );
 add_shortcode( 'fp-jokermultiplier', array( 'Football_Pool_Shortcodes', 'shortcode_jokermultiplier' ) );
+add_shortcode( 'fp-league-info', array( 'Football_Pool_Shortcodes', 'shortcode_league_info' ) );
+
+// deprecated since v2.4.0, these will be removed in a future version
+add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
+add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
+add_shortcode( 'fp-money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
+add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
 
 // deprecated shortcodes
 // add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
@@ -42,6 +45,61 @@ class Football_Pool_Shortcodes {
 		}
 		
 		return $the_date;
+	}
+	
+	private function format_helper( $input, $format) {
+		if ( isset( $format ) && is_string( $format ) ) {
+			$input = sprintf( $format, $input );
+		}
+		
+		return $input;
+	}
+	
+	//[fp-league-info] 
+	//    Displays info about a league. E.g the total points or the average points (points divided by the number of players) of a league.
+	//
+	//    league  : league ID
+	//    info    : what info to show (name, points, avgpoints, numplayers, playernames)
+	//    ranking : optional ranking ID (defaults to the default ranking) when used in conjunction with the points or avgpoints
+	//    format  : optional format for the output (uses sprintf notation: http://php.net/sprintf)
+	public function shortcode_league_info( $atts ) {
+		extract( shortcode_atts( array(
+					'league' => FOOTBALLPOOL_LEAGUE_ALL,
+					'info' => 'name',
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
+					'format' => null,
+				), $atts ) );
+		
+		$output = '';
+		
+		if ( is_numeric( $league ) && in_array( $info, array( 'name', 'points', 'avgpoints', 'numplayers', 'playernames' ) ) ) {
+			$pool = new Football_Pool_Pool;
+			if ( $pool->has_leagues && array_key_exists( $league, $pool->leagues ) ) {
+				if ( $info == 'name' ) {
+					$output = $pool->leagues[$league]['league_name'];
+				} else {
+					$rows = $pool->get_pool_ranking( $league, $ranking );
+					$numplayers = count( $rows );
+					if ( $info == 'numplayers' ) {
+						$output = $numplayers;
+					} elseif ( $info == 'points' || $info == 'avgpoints' ) {
+						$points = 0;
+						foreach ( $rows as $row ) {
+							$points += $row['points'];
+						}
+						$output = ( $info == 'avgpoints' ) ? ( $points / $numplayers ) : $points;
+					} elseif ( $info == 'playernames' ) {
+						$output = '<ul class="fp-player-list shortcode">';
+						foreach ( $rows as $row ) {
+							$output .= '<li>' . $row['user_name'] . '</li>';
+						}
+						$output .= '</ul>';
+					}
+				}
+			}
+		}
+		
+		return apply_filters( 'footballpool_shortcode_html_fp-league-info', self::format_helper( $output, $format ) );
 	}
 	
 	//[fp-matches] 

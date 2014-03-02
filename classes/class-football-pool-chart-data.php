@@ -44,7 +44,8 @@ class Football_Pool_Chart_Data {
 						, COUNT( IF( s.goal_bonus = 1, IF( s.toto = 1, NULL, 1 ), NULL ) ) AS single_goal_bonus
 						, COUNT( IF( s.goal_diff_bonus = 1, 1, NULL ) ) AS goal_diff_bonus
 						, COUNT( s.source_id ) AS scoretotal
-						, u.display_name AS user_name 
+						, u.display_name AS user_name
+						, u.ID AS user_id
 					FROM {$prefix}scorehistory s 
 					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
 			if ( $pool->has_leagues ) {
@@ -85,10 +86,11 @@ class Football_Pool_Chart_Data {
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			$users = implode( ',', $users );
 			$sql = "SELECT
-						COUNT( IF( s.score > 0, 1, NULL ) ) AS bonuscorrect, 
-						COUNT( IF( s.score = 0, 1, NULL ) ) AS bonuswrong,
-						COUNT( s.source_id ) AS bonustotal,
-						u.display_name AS user_name
+						  COUNT( IF( s.score > 0, 1, NULL ) ) AS bonuscorrect
+						, COUNT( IF( s.score = 0, 1, NULL ) ) AS bonuswrong
+						, COUNT( s.source_id ) AS bonustotal
+						, u.display_name AS user_name
+						, u.ID AS user_id
 					FROM {$prefix}scorehistory s
 					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
 			if ( $pool->has_leagues ) {

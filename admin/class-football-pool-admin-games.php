@@ -633,52 +633,49 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$matchtype = '';
 		
 		if ( ! is_array( $rows ) || count( $rows ) == 0 ) {
-			echo '<div style="text-align:right;"><img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/images/matches-import-here.png" alt="import a new schedule here" title="import a new schedule here"></div>';
+			echo '<div class="no-matches-notice"><img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/images/matches-import-here.png" alt="import a new schedule here" title="import a new schedule here"></div>';
 		} else {
 			echo '<table id="matchinfo" class="wp-list-table widefat matchinfo"><tbody id="the-list">';
-		}
-		
-		foreach( $rows as $row ) {
-			if ( $matchtype != $row['matchtype'] ) {
-				$matchtype = $row['matchtype'];
-				echo '<tr><td class="sidebar-name" colspan="8"><h3>', $matchtype, '</h3></td></tr>';
-			}
-			
-			$matchdate = new DateTime( $row['play_date'] );
-			$matchdate = $matchdate->format( 'Y-m-d H:i' );
-			$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate ) );
-			// $localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
-			$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
-											, $localdate->format( 'U' ) );
-			if ( $date_title != $localdate_formatted ) {
-				$date_title = $localdate_formatted;
-				echo '<tr><td class="sidebar-name"></td>',
-						'<td class="sidebar-name" title="', __( 'time of the match in local time (WordPress setting)', FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
-						'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
-						'<td class="sidebar-name date-title" colspan="5">', $date_title, '</td>',
+			foreach( $rows as $row ) {
+				if ( $matchtype != $row['matchtype'] ) {
+					$matchtype = $row['matchtype'];
+					echo '<tr><td class="sidebar-name" colspan="8"><h3>', $matchtype, '</h3></td></tr>';
+				}
+				
+				$matchdate = new DateTime( $row['play_date'] );
+				$matchdate = $matchdate->format( 'Y-m-d H:i' );
+				$localdate = new DateTime( Football_Pool_Utils::date_from_gmt( $matchdate ) );
+				// $localdate = new DateTime( Football_Pool_Matches::format_match_time( $matchdate, 'Y-m-d H:i' ) );
+				$localdate_formatted = date_i18n( __( 'M d, Y', FOOTBALLPOOL_TEXT_DOMAIN )
+												, $localdate->format( 'U' ) );
+				if ( $date_title != $localdate_formatted ) {
+					$date_title = $localdate_formatted;
+					echo '<tr><td class="sidebar-name"></td>',
+							'<td class="sidebar-name" title="', __( 'time of the match in local time (WordPress setting)', FOOTBALLPOOL_TEXT_DOMAIN ), '">', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ), '</td>',
+							'<td class="sidebar-name"><span title="Coordinated Universal Time">', __( 'UTC', FOOTBALLPOOL_TEXT_DOMAIN ), '</span></td>',
+							'<td class="sidebar-name date-title" colspan="5">', $date_title, '</td>',
+							'</tr>';
+				}
+				
+				$page = wp_nonce_url( sprintf( '?page=%s&amp;item_id=%d'
+												, Football_Pool_Utils::get_string( 'page' )
+												, $row['id'] )
+										, FOOTBALLPOOL_NONCE_ADMIN );
+				$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
+									, $row['id'] 
+								);
+				$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
+				echo '<tr class="match-row match-', $row['id'], '">',
+						'<td class="time column-match-id">', $row['id'], self::hidden_input( "_match_id_{$row['id']}", $row['id'], 'return' ), '</td>',
+						'<td class="time local column-localtime">', $localdate->format( 'Y-m-d H:i' ), '<br><div class="row-actions"><span class="edit"><a href="', $page, '&amp;action=edit">', __( 'Edit' ), '</a></span><span class="delete"><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'Delete' ), '</a></span></div></td>',
+						'<td class="time UTC column-utctime" title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate, 16, '' ), '</td>',
+						'<td class="home column-home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
+						'<td class="score column-home-score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',
+						'<td>-</td>',
+						'<td class="score column-away-score">', self::show_input( '_away_score_' . $row['id'], $row['away_score'] ), '</td>',
+						'<td class="away column-away">', self::teamname_input( (int) $row['away_team_id'], '_away_team_' . $row['id'] ), '</td>',
 						'</tr>';
 			}
-			
-			$page = wp_nonce_url( sprintf( '?page=%s&amp;item_id=%d'
-											, Football_Pool_Utils::get_string( 'page' )
-											, $row['id'] )
-									, FOOTBALLPOOL_NONCE_ADMIN );
-			$confirm = sprintf( __( 'You are about to delete match %d.', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $row['id'] 
-							);
-			$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
-			echo '<tr class="match-row match-', $row['id'], '">',
-					'<td class="time column-match-id">', $row['id'], self::hidden_input( "_match_id_{$row['id']}", $row['id'], 'return' ), '</td>',
-					'<td class="time local column-localtime">', $localdate->format( 'Y-m-d H:i' ), '<br><div class="row-actions"><span class="edit"><a href="', $page, '&amp;action=edit">', __( 'Edit' ), '</a></span><span class="delete"><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'Delete' ), '</a></span></div></td>',
-					'<td class="time UTC column-utctime" title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate, 16, '' ), '</td>',
-					'<td class="home column-home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
-					'<td class="score column-home-score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',
-					'<td>-</td>',
-					'<td class="score column-away-score">', self::show_input( '_away_score_' . $row['id'], $row['away_score'] ), '</td>',
-					'<td class="away column-away">', self::teamname_input( (int) $row['away_team_id'], '_away_team_' . $row['id'] ), '</td>',
-					'</tr>';
-		}
-		if ( is_array( $rows ) && count( $rows ) > 0 ) {
 			echo '</tbody></table>';
 		}
 	}

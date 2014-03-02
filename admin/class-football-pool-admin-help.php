@@ -904,6 +904,14 @@ function show_page_id( $content, $id ) {
 }
 ?>' );
 
+		Football_Pool_Utils::highlight_string( '<?php
+// don\'t use admin approval for league registration of new users
+// just put them in the league they chose
+add_filter( \'footballpool_new_user\', function( $user_id, $league_id ) {
+	Football_Pool::update_user_custom_tables( $user_id, $league_id );
+}, null, 2 );
+?>' );
+
 		?>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>

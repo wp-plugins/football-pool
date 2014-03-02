@@ -170,3 +170,6 @@ code.inline { display: inline; }
 
 td.time.UTC input[type="text"] { width: 130px; }
 td.time.local { width: 130px; }
+
+.no-matches-notice { text-align: right; }
+.no-matches-notice img { max-width: 100%; }

@@ -126,21 +126,27 @@ The plugin has the following shortcodes (also see help page in the admin):
 * fp-group
 * fp-link
 * fp-register
-* fp-webmaster
-* fp-bank
-* fp-money
-* fp-start
 * fp-totopoints
 * fp-fullpoints
 * fp-goalpoints
 * fp-diffpoints
 * fp-jokermultiplier
+* fp-league-info
+
+These shortcodes are deprecated and will be removed in a future version:
+
+* fp-webmaster
+* fp-bank
+* fp-money
+* fp-start
 
 == Incompatible plugins & themes ==
 
 The following plugins have been reported as not compatible with the Football Pool plugin. If you have a solution and/or are the author of the plugin you can contact me on wordpressfootballpool [at] gmail [dot] com. If you're having problems with another plugin that is not in the list, please let me know.
 
 * DB Cache Reloaded Fix (v2.3)
+* Cimy User Extra Fields (v2.6.1) when using the email confirmation option
+* Easy Timer (for football pool version 2.3.8 and below)
 
 Some themes prevent the plugin from displaying its content. See <a href="http://wordpress.org/support/topic/no-content-team-pages?replies=8#post-4981300">this post on the forum</a> for a tip on how to resolve this.
 
@@ -178,18 +184,20 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.4.0 =
-* **Important!** Changes were made in the score table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
+* **Important!** Changes were made in the scorehistory table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
 * New HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme css.
 * Added option to custom rankings to exclude them from a recalculation.
 * New bonus question type: multiline text.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
+* New shortcode: display info from a league with [fp-league-info].
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
 * New favicon and touch icons in the 2014 World Cup style.
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).
+* Bug fix: multiple ranking widgets always showed the same ranking (thanks oswaldine for reporting the bug).
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.
