@@ -232,6 +232,9 @@ class Football_Pool_Matches {
 			$i = (int) $row['id'];
 			// get detailed match info from cache
 			$match_info[$i] = $this->get_match_info( $i );
+			// save the real result
+			$match_info[$i]['real_home_score'] = $match_info[$i]['home_score'];
+			$match_info[$i]['real_away_score'] = $match_info[$i]['away_score'];
 			// change match result to predictions from user
 			$match_info[$i]['home_score'] = $row['home_score'];
 			$match_info[$i]['away_score'] = $row['away_score'];

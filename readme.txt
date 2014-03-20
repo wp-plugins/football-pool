@@ -76,7 +76,7 @@ Yes. There are two ways to do this:
 1. Upload a game schedule in the admin. Make sure you understand the required format; you can download the current schedule as an example.
 2. Use the admin screens to edit the teams, groups, match types, matches, etc.
 
-And, of course, choose a theme or make one yourself that fits your competition or blog. If you have a custom game schedule that other users can also use, it would be nice if you shared it with me. I will put it on the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> with credits to you of course.
+And, of course, choose a theme or make one yourself that fits your competition or blog.
 
 = The plugin won't calculate the ranking =
 If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve your problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
@@ -179,7 +179,7 @@ Shortcodes have changed in this version. Old shortcodes are still supported but 
 Default language is now English. Change de `WPLANG` constant if you want to use another language. If you're upgrading from a version prior to v1.3 you get a warning that the column `max_answers` already exists. That's fine, the plugin will work and you won't get the warning again. 
 
 = 1.4.5 =
-Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> or the <a href="http://wordpressfootballpool.wordpress.com/">plugin's website</a> for details.
+Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> for details.
 
 == Changelog ==
 
@@ -192,6 +192,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
 * New shortcode: display info from a league with [fp-league-info].
+* Changed shortcode: [fp-predictionform] will no longer display a form when the visitor is not logged in.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
 * New favicon and touch icons in the 2014 World Cup style.
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).

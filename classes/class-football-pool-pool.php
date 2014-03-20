@@ -811,10 +811,25 @@ class Football_Pool_Pool {
 		}
 		
 		$points = $question['points'] == 0 ? __( 'variable', FOOTBALLPOOL_TEXT_DOMAIN ) : $question['points'];
-		$output .= sprintf( '<span class="bonus points">%s %s</span></p>'
+		$output .= sprintf( '<span class="bonus points">%s %s'
 							, $points
 							, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ) 
 					);
+		if ( ! $this->question_is_editable( $question['question_timestamp'] ) ) {
+			$output .= sprintf( '<a title="%s" href="%s">', 
+								__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN )
+								, esc_url(
+									add_query_arg( 
+										array( 'view' => 'bonusquestion', 'question' => $question['id'] ), 
+										Football_Pool::get_page_link( 'statistics' )
+									)
+								) 
+						);
+			$output .= sprintf( '<img alt="%s" src="%sassets/images/site/charts.png" />',
+								__( 'view other users answers', FOOTBALLPOOL_TEXT_DOMAIN ), FOOTBALLPOOL_PLUGIN_URL );
+			$output .= '</a>';
+		}
+		$output .= '</span></p>';
 		
 		$output .= '</div>';
 		

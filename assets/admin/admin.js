@@ -99,6 +99,8 @@ function footballpool_tinymce_insert_shortcode() {
 				texts = [ jQuery( '#text-1', panel_id ).val(), jQuery( '#text-2', panel_id ).val(), jQuery( '#text-3', panel_id ).val(), jQuery( '#text-4', panel_id ).val() ].join( ';' );
 			}
 			if ( texts != '' && texts != ';;;' ) atts += ' texts="' + texts + '"';
+			var time_format = jQuery( '#count-format', panel_id ).val();
+			if ( time_format > 0 ) atts += ' format="' + time_format + '"';
 			break;
 		case 'fp-group':
 			var group = jQuery( '#group-id', panel_id ).val();
@@ -162,6 +164,16 @@ function footballpool_tinymce_insert_shortcode() {
 			if ( matches.length > 0 ) atts += ' match="' + matches.join( ',' ) + '"';
 			var matchtypes = jQuery( '#matches-matchtype-id', panel_id ).val() || [];
 			if ( matchtypes.length > 0 ) atts += ' matchtype="' + matchtypes.join( ',' ) + '"';
+			break;
+		case 'fp-league-info':
+			var league_id = jQuery( '#league-info-league-id', panel_id ).val();
+			if ( league_id > 0 ) atts += ' league="' + league_id + '"';
+			var info = jQuery( 'input:radio[name=league-info-info]:checked', panel_id ).val();
+			if ( info != '' ) atts += ' info="' + info + '"';
+			var ranking_id = jQuery( '#league-info-ranking-id', panel_id ).val();
+			if ( ranking_id > 0 ) atts += ' ranking="' + ranking_id + '"';
+			var format = jQuery( '#league-info-format', panel_id ).val();
+			if ( format != '' ) atts += ' format="' + format + '"';
 			break;
 		default:
 			if ( selected_val == '' ) tinyMCEPopup.close();

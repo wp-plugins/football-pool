@@ -340,7 +340,7 @@ class Football_Pool {
 									'count_txt_second' => __( 'second', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'count_txt_seconds' => __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'count_txt_day' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_days' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_txt_days' => __( 'days', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'count_txt_hour' => __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'count_txt_hours' => __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'count_txt_minute' => __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN ),

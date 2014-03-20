@@ -68,7 +68,9 @@ class Football_Pool_Statistics_Page {
 				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
 				$user_selector = '';
 				if ( count( $rows ) > 0 ) {
-					$user_selector .=  '<div class="user-selector"><ol>';
+					$user_selector .= '<div class="user-selector">';
+					// @todo: add user search
+					$user_selector .= '<ol>';
 					foreach( $rows as $row ) {
 						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
 						$user_selector .= sprintf( '<li class="user-%d%s">
@@ -164,7 +166,7 @@ class Football_Pool_Statistics_Page {
 						
 						$pool = new Football_Pool_Pool;
 						$pool->get_bonus_questions_for_user( $user );
-						// chart 1: pie, what did the players score with the game predictions?
+						// chart 1: pie, what did the players score with the match predictions?
 						$raw_data = $chart_data->score_chart_data( array( $user ), $ranking );
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart1', 'pie' );

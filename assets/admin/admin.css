@@ -173,3 +173,5 @@ td.time.local { width: 130px; }
 
 .no-matches-notice { text-align: right; }
 .no-matches-notice img { max-width: 100%; }
+
+.help-page .widefat.help ul li { margin-left: 2em; list-style-type: disc; }

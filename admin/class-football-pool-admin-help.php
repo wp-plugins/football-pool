@@ -449,7 +449,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr>
 				<td class="row-title">date</td>
 				<td>Calculate the score untill this date.</td>
-				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>one of the following strings:<ul><li>now: current date is used</li><li>postdate: the date of the post is used</li><li>any valid formatted date (Y-m-d H:i)</li></ul></td>
 				<td>now</td>
 			</tr>
 			<tr>
@@ -486,7 +486,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr>
 				<td class="row-title">date</td>
 				<td>Get the ranking for this date.</td>
-				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>one of the following strings:<ul><li>now: current date is used</li><li>postdate: the date of the post is used</li><li>any valid formatted date (Y-m-d H:i)</li></ul></td>
 				<td>now</td>
 			</tr>
 			<tr>
@@ -501,6 +501,43 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-user-ranking user=1 text="not ranked"]</span><br />
 		<span class="code">[fp-user-ranking user=58 ranking=2 text="not ranked"]</span><br />
 		<span class="code">[fp-user-ranking user=5 date="2013-06-01 12:00"]</span><br />
+		</p>
+		
+		<h3>[fp-league-info]</h3>
+		<p>Shows info about a league. E.g the total points or the average points (points divided by the number of players) of a league.</p>
+		<p>
+		<table class="widefat help">
+			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
+			<tr>
+				<td class="row-title">league</td>
+				<td>The league ID</td>
+				<td><a href="?page=footballpool-leagues">league id</a> (integer)</td>
+				<td>all users (default league)</td>
+			</tr>
+			<tr>
+				<td class="row-title">ranking</td>
+				<td>The numeric id for the ranking from which the ranking has to be taken</td>
+				<td><a href="?page=footballpool-rankings">ranking id</a> (integer)</td>
+				<td>default ranking</td>
+			</tr>
+			<tr>
+				<td class="row-title">info</td>
+				<td>What info about the league to show.</td>
+				<td>one of the following strings:<ul><li>name: name of the league</li><li>points: total points scored for users in the league</li><li>avgpoints: the average points (total points divided by number of players)</li><li>numplayers: the number of players in the league</li><li>playernames: a list of players is returned</li></ul></td>
+				<td>name</td>
+			</tr>
+			<tr>
+				<td class="row-title">format</td>
+				<td>optional format for the output (uses <a href="http://php.net/sprintf" target="_blank">sprintf</a> notation)</td>
+				<td>string</td>
+				<td></td>
+			</tr>
+		</table>
+		</p>
+		<p>example:<br />
+		<span class="code">[fp-league-info league=3 info="name"]</span><br />
+		<span class="code">[fp-league-info league=3 info="avgpoints" format="%.1f"]</span><br />
+		<span class="code">[fp-league-info league=3 info="playernames"]</span><br />
 		</p>
 		
 		<h3>[fp-group]</h3>
@@ -542,7 +579,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<tr>
 				<td class="row-title">date</td>
 				<td>Calculate the ranking untill this date.</td>
-				<td>one of the following strings<ul><li>- now: current date is used</li><li>- postdate: the date of the post is used</li><li>- any valid formatted date (Y-m-d H:i)</li></ul></td>
+				<td>one of the following strings:<ul><li>now: current date is used</li><li>postdate: the date of the post is used</li><li>any valid formatted date (Y-m-d H:i)</li></ul></td>
 				<td>now</td>
 			</tr>
 			<tr>
@@ -578,6 +615,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</p>
 		<p>If an argument is left empty it is ignored. Matches are always displayed first in a prediction form.</p>
+		<p>If the current visitor is not logged in, a default text is shown (the default message can be changed with the <span class="code">text</span> parameter).</p>
 		<p>
 		<table class="widefat help">
 			<tr><th>parameter</th><th>description</th><th>values</th><th>default</th></tr>
@@ -599,12 +637,18 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td>see formats above</td>
 				<td></td>
 			</tr>
+			<tr>
+				<td class="row-title">text</td>
+				<td>The text to display when a visitor is not logged on. Use with an empty string to display nothing (<span class="code">text=""</span>). To use the default text, just omit the parameter</td>
+				<td>string</td>
+				<td></td>
+			</tr>
 		</table>
 		</p>
 		<p>example:<br />
 		<span class="code">[fp-predictionform match="1-5"]</span><br />
 		<span class="code">[fp-predictionform match="1-4,9-12" question="1,5,10"]</span><br />
-		<span class="code">[fp-predictionform matchtype="1"]</span><br />
+		<span class="code">[fp-predictionform matchtype="1" text=""]</span><br />
 		</p>
 
 		<h3>[fp-matches]</h3>
@@ -694,14 +738,20 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td>A semi colon separated string with texts to put in front of and behind the counter. Don't forget spaces (if applicable). Must contain 4 texts:<ol><li>before counter if time has not passed</li><li>after counter if time has not passed</li><li>before counter if time has passed</li><li>after counter if time has passed</li></ol><br />
 				If value is "none" then no texts are added.<br />
 				If left empty or ommitted then the default texts are used.</td>
-				<td>One of the following:<ul><li>- string;string;string;string</li><li>- none</li></ul></td>
+				<td>One of the following:<ul><li>string;string;string;string</li><li>none</li></ul></td>
 				<td>empty; default texts are used.</td>
 			</tr>
 			<tr>
 				<td class="row-title">display</td>
 				<td>Display counter inline or as a separate block.</td>
-				<td>One of the following strings:<ul><li>- inline</li><li>- block</li></ul></td>
+				<td>One of the following strings:<ul><li>inline</li><li>block</li></ul></td>
 				<td>block</td>
+			</tr>
+			<tr>
+				<td class="row-title">format</td>
+				<td>The time format for the countdown.</td>
+				<td>One of the following numbers:<ul><li>1 (only seconds)</li><li>2 (days, hours, minutes, seconds)</li><li>3 (hours, minutes, seconds)</li></ul></td>
+				<td>2</td>
 			</tr>
 		</table>
 		</p>
@@ -710,7 +760,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<span class="code">[fp-countdown date="2012-06-22 11:00"]</span><br />
 		<span class="code">[fp-countdown match="3"]</span><br />
 		<span class="code">[fp-countdown date="2012-06-22 11:00" texts="Wait ; until this date;; have passed since the date"]</span><br />
-		<span class="code">[fp-countdown display="inline" match="3"]</span><br />
+		<span class="code">[fp-countdown display="inline" match="3" format="1"]</span><br />
 		</p>
 		
 		<h3>Other shortcodes</h3>
@@ -858,8 +908,16 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</table>
 		</div>
 		
-		<h3>examples:</h3>
+		<h3>Simple and short examples:</h3>
 		<?php 
+		Football_Pool_Utils::highlight_string( '<?php
+// show the page ID at the top of a page from the plugin
+add_filter( \'footballpool_pages_html\', \'show_page_id\', null, 2 );
+function show_page_id( $content, $id ) {
+	return "<p>page id = {$id}</p>{$content}";
+}
+?>' );
+
 		Football_Pool_Utils::highlight_string( '<?php
 // add an extra div around the ranking table (when displayed with the fp-ranking shortcode)
 add_filter( \'footballpool_shortcode_html_fp-ranking\', function ( $html ) {
@@ -873,34 +931,32 @@ add_filter( \'footballpool_userselector_widget_users\', function ( $a ) {
 	return array_slice( $a, 0, 20 );
 } );
 ?>' );
-
+		
+		?>
+		<h3>A bit more advanced examples:</h3>
+		<?php
 		Football_Pool_Utils::highlight_string( '<?php
 // add a simple pagination to the ranking page
-add_filter( \'footballpool_ranking_array\', \'ranking_pagination\' );
-add_filter( \'footballpool_ranking_html\', \'ranking_pagination_html\', 10, 2 );
+add_filter( \'footballpool_ranking_array\', \'fp_pagination\' );
+add_filter( \'footballpool_ranking_html\', \'fp_pagination_html\', null, 2 );
+// and, with the same functions, add a simple pagination to the statistics page (view=matchpredictions)
+add_filter( \'footballpool_statistics_matchpredictions\', \'fp_pagination\' );
+add_filter( \'footballpool_statistics_matchpredictions_html\', \'fp_pagination_html\', null, 2 );
 
-function ranking_pagination( $ranking ) {
-	$pagination = new Football_Pool_Pagination( count( $ranking ) );
-	$pagination->page_param = \'paged_ranking\';
+function fp_pagination( $items ) {
+	$pagination = new Football_Pool_Pagination( count( $items ) );
+	$pagination->page_param = \'fp_page\';
 	$pagination->set_page_size( 10 );
 	$offset = ( ( $pagination->current_page - 1 ) * $pagination->get_page_size() );
 	$length = $pagination->get_page_size();
-	return array_slice( $ranking, $offset, $length );
+	return array_slice( $items, $offset, $length );
 }
 
-function ranking_pagination_html( $html, $ranking ) {
-	$pagination = new Football_Pool_Pagination( count( $ranking ), true );
-	$pagination->page_param = \'paged_ranking\';
+function fp_pagination_html( $html, $items ) {
+	$pagination = new Football_Pool_Pagination( count( $items ), true );
+	$pagination->page_param = \'fp_page\';
 	$pagination->set_page_size( 10 );
-	return $pagination->show( \'return\' ) . $html;
-}
-?>' );
-
-		Football_Pool_Utils::highlight_string( '<?php
-// show the page ID at the top of a page from the plugin
-add_filter( \'footballpool_pages_html\', \'show_page_id\', null, 2 );
-function show_page_id( $content, $id ) {
-	return "<p>page id = {$id}</p>{$content}";
+	return $html . $pagination->show( \'return\' );
 }
 ?>' );
 
@@ -912,6 +968,34 @@ add_filter( \'footballpool_new_user\', function( $user_id, $league_id ) {
 }, null, 2 );
 ?>' );
 
+		Football_Pool_Utils::highlight_string( '<?php
+// add a column with the group order in the group widget using PHP Simple HTML DOM Parser
+// (download it from http://simplehtmldom.sourceforge.net/ and add it to your themes dir)
+add_filter( \'footballpool_widget_html_group\', function( $html ) {
+	require_once \'simple_html_dom.php\';
+	
+	$html_dom = new simple_html_dom();
+	$html_dom->load( $html );
+	
+	// add extra column in the header
+	$th = $html_dom->find( \'th.team\', 0 );
+	$th->outertext = \'<th></th>\' . $th->outertext;
+	// add numbering before the team name
+	$i = 1;
+	foreach ( $html_dom->find( \'tr\' ) as $tr ) {
+		foreach( $tr->find( \'td.team\' ) as $td ) {
+			$td->outertext = sprintf( \'<td>%d</td>%s\', $i++, $td->outertext );
+		}
+	}
+	
+	$output = $html_dom->save();
+	$html_dom->clear();
+	unset( $html_dom );
+	
+	return $output;
+} );
+?>' );
+
 		?>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
@@ -919,7 +1003,7 @@ add_filter( \'footballpool_new_user\', function( $user_id, $league_id ) {
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
-		Or a little fan mail is also appreciated. :)</p>
+		Or a little fan mail is also appreciated :)</p>
 		<?php self::admin_footer(); ?>
 		<p>
 		<?php self::donate_button(); ?>

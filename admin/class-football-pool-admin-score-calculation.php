@@ -123,10 +123,9 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				$rankings = $wpdb->get_var( $sql );
 			}
 			
-			// $users = get_users( 'orderby=ID&order=ASC' );
-			// $total_users = count( $users );
-			$sql = "SELECT COUNT( * ) FROM {$wpdb->users}";
-			$total_users = $wpdb->get_var( $sql );
+			// $sql = "SELECT COUNT( * ) FROM {$wpdb->users}";
+			// $total_users = $wpdb->get_var( $sql );
+			$total_users = count( self::get_user_set( 0, 0, $pool->has_leagues ) );
 			$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
 			$total_steps = count( $msg ) + ( $rankings * 3 ) 
 							+ ( ( $rankings + 1 ) * $total_user_sets );
@@ -238,8 +237,10 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				$joker_multiplier = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 				$offset = FOOTBALLPOOL_RECALC_STEP2_DIV * ( $sub_step - 1 );
 				$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
+				
 				// get the user set for this step
-				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP2_DIV );
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP2_DIV, $pool->has_leagues );
+				
 				if ( is_array( $user_ids ) && count( $user_ids ) > 0 ) {
 					$user_ids = implode( ',', $user_ids );
 					$sql = "INSERT INTO {$prefix}scorehistory
@@ -274,18 +275,11 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								  ) AS goal_diff_bonus
 								, 0 AS ranking
 								, %d AS ranking_id
-							FROM {$wpdb->users} u ";
-					if ( $pool->has_leagues ) {
-						$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-						$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-					} else {
-						$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-					}
-					$sql .= "LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
+							FROM {$wpdb->users} u 
+							LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 							LEFT OUTER JOIN {$prefix}predictions p
 								ON ( p.match_id = m.id AND ( p.user_id = u.ID OR p.user_id IS NULL ) )
 							WHERE m.home_score IS NOT NULL AND m.away_score IS NOT NULL AND u.ID IN ( {$user_ids} ) ";
-					if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
 					if ( $is_single_ranking ) $sql .= "AND m.id IN ( {$ranking_matches} ) ";
 					$sql .= "ORDER BY 1, 2, 3, 4";
 					
@@ -307,8 +301,10 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			*/
 				$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
 				$offset = FOOTBALLPOOL_RECALC_STEP3_DIV * ( $sub_step - 1 );
+				
 				// get the user set for this step
-				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP3_DIV );
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP3_DIV, $pool->has_leagues );
+				
 				if ( is_array( $user_ids ) && count( $user_ids ) > 0 ) {
 					$user_ids = implode( ',', $user_ids );
 					
@@ -345,8 +341,10 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				if ( $pool->has_bonus_questions ) {
 					$offset = FOOTBALLPOOL_RECALC_STEP4_DIV * ( $sub_step - 1 );
 					$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
+					
 					// get the user set for this step
-					$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP4_DIV );
+					$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP4_DIV, $pool->has_leagues );
+					
 					if ( is_array( $user_ids ) && count( $user_ids ) > 0 ) {
 						$user_ids = implode( ',', $user_ids );
 						$sql = "INSERT INTO {$prefix}scorehistory 
@@ -359,21 +357,11 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 									IF ( a.points <> 0, a.points, q.points ) * IFNULL( a.correct, 0 ) AS score, 
 									NULL, NULL, NULL, NULL, 
 									0 AS ranking, %d AS ranking_id 
-								FROM {$wpdb->users} u ";
-						if ( $pool->has_leagues ) {
-							$sql .= "INNER JOIN {$prefix}league_users lu 
-										ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
-							$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-						} else {
-							$sql .= "LEFT OUTER JOIN {$prefix}league_users lu 
-										ON ( lu.user_id = u.ID AND u.ID IN ( {$user_ids} ) ) ";
-						}
-						$sql .= "LEFT OUTER JOIN {$prefix}bonusquestions q
-									ON ( 1 = 1 )
+								FROM {$wpdb->users} u 
+								LEFT OUTER JOIN {$prefix}bonusquestions q ON ( 1 = 1 )
 								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a 
 									ON ( a.question_id = q.id AND ( a.user_id = u.ID OR a.user_id IS NULL ) )
-								WHERE q.score_date IS NOT NULL AND lu.user_id IS NOT NULL ";
-						if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
+								WHERE q.score_date IS NOT NULL AND u.ID IN ( {$user_ids} ) ";
 						if ( $is_single_ranking ) $sql .= "AND q.id IN ( {$ranking_questions} ) ";
 						$sql .= "ORDER BY 1, 2, 3, 4";
 						
@@ -424,7 +412,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				
 				// cumulate scores for each user
 				$offset = $user_set * FOOTBALLPOOL_RECALC_STEP5_DIV;
-				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP5_DIV );
+				$user_ids = self::get_user_set( $offset, FOOTBALLPOOL_RECALC_STEP5_DIV, $pool->has_leagues );
 				
 				foreach ( $user_ids as $user_id ) {
 					$sql = $wpdb->prepare( $sql_user_scores, $user_id );
@@ -608,9 +596,24 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		self::process();
 	}
 	
-	private function get_user_set( $offset, $amount ) {
+	private function get_user_set( $offset, $amount, $has_leagues ) {
 		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT %d, %d", $offset, $amount );
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		if ( $has_leagues ) {
+			$sql = "SELECT DISTINCT( u.ID ) FROM {$wpdb->users} u 
+					INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id )
+					INNER JOIN {$prefix}leagues l ON ( l.id = lu.league_id )
+					ORDER BY 1 ASC";
+		} else {
+			$sql = "SELECT DISTINCT( u.ID ) FROM {$wpdb->users} u 
+					LEFT OUTER JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id )
+					WHERE lu.league_id > 0 OR lu.league_id IS NULL
+					ORDER BY 1 ASC";
+		}
+		
+		if ( $amount > 0 ) $sql .= " LIMIT {$offset}, {$amount}";
+		
 		return $wpdb->get_col( $sql );
 	}
 	
@@ -644,8 +647,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					COUNT( IF( s.type = 1 AND score > 0, 1, NULL ) ) AS bonus
 				FROM {$wpdb->users} u ";
 		if ( $has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu 
-						ON ( u.ID = lu.user_id ) ";
+			$sql .= "INNER JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id ) ";
 			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
 		} else {
 			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
@@ -653,7 +655,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
 					( s.user_id = u.ID AND s.ranking_id = %d AND s.score_date <= %s ) ";
 		$sql .= "WHERE s.ranking_id IS NOT NULL ";
-		if ( ! $has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
+		if ( ! $has_leagues ) $sql .= "AND ( lu.league_id > 0 OR lu.league_id IS NULL ) ";
 		$sql .= "GROUP BY u.ID
 				ORDER BY points DESC, full DESC, toto DESC, bonus DESC, " 
 				. ( $has_leagues ? "lu.league_id ASC, " : "" ) 

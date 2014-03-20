@@ -107,6 +107,7 @@ class Football_Pool_Statistics {
 	public function show_answers_for_bonus_question( $id ) {
 		$pool = new Football_Pool_Pool;
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
+		$rows = apply_filters( 'footballpool_statistics_bonusquestion', $answers );
 		
 		$output = sprintf( '<table class="statistics prediction-table-questions">
 							<tr><th>%s</th><th>%s</th><th class="correct">%s</th></tr>'
@@ -117,12 +118,14 @@ class Football_Pool_Statistics {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		foreach ( $answers as $answer ) {
+		foreach ( $rows as $answer ) {
 			if ( $answer['correct'] == 1 ) {
-				$class = 'correct fa fa-check-circle';
+				// $class = 'correct fp-icon-checkmark-circle';
+				$class = 'correct fp-icon-checkmark';
 				$title = __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN );
 			} else {
-				$class = 'wrong fa fa-times-circle';
+				// $class = 'wrong fp-icon-cancel-circle';
+				$class = 'wrong fp-icon-close';
 				$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
 			}
 			$output .= sprintf( '<tr><td><a href="%s">%s</a></td><td>%s</td>'
@@ -137,7 +140,7 @@ class Football_Pool_Statistics {
 		}
 		$output .= '</table>';
 		
-		return $output;
+		return apply_filters( 'footballpool_statistics_bonusquestion_html', $output, $answers );
 	}
 	
 	function show_predictions_for_match( $match_info ) {
@@ -166,7 +169,9 @@ class Football_Pool_Statistics {
 		$sql .= "ORDER BY u.display_name ASC";
 		$sql = $wpdb->prepare( $sql, $match_info['id'] );
 		
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		$predictions = $wpdb->get_results( $sql, ARRAY_A );
+		$rows = apply_filters( 'footballpool_statistics_matchpredictions', $predictions );
+		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
 			$output .= '<table class="matchinfo statistics">';
@@ -201,7 +206,7 @@ class Football_Pool_Statistics {
 			$output .= '</table>';
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_statistics_matchpredictions_html', $output, $predictions );
 	}
 	
 }

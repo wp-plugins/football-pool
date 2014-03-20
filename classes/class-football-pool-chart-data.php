@@ -30,8 +30,6 @@ class Football_Pool_Chart_Data {
 	public function score_chart_data( $users = array(), $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
 		$data = array();
 		
-		$pool = new Football_Pool_Pool;
-		
 		if ( count( $users ) > 0 ) {
 			global $wpdb;
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -47,17 +45,9 @@ class Football_Pool_Chart_Data {
 						, u.display_name AS user_name
 						, u.ID AS user_id
 					FROM {$prefix}scorehistory s 
-					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-			}
-			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = %d 
-						AND s.user_id IN ( {$user_ids} ) ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
-			$sql .= "GROUP BY s.user_id";
+					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) 
+					WHERE s.ranking_id = {$ranking_id} AND s.type = %d AND s.user_id IN ( {$user_ids} ) 
+					GROUP BY s.user_id";
 			
 			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH ), ARRAY_A );
 			foreach ( $rows as $row ) {
@@ -92,17 +82,9 @@ class Football_Pool_Chart_Data {
 						, u.display_name AS user_name
 						, u.ID AS user_id
 					FROM {$prefix}scorehistory s
-					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) ";
-			if ( $pool->has_leagues ) {
-				$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-				$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-			} else {
-				$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-			}
-			$sql .= "WHERE s.ranking_id = {$ranking_id} AND s.type = %d 
-						AND s.user_id IN ( {$users} ) ";
-			if ( ! $pool->has_leagues ) $sql .= "AND ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
-			$sql .= "GROUP BY s.user_id";
+					INNER JOIN {$wpdb->users} u ON ( u.ID = s.user_id ) 
+					WHERE s.ranking_id = {$ranking_id} AND s.type = %d AND s.user_id IN ( {$users} ) 
+					GROUP BY s.user_id";
 			
 			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION ), ARRAY_A );
 			
@@ -130,13 +112,6 @@ class Football_Pool_Chart_Data {
 				FROM {$prefix}bonusquestions_useranswers AS ua 
 				RIGHT OUTER JOIN {$wpdb->users} AS u
 					ON ( u.ID = ua.user_id AND question_id = %d ) ";
-		if ( $pool->has_leagues ) {
-			$sql .= "INNER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-			$sql .= "INNER JOIN {$prefix}leagues l ON ( lu.league_id = l.id ) ";
-		} else {
-			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
-			$sql .= "WHERE ( lu.league_id <> 0 OR lu.league_id IS NULL ) ";
-		}
 		$sql = $wpdb->prepare( $sql, $question );
 		$row = $wpdb->get_row( $sql, ARRAY_A );
 		
@@ -167,13 +142,21 @@ class Football_Pool_Chart_Data {
 								WHERE type = %d AND user_id = %d AND ranking_id = %d"
 								, FOOTBALLPOOL_TYPE_MATCH, $user, $ranking_id );
 		$data = $wpdb->get_var( $sql );
-		$num_matches = ( $data != null ) ? $data : 0;
+		$num_matches = ( $data != null ) ? (int) $data : 0;
 		
 		// on a full score you get the fullpoints and two times the goal bonus
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
 				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
-		$output['max_score'] = $full * Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' ); // count first match with joker
-		$output['max_score'] += ( (int) $num_matches - 1 ) * $full; // all other matches
+		$num_jokers = (int) Football_Pool_Utils::get_fp_option( 'number_of_jokers' );
+		$output['max_score'] = 0;
+		if ( $num_jokers > 0 ) {
+			// count first match(es) with joker
+			$output['max_score'] += $num_jokers * $full * Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+			// all other matches
+			$output['max_score'] += ( $num_matches - $num_jokers ) * $full;
+		} else {
+			$output['max_score'] += $num_matches * $full;
+		}
 		// add the bonusquestions
 		$sql = "SELECT SUM( q.points ) FROM {$prefix}bonusquestions q ";
 		if ( $ranking_id != FOOTBALLPOOL_RANKING_DEFAULT ) {
@@ -183,8 +166,8 @@ class Football_Pool_Chart_Data {
 		}
 		$sql .= "WHERE q.score_date IS NOT NULL";
 		$data = $wpdb->get_var( $sql );
-		$max_points = ( $data != null ) ? $data : 0;
-		$output['max_score'] += (int) $max_points;
+		$max_points = ( $data != null ) ? (int) $data : 0;
+		$output['max_score'] += $max_points;
 		
 		return $output;
 	}

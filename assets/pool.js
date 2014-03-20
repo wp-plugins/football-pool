@@ -27,9 +27,9 @@ function footballpool_update_chars( id, chars ) {
 }
 
 function footballpool_do_countdown( el, extra_text, year, month, day, hour, minute, second, format ) {
-	var date_to = new Date(year, month-1, day, hour, minute, second).getTime();
+	var date_to = new Date( year, month-1, day, hour, minute, second ).getTime();
 	var date_now = new Date().getTime();
-	var diff = Math.abs(Math.round((date_to - date_now) / 1000));
+	var diff = Math.abs( Math.round( ( date_to - date_now ) / 1000 ) );
 	var pre, post, txt = '';
 	var tmp;
 	

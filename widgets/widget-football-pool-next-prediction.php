@@ -12,6 +12,7 @@ $fp_translate_this = __( 'this widget displays the time that is left to predict 
 $fp_translate_this = __( 'countdown', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'Team', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'Also show when not logged in?', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'Format', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	protected $match;
@@ -27,6 +28,13 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				'id' => 'title',
 				'type' => 'text',
 				'std' => 'countdown'
+			),
+			array(
+				'name' => 'Format',
+				'desc' => '',
+				'id' => 'format',
+				'type' => 'select',
+				'options' => array() // get data later on
 			),
 			array(
 				'name' => 'Team',
@@ -46,6 +54,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	
 	public function html( $title, $args, $instance ) {
 		extract( $args );
+		
+		if ( ! isset( $instance['format'] ) ) $instance['format'] = 3;
 		
 		$teams = new Football_Pool_Teams;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
@@ -83,8 +93,8 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				, __( 'click to enter prediction', FOOTBALLPOOL_TEXT_DOMAIN )
 		);
 		$output .= "<script>
-				footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 );
-				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 3 ); }, 1000 );
+				footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$instance['format']} );
+				window.setInterval( function() { footballpool_do_countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$instance['format']} ); }, 1000 );
 				</script>";
 		if ( $teams->show_team_links ) {
 			$teampage = Football_Pool::get_page_link( 'teams' );
@@ -110,6 +120,12 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	public function __construct() {
 		if ( is_admin() ) {
 			$teams = new Football_Pool_Teams;
+			// format options
+			$this->widget['fields'][1]['options'] = array(
+														2 => __( 'days, hours, minutes, seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
+														3 => __( 'hours, minutes, seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
+														1 => __( 'only seconds', FOOTBALLPOOL_TEXT_DOMAIN )
+													);
 			// get the team options from the database
 			$teams = $teams->team_names;
 			$options = array();
@@ -117,7 +133,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 			foreach ( $teams as $team_id => $team_name ) {
 				$options[$team_id] = $team_name;
 			}
-			$this->widget['fields'][1]['options'] = $options;
+			$this->widget['fields'][2]['options'] = $options;
 		}
 		
 		$classname = str_replace( '_', '', get_class( $this ) );

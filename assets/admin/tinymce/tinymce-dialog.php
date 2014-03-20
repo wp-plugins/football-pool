@@ -129,7 +129,7 @@ function match_options() {
 			<tr class="shortcode-select">
 				<td><label for="s-pool"><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label></td>
 				<td>
-					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform', 'fp-user-score': 'tr-user-score', 'fp-user-ranking': 'tr-user-ranking', 'fp-predictions': 'tr-predictions', 'fp-matches': 'tr-matches' } )">
+					<select id="s-pool" class="shortcode" onchange="toggle_atts( this.id, { 'fp-ranking': 'tr-ranking', 'fp-group': 'tr-group', 'fp-predictionform': 'tr-predictionform', 'fp-user-score': 'tr-user-score', 'fp-user-ranking': 'tr-user-ranking', 'fp-predictions': 'tr-predictions', 'fp-matches': 'tr-matches', 'fp-league-info': 'tr-league-info' } )">
 						<option value="fp-ranking"><?php _e( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-predictions"><?php _e( 'Predictions for match or question', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-user-score"><?php _e( 'Score for a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
@@ -137,9 +137,11 @@ function match_options() {
 						<option value="fp-group"><?php _e( 'Group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-predictionform"><?php _e( 'Prediction form', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						<option value="fp-matches"><?php _e( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="fp-league-info"><?php _e( 'League info', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 					</select>
 				</td>
 			</tr>
+			<!-- fp-ranking -->
 			<tr class="tr-ranking">
 				<td>
 					<label for="ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
@@ -205,6 +207,7 @@ function match_options() {
 					<label><input type="radio" id="ranking-date-custom" name="ranking-date" value="custom" onclick="jQuery( '#ranking-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="ranking-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#ranking-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
+			<!-- fp-predictions -->
 			<tr class="tr-predictions atts">
 				<td>
 					<label for="predictions-match"><?php _e( 'Match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
@@ -240,6 +243,7 @@ function match_options() {
 					<input type="text" id="predictions-text" style="width:100%" placeholder="<?php _e( 'Text to display if there is nothing to show', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
 				</td>
 			</tr>
+			<!-- fp-user-score -->
 			<tr class="tr-user-score atts">
 				<td>
 					<label for="user-score-user-id"><?php _e( 'Select a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
@@ -293,6 +297,7 @@ function match_options() {
 					<label><input type="radio" id="user-score-date-custom" name="user-score-date" value="custom" onclick="jQuery( '#user-score-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="user-score-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#user-score-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
+			<!-- fp-user-ranking -->
 			<tr class="tr-user-ranking atts">
 				<td>
 					<label for="user-ranking-user-id"><?php _e( 'Select a user', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
@@ -346,6 +351,7 @@ function match_options() {
 					<label><input type="radio" id="user-ranking-date-custom" name="user-ranking-date" value="custom" onclick="jQuery( '#user-ranking-date-custom-value' ).focus();" /> <?php _e( 'custom date', FOOTBALLPOOL_TEXT_DOMAIN ); ?>:</label> <input type="text" id="user-ranking-date-custom-value" placeholder="Y-m-d H:i" onclick="jQuery( '#user-ranking-date-custom' ).prop( 'checked', true );" /><br />
 				</td>
 			</tr>
+			<!-- fp-group -->
 			<tr class="tr-group atts">
 				<td>
 					<label for="group-id"><?php _e( 'Select a group', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
@@ -361,6 +367,7 @@ function match_options() {
 					</select>
 				</td>
 			</tr>
+			<!-- fp-predictionform -->
 			<tr class="tr-predictionform atts">
 				<td colspan="2">
 					<strong><?php _e( 'Click a label to show the options.', FOOTBALLPOOL_TEXT_DOMAIN );?></strong>
@@ -444,6 +451,61 @@ function match_options() {
 					<select id="matches-group-id" style="width:320px; display:none;">
 					<?php group_options(); ?>
 					</select>
+				</td>
+			</tr>
+			<!-- fp-league-info -->
+			<tr class="tr-league-info atts">
+				<td>
+					<label for="league-info-league-id"><?php _e( 'Select a league', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="league-info-league-id">
+						<?php
+						$leagues = $pool->get_leagues( true );
+						foreach ( $leagues as $league ) {
+							printf( '<option value="%d">%s</option>'
+									, $league['league_id'], $league['league_name'] 
+							);
+						}
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-league-info atts">
+				<td>
+					<label><?php _e( 'Show this info', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<label><input type="radio" id="league-info-name" name="league-info-info" value="name" checked="checked" /> name</label><br />
+					<label><input type="radio" id="league-info-points" name="league-info-info" value="points" /> points</label><br />
+					<label><input type="radio" id="league-info-avgpoints" name="league-info-info" value="avgpoints" /> average points</label><br />
+					<label><input type="radio" id="league-info-playernames" name="league-info-info" value="playernames" /> player names</label><br />
+					<label><input type="radio" id="league-info-numplayers" name="league-info-info" value="numplayers" /> number of players</label><br />
+				</td>
+			</tr>
+			<tr class="tr-league-info atts">
+				<td>
+					<label for="league-info-ranking-id"><?php _e( 'Select a ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="league-info-ranking-id">
+						<optgroup label="<?php _e( 'default', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						</optgroup>
+						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
+							<?php
+							ranking_options();
+							?>
+						</optgroup>
+					</select>
+				</td>
+			</tr>
+			<tr class="tr-league-info atts">
+				<td>
+					<label for="league-info-format"><a href="//php.net/manual/en/function.sprintf.php" target="_blank"><?php _e( 'Format', FOOTBALLPOOL_TEXT_DOMAIN ); ?></a></label>
+				</td>
+				<td>
+					<input type="text" id="league-info-format" />
 				</td>
 			</tr>
 			</table>
@@ -562,8 +624,7 @@ function match_options() {
 					<p>
 						<input type="text" id="text-1" placeholder="<?php _e( 'before - time not passed', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" title="<?php _e( "Leave empty for the default texts. Don't forget spaces between a text and the timer.", FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
 						<input type="text" id="text-2" placeholder="<?php _e( 'after - time not passed', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" title="<?php _e( "Leave empty for the default texts. Don't forget spaces between a text and the timer.", FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
-					</p>
-					<p>
+					<br />
 						<input type="text" id="text-3" placeholder="<?php _e( 'before - time passed', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" title="<?php _e( "Leave empty for the default texts. Don't forget spaces between a text and the timer.", FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
 						<input type="text" id="text-4" placeholder="<?php _e( 'after - time passed', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" title="<?php _e( "Leave empty for the default texts. Don't forget spaces between a text and the timer.", FOOTBALLPOOL_TEXT_DOMAIN ); ?>" />
 					</p>
@@ -575,6 +636,18 @@ function match_options() {
 				</td>
 				<td>
 					<input id="count-inline" type="checkbox" />
+				</td>
+			</tr>
+			<tr class="tr-count">
+				<td>
+					<label for="count-format"><?php _e( 'Time format', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
+				</td>
+				<td>
+					<select id="count-format">
+						<option value="2"><?php _e( 'days, hours, minutes, seconds', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="3"><?php _e( 'hours, minutes, seconds', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+						<option value="1"><?php _e( 'only seconds', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
+					</select>
 				</td>
 			</tr>
 			</table>

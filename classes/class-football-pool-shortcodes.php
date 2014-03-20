@@ -259,22 +259,34 @@ class Football_Pool_Shortcodes {
 	}
 	
 	//[fp-predictionform] 
-	//    All arguments can be entered in the following formats (example for matches:
+	//    All arguments can be entered in the following formats (example for matches):
 	//        match 1               -> match="1"
 	//        matches 1 to 5        -> match="1-5"
 	//        matches 1, 3 and 6    -> match="1,3,6"
 	//        matches 1 to 5 and 10 -> match="1-5,10"
 	//    If an argument is left empty it is ignored. Matches are always displayed first.
+	//    If the current visitor is not logged in, the shortcode returns a message to log on or register.
 	//
 	//    match     : collection of match ids 
 	//    question  : collection of question ids
 	//    matchtype : collection of match type ids
 	public function shortcode_predictionform( $atts ) {
+		$default_message = 
+			sprintf( __( 'You have to be a registered user and <a href="%s">logged in</a> to play in this pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
+							wp_login_url(
+								apply_filters( 'the_permalink', get_permalink( get_the_ID() ) )
+							)
+						);
 		extract( shortcode_atts( array(
 					'match' => '',
 					'question' => '',
 					'matchtype' => '',
+					'text' => $default_message,
 				), $atts ) );
+		
+		if ( ! is_user_logged_in() ) {
+			return $text;
+		}
 		
 		global $current_user;
 		get_currentuserinfo();
@@ -427,6 +439,7 @@ class Football_Pool_Shortcodes {
 					'match' => '',
 					'texts' => '',
 					'display' => 'block',
+					'format' => 2,
 				), $atts ) );
 		
 		$matches = new Football_Pool_Matches();
@@ -475,8 +488,8 @@ class Football_Pool_Shortcodes {
 		}
 		
 		$output .= "<script type='text/javascript'>
-					footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 );
-					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, 2 ); }, 1000 );
+					footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} );
+					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} ); }, 1000 );
 					</script>";
 		
 		return apply_filters( 'footballpool_shortcode_html_fp-countdown', $output );
