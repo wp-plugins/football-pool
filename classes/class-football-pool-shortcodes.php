@@ -35,7 +35,7 @@ add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' 
 // add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
-	private function date_helper( $date ) {
+	private static function date_helper( $date ) {
 		if ( $date == 'postdate' ) {
 			$the_date = get_the_date( 'Y-m-d H:i' );
 		} elseif ( ( $the_date = date_create( $date ) ) !== false ) {
@@ -47,7 +47,7 @@ class Football_Pool_Shortcodes {
 		return $the_date;
 	}
 	
-	private function format_helper( $input, $format) {
+	private static function format_helper( $input, $format) {
 		if ( isset( $format ) && is_string( $format ) ) {
 			$input = sprintf( $format, $input );
 		}
@@ -62,7 +62,7 @@ class Football_Pool_Shortcodes {
 	//    info    : what info to show (name, points, avgpoints, numplayers, playernames)
 	//    ranking : optional ranking ID (defaults to the default ranking) when used in conjunction with the points or avgpoints
 	//    format  : optional format for the output (uses sprintf notation: http://php.net/sprintf)
-	public function shortcode_league_info( $atts ) {
+	public static function shortcode_league_info( $atts ) {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
 					'info' => 'name',
@@ -114,7 +114,7 @@ class Football_Pool_Shortcodes {
 	//    match     : collection of match ids 
 	//    matchtype : collection of match type ids
 	//    group     : a group ID
-	public function shortcode_matches( $atts ) {
+	public static function shortcode_matches( $atts ) {
 		extract( shortcode_atts( array(
 					'match' => null,
 					'matchtype' => null,
@@ -152,7 +152,7 @@ class Football_Pool_Shortcodes {
 	//    match    : match Id
 	//    question : question Id
 	//    text     : a text to show if no prediction table can be displayed, defaults to no text
-	public function shortcode_predictions( $atts ) {
+	public static function shortcode_predictions( $atts ) {
 		extract( shortcode_atts( array(
 					'match' => null,
 					'question' => null,
@@ -203,7 +203,7 @@ class Football_Pool_Shortcodes {
 	//              possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
 	//              defaults to 'now'
 	//    text    : text to display if no user or no ranking is found, defaults to ""
-	public function shortcode_user_ranking( $atts ) {
+	public static function shortcode_user_ranking( $atts ) {
 		extract( shortcode_atts( array(
 					'user' => '',
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
@@ -235,7 +235,7 @@ class Football_Pool_Shortcodes {
 	//              possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
 	//              defaults to 'now'
 	//    text    : text to display if no user or no score is found, defaults to "0"
-	public function shortcode_user_score( $atts ) {
+	public static function shortcode_user_score( $atts ) {
 		extract( shortcode_atts( array(
 					'user' => '',
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
@@ -270,7 +270,7 @@ class Football_Pool_Shortcodes {
 	//    match     : collection of match ids 
 	//    question  : collection of question ids
 	//    matchtype : collection of match type ids
-	public function shortcode_predictionform( $atts ) {
+	public static function shortcode_predictionform( $atts ) {
 		$default_message = 
 			sprintf( __( 'You have to be a registered user and <a href="%s">logged in</a> to play in this pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 							wp_login_url(
@@ -320,7 +320,7 @@ class Football_Pool_Shortcodes {
 	//[fp-group]
 	//		id	: show the standing for the group with this id, defaults to a non-existing group and thus
 	//			  will not show anything when none is given.
-	public function shortcode_group( $atts ) {
+	public static function shortcode_group( $atts ) {
 		extract( shortcode_atts( array(
 					'id' => 1,
 				), $atts ) );
@@ -344,7 +344,7 @@ class Football_Pool_Shortcodes {
 	//		date	: show ranking up until this date, 
 	//				  possible values 'now', 'postdate', a datetime value formatted like this 'Y-m-d H:i',
 	//				  defaults to 'now'
-	public function shortcode_ranking( $atts ) {
+	public static function shortcode_ranking( $atts ) {
 		$default_num = 5;
 		
 		extract( shortcode_atts( array(
@@ -433,7 +433,7 @@ class Football_Pool_Shortcodes {
 	}
 	
 	//[fp-countdown]
-	public function shortcode_countdown( $atts ) {
+	public static function shortcode_countdown( $atts ) {
 		extract( shortcode_atts( array(
 					'date' => '',
 					'match' => '',
@@ -496,7 +496,7 @@ class Football_Pool_Shortcodes {
 	}
 	
 	//[fp-link slug=""]
-	public function shortcode_link( $atts ) {
+	public static function shortcode_link( $atts ) {
 		$output = '';
 		if ( isset( $atts['slug'] ) ) {
 			$id = Football_Pool_Utils::get_fp_option( 'page_id_' . $atts['slug'] );
@@ -509,7 +509,7 @@ class Football_Pool_Shortcodes {
 	
 	//[fp-register]
 	//		title	: title parameter for the <a href>
-	public function shortcode_register_link( $atts, $content = '' ) {
+	public static function shortcode_register_link( $atts, $content = '' ) {
 		extract( shortcode_atts( array(
 					'title' => '',
 					'new' => '0',
@@ -533,55 +533,55 @@ class Football_Pool_Shortcodes {
 	}
 	
 	//[fp-webmaster]
-	public function shortcode_webmaster( $atts ) {
+	public static function shortcode_webmaster( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'webmaster' );
 		return apply_filters( 'footballpool_shortcode_html_fp-webmaster', $output );
 	}
 
 	//[fp-bank]
-	public function shortcode_bank( $atts ) {
+	public static function shortcode_bank( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'bank' );
 		return apply_filters( 'footballpool_shortcode_html_fp-bank', $output );
 	}
 
 	//[fp-money]
-	public function shortcode_money( $atts ) {
+	public static function shortcode_money( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'money' );
 		return apply_filters( 'footballpool_shortcode_html_fp-money', $output );
 	}
 
 	//[fp-start]
-	public function shortcode_start( $atts ) {
+	public static function shortcode_start( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'start' );
 		return apply_filters( 'footballpool_shortcode_html_fp-start', $output );
 	}
 
 	//[fp-totopoints]
-	public function shortcode_totopoints( $atts ) {
+	public static function shortcode_totopoints( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		return apply_filters( 'footballpool_shortcode_html_fp-totopoints', $output );
 	}
 
 	//[fp-fullpoints]
-	public function shortcode_fullpoints( $atts ) {
+	public static function shortcode_fullpoints( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
 		return apply_filters( 'footballpool_shortcode_html_fp-fullpoints', $output );
 	}
 
 	//[fp-goalpoints]
-	public function shortcode_goalpoints( $atts ) {
+	public static function shortcode_goalpoints( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
 		return apply_filters( 'footballpool_shortcode_html_fp-goalpoints', $output );
 	}
 
 	//[fp-diffpoints]
-	public function shortcode_diffpoints( $atts ) {
+	public static function shortcode_diffpoints( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
 		return apply_filters( 'footballpool_shortcode_html_fp-diffpoints', $output );
 	}
 	
 	//[fp-joker-multiplier]
-	public function shortcode_jokermultiplier( $atts ) {
+	public static function shortcode_jokermultiplier( $atts ) {
 		$output = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 		return apply_filters( 'footballpool_shortcode_html_fp-jokermultiplier', $output );
 	}

@@ -64,8 +64,11 @@ For easier/front-end user registration you may consider using an extra plugin an
 
 == Frequently Asked Questions ==
 
+= Wow, there are a lot of options. Do I need to change them? =
+You can, but it's not necessary. With default settings the plugin should be fine. You can play around with the options before you start the pool.
+
 = I installed the plugin, but there are no matches. What happened? =
-Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file (Bulk change match schedule).
+Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file ("Bulk change match schedule").
 
 = Do I need the "Predictions" page? =
 Yes and no. The plugin needs this page to display predictions of users. So don't delete it. But you can remove it from your menu (WordPress Admin &raquo; Appearance &raquo; Menus).
@@ -73,7 +76,7 @@ Some themes or WordPress configurations automatically put all top level pages in
 
 = I want to use the plugin for a national competition. Is that possible? =
 Yes. There are two ways to do this: 
-1. Upload a game schedule in the admin. Make sure you understand the required format; you can download the current schedule as an example.
+1. Upload a game schedule in the admin. Make sure you understand the required format; you can find an example in the upload folder.
 2. Use the admin screens to edit the teams, groups, match types, matches, etc.
 
 And, of course, choose a theme or make one yourself that fits your competition or blog.
@@ -188,9 +191,11 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * New HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme css.
 * Added option to custom rankings to exclude them from a recalculation.
-* New bonus question type: multiline text.
+* Added prediction log that logs all prediction changes by users to a table.
+* New bonus question types: multiline text and dropdown.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
+* new option: (re)set the pages installed by the plugin (e.g. the matches page).
 * New shortcode: display info from a league with [fp-league-info].
 * Changed shortcode: [fp-predictionform] will no longer display a form when the visitor is not logged in.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.

@@ -2,6 +2,10 @@
 class Football_Pool_Admin_Options extends Football_Pool_Admin {
 	public function __construct() {}
 	
+	private static function back_to_top() {
+		echo '<p class="options-page back-to-top"><a href="#">back to top</a></p>';
+	}
+	
 	public function help() {
 		$help_tabs = array(
 					array(
@@ -77,16 +81,17 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		}
 		$user_defined_leagues = $options;
 		
-		// get the pages for the redirect option
-		$redirect_pages = array();
-		$redirect_pages[] = array( 
+		// get the pages for the redirect option & the plugin pages
+		$redirect_pages = $plugin_pages = array();
+		$redirect_pages[] = array(
 									'value' => home_url(), 
 									'text' => __( 'homepage', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
-		$redirect_pages[] = array( 
+		$redirect_pages[] = array(
 									'value' => admin_url( 'profile.php' ),
 									'text' => __( 'edit profile', FOOTBALLPOOL_TEXT_DOMAIN ) 
 							);
+		
 		$args = array(
 			'sort_order' => 'ASC',
 			'sort_column' => 'post_title',
@@ -106,13 +111,95 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		); 
 		$pages = get_pages( $args );
 		foreach( $pages as $page ) {
-			$redirect_pages[] = array( 'value' => $page->guid, 'text' => $page->post_title );
+			$redirect_pages[] = array( 'value' => $page->guid, 'text' => $page->post_title ); // uses the URL
+			$plugin_pages[] = array( 'value' => $page->ID, 'text' => $page->post_title ); // uses the post ID
 		}
 		
 		// definition of all configurable options
 		$options = array(
 						'responsive_layout' =>
 							array( 'checkbox', __( 'Responsive layout', FOOTBALLPOOL_TEXT_DOMAIN ), 'responsive_layout', __( 'If checked the output for the pool is better optimized for mobile devices. Make sure your theme is also optimized.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+						'page_id_tournament' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Matches page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_tournament',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_teams' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Team(s) page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_teams',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_groups' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Group(s) page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_groups',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_stadiums' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Venue(s) page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_stadiums',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_rules' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Rules page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_rules',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_pool' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Submit predictions page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_pool',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_ranking' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Ranking page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_ranking',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_statistics' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'Statistics page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_statistics',
+								$plugin_pages,
+								'',
+								''
+							),
+						'page_id_user' =>
+							array(
+								array( 'select', 'integer' ), 
+								__( 'See a user\'s predictions page', FOOTBALLPOOL_TEXT_DOMAIN ), 
+								'page_id_user',
+								$plugin_pages,
+								'',
+								''
+							),
 						'redirect_url_after_login' => 
 							array( 
 								array( 'select', 'string' ), 
@@ -382,7 +469,22 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							, __( 'If you want to support this plugin, you can buy me an espresso (doppio please ;))', FOOTBALLPOOL_TEXT_DOMAIN )
 							, self::donate_button( 'return' )
 					);
-		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ), null, null, $donate );
+		$menu = sprintf( '<span title="%s" class="fp-icon-menu" onclick="jQuery( \'#fp-options-menu\' ).slideToggle( \'slow\' )"></span>', __( 'Option categories', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::admin_header( __( 'Plugin Options', FOOTBALLPOOL_TEXT_DOMAIN ) . $menu, null, null, $donate );
+		
+		echo '<p id="fp-options-menu"></p>';
+		echo '<script type="text/javascript">
+				jQuery( document ).ready( function() {
+					var i = 0;
+					var menu = jQuery( "#fp-options-menu" );
+					jQuery( "h3", ".fp-admin" ).each( function() {
+						$this = jQuery( this );
+						$this.attr( "id", "option-section-" + i );
+						menu.append( "<a href=\'#option-section-" + i + "\'>" + $this.text() + "</a><br />" );
+						i++;
+					} );
+				} );
+			</script>';
 		
 		$recalculate = ( Football_Pool_Utils::post_string( 'recalculate' ) ==
 													__( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN ) )
@@ -395,7 +497,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 			check_admin_referer( FOOTBALLPOOL_NONCE_ADMIN );
 			
 			$update_log = false;
-			$log_options = array( 'fullpoints', 'totopoints', 'goalpoints', 'use_leagues' );
+			$log_options = array( 'fullpoints', 'totopoints', 'goalpoints', 'diffpoints', 'joker_multiplier', 'use_leagues' );
 			
 			foreach ( $options as $option ) {
 				if ( is_array( $option[0] ) ) {
@@ -454,6 +556,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( null, 'primary', null, false );
 		self::recalculate_button();
 		echo '</p>';
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Ranking Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -467,6 +570,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( null, 'primary', null, false );
 		self::recalculate_button();
 		echo '</p>';
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Prediction Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -485,6 +589,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( null, 'primary', null, false );
 		self::recalculate_button();
 		echo '</p>';
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'League Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -496,6 +601,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		submit_button( null, 'primary', null, false );
 		self::recalculate_button();
 		echo '</p>';
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -515,6 +621,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								) 
 							);
 		submit_button( null, 'primary', null, true );
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Groups Page Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -524,6 +631,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								) 
 							);
 		submit_button( null, 'primary', null, true );
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Other Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -540,6 +648,24 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								) 
 							);
 		submit_button( null, 'primary', null, true );
+		self::back_to_top();
+		
+		self::admin_sectiontitle( __( 'Plugin pages', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		self::options_form( array( 
+									$options['page_id_tournament'],
+									$options['page_id_teams'],
+									$options['page_id_groups'],
+									$options['page_id_stadiums'],
+									$options['page_id_rules'],
+									$options['page_id_pool'],
+									$options['page_id_ranking'],
+									$options['page_id_statistics'],
+									$options['page_id_user'],
+									// $options['redirect_url_after_login'],
+								) 
+							);
+		submit_button( null, 'primary', null, true );
+		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Shortcodes', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
@@ -550,12 +676,14 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								) 
 							);
 		submit_button( null, 'primary', null, true );
+		self::back_to_top();
 				
 		// self::admin_sectiontitle( __( 'Advanced Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		// self::options_form( array( 
 								// ) 
 							// );
 		// submit_button( null, 'primary', null, true );
+		// self::back_to_top();
 		
 		self::admin_footer();
 	}

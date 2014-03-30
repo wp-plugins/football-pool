@@ -71,7 +71,7 @@ class Football_Pool_Groups {
 		
 		$rows = $this->get_group_composition();
 		foreach ( $rows as $row ) {
-			$group_names[ (integer) $row['id'] ] = htmlentities( $row['name'], null, 'UTF-8' );
+			$group_names[(integer) $row['id']] = htmlentities( $row['name'], null, 'UTF-8' );
 		}
 		
 		return $group_names;
@@ -86,24 +86,58 @@ class Football_Pool_Groups {
 			$group_ranking[$row['id']][(integer) $row['team_id']] = 
 								$this->get_standing_for_team( $ranking, $row['team_id'] );
 		}
-		
+				
 		return $this->order_groups( $group_ranking );
 	}
 	
 	private function order_groups( $arr ) {
 		foreach ( $arr as $group => $teams ) {
-			@uasort( $arr[$group], array( 'Football_Pool_Groups', 'compare_teams' ) );
+			// ugly way to hide the "uasort() array was modified by the user comparison function" warning
+			@uasort( $arr[$group], array( $this, 'compare_teams' ) );
 		}
 		return $arr;
 	}
 	
-	private function get_standings()
-	{
-		$wins = array();
-		$draws = array();
-		$losses = array();
-		$for = array();
-		$against = array();
+	private function compare_teams( $a, $b ) {
+		// if points are equal
+		if ( $a['points'] == $b['points'] ) {
+			// check if they have the same number of plays
+			if ( $a['plays'] == $b['plays'] ) {
+				// if so, check if they played each other
+				$matches = new Football_Pool_Matches;
+				$match_result = $matches->get_match_info_for_teams( $a['team'], $b['team'] );
+				
+				if ( is_array( $match_result ) ) {
+					// check the result
+					if ( $match_result[ $a['team'] ] != $match_result[ $b['team'] ] ) {
+						// reverse the ordering (descending order) 'cos the team that wins gets the advantage
+						return ( $match_result[ $a['team'] ] < $match_result[ $b['team'] ] ) ? +1 : -1;
+					}
+				}
+				
+				// it was a draw or the teams didn't play each other, now check goal difference
+				if ( ( $a['for'] - $a['against'] ) == ( $b['for'] - $b['against'] ) ) {
+					// now check the goals scored
+					if ( $a['for'] == $b['for'] ) {
+						// all failed, so we check a hardcoded ordering
+						$teams = new Football_Pool_Teams;
+						return ( $teams->get_group_order( $a['team'] ) > $teams->get_group_order( $b['team'] ) ? +1 : -1 );
+					}
+					// the one with more goals wins (descending order)
+					return ( $a['for'] < $b['for'] ) ? +1 : -1;
+				}
+				// the one with more goals wins (descending order)
+				return ( ( $a['for'] - $a['against'] ) < ( $b['for'] - $b['against'] ) ? +1 : -1 );
+			}
+			// the one with the least plays has the advantage
+			return ( $a['plays'] > $b['plays'] ) ? +1 : -1;
+		}
+		// order descending
+		return ( $a['points'] < $b['points'] ) ? +1 : -1;
+	}
+	
+	private function get_standings() {
+		$wins = $draws = $losses = $for = $against = array();
 		
 		$matches = new Football_Pool_Matches;
 		$match_types = Football_Pool_Utils::get_fp_option( 
@@ -167,7 +201,8 @@ class Football_Pool_Groups {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sorting = Football_Pool_Matches::get_match_sorting_method();
+		$matches = new Football_Pool_Matches;
+		$sorting = $matches->get_match_sorting_method();
 		$match_types = Football_Pool_Utils::get_fp_option( 
 													'groups_page_match_types' 
 													, array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ) 
@@ -190,7 +225,6 @@ class Football_Pool_Groups {
 		if ( ! is_array( $match_ids ) ) $match_ids = array();
 		$match_ids = apply_filters( 'footballpool_group_plays', $match_ids, $group_id );
 		
-		$matches = new Football_Pool_Matches;
 		$matches = $matches->matches;
 		
 		$plays = array();
@@ -201,44 +235,6 @@ class Football_Pool_Groups {
 		return $plays;
 	}
 
-	private function compare_teams( $a, $b ) {
-		// if points are equal
-		if ( $a['points'] == $b['points'] ) {
-			// check if they have the same number of plays
-			if ( $a['plays'] == $b['plays'] ) {
-				// if so, check if they played each other
-				$matches = new Football_Pool_Matches;
-				$gameresult = $matches->get_match_info_for_teams( $a['team'], $b['team'] );
-				
-				if ( is_array( $gameresult ) ) {
-					// check the result
-					if ( $gameresult[ $a['team'] ] != $gameresult[ $b['team'] ] ) {
-						// reverse the ordering (descending order) 'cos the team that wins gets the advantage
-						return ( $gameresult[ $a['team'] ] < $gameresult[ $b['team'] ] ) ? +1 : -1;
-					}
-				}
-				
-				// it was a draw or the teams didn't play each other, now check goal difference
-				if ( ( $a['for'] - $a['against'] ) == ( $b['for'] - $b['against'] ) ) {
-					// now check the goals scored
-					if ( $a['for'] == $b['for'] ) {
-						// all failed, so we check a hardcoded ordering
-						$teams = new Football_Pool_Teams;
-						return ( $teams->get_group_order( (integer) $a['team'] ) > $teams->get_group_order( (integer) $b['team'] ) ? +1 : -1 );
-					}
-					// the one with more goals wins (descending order)
-					return ( $a['for'] < $b['for'] ) ? +1 : -1;
-				}
-				// the one with more goals wins (descending order)
-				return ( ( $a['for'] - $a['against'] ) < ( $b['for'] - $b['against'] ) ? +1 : -1 );
-			}
-			// the one with the least plays has the advantage
-			return ( $a['plays'] > $b['plays'] ) ? +1 : -1;
-		}
-		// order descending
-		return ( $a['points'] < $b['points'] ) ? +1 : -1;
-	}
-	
 	private function set_goals_array( &$for, &$against, $home_team, $away_team, $home_score, $away_score ) {
 		$home_team = (int) $home_team;
 		$away_team = (int) $away_team;
@@ -293,7 +289,7 @@ class Football_Pool_Groups {
 		$output = '';
 		$teams = new Football_Pool_Teams;
 		$team_names = $teams->team_names;
-
+		
 		$group_names = $this->get_group_names();
 		$ranking = apply_filters( 'footballpool_group_standing_array', $this->get_ranking_array(), $group_id );
 
@@ -342,8 +338,6 @@ class Football_Pool_Groups {
 						</tr>';
 		}
 		
-		$teampage = Football_Pool::get_page_link( 'teams' );
-		
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {
 				$output .= sprintf( '<div class="ranking%s"><h2>%s</h2>', $class, $group_names[$group] );
@@ -359,7 +353,7 @@ class Football_Pool_Groups {
 												, esc_url( 
 														add_query_arg( 
 															array( 'team' => $teamranking['team'] ), 
-															$teampage 
+															$teams->page 
 														) 
 													)
 												, $team_names[$teamranking['team']]

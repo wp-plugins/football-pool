@@ -656,8 +656,10 @@ class Football_Pool_Pool {
 	
 	private function bonus_question_form_input( $question ) {
 		switch ( $question['type'] ) {
-			case 2: // multiple 1
+			case 2: // multiple 1, radio
 				return $this->bonus_question_multiple( $question, 'radio' );
+			case 5: // multiple 1, select
+				return $this->bonus_question_multiple( $question, 'select' );
 			case 3: // multiple n
 				return $this->bonus_question_multiple( $question, 'checkbox' );
 			case 4: // multiline text
@@ -684,12 +686,23 @@ class Football_Pool_Pool {
 	
 	// type = radio / checkbox / select
 	private function bonus_question_multiple( $question, $type = 'radio' ) {
-		$output = '';
+		$options = explode( ';', $question['options'] );
+		// strip out any empty options
+		$options = array_filter( $options, function( $option ) { 
+						return ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ); 
+					} );
+		// bail out if there are no options
+		if ( count( $options ) == 0 ) return '';
 		
-		if ( $type == 'select' ) {
+		$output = '';
+		if ( $type == 'select' || $type == 'dropdown' ) {
 			// dropdown
-			// @TODO: bonus question select/dropdown
-			$output .= '<select name=""></select>';
+			array_unshift( $options, '' );
+			if ( $question['answer'] != '' ) array_shift( $options );
+			$options = array_combine( $options, $options );
+			$output .= '<div class="multi-select dropdown">';
+			$output .= Football_Pool_Utils::select( '_bonus_' . esc_attr( $question['id'] ), $options, $question['answer'] );
+			$output .= '</div>';
 		} else {
 			// radio or checkbox
 			if ( $type == 'checkbox' && $question['max_answers'] > 0 ) {
@@ -700,58 +713,53 @@ class Football_Pool_Pool {
 							);
 			}
 			
-			$options = explode( ';', $question['options'] );
 			$i = 1;
 			$output .= '<ul class="multi-select">';
 			foreach ( $options as $option ) {
-				// strip out any empty options
-				if ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ) {
-					$answer = $question['answer'];
-					$js = sprintf( 'onclick="jQuery( \'#_bonus_%d_userinput\' ).val( \'\' )" ', $question['id'] );
-					
-					if ( $type == 'checkbox' ) {
-						$checked = in_array( $option, explode( ';', $answer ) ) ? 'checked="checked" ' : '';
-						$brackets = '[]';
-						$user_input = '';
+				$js = sprintf( 'onclick="jQuery( \'#_bonus_%d_userinput\' ).val( \'\' )" ', $question['id'] );
+				
+				if ( $type == 'checkbox' ) {
+					$checked = in_array( $option, explode( ';', $question['answer'] ) ) ? 'checked="checked" ' : '';
+					$brackets = '[]';
+					$user_input = '';
+				} else {
+					// @TODO: change this very hacky (and therefore undocumented) feature of adding a text input
+					//        after a radio input
+					if ( substr( $option, -2 ) == '[]' ) {
+						$js = '';
+						
+						$option = substr( $option, 0, -2 );
+						$len = strlen( $option );
+						$checked = substr( $question['answer'], 0, $len ) == $option ? 'checked="checked" ' : '';
+						
+						$user_input_name = sprintf( '_bonus_%d_userinput', esc_attr( $question['id'] ) );
+						$user_input_value = ( $checked ) ? substr( $question['answer'], $len + 1 ) : '';
+						$user_input = sprintf( '<span> <input type="text" id="%1$s" name="%1$s" value="%2$s" onclick="jQuery( \'#_bonus_%3$d_%4$d\' ).attr( \'checked\', \'checked\' )" /></span>'
+												, $user_input_name
+												, $user_input_value
+												, $question['id']
+												, $i
+											);
 					} else {
-						// @TODO: change this very hacky (and therefore undocumented) feature of adding a text input
-						//        after a radio input
-						if ( substr( $option, -2 ) == '[]' ) {
-							$js = '';
-							
-							$option = substr( $option, 0, -2 );
-							$len = strlen( $option );
-							$checked = substr( $answer, 0, $len ) == $option ? 'checked="checked" ' : '';
-							
-							$user_input_name = sprintf( '_bonus_%d_userinput', esc_attr( $question['id'] ) );
-							$user_input_value = ( $checked ) ? substr( $answer, $len + 1 ) : '';
-							$user_input = sprintf( '<span> <input type="text" id="%1$s" name="%1$s" value="%2$s" onclick="jQuery( \'#_bonus_%3$d_%4$d\' ).attr( \'checked\', \'checked\' )" /></span>'
-													, $user_input_name
-													, $user_input_value
-													, $question['id']
-													, $i
-												);
-						} else {
-							$user_input = '';
-							$checked = ( $answer == $option ) ? 'checked="checked" ' : '';
-						}
-						$brackets = '';
+						$user_input = '';
+						$checked = ( $question['answer'] == $option ) ? 'checked="checked" ' : '';
 					}
-					
-					$user_input_class = ( $user_input != '' ) ? ' class="user-input"' : '';
-
-					$output .= sprintf( '<li><label%9$s><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/><span class="multi-option"> %3$s</span></label>%6$s</li>'
-										, $type
-										, esc_attr( $question['id'] )
-										, esc_attr( $option )
-										, $checked
-										, $brackets
-										, $user_input
-										, $i++
-										, $js
-										, $user_input_class
-								);
+					$brackets = '';
 				}
+				
+				$user_input_class = ( $user_input != '' ) ? ' class="user-input"' : '';
+
+				$output .= sprintf( '<li><label%9$s><input %8$sid="_bonus_%2$d_%7$d" type="%1$s" name="_bonus_%2$d%5$s" value="%3$s" %4$s/><span class="multi-option"> %3$s</span></label>%6$s</li>'
+									, $type
+									, esc_attr( $question['id'] )
+									, esc_attr( $option )
+									, $checked
+									, $brackets
+									, $user_input
+									, $i++
+									, $js
+									, $user_input_class
+							);
 			}
 			
 			$output .= '</ul>';
@@ -890,11 +898,14 @@ class Football_Pool_Pool {
 		// only allow logged in users and players in the pool to update their predictions
 		if ( $user <= 0 || ! $this->user_is_player( $user ) ) return false;
 		
+		do_action( 'footballpool_prediction_save_before', $user );
+		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$matches = new Football_Pool_Matches;
 		$joker = 0;
+		$log_time = current_time( 'mysql' );
 		
 		// only allow setting of joker if it wasn't used before on a played match
 		$sql = $wpdb->prepare( "SELECT m.play_date
@@ -913,32 +924,79 @@ class Football_Pool_Pool {
 			$joker = $this->get_joker();
 		}
 		
+		// first get the old values for this user
+		// matches
+		$match_predictions = array();
+		$sql = $wpdb->prepare( "SELECT user_id, match_id, home_score, away_score, has_joker 
+								FROM {$prefix}predictions WHERE user_id = %d ORDER BY match_id ASC", $user );
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		foreach ( $rows as $row ) {
+			$match_predictions[$row['match_id']] = array( 
+														'home_score' => $row['home_score'],
+														'away_score' => $row['away_score'],
+														'has_joker' => $row['has_joker'],
+													);
+		}
+		// questions
+		$question_answers = array();
+		
+		
+		
 		// update predictions for all matches
 		foreach ( $matches->matches as $row ) {
 			$match = $row['id'];
 			$home = Football_Pool_Utils::post_integer( '_home_' . $match, 'NULL' );
 			$away = Football_Pool_Utils::post_integer( '_away_' . $match, 'NULL' );
+			$set_joker = ( $joker == $match ? 1 : 0 );
+			$do_update = true;
+			$log = false;
 			
 			if ( $row['match_is_editable'] ) {
-				if ( is_integer( $home ) && is_integer( $away ) ) {
-					$sql = $wpdb->prepare( "REPLACE INTO {$prefix}predictions
-											SET user_id = %d, 
-												match_id = %d, 
-												home_score = %d, 
-												away_score = %d, 
-												has_joker = %d"
-											, $user, $match, $home, $away, ( $joker == $match ? 1 : 0 )
-									);
-				} else {
-					// fix for the multiple-joker-bug
-					$sql = $wpdb->prepare( "UPDATE {$prefix}predictions
-											SET has_joker = %d
-											WHERE user_id = %d AND match_id = %d"
-											, ( $joker == $match ? 1 : 0 ), $user, $match
-									);
-				}
+				$do_update = apply_filters( 'footballpool_prediction_update_match'
+											, $do_update, $user, $match, $home, $away, $set_joker );
 				
-				$wpdb->query( $sql );
+				if ( $do_update ) {
+					if ( is_integer( $home ) && is_integer( $away ) ) {
+						if ( array_key_exists( $match, $match_predictions ) ) {
+							// match exists in predictions, check if user wants to change the prediction
+							if ( $match_predictions[$match]['home_score'] != $home
+									|| $match_predictions[$match]['away_score'] != $away
+									|| $match_predictions[$match]['has_joker'] != $set_joker ) {
+								$sql = $wpdb->prepare( "UPDATE {$prefix}predictions SET
+															home_score = %d, away_score = %d, has_joker = %d
+														WHERE user_id = %d AND match_id = %d"
+														, $home, $away, $set_joker, $user, $match );
+								$wpdb->query( $sql );
+								$log = true;
+							}
+						} else {
+							// no prediction yet, insert the prediction
+							$sql = $wpdb->prepare( "INSERT INTO {$prefix}predictions
+														( user_id, match_id, home_score, away_score, has_joker )
+													VALUES ( %d, %d, %d, %d, %d )"
+													, $user, $match, $home, $away, $set_joker );
+							$wpdb->query( $sql );
+							$log = true;
+						}
+					} else {
+						// fix for the multiple-joker-bug
+						$sql = $wpdb->prepare( "UPDATE {$prefix}predictions
+												SET has_joker = %d
+												WHERE user_id = %d AND match_id = %d"
+												, $set_joker, $user, $match
+										);
+						$wpdb->query( $sql );
+					}
+					
+					if ( $log ) {
+						do_action( 'footballpool_prediction_save_match', $user, $match, $home, $away, $set_joker );
+						$sql = $wpdb->prepare( "INSERT INTO {$prefix}predictions_updatelog 
+													( user_id, match_id, home_score, away_score, has_joker, prediction_date )
+												VALUES ( %d, %d, %d, %d, %d, %s )"
+												, $user, $match, $home, $away, $set_joker, $log_time );
+						$wpdb->query( $sql );
+					}
+				}
 			}
 		}
 		
@@ -973,6 +1031,7 @@ class Football_Pool_Pool {
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}
 		
+		do_action( 'footballpool_prediction_save_after', $user );
 		return true;
 	}
 	
@@ -1002,7 +1061,7 @@ class Football_Pool_Pool {
 			if ( $wrap ) $output .= $this->prediction_form_end( $id );
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_predictionform_questions_html', $output, $questions );
 	}
 	
 	// outputs a prediction form for matches.

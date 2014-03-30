@@ -1,29 +1,30 @@
 <?php
 class Football_Pool_Admin {
-	public function add_body_class( $classes ) {
+	public static function add_body_class( $classes ) {
 		global $hook_suffix;
 		if ( strpos( $hook_suffix, 'footballpool' ) !== false ) $classes .= 'football-pool';
 		return $classes;
 	}
 	
-	public function adminhook_suffix() {
+	public static function adminhook_suffix() {
 		// for debugging
 		global $hook_suffix;
 		echo "<!-- admin hook for current page is: {$hook_suffix} -->";
 	}
 	
 	public function set_screen_options( $status, $option, $value ) {
-		return $value;
+		if ( strpos( $option, 'footballpool_' ) !== false ) return $value;
+		
+		return $status;
 	}
 	
 	public function get_screen_option( $option, $type = 'int' ) {
-		$default_value = false;
 		$screen = get_current_screen();
 		
 		$screen_option = $screen->get_option( $option, 'option' );
 		$option_value = get_user_meta( get_current_user_id(), $screen_option, true );
 		
-		$default_value = empty ( $option_value );
+		$default_value = empty ( $option_value ) || $option_value < 1 ;
 		if ( ! $default_value && $type == 'int' ) $option_value = (int) $option_value;
 		
 		if ( $default_value ) $option_value = $screen->get_option( $option, 'default' );
@@ -53,10 +54,11 @@ class Football_Pool_Admin {
 		// screen options
 		if ( $hook && method_exists( $screen_options_class, 'screen_options' ) ) {
 			add_action( "load-{$hook}", array( $screen_options_class, 'screen_options' ) );
+			// add_action( 'admin_init', array( $screen_options_class, 'screen_options' ) );
 		}
 	}
 	
-	public function init() {
+	public static function admin_menu_init() {
 		$slug = 'footballpool-options';
 		$capability = 'manage_football_pool';
 		
@@ -201,7 +203,7 @@ class Football_Pool_Admin {
 		);
 	}
 	
-	public function initialize_wp_media() {
+	public static function initialize_wp_media() {
 		if ( FOOTBALLPOOL_WP_MEDIA ) {
 			wp_enqueue_media();
 		} else {
@@ -218,7 +220,7 @@ class Football_Pool_Admin {
 	}
 	
 	// tinymce extension
-	public function tinymce_addbuttons() {
+	public static function tinymce_addbuttons() {
 		// Don't bother doing this stuff if the current user lacks permissions
 		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) )
 			return;
@@ -230,23 +232,23 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function register_tinymce_footballpool_button( $buttons ) {
+	public static function register_tinymce_footballpool_button( $buttons ) {
 		array_push( $buttons, "|", "footballpool" );
 		return $buttons;
 	}
 	
 	// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
-	public function add_footballpool_tinymce_plugin( $plugin_array ) {
+	public static function add_footballpool_tinymce_plugin( $plugin_array ) {
 		$plugin_array['footballpool'] = FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/tinymce/editor_plugin.min.js';
 		return $plugin_array;
 	}
 	// end tinymce
 	
-	public function add_plugin_settings_link( $links, $file ) {
+	public static function add_plugin_settings_link( $links, $file ) {
 		if ( $file == plugin_basename( FOOTBALLPOOL_PLUGIN_DIR . 'football-pool.php' ) ) {
 			$links[] = '<a href="admin.php?page=footballpool-options">' . __( 'Settings', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 			$links[] = '<a href="admin.php?page=footballpool-help">' . __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
-			// $links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
+			$links[] = '<a href="' . FOOTBALLPOOL_DONATE_LINK . '">' . __( 'Donate', FOOTBALLPOOL_TEXT_DOMAIN ) . '</a>';
 		}
 
 		return $links;

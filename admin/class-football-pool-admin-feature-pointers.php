@@ -3,7 +3,7 @@ class Football_Pool_Admin_Feature_Pointers {
 	private static $pointers = array();
 	private static $dismissed = array();
 	
-	private function define_pointers() {
+	private static function define_pointers() {
 		// define the pointers for v2.4.0
 		$version = '240';
 		self::add_pointer( $version
@@ -87,7 +87,7 @@ class Football_Pool_Admin_Feature_Pointers {
 						);
 	}
 	
-	public function init() {
+	public static function init() {
 		// array of pointers the user already clicked away
 		self::$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 		// define the pointers
@@ -109,7 +109,7 @@ class Football_Pool_Admin_Feature_Pointers {
 		}
 	}
 	
-	private function add_pointer( $version, $feature, $title, $content, $anchor_id
+	private static function add_pointer( $version, $feature, $title, $content, $anchor_id
 								, $edge = 'top', $align = 'left', $unescaped_content = '' ) {
 		$feature = "fp{$version}_{$feature}";
 		$plugin_version = explode( '.', FOOTBALLPOOL_DB_VERSION );
@@ -131,7 +131,7 @@ class Football_Pool_Admin_Feature_Pointers {
 									);
 	}
 	
-	public function insert_pointers_script() {
+	public static function insert_pointers_script() {
 		echo '<script>';
 		echo 'jQuery( document ).ready( function() { if ( typeof( jQuery().pointer ) != "undefined" ) { ';
 		foreach( self::$pointers as $pointer => $pointer_definition ) {

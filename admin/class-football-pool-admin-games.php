@@ -1,7 +1,5 @@
 <?php
 class Football_Pool_Admin_Games extends Football_Pool_Admin {
-	private static $screen_option_name = 'fp_matches_per_page';
-	
 	public function __construct() {}
 	
 	public function help() {
@@ -30,11 +28,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function screen_options() {
+	public static function screen_options() {
 		$args = array(
 			'label' => __( 'Matches', FOOTBALLPOOL_TEXT_DOMAIN ),
 			'default' => FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE,
-			'option' => self::$screen_option_name
+			'option' => 'footballpool_matches_per_page'
 		);
 		add_screen_option( 'per_page', $args );
 	}
@@ -416,7 +414,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$rows = $matches->matches;
 		
 		$pagination = new Football_Pool_Pagination( count( $rows ) );
-		// $pagination->set_page_size( self::get_screen_option( self::$screen_option_name ) );
 		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
 		$pagination->wrap = true;
 		

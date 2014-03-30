@@ -103,7 +103,7 @@ class Football_Pool_Matches {
 	
 	private function matches_query( $where_clause = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$sorting = self::get_match_sorting_method();
+		$sorting = $this->get_match_sorting_method();
 		
 		return "SELECT 
 					m.id, 
@@ -207,7 +207,7 @@ class Football_Pool_Matches {
 	public function get_match_info_for_user( $user_id, $match_ids = array() ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		$order = self::get_match_sorting_method();
+		$order = $this->get_match_sorting_method();
 		
 		$ids = '';
 		if ( is_array( $match_ids ) && count( $match_ids ) > 0 ) {
@@ -685,7 +685,7 @@ class Football_Pool_Matches {
 		$output .= '</table>';
 		
 		$this->joker_value = $joker;
-		return $output;
+		return apply_filters( 'footballpool_predictionform_matches_html', $output, $matches, $user_id );
 	}
 	
 	public function format_match_time( $datetime, $format = false ) {

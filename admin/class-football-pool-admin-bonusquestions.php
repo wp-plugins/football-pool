@@ -192,8 +192,9 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$types = array( 
 						array( 'value' => '1', 'text' => __( 'text', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 						array( 'value' => '4', 'text' => __( 'multiline text', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
-						array( 'value' => '2', 'text' => __( 'multiple choice (1 answer)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
-						array( 'value' => '3', 'text' => __( 'multiple choice (one or more answers)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '2', 'text' => __( 'multiple choice, 1 answer (radio list)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '5', 'text' => __( 'multiple choice, 1 answer (dropdown)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
+						array( 'value' => '3', 'text' => __( 'multiple choice, one or more answers (checkbox list)', FOOTBALLPOOL_TEXT_DOMAIN ) ), 
 					);
 		// matches
 		$matches = new Football_Pool_Matches;
@@ -231,6 +232,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						array(
 							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
 							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
+							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
 							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
 							'onclick="toggle_linked_radio_options( [ \'#r-options\', \'#r-max_answers\' ], null )"',
 						),

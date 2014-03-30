@@ -409,8 +409,8 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 		
 		$bulkactions[] = array( 'delete', __( 'Delete' ), __( 'You are about to delete one or more rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to delete, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		$bulkactions[] = array( 'set_calculate_option', __( 'Enable calculation' ), __( 'You are about to set the calculate option on one or more rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		$bulkactions[] = array( 'unset_calculate_option', __( 'Disable calculation' ), __( 'You are about to exclude one or more rankings from the calculation.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'set_calculate_option', __( 'Enable calculation', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to set the calculate option on one or more rankings.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+		$bulkactions[] = array( 'unset_calculate_option', __( 'Disable calculation', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to exclude one or more rankings from the calculation.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$rowactions[] = array( 'define', __( 'Ranking composition', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}

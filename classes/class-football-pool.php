@@ -114,7 +114,7 @@ class Football_Pool {
 		$options['number_of_jokers'] = FOOTBALLPOOL_DEFAULT_JOKERS;
 		$options['calculation_type_preference'] = FOOTBALLPOOL_RANKING_CALCULATION_SMART;
 		$options['show_num_predictions_in_ranking'] = 0; // 1: yes, 0: no
-		$options['redirect_url_after_login'] = home_url(); // redirect users to this url after login
+		$options['redirect_url_after_login'] = home_url(); // redirect users to this page_id after login
 		$options['responsive_layout'] = 1; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
@@ -328,8 +328,6 @@ class Football_Pool {
 				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery' ) );
 			}
 			
-			// font awesome
-			// self::include_css( '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', 'css-awesome', null, null, null, 'external' );
 			// pool js & css
 			self::include_css( 'assets/pool.css', 'css-pool' );
 			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
@@ -353,6 +351,11 @@ class Football_Pool {
 																		, FOOTBALLPOOL_TEXT_DOMAIN ),
 								)
 			);
+			// pure grids for responsive layout
+			if ( Football_Pool_Utils::get_fp_option( 'responsive_layout' ) == 1 ) {
+				self::include_css( 'assets/grids-min.css', 'css-pure-grids' );
+				self::include_css( 'assets/responsive.css', 'css-responsive' );
+			}
 		} else {
 			// the admin
 			
@@ -375,11 +378,6 @@ class Football_Pool {
 			);
 		}
 		
-		// pure grids for responsive layout
-		if ( Football_Pool_Utils::get_fp_option( 'responsive_layout' ) == 1 ) {
-			self::include_css( 'assets/grids-min.css', 'css-pure-grids' );
-			self::include_css( 'assets/responsive.css', 'css-responsive' );
-		}
 		// colorbox jQuery plugin for lightboxes
 		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
 		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
@@ -585,7 +583,7 @@ class Football_Pool {
 		return $output;
 	}
 	
-	public function admin_notice() {
+	public static function admin_notice() {
 		if ( ! is_admin() || ! current_user_can( 'install_plugins' ) ) return;
 		
 		global $pagenow;
@@ -602,7 +600,8 @@ class Football_Pool {
 	
 //======================================================================================================//
 	
-	private function include_css( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false ) {
+	private function include_css( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false
+								, $pages = null ) {
 		$external = ( $external === 'external' );
 		if ( $external || $custom_path != '' ) {
 			$url = $external ? esc_url_raw( $file ) : $file;
@@ -620,7 +619,8 @@ class Football_Pool {
 		}
 	}
 	
-	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false ) {
+	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false
+								, $pages = null ) {
 		$external = ( $external === 'external' );
 		if ( $external || $custom_path != '' ) {
 			$url = $external ? esc_url_raw( $file ) : $file;

@@ -6,37 +6,37 @@ define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
 define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
 
 // database and path constants
-define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
-define( 'FOOTBALLPOOL_OPTIONS', 'footballpool_plugin_options' );
+if ( ! defined( 'FOOTBALLPOOL_DB_PREFIX' ) ) define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
+if ( ! defined( 'FOOTBALLPOOL_OPTIONS' ) ) define( 'FOOTBALLPOOL_OPTIONS', 'footballpool_plugin_options' );
 
-define( 'FOOTBALLPOOL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'FOOTBALLPOOL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'FOOTBALLPOOL_PLUGIN_NAME', 'Football Pool' );
-define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
+if ( ! defined( 'FOOTBALLPOOL_PLUGIN_URL' ) ) define( 'FOOTBALLPOOL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'FOOTBALLPOOL_PLUGIN_DIR' ) ) define( 'FOOTBALLPOOL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'FOOTBALLPOOL_PLUGIN_NAME' ) ) define( 'FOOTBALLPOOL_PLUGIN_NAME', 'Football Pool' );
+if ( ! defined( 'FOOTBALLPOOL_TEXT_DOMAIN' ) ) define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
+
+if ( ! defined( 'FOOTBALLPOOL_HIGHCHARTS_API' ) ) define( 'FOOTBALLPOOL_HIGHCHARTS_API', '/highcharts-js/highcharts.js' );
 
 define( 'FOOTBALLPOOL_ASSETS_URL', FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
-define( 'FOOTBALLPOOL_HIGHCHARTS_API', '/highcharts-js/highcharts.js' );
-
 define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_error_log.txt' );
 define( 'FOOTBALLPOOL_SQL_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_sql_log.sql' );
 
 // leagues
-define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
-define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
+if ( ! defined( 'FOOTBALLPOOL_LEAGUE_ALL' ) ) define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
+if ( ! defined( 'FOOTBALLPOOL_LEAGUE_DEFAULT' ) ) define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 
 // scorehistory
-define( 'FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX', false );
+if ( ! defined( 'FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX' ) ) define( 'FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX', false );
 define( 'FOOTBALLPOOL_RANKING_AUTOCALCULATION', 1 );
 define( 'FOOTBALLPOOL_RANKING_CALCULATION_FULL', 'full' );
 define( 'FOOTBALLPOOL_RANKING_CALCULATION_SMART', 'smart' );
 define( 'FOOTBALLPOOL_RANKING_DEFAULT', 1 );
 define( 'FOOTBALLPOOL_TYPE_MATCH', 0 );
 define( 'FOOTBALLPOOL_TYPE_QUESTION', 1 );
-define( 'FOOTBALLPOOL_RECALC_STEP2_DIV', 50 );
-define( 'FOOTBALLPOOL_RECALC_STEP3_DIV', 100 );
-define( 'FOOTBALLPOOL_RECALC_STEP4_DIV', 50 );
-define( 'FOOTBALLPOOL_RECALC_STEP5_DIV', 50 );
-define( 'FOOTBALLPOOL_RECALC_STEP6_DIV', 4 );
+if ( ! defined( 'FOOTBALLPOOL_RECALC_STEP2_DIV' ) ) define( 'FOOTBALLPOOL_RECALC_STEP2_DIV', 50 );
+if ( ! defined( 'FOOTBALLPOOL_RECALC_STEP3_DIV' ) ) define( 'FOOTBALLPOOL_RECALC_STEP3_DIV', 100 );
+if ( ! defined( 'FOOTBALLPOOL_RECALC_STEP4_DIV' ) ) define( 'FOOTBALLPOOL_RECALC_STEP4_DIV', 50 );
+if ( ! defined( 'FOOTBALLPOOL_RECALC_STEP5_DIV' ) ) define( 'FOOTBALLPOOL_RECALC_STEP5_DIV', 50 );
+if ( ! defined( 'FOOTBALLPOOL_RECALC_STEP6_DIV' ) ) define( 'FOOTBALLPOOL_RECALC_STEP6_DIV', 4 );
 
 // matches and scores
 define( 'FOOTBALLPOOL_MAXPERIOD', 900 );
@@ -48,8 +48,9 @@ define( 'FOOTBALLPOOL_DIFFPOINTS', 0 ); // bonus points for correct goal differe
                                         // (e.g. match result is 4-0 and prediction is 6-2)
 
 // matches csv import and export
-define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
-define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );
+if ( ! defined( 'FOOTBALLPOOL_CSV_DELIMITER' ) ) define( 'FOOTBALLPOOL_CSV_DELIMITER', ';' );
+if ( ! defined( 'FOOTBALLPOOL_CSV_UPLOAD_DIR' ) ) define( 'FOOTBALLPOOL_CSV_UPLOAD_DIR', FOOTBALLPOOL_PLUGIN_DIR . 'upload/' );
+
 // groups page
 define( 'FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE', 1 );
 define( 'FOOTBALLPOOL_TEAM_POINTS_WIN', 3 );
@@ -63,11 +64,11 @@ define( 'FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE', 20 );
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
 define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=S83YHERL39GHA');
 define( 'FOOTBALLPOOL_MATCH_SORT', 0 ); // date asc
-define( 'FOOTBALLPOOL_SMALL_AVATAR', 18 ); // size in px
-define( 'FOOTBALLPOOL_MEDIUM_AVATAR', 28 ); // size in px
-define( 'FOOTBALLPOOL_LARGE_AVATAR', 36 ); // size in px
-define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
-define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
+if ( ! defined( 'FOOTBALLPOOL_SMALL_AVATAR' ) ) define( 'FOOTBALLPOOL_SMALL_AVATAR', 18 ); // size in px
+if ( ! defined( 'FOOTBALLPOOL_MEDIUM_AVATAR' ) ) define( 'FOOTBALLPOOL_MEDIUM_AVATAR', 28 ); // size in px
+if ( ! defined( 'FOOTBALLPOOL_LARGE_AVATAR' ) ) define( 'FOOTBALLPOOL_LARGE_AVATAR', 36 ); // size in px
+if ( ! defined( 'FOOTBALLPOOL_TIME_FORMAT' ) ) define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
+if ( ! defined( 'FOOTBALLPOOL_DATE_FORMAT' ) ) define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
 
 // cache
 define( 'FOOTBALLPOOL_CACHE_MATCHES', 'fp_match_info' );

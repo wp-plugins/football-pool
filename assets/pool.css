@@ -1,11 +1,11 @@
 /* icomoon (http://icomoon.io/) icon webfont */
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-oi6hra');
-	src:url('fonts/icomoon.eot?#iefix-oi6hra') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-oi6hra') format('woff'),
-		url('fonts/icomoon.ttf?-oi6hra') format('truetype'),
-		url('fonts/icomoon.svg?-oi6hra#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?-yf73jm');
+	src:url('fonts/icomoon.eot?#iefix-yf73jm') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-yf73jm') format('woff'),
+		url('fonts/icomoon.ttf?-yf73jm') format('truetype'),
+		url('fonts/icomoon.svg?-yf73jm#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -27,23 +27,11 @@
 .fp-icon-cog:before {
 	content: "\e600";
 }
-.fp-icon-close:before {
-	content: "\e601";
-}
-.fp-icon-checkmark:before {
-	content: "\e602";
-}
-.fp-icon-cancel-circle:before {
-	content: "\e603";
-}
-.fp-icon-checkmark-circle:before {
-	content: "\e604";
+.fp-icon-pie:before {
+	content: "\e606";
 }
 .fp-icon-stats:before {
 	content: "\e605";
-}
-.fp-icon-pie:before {
-	content: "\e606";
 }
 .fp-icon-bars:before {
 	content: "\e607";
@@ -51,8 +39,23 @@
 .fp-icon-remove:before {
 	content: "\e608";
 }
+.fp-icon-menu:before {
+	content: "\e60a";
+}
 .fp-icon-info:before {
 	content: "\e609";
+}
+.fp-icon-cancel-circle:before {
+	content: "\e603";
+}
+.fp-icon-checkmark-circle:before {
+	content: "\e604";
+}
+.fp-icon-close:before {
+	content: "\e601";
+}
+.fp-icon-checkmark:before {
+	content: "\e602";
 }
 /* end icon webfont */
 

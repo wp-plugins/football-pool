@@ -49,7 +49,7 @@ class Football_Pool_Group_Widget extends Football_Pool_Widget {
 		
 		$group = ! empty( $instance['group'] ) ? $instance['group'] : '1';
 		$layouts = array( 1 => 'wide', 2 => 'small' );
-		$layout = $layouts[ $instance['layout'] ];
+		$layout = $layouts[$instance['layout']];
 		
 		$output = '';
 		if ( $title != '' ) {

@@ -5,7 +5,7 @@ class Football_Pool_Utils {
 	* @param $version
 	* @return bool
 	*/
-	public function wordpress_is_at_least_version( $is_ver ) {
+	public static function wordpress_is_at_least_version( $is_ver ) {
 		$wp_ver = explode( '.', get_bloginfo( 'version' ) );
 		$is_ver = explode( '.', $is_ver );
 		for ( $i = 0; $i <= count( $is_ver ); $i++ )
@@ -17,7 +17,7 @@ class Football_Pool_Utils {
 		return true;
 	}
 	
-	public function highlight_string( $str, $return = false, $class = 'block' ) {
+	public static function highlight_string( $str, $return = false, $class = 'block' ) {
 		$highlight = highlight_string( $str, true );
 		$highlight = preg_replace( '/<code>/i', "<code class='{$class}'>", $highlight );
 		
@@ -33,7 +33,7 @@ class Football_Pool_Utils {
 	//	 params:            array of placeholders and texts
 	//                      format = array( 'placeholder' => 'text', ... )
 	//	 placeholder_delim: the char that identifies a placeholder, defaults to '%'
-	public function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
+	public static function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
 		if ( count( $params ) > 0 ) {
 			foreach ( $params as $key => $val ) {
 				$input = str_replace( "{$placeholder_delim}{$key}{$placeholder_delim}"
@@ -44,7 +44,7 @@ class Football_Pool_Utils {
 		return $input;
 	}
 
-	public function select( $id, $options, $selected_val, $name = '', $css_class = '' ) {
+	public static function select( $id, $options, $selected_val, $name = '', $css_class = '' ) {
 		if ( $name == '' ) $name = $id;
 		
 		$output = sprintf( '<select name="%s" id="%s" class="%s">', $name, $id, $css_class );
@@ -62,7 +62,7 @@ class Football_Pool_Utils {
 	
 	// extract ids from a string ("x", "x-z", "x,y,z").
 	// only integers are returned
-	public function extract_ids( $input ) {
+	public static function extract_ids( $input ) {
 		// remove all spaces and tabs
 		$replace = array( ' ', "\t" );
 		$replace_with = array( '', '' );
@@ -93,7 +93,7 @@ class Football_Pool_Utils {
 	}
 	
 	// returns an int and stores the value+1 in the WP cache
-	public function get_counter_value( $cache_key ) {
+	public static function get_counter_value( $cache_key ) {
 		$id = wp_cache_get( $cache_key );
 		if ( $id === false ) {
 			$id = 1;
@@ -104,18 +104,18 @@ class Football_Pool_Utils {
 	}
 	
 	// accepts a date in Y-m-d H:i format and changes it to UTC
-	public function gmt_from_date( $date_string ) {
+	public static function gmt_from_date( $date_string ) {
 		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';
 		return $date_string != '' ? get_gmt_from_date( $date_string, 'Y-m-d H:i' ) : '';
 	}
 	
 	// accepts a date in Y-m-d H:i format and changes it to local time according to WP's timezone setting
-	public function date_from_gmt( $date_string ) {
+	public static function date_from_gmt( $date_string ) {
 		if ( strlen( $date_string ) == strlen( '0000-00-00 00:00' ) ) $date_string .= ':00';
 		return $date_string != '' ? get_date_from_gmt( $date_string, 'Y-m-d H:i' ) : '';
 	}
 	
-	public function full_url() {
+	public static function full_url() {
 		// http://snipplr.com/view.php?codeview&id=2734
 		$s = empty( $_SERVER["HTTPS"] ) ? '' : ( $_SERVER["HTTPS"] == "on" ) ? "s" : "";
 		$protocol = substr( strtolower( $_SERVER["SERVER_PROTOCOL"] ), 0, strpos( strtolower( $_SERVER["SERVER_PROTOCOL"] ), "/" ) ) . $s;
@@ -123,11 +123,11 @@ class Football_Pool_Utils {
 		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
 	}
 	
-	public function set_fp_option( $key, $value ) {
+	public static function set_fp_option( $key, $value ) {
 		self::update_fp_option( $key, $value );
 	}
 	
-	public function update_fp_option( $key, $value, $overwrite = 'overwrite' ) {
+	public static function update_fp_option( $key, $value, $overwrite = 'overwrite' ) {
 		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
 		if ( ! isset( $options[$key] ) || ( isset( $options[$key] ) && $overwrite == 'overwrite' ) ) {
 			$options[$key] = $value;
@@ -135,7 +135,7 @@ class Football_Pool_Utils {
 		}
 	}
 	
-	public function get_fp_option( $key, $default = '', $type = 'text' ) {
+	public static function get_fp_option( $key, $default = '', $type = 'text' ) {
 		$options = get_option( FOOTBALLPOOL_OPTIONS, array() );
 		$value = isset( $options[$key] ) ? $options[$key] : $default;
 		if ( $type == 'int' || $type == 'integer' ) {
@@ -147,70 +147,70 @@ class Football_Pool_Utils {
 	// damn you, magic quotes!
 	// and damn you, WP, for not telling me about wp_magic_quotes()!
 	// http://kovshenin.com/2010/wordpress-and-magic-quotes/
-	public function safe_stripslashes( $value ) {
+	public static function safe_stripslashes( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes( $value ) : $value;
 		if ( is_array( $value) )
 			return stripslashes_deep( $value );
 		else
 			return stripslashes( $value );
 	}
-	public function safe_stripslashes_deep( $value ) {
+	public static function safe_stripslashes_deep( $value ) {
 		// return get_magic_quotes_gpc() ? stripslashes_deep( $value ) : $value;
 		return stripslashes_deep( $value );
 	}
 	
 	// String GET and POST
-	public function request_str( $key, $default = '' ) {
+	public static function request_str( $key, $default = '' ) {
 		return self::request_string( $key, $default );
 	}
-	public function request_string( $key, $default = '' ) {
+	public static function request_string( $key, $default = '' ) {
 		return ( $_POST ? self::post_string( $key, $default ) : self::get_string( $key, $default ) );
 	}
-	public function get_str( $key, $default = '' ) {
+	public static function get_str( $key, $default = '' ) {
 		return self::get_string( $key, $default );
 	}
-	public function get_string( $key, $default = '' ) {
+	public static function get_string( $key, $default = '' ) {
 		return ( isset( $_GET[$key] ) ? self::safe_stripslashes( $_GET[$key] ) : $default );
 	}
-	public function post_str( $key, $default = '' ) {
+	public static function post_str( $key, $default = '' ) {
 		return self::post_string( $key, $default );
 	}
-	public function post_string( $key, $default = '' ) {
+	public static function post_string( $key, $default = '' ) {
 		return ( isset( $_POST[$key] ) ? self::safe_stripslashes( $_POST[$key] ) : $default );
 	}
 	
 	// Integer GET and POST
-	public function request_int( $key, $default = 0 ) {
+	public static function request_int( $key, $default = 0 ) {
 		return self::request_integer( $key, $default );
 	}
-	public function request_integer($key, $default = 0)
+	public static function request_integer($key, $default = 0)
 	{
 		return ( $_POST ? self::post_integer( $key, $default ) : self::get_integer( $key, $default ) );
 	}
-	public function get_integer( $key, $default = 0 ) {
+	public static function get_integer( $key, $default = 0 ) {
 		return ( isset( $_GET[$key] ) && is_numeric( $_GET[$key] )? (integer) $_GET[$key] : $default );
 	}
-	public function get_int( $key, $default = 0 ) {
+	public static function get_int( $key, $default = 0 ) {
 		return self::get_integer( $key, $default );
 	}
-	public function post_integer( $key, $default = 0 ) {
+	public static function post_integer( $key, $default = 0 ) {
 		return ( isset( $_POST[$key] ) && is_numeric( $_POST[$key] )? (integer) $_POST[$key] : $default );
 	}
-	public function post_int( $key, $default = 0 ) {
+	public static function post_int( $key, $default = 0 ) {
 		return self::post_integer( $key, $default );
 	}
 	
 	// Array of integers GET and POST
-	public function request_int_array( $key, $default = array() ) {
+	public static function request_int_array( $key, $default = array() ) {
 		return self::request_integer_array( $key, $default );
 	}
-	public function request_integer_array( $key, $default = array() ) {
+	public static function request_integer_array( $key, $default = array() ) {
 		if ( $_POST ? self::post_integer_array( $key, $default ) : self::get_integer_array( $key, $default ) );
 	}
-	public function get_intArray( $key, $default = array() ) {
+	public static function get_intArray( $key, $default = array() ) {
 		return self::get_integer_array( $key, $default );
 	}
-	public function get_integer_array( $key, $default = array() ) {
+	public static function get_integer_array( $key, $default = array() ) {
 		if ( isset( $_GET[$key] ) && is_array( $_GET[$key] ) ) {
 			$get = $_GET[$key];
 			foreach ( $get as $str ) $arr[] = (integer) $str;
@@ -220,10 +220,10 @@ class Football_Pool_Utils {
 		
 		return $arr;
 	}
-	public function post_int_array( $key, $default = array() ) {
+	public static function post_int_array( $key, $default = array() ) {
 		return self::post_integer_array( $key, $default );
 	}
-	public function post_integer_array( $key, $default = array() ) {
+	public static function post_integer_array( $key, $default = array() ) {
 		if ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ) {
 			$post = $_POST[$key];
 			foreach ( $post as $str ) $arr[] = (integer) $str;
@@ -235,39 +235,39 @@ class Football_Pool_Utils {
 	}
 	
 	// Array of stings GET and POST
-	public function request_str_array( $key, $default = array() ) {
+	public static function request_str_array( $key, $default = array() ) {
 		return self::request_string_array( $key, $default );
 	}
-	public function request_string_array( $key, $default = array() ) {
+	public static function request_string_array( $key, $default = array() ) {
 		return ( $_POST ? self::post_string_array( $key, $default ) : self::get_string_array( $key, $default ) );
 	}
-	public function get_str_array( $key, $default = array() ) {
+	public static function get_str_array( $key, $default = array() ) {
 		return self::get_string_array( $key, $default );
 	}
-	public function get_string_array( $key, $default = array() ) {
+	public static function get_string_array( $key, $default = array() ) {
 		return ( isset( $_GET[$key] ) && is_array( $_GET[$key] ) ? self::safe_stripslashes_deep( $_GET[$key] ) : $default );
 	}
-	public function post_str_array( $key, $default = array() ) {
+	public static function post_str_array( $key, $default = array() ) {
 		return self::post_string_array( $key, $default );
 	}
-	public function post_string_array( $key, $default = array() ) {
+	public static function post_string_array( $key, $default = array() ) {
 		return ( isset( $_POST[$key] ) && is_array( $_POST[$key] ) ? self::safe_stripslashes_deep( $_POST[$key] ) : $default );
 	}
 	
 	// debug function, but defaults to file log instead of echoing the debug info
-	public function debugf( $var, $type = 'file', $sleep = 0 ) {
+	public static function debugf( $var, $type = 'file', $sleep = 0 ) {
 		self::debug( $var, $type, $sleep );
 	}
 	
 	// debug function, but defaults to mail log instead of echoing the debug info and pauses by default for 100ms
-	public function debugm( $var, $type = 'mail', $sleep = 100 ) {
+	public static function debugm( $var, $type = 'mail', $sleep = 100 ) {
 		self::debug( $var, $type, $sleep );
 	}
 	
 	// Print information about a variable in a human readable way.
 	// If argument sleep is set, the execution will halt after the debug for the given 
 	// amount of micro seconds (one micro second = one millionth of a second).
-	public function debug( $var, $type = 'echo', $sleep = 0 ) {
+	public static function debug( $var, $type = 'echo', $sleep = 0 ) {
 		if ( defined( 'FOOTBALLPOOL_DEBUG_FORCE' ) ) {
 			$type = FOOTBALLPOOL_DEBUG_FORCE;
 		} else {
@@ -328,7 +328,7 @@ class Football_Pool_Utils {
 	}
 
 	// http://stackoverflow.com/questions/4660692/is-it-possible-to-print-a-log-of-all-database-queries-for-a-page-request-in-word
-	function sql_logger() {
+	public static function sql_logger() {
 		global $wpdb;
 		$log_file = @fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
 		@fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );

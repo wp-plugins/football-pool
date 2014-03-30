@@ -9,7 +9,7 @@ class Football_Pool_Teams {
 	
 	public function __construct() {
 		$this->teams = $this->get_teams();
-		// get the team_names
+		// get the team_types
 		$this->team_types = $this->get_team_types();
 		// get the team_names
 		$this->team_names = $this->get_team_names();
@@ -101,7 +101,7 @@ class Football_Pool_Teams {
 	}
 	
 	public function get_group_order( $team ) {
-		if ( ! is_integer( $team ) ) return 0;
+		if ( ! is_numeric( $team ) ) return 0;
 		
 		$cache_key = 'fp_group_order_' . $team;
 		$group_order = wp_cache_get( $cache_key );
