@@ -452,11 +452,6 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 		$league = Football_Pool_Utils::post_int( 'footballpool_league', FOOTBALLPOOL_LEAGUE_DEFAULT );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
-		if ( current_user_can( 'edit_users' ) ) {
-			// admin only fields
-			$user_label = Football_Pool_Utils::post_string( 'footballpool_user_label' );
-			update_user_meta( $user_id, 'footballpool_user_label', $user_label );
-		}
 	}
 	
 	public function add_extra_profile_fields( $user ) {
@@ -486,20 +481,10 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			}
 				
 			echo '<tr><th><label>', __( 'The webmaster put you in this league', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td>', $league, 
-				' <span class="description">(', 
+			echo '<td><span style="text-decoration: underline">', $league, 
+				'</span> <span class="description">(', 
 				__( 'if this value is different from the one you entered on registration, then the webmaster did not approve it yet.', FOOTBALLPOOL_TEXT_DOMAIN ), 
 				')</span></td></tr>';
-			
-			// extra meta info for users (editable for admins only)
-			$user_label = get_the_author_meta( 'footballpool_user_label', $user->ID );
-			echo '<tr><th><label>', __( 'Status for user', FOOTBALLPOOL_TEXT_DOMAIN ), '</label></th>';
-			echo '<td>', self::text_input_field( 'footballpool_user_label', $user_label, '', 'edit_users' );
-			if ( current_user_can( 'edit_users' ) ) {
-				echo ' <span class="description">', __( 'Extra meta information for the user. If filled this will be shown behind the user\'s name on the ranking page and ranking shortcode.', FOOTBALLPOOL_TEXT_DOMAIN ), '</span>';
-			}
-			echo '</td></tr>';
-			
 			echo '</table>';
 		}
 	}

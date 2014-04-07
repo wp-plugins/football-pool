@@ -558,31 +558,6 @@ class Football_Pool {
 		}
 	}
 	
-	// display a user's name including an optional label
-	public function user_name( $id, $return = 'all' ) {
-		$name = get_the_author_meta( 'display_name', $id );
-		$label = get_the_author_meta( 'footballpool_user_label', $id );
-		$wrap = sprintf( '<span class="user-label"> (%s)</span>', $label );
-		
-		$output = '';
-		switch ( $return ) {
-			case 'label':
-				if ( $label != '' ) $output = $wrap;
-				break;
-			case 'label-only':
-				$output = $label;
-				break;
-			case 'name':
-				$output = $name;
-				break;
-			case 'all':
-				$output = $name;
-				if ( $label != '' ) $output .= $wrap;
-		}
-		
-		return $output;
-	}
-	
 	public static function admin_notice() {
 		if ( ! is_admin() || ! current_user_can( 'install_plugins' ) ) return;
 		

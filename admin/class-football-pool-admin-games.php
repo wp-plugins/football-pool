@@ -401,14 +401,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function get_matches_for_page( $all_matches, $offset, $number ) {
-		$matches = array();
-		foreach( $all_matches as $match ) {
-			
-		}
-		return $matches;
-	}
-	
 	private function view() {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->matches;
@@ -442,6 +434,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		echo '</span></p>';
 		$pagination->show();
 		self::print_matches( $rows );
+		// $pagination->show();
 		submit_button();
 	}
 	
@@ -630,7 +623,11 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$matchtype = '';
 		
 		if ( ! is_array( $rows ) || count( $rows ) == 0 ) {
-			echo '<div class="no-matches-notice"><img src="' . FOOTBALLPOOL_PLUGIN_URL . 'assets/admin/images/matches-import-here.png" alt="import a new schedule here" title="import a new schedule here"></div>';
+			printf( '<div class="no-matches-notice"><img src="%sassets/admin/images/matches-import-here.png" alt="%s" title="%s"></div>'
+				, FOOTBALLPOOL_PLUGIN_URL
+				, __( 'import a new schedule here', FOOTBALLPOOL_TEXT_DOMAIN )
+				, __( 'import a new schedule here', FOOTBALLPOOL_TEXT_DOMAIN )
+			);
 		} else {
 			echo '<table id="matchinfo" class="wp-list-table widefat matchinfo"><tbody id="the-list">';
 			foreach( $rows as $row ) {
@@ -664,7 +661,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				$confirm .= ' ' . __( "Are you sure? `OK` to delete, `Cancel` to stop.", FOOTBALLPOOL_TEXT_DOMAIN );
 				echo '<tr class="match-row match-', $row['id'], '">',
 						'<td class="time column-match-id">', $row['id'], self::hidden_input( "_match_id_{$row['id']}", $row['id'], 'return' ), '</td>',
-						'<td class="time local column-localtime">', $localdate->format( 'Y-m-d H:i' ), '<br><div class="row-actions"><span class="edit"><a href="', $page, '&amp;action=edit">', __( 'Edit' ), '</a></span><span class="delete"><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'Delete' ), '</a></span></div></td>',
+						'<td class="time local column-localtime">', $localdate->format( 'Y-m-d H:i' ), '<br><div class="row-actions"><span class="edit"><a href="', $page, '&amp;action=edit">', __( 'Edit' ), '</a></span> | <span class="delete"><a onclick="return confirm( \'', $confirm, '\' )" href="', $page, '&amp;action=delete">', __( 'Delete' ), '</a></span></div></td>',
 						'<td class="time UTC column-utctime" title="', __( 'change match time', FOOTBALLPOOL_TEXT_DOMAIN ), '">', self::show_input( '_match_date_' . $row['id'], $matchdate, 16, '' ), '</td>',
 						'<td class="home column-home">', self::teamname_input( (int) $row['home_team_id'], '_home_team_'.$row['id'] ), '</td>',
 						'<td class="score column-home-score">', self::show_input( '_home_score_' . $row['id'], $row['home_score'] ), '</td>',

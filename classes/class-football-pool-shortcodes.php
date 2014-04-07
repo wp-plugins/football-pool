@@ -23,7 +23,7 @@ add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) 
 add_shortcode( 'fp-money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
 add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
 
-// deprecated shortcodes
+// removed shortcodes
 // add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 // add_shortcode( 'webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
 // add_shortcode( 'bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
@@ -38,7 +38,7 @@ class Football_Pool_Shortcodes {
 	private static function date_helper( $date ) {
 		if ( $date == 'postdate' ) {
 			$the_date = get_the_date( 'Y-m-d H:i' );
-		} elseif ( ( $the_date = date_create( $date ) ) !== false ) {
+		} elseif ( $date != 'now' && ( $the_date = date_create( $date ) ) !== false ) {
 			$the_date = $the_date->format( 'Y-m-d H:i' );
 		} else {
 			$the_date = '';
@@ -91,7 +91,7 @@ class Football_Pool_Shortcodes {
 					} elseif ( $info == 'playernames' ) {
 						$output = '<ul class="fp-player-list shortcode">';
 						foreach ( $rows as $row ) {
-							$output .= '<li>' . $row['user_name'] . '</li>';
+							$output .= '<li>' . $pool->user_name( $row['user_id'] ) . '</li>';
 						}
 						$output .= '</ul>';
 					}
@@ -413,13 +413,12 @@ class Football_Pool_Shortcodes {
 				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
 				$output .= sprintf( '<tr class="%s">
 										<td>%d.</td>
-										<td><a href="%s">%s</a>%s</td>
+										<td><a href="%s">%s</a></td>
 										%s<td class="score">%d</td></tr>'
 									, $class
 									, $row['ranking']
 									, $url
-									, $row['user_name']
-									, Football_Pool::user_name( $row['user_id'], 'label' )
+									, $pool->user_name( $row['user_id'] )
 									, $num_predictions
 									, $row['points']
 							);
@@ -534,24 +533,28 @@ class Football_Pool_Shortcodes {
 	
 	//[fp-webmaster]
 	public static function shortcode_webmaster( $atts ) {
+		trigger_error( 'Shortcode [fp-webmaster] is deprecated as of Football Pool v2.4.0. Do not use anymore.', E_USER_NOTICE );
 		$output = Football_Pool_Utils::get_fp_option( 'webmaster' );
 		return apply_filters( 'footballpool_shortcode_html_fp-webmaster', $output );
 	}
 
 	//[fp-bank]
 	public static function shortcode_bank( $atts ) {
+		trigger_error( 'Shortcode [fp-bank] is deprecated as of Football Pool v2.4.0. Do not use anymore.', E_USER_NOTICE );
 		$output = Football_Pool_Utils::get_fp_option( 'bank' );
 		return apply_filters( 'footballpool_shortcode_html_fp-bank', $output );
 	}
 
 	//[fp-money]
 	public static function shortcode_money( $atts ) {
+		trigger_error( 'Shortcode [fp-money] is deprecated as of Football Pool v2.4.0. Do not use anymore.', E_USER_NOTICE );
 		$output = Football_Pool_Utils::get_fp_option( 'money' );
 		return apply_filters( 'footballpool_shortcode_html_fp-money', $output );
 	}
 
 	//[fp-start]
 	public static function shortcode_start( $atts ) {
+		trigger_error( 'Shortcode [fp-start] is deprecated as of Football Pool v2.4.0. Do not use anymore.', E_USER_NOTICE );
 		$output = Football_Pool_Utils::get_fp_option( 'start' );
 		return apply_filters( 'footballpool_shortcode_html_fp-start', $output );
 	}

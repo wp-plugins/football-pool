@@ -201,6 +201,7 @@ span.username { color: #000; font-weight: bolder; }
 
 div.bonus { border-bottom: 1px solid #000; }
 div.bonus, p.bonus, input.bonus { width: 550px; }
+table.matchinfo div.bonus, table.matchinfo p.bonus, table.matchinfo input.bonus { width: 100%; }
 div.bonus.userview { margin-top: 1em; padding-bottom: .5em; }
 div.bonus.userview p { margin: 0; padding: 0; }
 div.bonus.userview span { color: #000; }

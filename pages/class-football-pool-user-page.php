@@ -23,12 +23,13 @@ class Football_Pool_User_Page {
 				$output .= '</div>';
 			}
 
+			$pool = new Football_Pool_Pool;
 			$matches = new Football_Pool_Matches;
 			$matches->disable_edits();
 
 			$output .= sprintf( '<p>%s <span class="username">%s</span>.</p>'
 								, __( 'Below are all the predictions for', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $user->display_name
+								, $pool->user_name( $user->ID )
 						);
 			if ( ! $matches->always_show_predictions ) {
 				$output .= sprintf( '<p>%s</p>'

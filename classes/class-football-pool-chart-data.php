@@ -50,14 +50,16 @@ class Football_Pool_Chart_Data {
 					GROUP BY s.user_id";
 			
 			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_MATCH ), ARRAY_A );
+			if ( count( $rows ) > 0 ) $pool = new Football_Pool_Pool;
 			foreach ( $rows as $row ) {
-				$data[ $row['user_name'] ] = array(
-													'scorefull'  => $row['scorefull'],
-													'scoretoto'  => $row['scoretoto'],
-													'scoretotal' => $row['scoretotal'],
-													'goalbonus' => $row['single_goal_bonus'],
-													'diffbonus' => $row['goal_diff_bonus'],
-												);
+				$user_name = $pool->user_name( $row['user_id'] );
+				$data[ $user_name ] = array(
+											'scorefull'  => $row['scorefull'],
+											'scoretoto'  => $row['scoretoto'],
+											'scoretotal' => $row['scoretotal'],
+											'goalbonus' => $row['single_goal_bonus'],
+											'diffbonus' => $row['goal_diff_bonus'],
+										);
 			}
 		}
 		
@@ -87,13 +89,13 @@ class Football_Pool_Chart_Data {
 					GROUP BY s.user_id";
 			
 			$rows = $wpdb->get_results( $wpdb->prepare( $sql, FOOTBALLPOOL_TYPE_QUESTION ), ARRAY_A );
-			
 			foreach ( $rows as $row ) {
-				$data[ $row['user_name'] ] = array(
-												'bonustotal'   => $numquestions,
-												'bonuscorrect' => $row['bonuscorrect'],
-												'bonuswrong'   => $row['bonuswrong']
-												);
+				$user_name = $pool->user_name( $row['user_id'] );
+				$data[ $user_name ] = array(
+											'bonustotal'   => $numquestions,
+											'bonuscorrect' => $row['bonuscorrect'],
+											'bonuswrong'   => $row['bonuswrong']
+											);
 			}
 		}
 		
@@ -151,9 +153,12 @@ class Football_Pool_Chart_Data {
 		$output['max_score'] = 0;
 		if ( $num_jokers > 0 ) {
 			// count first match(es) with joker
-			$output['max_score'] += $num_jokers * $full * Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
-			// all other matches
-			$output['max_score'] += ( $num_matches - $num_jokers ) * $full;
+			$joker_multiplier = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+			$output['max_score'] += $num_jokers * $full * $joker_multiplier;
+			// all other matches if there are matches left
+			if ( $num_matches - $num_jokers > 0 ) {
+				$output['max_score'] += ( $num_matches - $num_jokers ) * $full;
+			}
 		} else {
 			$output['max_score'] += $num_matches * $full;
 		}
@@ -189,23 +194,23 @@ class Football_Pool_Chart_Data {
 			$prefix = FOOTBALLPOOL_DB_PREFIX;
 			
 			$user_ids = implode( ',', $users );
-			$sql = $wpdb->prepare( "SELECT h.source_id, h.{$history_data_to_plot}, u.display_name, h.type 
+			$sql = $wpdb->prepare( "SELECT h.source_id, h.{$history_data_to_plot}, u.ID AS user_id, u.display_name, h.type 
 									FROM {$prefix}scorehistory h, {$wpdb->users} u 
 									WHERE h.ranking_id = %d AND u.ID = h.user_id 
 										AND h.user_id IN ( {$user_ids} )
 									ORDER BY h.score_date ASC, h.type ASC, h.source_id ASC, h.user_id ASC"
 									, $ranking_id
 								);
-								
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			if ( count( $rows ) > 0 ) $pool = new Football_Pool_Pool;
 			foreach ( $rows as $row ) {
 				$data[] = array(
 								'match'    => $row['source_id'],
 								'type'     => $row['type'],
 								'value'    => $row[$history_data_to_plot],
-								'user_name' => $row['display_name']
-								);
+								'user_name' => $pool->user_name( $row['user_id'] )
+							);
 			}
 		}
 		
@@ -299,6 +304,11 @@ class Football_Pool_Chart_Data {
 	}
 	
 	private function per_match_line_series( $lines ) {
+		$output = array(
+						'categories' => array(), 
+						'series' => array()
+						);
+		
 		if ( count( $lines ) > 0 ) {
 			$match_obj = new Football_Pool_Matches;
 			$categoriesdata = array();
@@ -339,11 +349,6 @@ class Football_Pool_Chart_Data {
 			$output = array(
 							'categories' => $categoriesdata, 
 							'series' => $seriesdata
-							);
-		} else {
-			$output = array(
-							'categories' => array(), 
-							'series' => array()
 							);
 		}
 		

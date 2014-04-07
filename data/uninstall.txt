@@ -16,4 +16,5 @@ DROP TABLE IF EXISTS `{$prefix}rankings`;
 DROP TABLE IF EXISTS `{$prefix}rankings_matches`;
 DROP TABLE IF EXISTS `{$prefix}rankings_bonusquestions`;
 DROP TABLE IF EXISTS `{$prefix}rankings_updatelog`;
-DROP TABLE IF EXISTS `{$prefix}predictions_updatelog`;
+DROP TABLE IF EXISTS `{$prefix}user_updatelog_matches`;
+DROP TABLE IF EXISTS `{$prefix}user_updatelog_questions`;

@@ -461,29 +461,28 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				update ranking order for users
 			*/
 				$offset = FOOTBALLPOOL_RECALC_STEP6_DIV * ( $sub_step - 1 );
-				$sql = $wpdb->prepare( "SELECT score_date, type FROM {$prefix}scorehistory 
-										WHERE ranking_id = %d GROUP BY score_date, type
+				$sql = $wpdb->prepare( "SELECT score_order FROM {$prefix}scorehistory 
+										WHERE ranking_id = %d GROUP BY score_order
 										LIMIT %d, %d"
 										, $ranking_id
 										, $offset, FOOTBALLPOOL_RECALC_STEP6_DIV );
-				$ranking_dates = $wpdb->get_results( $sql, ARRAY_A );
+				$ranking_order_nrs = $wpdb->get_col( $sql );
 				
-				if ( is_array( $ranking_dates ) && count( $ranking_dates ) > 0 ) {
+				if ( is_array( $ranking_order_nrs ) && count( $ranking_order_nrs ) > 0 ) {
 					$params['step'] = 6;
 					$sub_step++;
 					
-					foreach ( $ranking_dates as $ranking_date ) {
-						$sql = self::get_ranking_order( $pool->has_leagues, $ranking_id, $ranking_date['score_date'] );
+					foreach ( $ranking_order_nrs as $order_nr ) {
+						$sql = self::get_ranking_order( $pool->has_leagues, $ranking_id, $order_nr );
 						$ranking_result = $wpdb->get_results( $sql, ARRAY_A );
 						$rank = 1;
 						foreach ( $ranking_result as $ranking_row ) {
-							$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d 
-													WHERE user_id = %d AND type = %d AND score_date = %s 
+							$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory SET ranking = %d
+													WHERE user_id = %d AND score_order = %d
 													AND ranking_id = %d"
 													, $rank++
 													, $ranking_row['user_id']
-													, $ranking_date['type']
-													, $ranking_date['score_date']
+													, $order_nr
 													, $ranking_id
 											);
 							$result = $wpdb->query( $sql );
@@ -636,7 +635,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 	private function get_ranking_order( 
 									$has_leagues,
 									$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
-									$score_date = '' ) {
+									$score_order = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -653,7 +652,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			$sql .= "LEFT OUTER JOIN {$prefix}league_users lu ON ( lu.user_id = u.ID ) ";
 		}
 		$sql .= "LEFT OUTER JOIN {$prefix}scorehistory s ON 
-					( s.user_id = u.ID AND s.ranking_id = %d AND s.score_date <= %s ) ";
+					( s.user_id = u.ID AND s.ranking_id = %d AND s.score_order <= %d ) ";
 		$sql .= "WHERE s.ranking_id IS NOT NULL ";
 		if ( ! $has_leagues ) $sql .= "AND ( lu.league_id > 0 OR lu.league_id IS NULL ) ";
 		$sql .= "GROUP BY u.ID
@@ -661,7 +660,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				. ( $has_leagues ? "lu.league_id ASC, " : "" ) 
 				. "LOWER( u.display_name ) ASC";
 		
-		$sql = $wpdb->prepare( $sql, $ranking_id, $score_date );
+		$sql = $wpdb->prepare( $sql, $ranking_id, $score_order );
 		return $sql;
 	}
 }

@@ -133,7 +133,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				printf( '<td><a href="%s">%s%s</a></td>'
 						, $url
 						, $pool->get_avatar( $row['user_id'], 'small' )
-						, $row["user_name"] 
+						, $pool->user_name( $row['user_id'] )
 				);
 				echo $num_predictions;
 				do_action( 'footballpool_ranking_widget_before_points', $row['user_id'], $instance );

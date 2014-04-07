@@ -4,7 +4,7 @@
 <strong>The text below is an example for such a page.</strong>
 
 <h3>Subscription</h3>
-Subscription for the pool is easy. All you have to do is think of a login name and a valid email address. If you lost your password, you can generate a new one. Or ask the <a href="mailto:[fp-webmaster]">webmaster</a>
+Subscription for the pool is easy. All you have to do is think of a login name and a valid email address. If you lost your password, you can generate a new one. Or ask the webmaster.
 
 <h3>Predicting the matches</h3>
 Predict the end score of all the matches in the tournament/competition. You have until 15 minutes before the start of a match to add or change your prediction.

@@ -81,7 +81,7 @@ class Football_Pool_Statistics_Page {
 												, $row['user_id']
 												, ( $selected ? 'checked="checked" ' : '' )
 												, $pool->get_avatar( $row['user_id'], 'small' )
-												, $row['user_name']
+												, $pool->user_name( $row['user_id'] )
 										);
 					}
 					$user_selector .= '</ol></div>';
@@ -148,6 +148,8 @@ class Football_Pool_Statistics_Page {
 					$user_info = get_userdata( $user );
 					$output .= $stats->show_user_info( $user_info );
 					if ( $stats->stats_visible ) {
+						$pool = new Football_Pool_Pool;
+						
 						// can't use esc_url() here because it also strips the square brackets from users[]
 						$url = add_query_arg( 
 												array( 
@@ -159,12 +161,11 @@ class Football_Pool_Statistics_Page {
 						$txt = __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN );
 						$output .= sprintf( "<p><a href='%s'>{$txt}</a></p>"
 											, $url
-											, $user_info->display_name
+											, $pool->user_name( $user_info->ID )
 									);
 						
 						$output .= $this->settings_panel( $ranking_selector );
 						
-						$pool = new Football_Pool_Pool;
 						$pool->get_bonus_questions_for_user( $user );
 						// chart 1: pie, what did the players score with the match predictions?
 						$raw_data = $chart_data->score_chart_data( array( $user ), $ranking );
@@ -276,7 +277,7 @@ class Football_Pool_Statistics_Page {
 						}
 					}
 				default:
-					// chart 2: scoreverloop
+					// chart 2: points over time
 					if ( count( $users ) >= 1 ) {
 						$output .= '<br class="clear" />';
 						$raw_data = $chart_data->score_per_match_line_chart_data( $users, $ranking );

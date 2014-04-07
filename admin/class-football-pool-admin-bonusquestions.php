@@ -277,18 +277,28 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', '' ), 
 					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ) . '<br/><span style="font-size:80%">(' . __( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . self::example_date() . ')</span>', 'lastdate', ''), 
 					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">('.__( 'e.g.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . self::example_date() . ')</span>', 'scoredate', '' ), 
-					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' )
+					array( 'text', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', '' ),
+					array( 'text', __( 'linked to match', FOOTBALLPOOL_TEXT_DOMAIN ), 'match', '' )
 				);
 		
 		$rows = array();
 		if ( is_array( $questions) ) {
 			foreach( $questions as $question ) {
+				if ( $question['match_id'] > 0 ) {
+					$match = sprintf( '<a href="?page=footballpool-games&item_id=%d&action=edit">%d &gt;&gt;</a>'
+										, $question['match_id']
+										, $question['match_id']
+								);
+				} else {
+					$match = '';
+				}
 				$rows[] = array(
 							$question['question'], 
 							$question['points'], 
 							Football_Pool_Utils::date_from_gmt( $question['answer_before_date'] ), 
 							Football_Pool_Utils::date_from_gmt( $question['score_date'] ), 
 							$question['answer'],
+							$match,
 							$question['id']
 						);
 			}

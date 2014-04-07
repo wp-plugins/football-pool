@@ -4,4 +4,6 @@ ALTER TABLE  `{$prefix}scorehistory` ADD `ranking_id2` INT UNSIGNED NOT NULL FIR
 UPDATE `{$prefix}scorehistory` SET ranking_id2 = ranking_id;
 ALTER TABLE  `{$prefix}scorehistory` DROP `ranking_id`;
 ALTER TABLE  `{$prefix}scorehistory` CHANGE `ranking_id2` `ranking_id` INT( 10 ) UNSIGNED NOT NULL;
+ALTER TABLE  `{$prefix}scorehistory` ADD INDEX (  `score_order` ) ;
 ALTER TABLE  `{$prefix}rankings` ADD `calculate` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+ALTER TABLE  `{$prefix}bonusquestions` CHANGE `answer` `answer` TEXT NOT NULL;

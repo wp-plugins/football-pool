@@ -101,7 +101,7 @@ class Football_Pool_Matches {
 		return $order;
 	}
 	
-	private function matches_query( $where_clause = '' ) {
+	private function matches_query( $extra = '' ) {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sorting = $this->get_match_sorting_method();
 		
@@ -115,7 +115,7 @@ class Football_Pool_Matches {
 				FROM {$prefix}matches m
 				JOIN {$prefix}stadiums s ON ( m.stadium_id = s.id )
 				JOIN {$prefix}matchtypes t ON ( m.matchtype_id = t.id AND t.visibility = 1 )
-				{$where_clause}
+				{$extra}
 				ORDER BY {$sorting}";
 	}
 	
@@ -143,10 +143,6 @@ class Football_Pool_Matches {
 			
 			$match_info = array();
 			$teams = new Football_Pool_Teams;
-			
-			$linked_questions = array();
-			$sql = "SELECT COUNT( * ) FROM {$prefix}bonusquestions WHERE match_id > 0";
-			$linked_questions_present = ( $wpdb->get_var( $sql ) > 0 );
 			
 			$rows = $wpdb->get_results( $this->matches_query(), ARRAY_A );
 			
@@ -181,12 +177,25 @@ class Football_Pool_Matches {
 				$match_info[$i]['match_type_id'] = (int) $row['match_type_id'];
 				$match_info[$i]['match_type'] = $row['matchtype'];
 				$match_info[$i]['matchtype'] = $row['matchtype'];
-				
-				if ( $linked_questions_present ) {
-					$sql = $wpdb->prepare( "SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d", $row['id'] );
-					$linked_questions = $wpdb->get_col( $sql );
+				$match_info[$i]['linked_questions'] = null;
+			}
+			
+			// get linked questions
+			$sql = "SELECT id, match_id FROM {$prefix}bonusquestions WHERE match_id > 0";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			if ( $rows ) {
+				$match_id = 0;
+				foreach ( $rows as $row ) {
+					if ( (int) $row['match_id'] != $match_id ) {
+						if ( $match_id > 0 ) {
+							$match_info[$match_id]['linked_questions'] = $question_ids;
+						}
+						$question_ids = array();
+						$match_id = (int) $row['match_id'];
+					}
+					$question_ids[] = (int) $row['id'];
 				}
-				$match_info[$i]['linked_questions'] = $linked_questions;
+				$match_info[$match_id]['linked_questions'] = $question_ids;
 			}
 			
 			$match_info = apply_filters( 'footballpool_matches', $match_info );

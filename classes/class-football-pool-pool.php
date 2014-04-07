@@ -11,11 +11,10 @@ class Football_Pool_Pool {
 	public $show_avatar = false;
 	private $pool_has_jokers;
 	public $responsive_layout;
+	public $pool_id = 1;
+	public $pool_users; // array of users in a pool
 	
 	public function __construct() {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
 		$this->responsive_layout = Football_Pool_Utils::get_fp_option( 'responsive_layout', 1, 'int' );
 		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
 		$this->pool_has_jokers = ( $this->num_jokers > 0 );
@@ -36,14 +35,48 @@ class Football_Pool_Pool {
 		
 		// override hiding of predictions for editable questions?
 		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
+		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 		
 		$matches = new Football_Pool_Matches;
 		$this->has_matches = $matches->has_matches;
+		$this->has_bonus_questions = ( $this->get_number_of_bonusquestions() > 0 );
 		
-		$sql = "SELECT COUNT( * ) FROM {$prefix}bonusquestions";
-		$this->has_bonus_questions = ( $wpdb->get_var( $sql ) > 0 );
+		$this->pool_users = $this->get_pool_user_info( $this->pool_id );
+	}
+	
+	public function user_name( $user_id ) {
+		return $this->user_info( $user_id, 'display_name' );
+	}
+	
+	public function user_email( $user_id ) {
+		return $this->user_info( $user_id, 'email' );
+	}
+	
+	private function user_info( $user_id, $info ) {
+		if ( array_key_exists( $user_id, $this->pool_users ) ) {
+			return apply_filters( "footballpool_user_info_{$info}", $this->pool_users[$user_id][$info] );
+		} else {
+			return __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+		}
+	}
+	
+	private function get_pool_user_info( $pool_id ) {
+		$cache_key = "fp_user_info_pool_{$pool_id}";
+		$user_info = wp_cache_get( $cache_key );
+		if ( $user_info === false ) {
+			$rows = $this->get_users( 0 );
+			$user_info = array();
+			foreach ( $rows as $row ) {
+				$user_info[$row['user_id']] = array(
+												'user_id' => $row['user_id'],
+												'display_name' => $row['user_name'],
+												'user_email' => $row['email'],
+												);
+			}
+			wp_cache_set( $cache_key, $user_info );
+		}
 		
-		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
+		return $user_info;
 	}
 	
 	private function is_toto_result($home, $away, $user_home, $user_away ) {
@@ -113,12 +146,12 @@ class Football_Pool_Pool {
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		if ( $this->has_leagues ) {
-			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
+			$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}league_users lu
 									INNER JOIN {$wpdb->users} u ON ( u.ID = lu.user_id )
 									WHERE u.ID = %d AND lu.league_id <> 0"
 									, $user_id );
 		} else {
-			$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}league_users lu
+			$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}league_users lu
 									RIGHT OUTER JOIN {$wpdb->users} u ON ( u.ID = lu.user_id )
 									WHERE u.ID = %d AND ( lu.league_id <> 0 OR lu.league_id IS NULL )"
 									, $user_id );
@@ -150,7 +183,7 @@ class Football_Pool_Pool {
 						sprintf( "SELECT total_score FROM {$prefix}scorehistory 
 								WHERE user_id = %%d AND ranking_id = %%d 
 								AND ( %s score_date <= %%s )
-								ORDER BY score_date DESC LIMIT 1"
+								ORDER BY score_order DESC LIMIT 1"
 								, ( $score_date == '' ? '1 = 1 OR' : '' ) 
 						) , $user, $ranking_id, $score_date );
 		return $wpdb->get_var( $sql ); // return null if nothing found
@@ -164,7 +197,7 @@ class Football_Pool_Pool {
 						sprintf( "SELECT ranking FROM {$prefix}scorehistory 
 								WHERE user_id = %%d AND ranking_id = %%d 
 								AND ( %s score_date <= %%s )
-								ORDER BY score_date DESC LIMIT 1"
+								ORDER BY score_order DESC LIMIT 1"
 								, ( $score_date == '' ? '1 = 1 OR' : '' ) 
 						) , $user, $ranking_id, $score_date );
 		return $wpdb->get_var( $sql ); // return null if nothing found
@@ -291,7 +324,7 @@ class Football_Pool_Pool {
 					FROM {$prefix}bonusquestions_useranswers p
 					{$users} GROUP BY p.user_id";
 		} else {
-			$sql = "SELECT p.user_id, COUNT(*) AS num_predictions 
+			$sql = "SELECT p.user_id, COUNT( * ) AS num_predictions 
 					FROM {$prefix}bonusquestions_useranswers p
 					JOIN {$prefix}rankings_bonusquestions r ON 
 						( r.question_id = p.question_id AND r.ranking_id = {$ranking_id} ) 
@@ -380,15 +413,14 @@ class Football_Pool_Pool {
 					$num_predictions = '';
 				}
 				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
-									<td><a href="%s">%s%s</a>%s</td>
+									<td><a href="%s">%s%s</a></td>
 									%s<td class="ranking score">%d</td>%s
 									</tr>',
 								$class,
 								$row['ranking'],//$i++,
 								esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
 								$this->get_avatar( $row['user_id'], 'medium' ),
-								$row['user_name'],
-								Football_Pool::user_name( $row['user_id'], 'label' ),
+								$this->user_name( $row['user_id'] ),
 								$num_predictions,
 								$row['points'],
 								( $all_user_view ? $this->league_image( $row['league_id'] ) : '' )
@@ -589,6 +621,20 @@ class Football_Pool_Pool {
 		}
 		
 		return $questions;
+	}
+	
+	private function get_number_of_bonusquestions() {
+		$cache_key = 'fp_num_questions';
+		$num_questions = wp_cache_get( $cache_key );
+		if ( $num_questions === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = "SELECT COUNT( * ) FROM {$prefix}bonusquestions";
+			$num_questions = $wpdb->get_var( $sql );
+			wp_cache_set( $cache_key, $num_questions );
+		}
+		
+		return $num_questions;
 	}
 	
 	// returns array of questions
@@ -879,17 +925,52 @@ class Football_Pool_Pool {
 	private function update_bonus_user_answers( $questions, $answers, $user ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$log_time = current_time( 'mysql' );
+		
+		// first get the user's previous answers to questions
+		$previous_answers = array();
+		$sql = $wpdb->prepare( "SELECT question_id, answer 
+								FROM {$prefix}bonusquestions_useranswers WHERE user_id = %d ORDER BY question_id ASC", $user );
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		foreach ( $rows as $row ) {
+			$previous_answers[$row['question_id']] = $row['answer'];
+		}
 		
 		foreach ( $questions as $question ) {
-			if ( $this->question_is_editable( $question['question_timestamp'] ) && $answers[$question['id']] != '') {
-				$sql = $wpdb->prepare( "REPLACE INTO {$prefix}bonusquestions_useranswers 
-										SET user_id = %d,
-											question_id = %d,
-											answer = %s,
-											points = 0",
-										$user, $question['id'], $answers[$question['id']]
-									);
-				$wpdb->query( $sql );
+			$log = false;
+			$do_update = true;
+			$question_id = $question['id'];
+			$answer = $answers[$question_id];
+			
+			if ( $this->question_is_editable( $question['question_timestamp'] ) && $answer != '' ) {
+				$do_update = apply_filters( 'footballpool_prediction_update_question', $do_update, $user, $question_id, $answer );
+				if ( $do_update ) {
+					if ( array_key_exists( $question_id, $previous_answers ) ) {
+						// question exists in previous answers, check if user wants to change the answer
+						if ( $previous_answers[$question_id] != $answer ) {
+							$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers SET answer = %s, points = 0
+													WHERE user_id = %d AND question_id = %d"
+													, $answer, $user, $question_id );
+							$log = ( $wpdb->query( $sql ) > 0 );
+						}
+					} else {
+						// no answer yet, insert it
+						$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_useranswers 
+													( user_id, question_id, answer )
+												VALUES ( %d, %d, %s )" 
+												, $user, $question_id, $answer );
+						$log = ( $wpdb->query( $sql ) > 0 );
+					}
+				
+					if ( $log ) {
+						do_action( 'footballpool_prediction_save_question', $user, $question_id, $answer );
+						$sql = $wpdb->prepare( "INSERT INTO {$prefix}user_updatelog_questions
+													( user_id, question_id, answer, prediction_date )
+												VALUES ( %d, %d, %s, %s )"
+												, $user, $question_id, $answer, $log_time );
+						$wpdb->query( $sql );
+					}
+				}
 			}
 		}
 	}
@@ -924,10 +1005,9 @@ class Football_Pool_Pool {
 			$joker = $this->get_joker();
 		}
 		
-		// first get the old values for this user
-		// matches
+		// first get the old predictions for this user
 		$match_predictions = array();
-		$sql = $wpdb->prepare( "SELECT user_id, match_id, home_score, away_score, has_joker 
+		$sql = $wpdb->prepare( "SELECT match_id, home_score, away_score, has_joker 
 								FROM {$prefix}predictions WHERE user_id = %d ORDER BY match_id ASC", $user );
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		foreach ( $rows as $row ) {
@@ -937,10 +1017,6 @@ class Football_Pool_Pool {
 														'has_joker' => $row['has_joker'],
 													);
 		}
-		// questions
-		$question_answers = array();
-		
-		
 		
 		// update predictions for all matches
 		foreach ( $matches->matches as $row ) {
@@ -966,8 +1042,7 @@ class Football_Pool_Pool {
 															home_score = %d, away_score = %d, has_joker = %d
 														WHERE user_id = %d AND match_id = %d"
 														, $home, $away, $set_joker, $user, $match );
-								$wpdb->query( $sql );
-								$log = true;
+								$log = ( $wpdb->query( $sql ) > 0 );
 							}
 						} else {
 							// no prediction yet, insert the prediction
@@ -975,8 +1050,7 @@ class Football_Pool_Pool {
 														( user_id, match_id, home_score, away_score, has_joker )
 													VALUES ( %d, %d, %d, %d, %d )"
 													, $user, $match, $home, $away, $set_joker );
-							$wpdb->query( $sql );
-							$log = true;
+							$log = ( $wpdb->query( $sql ) > 0 );
 						}
 					} else {
 						// fix for the multiple-joker-bug
@@ -990,7 +1064,7 @@ class Football_Pool_Pool {
 					
 					if ( $log ) {
 						do_action( 'footballpool_prediction_save_match', $user, $match, $home, $away, $set_joker );
-						$sql = $wpdb->prepare( "INSERT INTO {$prefix}predictions_updatelog 
+						$sql = $wpdb->prepare( "INSERT INTO {$prefix}user_updatelog_matches
 													( user_id, match_id, home_score, away_score, has_joker, prediction_date )
 												VALUES ( %d, %d, %d, %d, %d, %s )"
 												, $user, $match, $home, $away, $set_joker, $log_time );
@@ -1000,7 +1074,7 @@ class Football_Pool_Pool {
 			}
 		}
 		
-		// update bonusquestions
+		// prepare the answers for the bonusquestions update
 		$questions = $this->get_bonus_questions();
 		if ( $this->has_bonus_questions ) {
 			$answers = array();
@@ -1015,7 +1089,7 @@ class Football_Pool_Pool {
 								array_pop( $user_answers );
 							}
 						}
-						$answers[ $question['id'] ] = implode( ';', $user_answers );
+						$answers[$question['id']] = implode( ';', $user_answers );
 						break;
 					case 1: // text
 					case 2: // multiple 1
@@ -1025,9 +1099,10 @@ class Football_Pool_Pool {
 				
 				// add user input to answer (for multiple choice questions) if there is some input
 				$user_input = Football_Pool_Utils::post_string( '_bonus_' . $question['id'] . '_userinput' );
-				if ( $user_input != '' )
-					$answers[$question['id']] .= " {$user_input}";
+				if ( $user_input != '' ) $answers[$question['id']] .= " {$user_input}";
 			}
+			
+			// update bonus questions
 			$this->update_bonus_user_answers( $questions, $answers, $user );
 		}
 		

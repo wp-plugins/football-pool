@@ -22,7 +22,7 @@ class Football_Pool_Statistics {
 		
 		$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT;
 		$single_match = ( $match > 0 ) ? '' : '--';
-		$sql = $wpdb->prepare( sprintf( "SELECT COUNT(*) FROM {$prefix}scorehistory 
+		$sql = $wpdb->prepare( sprintf( "SELECT COUNT( * ) FROM {$prefix}scorehistory 
 								WHERE ranking_id = %%d %s AND type = 0 AND source_id = %%d", $single_match )
 								, $ranking_id, $match
 							);
@@ -41,7 +41,8 @@ class Football_Pool_Statistics {
 	
 	public function show_user_info( $user ) {
 		if ( $user ) {
-			$output = sprintf( '<h1>%s</h1>', $user->display_name );
+			$pool = new Football_Pool_Pool;
+			$output = sprintf( '<h1>%s</h1>', $pool->user_name( $user->ID ) );
 			$this->stats_visible = true;
 		} else {
 			$output = sprintf( '<p>%s</p>', __( 'User unknown.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -151,10 +152,9 @@ class Football_Pool_Statistics {
 		
 		$sql = "SELECT
 					m.home_team_id, m.away_team_id, 
-					p.home_score, p.away_score, p.has_joker, u.ID AS user_id, ";
-		$sql .= ( $pool->has_leagues ? "l.id AS league_id, " : "" );
-		$sql .= "	u.display_name AS user_name
-				FROM {$prefix}matches m 
+					p.home_score, p.away_score, p.has_joker, u.ID AS user_id, u.display_name AS user_name ";
+		if ( $pool->has_leagues ) $sql .= ", l.id AS league_id ";
+		$sql .= "FROM {$prefix}matches m 
 				LEFT OUTER JOIN {$prefix}predictions p 
 					ON ( p.match_id = m.id AND m.id = %d ) 
 				RIGHT OUTER JOIN {$wpdb->users} u 
@@ -186,7 +186,7 @@ class Football_Pool_Statistics {
 			foreach ( $rows as $row ) {
 				$output .= sprintf( '<tr><td><a href="%s">%s</a></td>',
 									esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
-									$row['user_name']
+									$pool->user_name( $row['user_id'] )
 							);
 				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',
 									$row['home_score'],

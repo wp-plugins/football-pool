@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `{$prefix}predictions_updatelog` (
+CREATE TABLE IF NOT EXISTS `{$prefix}user_updatelog_matches` (
   `user_id` int(10) unsigned NOT NULL,
   `match_id` int(10) unsigned NOT NULL,
   `home_score` tinyint(3) unsigned DEFAULT NULL,
@@ -9,10 +9,19 @@ CREATE TABLE IF NOT EXISTS `{$prefix}predictions_updatelog` (
   KEY `user_id` (`user_id`)
 ) DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `{$prefix}user_updatelog_questions` (
+  `user_id` int(10) unsigned NOT NULL,
+  `question_id` int(10) unsigned NOT NULL,
+  `answer` text NOT NULL,
+  `prediction_date` datetime NOT NULL,
+  KEY `user_question` (`user_id`,`question_id`),
+  KEY `user_id` (`user_id`)
+) DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `{$prefix}bonusquestions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `question` text NOT NULL,
-  `answer` varchar(200) NOT NULL DEFAULT '',
+  `answer` text NOT NULL DEFAULT '',
   `points` smallint(5) unsigned NOT NULL DEFAULT '0',
   `answer_before_date` datetime NOT NULL,
   `score_date` datetime DEFAULT NULL,

@@ -199,11 +199,14 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * New shortcode: display info from a league with [fp-league-info].
 * Changed shortcode: [fp-predictionform] will no longer display a form when the visitor is not logged in.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
+* Removed user_label functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the 'footballpool_user_info_display_name' filter, which makes it more extensible.
+* Reduced the number of queries when linked questions are used.
 * New favicon and touch icons in the 2014 World Cup style.
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).
 * Bug fix: multiple ranking widgets always showed the same ranking (thanks oswaldine for reporting the bug).
+* Bug fix: [fp-user-score] sometimes returned an incorrect score (thanks sillery4ever for reporting the bug).
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.
