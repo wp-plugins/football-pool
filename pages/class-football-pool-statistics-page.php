@@ -322,7 +322,7 @@ class Football_Pool_Statistics_Page {
 														jQuery.each( this.points, function ( i, point ) {
 															s += '<b style=\"color:' + point.series.color + '\">' 
 																+ point.series.name + '</b>: ' 
-																+ add_ordinal_suffix( point.y, {$ordinal_suffixes} ) 
+																+ FootballPool.add_ordinal_suffix( point.y, {$ordinal_suffixes} ) 
 																+ ' {$txt}<br>';
 														} );
 														return s;

@@ -21,11 +21,5 @@ jQuery( document ).ready( function() {
 	}
 	
 	// user selection on the statistics page
-	footballpool_line_chart_control();
+	FootballPool.charts_user_toggle();
 } );
-
-function footballpool_line_chart_control() {
-	jQuery( "input:checkbox", "ol.userselector" ).bind( "click", function() {
-		jQuery( this ).parent().parent().toggleClass( "selected" );
-	} );
-}

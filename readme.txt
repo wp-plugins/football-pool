@@ -163,7 +163,7 @@ Some themes prevent the plugin from displaying its content. See <a href="http://
 == Upgrade Notice ==
 
 = 2.4.0 =
-After upgrading to version 2.4.0, a full recalculation is needed. Please back up your database before updating!
+After upgrading to version 2.4.0, a full calculation is needed. Please back up your database before updating!
 
 = 2.3.0 =
 Please back up your database before updating! If you made changes to the plugin, also make a backup of your changes.
@@ -187,21 +187,23 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.4.0 =
-* **Important!** Changes were made in the scorehistory table. If you're upgrading from a previous version please do a full recalculation after the upgrade.
-* New HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
-* Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme css.
+* **Important!** Changes were made in the scorehistory table. If you're upgrading from a previous version please do a full calculation after the upgrade.
+* New: change the HTML template for the matches table, prediction form or ranking table via hooks. See help for details.
+* New: HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
+* Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme CSS.
 * Added option to custom rankings to exclude them from a recalculation.
-* Added prediction log that logs all prediction changes by users to a table.
 * New bonus question types: multiline text and dropdown.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
-* new option: (re)set the pages installed by the plugin (e.g. the matches page).
+* New option: (re)set the pages installed by the plugin (e.g. the matches page).
 * New shortcode: display info from a league with [fp-league-info].
 * Changed shortcode: [fp-predictionform] will no longer display a form when the visitor is not logged in.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
-* Removed user_label functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the 'footballpool_user_info_display_name' filter, which makes it more extensible.
-* Reduced the number of queries when linked questions are used.
+* Removed user_label functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the 'footballpool_user_info_display_name' filter.
+* Removed 'number of predictions' as an option for the ranking table. This functionality is now available as a template parameter in the new template structure. See the help page under the Actions and Filters section if you want the number of predictions back.
+* Reduced the number of queries on the frontend when linked questions are used.
 * New favicon and touch icons in the 2014 World Cup style.
+* Added prediction log that logs all prediction changes by users to a table (accessible via a database tool).
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).

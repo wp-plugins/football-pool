@@ -8,8 +8,8 @@ class Football_Pool_Admin_Feature_Pointers {
 		$version = '240';
 		self::add_pointer( $version
 							, 'resplayout'
-							, __( 'Responsive layout', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'A new layout option that is optimized for mobile devices.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Responsive layout'
+							, 'A new layout option that is optimized for mobile devices.'
 							, '#responsive_layout'
 						);
 		self::add_pointer( $version
@@ -19,70 +19,70 @@ class Football_Pool_Admin_Feature_Pointers {
 							, '#adminmenu'
 							, 'left'
 							, 'top'
-							, '<a href="admin.php?page=footballpool-options" onclick="calculate_score_history(); return false;">recalculate</a>.'
+							, '<a href="admin.php?page=footballpool-options" onclick="calculate_score_history(); return false;">recalculate now</a>.'
 						);
 		self::add_pointer( $version
 							, 'redirecturl'
-							, __( 'Page after registration', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'You can set the page where users must be redirected to after registration (and first time login).', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Page after registration'
+							, 'You can set the page where users must be redirected to after registration (and first time login).'
 							, '#redirect_url_after_login'
 						);
 		self::add_pointer( $version
 							, 'jokermultiplier'
-							, __( 'Joker multiplier', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'Alter the default multiplier for the joker.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Joker multiplier'
+							, 'Alter the default multiplier for the joker.'
 							, '#joker_multiplier'
 						);
 		// define the pointers for v2.3.0
 		$version = '230';
 		self::add_pointer( $version
 							, 'listingphotos'
-							, __( 'Extra layout options', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'Show photo\'s and/or info about your teams and venues in the listing on the teams and venues pages.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Extra layout options'
+							, 'Show photo\'s and/or info about your teams and venues in the listing on the teams and venues pages.'
 							, '.toplevel_page_footballpool-options #listing_show_team_thumb'
 						);
 		self::add_pointer( $version
 							, 'shortcode'
-							, __( 'New shortcodes', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'New shortcodes to display the score of a single user, to display the predictions for a match or question and to display a table of matches. Use the button in the toolbar to include them:', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'New shortcodes'
+							, 'New shortcodes to display the score of a single user, to display the predictions for a match or question and to display a table of matches. Use the button in the toolbar to include them:'
 							, '#wp-content-editor-container'
 							, 'middle', 'middle'
 							, sprintf( ' <img src="%sadmin/tinymce/footballpool-tinymce-16.png">', FOOTBALLPOOL_ASSETS_URL )
 						);
 		self::add_pointer( $version
 							, 'rankinglog'
-							, __( 'Ranking changes', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'The plugin keeps track of changes in the data that might affect the ranking. The changes are displayed in the log and this log is used for the new smart recalculation of the score table.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Ranking changes'
+							, 'The plugin keeps track of changes in the data that might affect the ranking. The changes are displayed in the log and this log is used for the new smart recalculation of the score table.'
 							, '.football-pool_page_footballpool-rankings #log-head'
 						);
 		self::add_pointer( $version
 							, 'keepdata'
-							, __( 'Keep data', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'Keep your data in the database when deactivating the plugin.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Keep data'
+							, 'Keep your data in the database when deactivating the plugin.'
 							, '#keep_data_on_uninstall'
 						);
 		self::add_pointer( $version
 							, 'pointstournament'
-							, __( 'Tournament / competition ranking', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'Change the points for wins and draws if your sport doesn\'t use the 3/1 point rule.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Tournament / competition ranking'
+							, 'Change the points for wins and draws if your sport doesn\'t use the 3/1 point rule.'
 							, '.toplevel_page_footballpool-options #team_points_win'
 						);
 		self::add_pointer( $version
 							, 'disablejokers'
-							, __( 'Disable jokers', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'You can completely disable jokers if you don\'t want to use them.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Disable jokers'
+							, 'You can completely disable jokers if you don\'t want to use them.'
 							, '.toplevel_page_footballpool-options #number_of_jokers'
 						);
 		self::add_pointer( $version
 							, 'goaldiffbonus'
-							, __( 'Goal difference bonus', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'A new scoring option: reward a player with a bonus if the correct difference in goals is predicted.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Goal difference bonus'
+							, 'A new scoring option: reward a player with a bonus if the correct difference in goals is predicted.'
 							, '.toplevel_page_footballpool-options #diffpoints'
 						);
 		self::add_pointer( $version
 							, 'linkedquestions'
-							, __( 'Linked questions', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'You can now link questions directly to a match.', FOOTBALLPOOL_TEXT_DOMAIN )
+							, 'Linked questions'
+							, 'You can now link questions directly to a match.'
 							, '.football-pool_page_footballpool-bonus #match_id'
 						);
 	}

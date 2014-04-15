@@ -19,7 +19,7 @@ class Football_Pool_Utils {
 	
 	public static function highlight_string( $str, $return = false, $class = 'block' ) {
 		$highlight = highlight_string( $str, true );
-		$highlight = preg_replace( '/<code>/i', "<code class='{$class}'>", $highlight );
+		$highlight = str_ireplace( '<code>', "<code class='{$class}'>", $highlight );
 		
 		if ( $return === true ) {
 			return $highlight;
@@ -32,18 +32,20 @@ class Football_Pool_Utils {
 	//	 input:             the string with %placeholders%
 	//	 params:            array of placeholders and texts
 	//                      format = array( 'placeholder' => 'text', ... )
-	//	 placeholder_delim: the char that identifies a placeholder, defaults to '%'
-	public static function placeholder_replace( $input, $params = array(), $placeholder_delim = '%' ) {
+	//	 placeholder_start: the char that identifies the start of a placeholder, defaults to '%'
+	//	 placeholder_end:   the char that identifies the end of a placeholder, defaults to '%'
+	public static function placeholder_replace( $input, $params = array()
+												, $placeholder_start = FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER
+												, $placeholder_end = FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER ) {
 		if ( count( $params ) > 0 ) {
 			foreach ( $params as $key => $val ) {
-				$input = str_replace( "{$placeholder_delim}{$key}{$placeholder_delim}"
-									, $val, $input );
+				$input = str_replace( "{$placeholder_start}{$key}{$placeholder_end}", $val, $input );
 			}
 		}
 		
 		return $input;
 	}
-
+	
 	public static function select( $id, $options, $selected_val, $name = '', $css_class = '' ) {
 		if ( $name == '' ) $name = $id;
 		

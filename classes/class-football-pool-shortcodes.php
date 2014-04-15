@@ -352,14 +352,11 @@ class Football_Pool_Shortcodes {
 					'num' => $default_num,
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'date' => 'now',
-					'show_num_predictions' => Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ),
 				), $atts ) );
 		
 		global $current_user;
 		get_currentuserinfo();
 		$pool = new Football_Pool_Pool;
-		
-		$userpage = Football_Pool::get_page_link( 'user' );
 		
 		if ( ! is_numeric( $num ) || $num <= 0 ) {
 			$num = $default_num;
@@ -369,8 +366,6 @@ class Football_Pool_Shortcodes {
 			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
 		}
 		
-		$show_num_predictions = ( $show_num_predictions == 1 );
-		
 		$rows = $pool->get_pool_ranking_limited( $league, $num, $ranking, self::date_helper( $date ) );
 		$filtered_rows = apply_filters( 'footballpool_ranking_array', $rows );
 		
@@ -378,52 +373,8 @@ class Football_Pool_Shortcodes {
 		if ( count( $filtered_rows ) > 0 ) {
 			$users = array();
 			foreach ( $filtered_rows as $row ) $users[] = $row['user_id'];
-			if ( $show_num_predictions ) {
-				$predictions = $pool->get_prediction_count_per_user( $users, $ranking );
-			}
-
-			$i = 1;
-			$output .= '<table class="pool-ranking ranking-shortcode">';
-			if ( $show_num_predictions ) {
-				$output .= sprintf( '<tr>
-										<th></th>
-										<th class="user">%s</th>
-										<th class="num-predictions">%s</th>
-										<th class="score">%s</th>
-									</tr>'
-									, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
-									, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
-									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
-							);
-			}
-			foreach ( $filtered_rows as $row ) {
-				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
-				if ( $show_num_predictions ) {
-					if ( array_key_exists( $row['user_id'], $predictions ) ) {
-						$num_predictions = $predictions[$row['user_id']];
-					} else {
-						$num_predictions = 0;
-					}
-					$num_predictions = sprintf( '<td class="num-predictions">%d</td>', $num_predictions );
-				} else {
-					$num_predictions = '';
-				}
-				
-				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
-				$output .= sprintf( '<tr class="%s">
-										<td>%d.</td>
-										<td><a href="%s">%s</a></td>
-										%s<td class="score">%d</td></tr>'
-									, $class
-									, $row['ranking']
-									, $url
-									, $pool->user_name( $row['user_id'] )
-									, $num_predictions
-									, $row['points']
-							);
-			}
-			$output .= '</table>';
+			
+			$output .= $pool->print_pool_ranking( $league, $current_user->ID, $ranking, $users, $rows, 'shortcode' );
 		} else {
 			$output .= '<p>' . __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
 		}
@@ -486,9 +437,9 @@ class Football_Pool_Shortcodes {
 			$output .= "<div style='text-align:center; width: 80%;'><h2 id='countdown-{$id}'>&nbsp;</h2></div>";
 		}
 		
-		$output .= "<script type='text/javascript'>
-					footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} );
-					window.setInterval( function() { footballpool_do_countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} ); }, 1000 );
+		$output .= "<script>
+					FootballPool.countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} );
+					window.setInterval( function() { FootballPool.countdown( '#countdown-{$id}', {$extra_text}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$format} ); }, 1000 );
 					</script>";
 		
 		return apply_filters( 'footballpool_shortcode_html_fp-countdown', $output );

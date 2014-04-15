@@ -123,8 +123,6 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				$rankings = $wpdb->get_var( $sql );
 			}
 			
-			// $sql = "SELECT COUNT( * ) FROM {$wpdb->users}";
-			// $total_users = $wpdb->get_var( $sql );
 			$total_users = count( self::get_user_set( 0, 0, $pool->has_leagues ) );
 			$total_user_sets = ceil( $total_users / FOOTBALLPOOL_RECALC_STEP5_DIV ) - 1;
 			$total_steps = count( $msg ) + ( $rankings * 3 ) 

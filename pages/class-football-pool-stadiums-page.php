@@ -37,6 +37,6 @@ class Football_Pool_Stadiums_Page {
 			$output .= '</ol></p>';
 		}
 		
-		return $output;
+		return apply_filters( 'footballpool_stadiums_page_html', $output, $stadium );
 	}
 }

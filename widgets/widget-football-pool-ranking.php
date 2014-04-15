@@ -13,7 +13,6 @@ $fp_translate_this = __( 'standing', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'Ranking', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'Number of users to show', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'Show players from this league', FOOTBALLPOOL_TEXT_DOMAIN );
-$fp_translate_this = __( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	protected $widget = array(
@@ -50,13 +49,6 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				'type'    => 'select',
 				'options' => array() // get data from the database later on
 			),
-			array(
-				'name'    => 'Show number of predictions?',
-				'desc' => '',
-				'id'      => 'show_num_predictions',
-				'type'    => 'checkbox',
-				'std'	=> false, // set this to the default later on
-			),
 		)
 	);
 	
@@ -66,10 +58,6 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		$num_users = $instance['num_users'];
 		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
 		$ranking_id = ! empty( $instance['ranking_id'] ) ? $instance['ranking_id'] : FOOTBALLPOOL_RANKING_DEFAULT;
-		$show_num_predictions = ! empty( $instance['show_num_predictions'] ) ? 
-											$instance['show_num_predictions'] : 
-											Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' );
-		$show_num_predictions = ( $show_num_predictions != false );
 		
 		if ( $title != '' ) {
 			echo $before_title, $title, $after_title;
@@ -81,67 +69,12 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
-		$rows = $pool->get_pool_ranking_limited( $league, $num_users, $ranking_id );
-		if ( count( $rows ) > 0 ) {
+		$ranking = $pool->get_pool_ranking_limited( $league, $num_users, $ranking_id );
+		if ( count( $ranking ) > 0 ) {
 			$users = array();
-			foreach ( $rows as $row ) $users[] = $row['user_id'];
-			if ( $show_num_predictions ) {
-				$predictions = $pool->get_prediction_count_per_user( $users, $ranking_id );
-			}
+			foreach ( $ranking as $row ) $users[] = $row['user_id'];
 			
-			$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
-			
-			$i = 1;
-			echo '<table class="pool-ranking ranking-widget">';
-			if ( has_action( 'footballpool_ranking_widget_thead' ) ) {
-				// overwrite standard thead if action is defined
-				do_action( 'footballpool_ranking_widget_thead', $instance );
-			} else {
-				if ( $show_num_predictions ) {
-					printf( '<tr>
-								<th></th>
-								<th class="user">%s</th>
-								<th class="num-predictions">%s</th>
-								<th class="score">%s</th>
-							</tr>'
-							, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
-							, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
-					);
-				}
-			}
-			foreach ( $rows as $row ) {
-				$class = ( $i % 2 == 0 ? 'even' : 'odd' );
-				if ( $row['user_id'] == $current_user->ID ) $class .= ' currentuser';
-				$url = esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) );
-				
-				if ( $show_num_predictions ) {
-					if ( array_key_exists( $row['user_id'], $predictions ) ) {
-						$num_predictions = $predictions[$row['user_id']];
-					} else {
-						$num_predictions = 0;
-					}
-					$num_predictions = sprintf( '<td class="num-predictions">%d</td>', $num_predictions );
-				} else {
-					$num_predictions = '';
-				}
-				
-				printf( '<tr class="%s">', $class );
-				do_action( 'footballpool_ranking_widget_before_rank', $row['user_id'], $instance );
-				printf( '<td>%d.</td>', $row['ranking'] );
-				do_action( 'footballpool_ranking_widget_after_rank', $row['user_id'], $instance );
-				printf( '<td><a href="%s">%s%s</a></td>'
-						, $url
-						, $pool->get_avatar( $row['user_id'], 'small' )
-						, $pool->user_name( $row['user_id'] )
-				);
-				echo $num_predictions;
-				do_action( 'footballpool_ranking_widget_before_points', $row['user_id'], $instance );
-				printf('<td class="score">%d</td>', $row['points'] );
-				do_action( 'footballpool_ranking_widget_after_points', $row['user_id'], $instance );
-				echo '</tr>';
-			}
-			echo '</table>';
+			echo $pool->print_pool_ranking( $league, $current_user->ID, $ranking_id, $users, $ranking, 'widget' );
 		} else {
 			printf( '<p>%s</p>', __( 'No match data available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
@@ -165,7 +98,6 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 				$options[$league['league_id']] = $league['league_name'];
 			}
 			$this->widget['fields'][3]['options'] = $options;
-			$this->widget['fields'][4]['std'] = ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 );
 		}
 		
 		$classname = str_replace( '_', '', get_class( $this ) );

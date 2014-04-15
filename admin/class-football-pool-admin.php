@@ -201,6 +201,8 @@ class Football_Pool_Admin {
 			'footballpool-help',
 			'Football_Pool_Admin_Help'
 		);
+		
+		do_action( 'footballpool_admin_post_menu_init', $slug, $capability );
 	}
 	
 	public static function initialize_wp_media() {
@@ -496,8 +498,7 @@ class Football_Pool_Admin {
 		return $value;
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
-									, $depends_on = '' ) {
+	public function the_datetime_input( $key, $value ) {
 		if ( $value != '' ) {
 			if ( is_object( $value ) ) {
 				$date = $value;
@@ -546,8 +547,45 @@ class Football_Pool_Admin {
 							, esc_attr( $key )
 							, esc_attr( $minute )
 				);
-		
+		return $input;
+	}
+	
+	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
+									, $depends_on = '' ) {
+		$input = self::the_datetime_input( $key, $value );
 		echo self::option_row( $key, $label, $input, $description, $depends_on );
+	}
+	
+	public function datetimepicker_input( $label, $key, $value, $description = '', $extra_attr = ''
+									, $depends_on = '' ) {
+		$input = self::datetimepicker( $key, $value, null, 'return' );
+		echo self::option_row( $key, $label, $input, $description, $depends_on );
+	}
+	
+	public function datepicker( $key, $value, $return = 'echo' ) {
+		$input = sprintf( '<input type="text" id="%s" name="%s" size="10" maxlength="10" value="%s" />'
+							, esc_attr( $key ), esc_attr( $key ), esc_attr( $value ) );
+		$input .= sprintf( '<script>jQuery( function() { jQuery( "#%s" ).datetimepicker( { format: "Y-m-d", timepicker: false, closeOnDateSelect: true, lazyInit: false } ); } );</script>'
+							, esc_attr( $key ) );
+		
+		if ( $return == 'echo' ) {
+			echo $input;
+		} else {
+			return $input;
+		}
+	}
+	
+	public function datetimepicker( $key, $value, $step = 60, $return = 'echo' ) {
+		$input = sprintf( '<input type="text" id="%s" name="%s" size="16" maxlength="16" value="%s" />'
+							, esc_attr( $key ), esc_attr( $key ), esc_attr( $value ) );
+		$input .= sprintf( '<script>jQuery( function() { jQuery( "#%s" ).datetimepicker( { format: "Y-m-d H:i", step: %d, lazyInit: false } ); } );</script>'
+							, esc_attr( $key ), $step );
+		
+		if ( $return == 'echo' ) {
+			echo $input;
+		} else {
+			return $input;
+		}
 	}
 	
 	public function textarea_field( $key, $value, $type = '' ) {
@@ -631,6 +669,9 @@ class Football_Pool_Admin {
 			case 'checkbox':
 				self::checkbox_input( $option[1], $option[2], (boolean) self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
 				break;
+			case 'datetimepicker':
+				self::datetimepicker_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
+				break;
 			case 'datetime':
 				self::datetime_input( $option[1], $option[2], self::get_value( $option[2] ), $option[3], ( isset( $option[4] ) ? $option[4] : '' ), ( isset( $option[5] ) ? $option[5] : '' ) );
 				break;
@@ -679,6 +720,9 @@ class Football_Pool_Admin {
 			case 'date':
 			case 'datetime':
 				self::datetime_input( $option[1], $option[2], $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
+				break;
+			case 'datetimepicker':
+				self::datetimepicker_input( $option[1], $option[2], $option[3], ( isset( $option[4] ) ? $option[4] : '' ) );
 				break;
 			case 'multiline':
 			case 'textarea':

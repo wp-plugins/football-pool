@@ -193,9 +193,6 @@ function match_options() {
 				<td>
 					<label for="ranking-show-num-predictions"><?php _e( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
-				<td>
-					<input type="checkbox" id="ranking-show-num-predictions" <?php echo ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 ? 'checked="checked" ' : '' ); ?>/>
-				</td>
 			</tr>
 			<tr class="tr-ranking">
 				<td>

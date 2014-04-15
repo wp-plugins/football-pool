@@ -325,7 +325,7 @@ class Football_Pool {
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;
 				$highcharts_dir = WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API;
 				self::include_js( $highcharts_url, 'js-highcharts', null, false, $highcharts_dir );
-				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery' ) );
+				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery', 'js-pool' ) );
 			}
 			
 			// pool js & css
@@ -333,22 +333,20 @@ class Football_Pool {
 			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
 			// localized countdown code
 			wp_localize_script( 'js-pool'
-								, 'FootballPoolBlog'
-								, array( 
-									'count_txt_second' => __( 'second', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_seconds' => __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_day' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_days' => __( 'days', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_hour' => __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_hours' => __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_minute' => __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_minutes' => __( 'minutes', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_pre_before' => __( 'Wait ', FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_post_before' => __( ' before the tournament starts'
-																		, FOOTBALLPOOL_TEXT_DOMAIN ),
-									'count_txt_pre_after' => '',
-									'count_txt_post_after' => __( ' ago the tournament started.'
-																		, FOOTBALLPOOL_TEXT_DOMAIN ),
+								, 'FootballPool_i18n'
+								, array(
+									'count_second' => __( 'second', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_seconds' => __( 'seconds', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_day' => __( 'day', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_days' => __( 'days', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_hour' => __( 'hour', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_hours' => __( 'hours', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_minute' => __( 'minute', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_minutes' => __( 'minutes', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_pre_before' => __( 'Wait ', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_post_before' => __( ' before the tournament starts', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'count_pre_after' => '',
+									'count_post_after' => __( ' ago the tournament started.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								)
 			);
 			// pure grids for responsive layout
@@ -362,9 +360,14 @@ class Football_Pool {
 			// global admin js & css
 			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
 			self::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
-								, array( 'jquery', 'jquery-ui-core', 'jquery-ui-progressbar' ) );
+								, array( 
+										'jquery', 
+										'jquery-ui-core', 
+										'jquery-ui-progressbar', 
+										) 
+							);
 			
-			self::include_css( 'assets/admin/jquery-ui/css/start/jquery-ui-1.10.0.custom.min.css'
+			self::include_css( 'assets/admin/jquery-ui/jquery-ui-1.10.4.custom.min.css'
 								, 'css-pool-admin-custom-jquery-ui' );
 			wp_localize_script( 'js-pool-admin'
 								, 'FootballPoolAjax'
@@ -376,6 +379,10 @@ class Football_Pool {
 									'error_label' => __( 'Error message', FOOTBALLPOOL_TEXT_DOMAIN )
 								)
 			);
+			
+			// datetimepicker
+			self::include_css( 'assets/admin/datetimepicker/jquery.datetimepicker.css', 'css-datetimepicker' );
+			self::include_js( 'assets/admin/datetimepicker/jquery.datetimepicker.js', 'js-datetimepicker', array( 'jquery' ) );
 		}
 		
 		// colorbox jQuery plugin for lightboxes

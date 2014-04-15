@@ -7,7 +7,7 @@ class Football_Pool_Pool {
 	private $force_lock_time = false;
 	private $lock_timestamp;
 	private $lock_datestring;
-	public $always_show_predictions = 0;
+	public $always_show_predictions = false;
 	public $show_avatar = false;
 	private $pool_has_jokers;
 	public $responsive_layout;
@@ -34,7 +34,7 @@ class Football_Pool_Pool {
 		}
 		
 		// override hiding of predictions for editable questions?
-		$this->always_show_predictions = (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' );
+		$this->always_show_predictions = ( (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' ) === 1 );
 		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 		
 		$matches = new Football_Pool_Matches;
@@ -342,107 +342,85 @@ class Football_Pool_Pool {
 		return $num_predictions;
 	}
 	
-	public function print_pool_ranking( $league, $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT ) {
+	public function print_pool_ranking( $league, $user, $ranking_id = FOOTBALLPOOL_RANKING_DEFAULT
+										, $users, $ranking, $type = 'page' ) {
 		$output = '';
 		
-		$rows = $this->get_pool_ranking( $league, $ranking_id );
-		$ranking = $users = array();
-		if ( count( $rows ) > 0 ) {
-			// there are results in the database, so get the ranking
-			foreach ( $rows as $row ) {
-				$ranking[] = $row;
-				$users[] = $row['user_id'];
-			}
+		// get number of predictions per user
+		$predictions = $this->get_prediction_count_per_user( $users, $ranking_id );
+		
+		$userpage = Football_Pool::get_page_link( 'user' );
+		$all_user_view = ( $type == 'page' ) && ( $league == FOOTBALLPOOL_LEAGUE_ALL ) && $this->has_leagues;
+		$i = 1;
+		
+		// define templates
+		$template_start = sprintf( '<table class="pool-ranking ranking-%s">', $type );
+		$template_start = apply_filters( 'footballpool_ranking_template_start'
+										, $template_start, $league, $user, $ranking_id, $all_user_view, $type );
+		
+		$template_end = '</table>';
+		$template_end = apply_filters( 'footballpool_ranking_template_end'
+										, $template_end, $league, $user, $ranking_id, $all_user_view, $type );
+		
+		if ( $all_user_view ) {
+			$ranking_template = '<tr class="%css_class%">
+									<td style="width:3em; text-align: right;">%rank%.</td>
+									<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+									<td class="ranking score">%points%</td>
+									<td>%league_image%</td>
+									</tr>';
 		} else {
-			// no results, show a list of users
-			$rows = $this->get_users( $league );
-			if ( count( $rows ) > 0 ) {
-				$output .= '<p>' . __( 'No results yet. Below is a list of all users.', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
-				$i = 0;
-				foreach ( $rows as $row ) {
-					$ranking[$i] = $row;
-					$ranking[$i]['ranking'] = $i + 1;
-					$users[$i] = $row['user_id'];
-					$i++;
-				}
-			} else {
-				$output .= '<p>'. __( 'No users have registered for this pool (yet).', FOOTBALLPOOL_TEXT_DOMAIN ) . '</p>';
-			}
+			$ranking_template = '<tr class="%css_class%">
+									<td style="width:3em; text-align: right;">%rank%.</td>
+									<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+									<td class="ranking score">%points%</td>
+									</tr>';
 		}
+		$ranking_template = apply_filters( 'footballpool_ranking_ranking_row_template'
+											, $ranking_template, $all_user_view, $type );
 		
-		$filtered_ranking = apply_filters( 'footballpool_ranking_array', $ranking );
-		$filtered_users = apply_filters( 'footballpool_ranking_users', $users );
+		// define the start and end template params
+		$template_params = array();
+		$template_params = apply_filters( 'footballpool_ranking_template_params'
+										, $template_params, $league, $user, $ranking_id, $type );
 		
-		if ( count( $filtered_ranking ) > 0 ) {
-			// get number of predictions per user if option is set
-			$show_num_predictions = ( Football_Pool_Utils::get_fp_option( 'show_num_predictions_in_ranking' ) == 1 );
-			if ( $show_num_predictions ) {
-				$predictions = $this->get_prediction_count_per_user( $filtered_users, $ranking_id );
-			}
+		$output .= Football_Pool_Utils::placeholder_replace( $template_start, $template_params );
+		foreach ( $ranking as $row ) {
+			$class = ( $i++ % 2 != 0 ? 'even' : 'odd' );
+			if ( $all_user_view ) $class .= ' league-' . $row['league_id'];
+			if ( $row['user_id'] == $user ) $class .= ' currentuser';
 			
-			$userpage = Football_Pool::get_page_link( 'user' );
-			$all_user_view = ( $league == FOOTBALLPOOL_LEAGUE_ALL && $this->has_leagues );
-			$i = 1;
+			// define the template param values
+			$ranking_template_params = array(
+				'rank' => $row['ranking'],
+				'user_name' => $this->user_name( $row['user_id'] ),
+				'user_link' => esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
+				'user_avatar' => $this->get_avatar( $row['user_id'], 'medium' ),
+				'num_predictions' => array_key_exists( $row['user_id'], $predictions ) ? $predictions[$row['user_id']] : 0,
+				'points' => $row['points'],
+				'league_image' => $this->league_image( $row['league_id'] ),
+				'css_class' => $class,
+			);
+			$ranking_template_params = apply_filters( 'footballpool_ranking_ranking_row_params'
+													, $ranking_template_params, $league, $user, $ranking_id, $all_user_view, $type );
 			
-			$output .= '<table class="pool-ranking ranking-page">';
-			if ( $show_num_predictions ) {
-				$output .= sprintf( '<tr>
-										<th></th>
-										<th class="user">%s</th>
-										<th class="num-predictions">%s</th>
-										<th class="score">%s</th>
-										%s</tr>'
-									, __( 'user', FOOTBALLPOOL_TEXT_DOMAIN )
-									, __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN )
-									, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
-									, ( $all_user_view ? '<th></th>' : '' )
-							);
-			}
-			foreach ( $filtered_ranking as $row ) {
-				$class = ( $i % 2 != 0 ? 'even' : 'odd' );
-				if ( $all_user_view ) $class .= ' league-' . $row['league_id'];
-				if ( $row['user_id'] == $user ) $class .= ' currentuser';
-				if ( $show_num_predictions ) {
-					if ( array_key_exists( $row['user_id'], $predictions ) ) {
-						$num_predictions = $predictions[$row['user_id']];
-					} else {
-						$num_predictions = 0;
-					}
-					$num_predictions = sprintf( '<td class="num-predictions">%d</td>', $num_predictions );
-				} else {
-					$num_predictions = '';
-				}
-				$output .= sprintf( '<tr class="%s"><td style="width:3em; text-align: right;">%d.</td>
-									<td><a href="%s">%s%s</a></td>
-									%s<td class="ranking score">%d</td>%s
-									</tr>',
-								$class,
-								$row['ranking'],//$i++,
-								esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
-								$this->get_avatar( $row['user_id'], 'medium' ),
-								$this->user_name( $row['user_id'] ),
-								$num_predictions,
-								$row['points'],
-								( $all_user_view ? $this->league_image( $row['league_id'] ) : '' )
-							);
-				$output .= "\n";
-			}
-			$output .= '</table>';
+			$output .= Football_Pool_Utils::placeholder_replace( $ranking_template, $ranking_template_params );
 		}
+		$output .= Football_Pool_Utils::placeholder_replace( $template_end, $template_params );
 		
-		return apply_filters( 'footballpool_ranking_html', $output, $ranking, $filtered_ranking );
+		return $output;
 	}
 	
 	private function league_image( $id ) {
 		if ( $this->has_leagues && ! empty( $this->leagues[$id]['image'] ) ) {
-			$img = sprintf( '<td><img src="%sassets/images/site/%s" alt="%s" title="%s" /></td>',
-							FOOTBALLPOOL_PLUGIN_URL,
-							$this->leagues[$id]['image'],
-							$this->leagues[$id]['league_name'],
-							$this->leagues[$id]['league_name']
+			$img = sprintf( '<img src="%sassets/images/site/%s" alt="%s" title="%s" />'
+							, FOOTBALLPOOL_PLUGIN_URL
+							, $this->leagues[$id]['image']
+							, $this->leagues[$id]['league_name']
+							, $this->leagues[$id]['league_name']
 						);
 		} else {
-			$img = '<td></td>';
+			$img = '';
 		}
 		return $img;
 	}
@@ -591,8 +569,8 @@ class Football_Pool_Pool {
 									q.id, q.question, a.answer, 
 									q.points, a.points AS user_points, 
 									q.answer_before_date AS question_date, 
-									DATE_FORMAT( q.score_date,'%%Y-%%m-%%d %%H:%%i') AS score_date, 
-									DATE_FORMAT( q.answer_before_date,'%%Y-%%m-%%d %%H:%%i') AS answer_before_date, 
+									DATE_FORMAT( q.score_date, '%%Y-%%m-%%d %%H:%%i' ) AS score_date, 
+									DATE_FORMAT( q.answer_before_date, '%%Y-%%m-%%d %%H:%%i' ) AS answer_before_date, 
 									q.match_id, a.correct,
 									qt.type, qt.options, qt.image, qt.max_answers
 								FROM {$prefix}bonusquestions q 
@@ -647,8 +625,8 @@ class Football_Pool_Pool {
 		
 			$sql = "SELECT 
 						q.id, q.question, q.answer, q.points, q.answer_before_date AS question_date, 
-						DATE_FORMAT( q.score_date,'%Y-%m-%d %H:%i' ) AS score_date, 
-						DATE_FORMAT( q.answer_before_date,'%Y-%m-%d %H:%i' ) AS answer_before_date, q.match_id,
+						DATE_FORMAT( q.score_date, '%Y-%m-%d %H:%i' ) AS score_date, 
+						DATE_FORMAT( q.answer_before_date, '%Y-%m-%d %H:%i' ) AS answer_before_date, q.match_id,
 						qt.type, qt.options, qt.image, qt.max_answers
 					FROM {$prefix}bonusquestions q 
 					INNER JOIN {$prefix}bonusquestions_type qt
@@ -753,7 +731,11 @@ class Football_Pool_Pool {
 			// radio or checkbox
 			if ( $type == 'checkbox' && $question['max_answers'] > 0 ) {
 				// add some javascript for the max number of answers a user may give
-				$output .= sprintf( '<script type="text/javascript">jQuery( document ).ready( function() { set_max_answers( %d, %d ); } );</script>'
+				$output .= sprintf( '<script>
+									jQuery( document ).ready( function() { 
+										FootballPool.set_max_answers( %d, %d ); 
+									} );
+									</script>'
 									, $question['id']
 									, $question['max_answers']
 							);
@@ -908,6 +890,7 @@ class Football_Pool_Pool {
 					$success = $this->update_predictions( $current_user->ID );
 				}
 				if ( $success ) {
+					//todo: differentiate in messages (was there actually a save?)
 					$msg = sprintf( '<p style="errormessage">%s</p>'
 									, __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN )
 							);

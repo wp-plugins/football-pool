@@ -139,12 +139,12 @@ table.ranking { border: none; border-collapse: collapse; width: 100%; }
 table.ranking th { text-align: center; font-weight: normal; font-style: italic; border-bottom: 1px solid #000; }
 table.ranking td { padding: .1em .5em; }
 
-th.wins, td.wins, th.draws, td.draws, th.losses, td.losses { background-color: #ddd; }
-th.plays, td.plays, th.points, td.points { background-color: #ccc; }
-th.team, td.team, th.goals, td.goals { background-color: #e1dfdf; }
-td.goals, th.goals { font-size: .6em; padding: .1em .2em; }
-th.team, th.points, td.points, th.plays, td.plays { font-weight: bolder; }
-td.team, th.team { width: 45%; }
+.group-ranking th.wins, .group-ranking td.wins, .group-ranking th.draws, .group-ranking td.draws, .group-ranking th.losses, .group-ranking td.losses { background-color: #ddd; }
+.group-ranking th.plays, .group-ranking td.plays, .group-ranking th.points, .group-ranking td.points { background-color: #ccc; }
+.group-ranking th.team, .group-ranking td.team, .group-ranking th.goals, .group-ranking td.goals { background-color: #e1dfdf; }
+.group-ranking td.goals, .group-ranking th.goals { font-size: .6em; padding: .1em .2em; }
+.group-ranking th.team, .group-ranking th.points, .group-ranking td.points, .group-ranking th.plays, .group-ranking td.plays { font-weight: bolder; }
+.group-ranking td.team, .group-ranking th.team { width: 45%; }
 
 table.ranking td { font-size: 80%; }
 table.ranking td.plays, table.ranking td.points { font-size: 90%; }

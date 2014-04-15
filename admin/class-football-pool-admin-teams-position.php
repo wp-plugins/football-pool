@@ -26,7 +26,7 @@ class Football_Pool_Admin_Teams_Position extends Football_Pool_Admin {
 		foreach ( $ranking as $group => $rank ) {
 			echo '<div>';
 			echo '<h3>', $group_names[$group], '</h3>';
-			echo '<table class="wp-list-table widefat" style="width:300px">';
+			echo '<table class="wp-list-table widefat group-ranking" style="width:300px">';
 			echo '<thead><tr><th></th><th class="team"></th><th class="plays"></th><th class="wins">w</th><th class="draws">d</th><th class="losses">l</th><th class="points"></th><th class="goals"></th></tr></thead>';
 			echo '<tbody>';
 			foreach( $rank as $teamranking ) {

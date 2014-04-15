@@ -24,6 +24,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
 				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
+				<li><a href="#layout">Plugin layout</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#charts">Using charts</a></li>
 				<li><a href="#hooks">Extending the plugin: Actions and Filters</a></li>
@@ -53,7 +54,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<h2 id="times">Time</h2>
 		<h3>What's with the stop times, dynamic times, etc.? I don't get it.</h3>
 		<p>
-		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff of the match (dynamic time), or a single date/time for all matches. The default is a dynamic time setting of 900 seconds (= 15 minutes) before the start of a match.<br>
+		Users have only a limited amount of time to fill in or change their predictions. For matches you can choose between a certain amount of time before the kickoff of the match (dynamic time), or a single date/time for all matches. The default is a dynamic time setting of 900 seconds (= 15 minutes) before the start of a match.<br />
 		Bonus questions each have an 'answer before' date and time. But you may override these individual values with a single stop time for all bonus questions. The default is to allow for a 'answer before' time per question.
 		</p>
 		
@@ -99,7 +100,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>3-1</td>
 			<td>1-0</td>
 			<td>
-				toto points.<br>
+				toto points.<br />
 				total = <?php echo $totopoints; ?>
 			</td>
 		</tr>
@@ -107,7 +108,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>3-1</td>
 			<td>2-0</td>
 			<td>
-				toto points plus goal difference bonus for the correct goal difference (2 goals difference).<br>
+				toto points plus goal difference bonus for the correct goal difference (2 goals difference).<br />
 				total = <?php echo $totopoints; ?> + <?php echo $diffpoints; ?> = <?php echo $totopoints + $diffpoints; ?>
 			</td>
 		</tr>
@@ -115,7 +116,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>3-1</td>
 			<td>3-0</td>
 			<td>
-				toto points plus goal bonus for the correct amount of goals for the home team.<br>
+				toto points plus goal bonus for the correct amount of goals for the home team.<br />
 				total = <?php echo $totopoints; ?> + <?php echo $goalpoints; ?> = <?php echo $totopoints + $goalpoints; ?>
 			</td>
 		</tr>
@@ -123,7 +124,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>2-1</td>
 			<td>2-1</td>
 			<td>
-				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
+				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br />
 				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
@@ -131,7 +132,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>2-1</td>
 			<td>1-1</td>
 			<td>
-				goal bonus for the correct amount of goals for the away team.<br>
+				goal bonus for the correct amount of goals for the away team.<br />
 				total = <?php echo $goalpoints; ?>
 			</td>
 		</tr>
@@ -144,7 +145,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>1-1</td>
 			<td>1-1</td>
 			<td>
-				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br>
+				full points plus two times the goal bonus for the correct amount of goals for the home team and the away team.<br />
 				total = <?php echo $fullpoints; ?> + <?php echo $goalpoints; ?> + <?php echo $goalpoints; ?> = <?php echo $fullpoints + ( 2 * $goalpoints ); ?>
 			</td>
 		</tr>
@@ -152,7 +153,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<td>1-1</td>
 			<td>0-0</td>
 			<td>
-				toto points.<br>
+				toto points.<br />
 				total = <?php echo $totopoints; ?>
 			</td>
 		</tr>
@@ -242,7 +243,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			<li>minimal data (only the basic information about teams);</li>
 			<li>full data (all information).</li>
 		</ol>
-		If you choose the minimal data, extra information about stadiums and teams may be entered on the individual admin pages. If a team, stadium, group or match type in the csv file does not already exist, it will be added to the database.<br>
+		If you choose the minimal data, extra information about stadiums and teams may be entered on the individual admin pages. If a team, stadium, group or match type in the csv file does not already exist, it will be added to the database.<br />
 		For the full data all information about teams, venues, etc. must be given. If a team, venue, etc. already exists, it won't be updated. If a team does not exist, the information (e.g. photo) in the first row where that item appears, will be added in the database.
 		</p>
 		<p>If a culture code is included in the filename, e.g. <span class="code">uefa2012-en_US.txt</span>, then the plugin can filter the files according to the culture that is set as the locale for the blog.
@@ -391,10 +392,152 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
-
-		<h2 id="shortcodes">Shortcodes</h2>
-		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes the adding of these shortcodes a bit easier.
+		
+		<h2 id="layout">Plugin layout</h2>
+		<h3>Style</h3>
+		<p>The plugin has some basic styling that will hopefully not interfere with your theme. If you want to change the style of the plugin, you can do so by using a seperate CSS file, or by adding rules to the CSS file of your theme. Just follow the CSS rules about specificity to overwrite the plugin's style (see Keegan Street's <a href="http://specificity.keegan.st/">specificity calculator</a> for a cool help in determining the specificity of a selector). I don't recommend changing the CSS of the plugin, as it will be overwritten on every update.
 		</p>
+		<h3>Templates</h3>
+		<p>Some data that is displayed in the plugin is handled via a template. These templates consist of HTML and parameters. See the table below for an overview of the templates that are available in the plugin at the moment and the parameters that can be used. A parameter must be surrounded by "<?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>", e.g. <?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>home_team<?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>.</p>
+		<p>The templates and the available data (the parameters) can be changed via hooks (see the <a href="#hooks">section about extending the plugin</a> for more information about WordPress hooks).</p>
+		<p>
+		<table class="widefat help">
+			<tr>
+				<th>functionality</th><th>hook</th><th>description</th><th>parameters</th>
+			</tr>
+			<tr>
+				<td>prediction form</td>
+				<td>footballpool_predictionform_template_start</td>
+				<td>Opening HTML for the prediction form.</td>
+				<td>form_id<br />user_id</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_predictionform_template_end</td>
+				<td>Closing HTML for the prediction form.</td>
+				<td>form_id<br />user_id</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_predictionform_match_template</td>
+				<td>HTML for a match row.</td>
+				<td>form_id<br />
+					match_id<br />
+					match_type_id<br />
+					match_type<br />
+					match_timestamp<br />
+					match_date<br />
+					match_time<br />
+					match_day<br />
+					match_datetime_formatted<br />
+					match_utcdate<br />
+					match_stats_url<br />
+					stadium_id<br />
+					stadium_name<br />
+					home_team_id<br />
+					away_team_id<br />
+					home_team<br />
+					away_team<br />
+					home_team_flag<br />
+					away_team_flag<br />
+					home_score<br />
+					away_score<br />
+					home_input<br />
+					away_input<br />
+					joker<br />
+					user_score<br />
+					stats_link<br />
+					css_class
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_predictionform_match_type_template</td>
+				<td>HTML for the match type row (placed between matches when there is a new match type).</td>
+				<td>see match row</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_predictionform_date_row_template</td>
+				<td>HTML for the date row (placed between matches when there is a new match date).</td>
+				<td>see match row</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_predictionform_linked_questions_template</td>
+				<td>HTML for questions that are linked to a match (placed after the match).</td>
+				<td>form_id<br />
+					match_id<br />
+					question_id<br />
+					question
+				</td>
+			</tr>
+			<tr>
+				<td>match table</td>
+				<td>footballpool_match_table_template_start</td>
+				<td>Opening HTML for the match table.</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_match_table_template_end</td>
+				<td>Closing HTML for the match table.</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_match_table_match_template</td>
+				<td>HTML for a match row.</td>
+				<td>match_id<br />
+					match_type_id<br />
+					match_type<br />
+					match_timestamp<br />
+					match_date<br />
+					match_time<br />
+					match_day<br />
+					match_datetime_formatted<br />
+					match_utcdate<br />
+					match_stats_url<br />
+					stadium_id<br />
+					stadium_name<br />
+					home_team_id<br />
+					away_team_id<br />
+					home_team<br />
+					away_team<br />
+					home_team_flag<br />
+					away_team_flag<br />
+					home_score<br />
+					away_score<br />
+					css_class
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_match_table_match_type_template</td>
+				<td>HTML for the match type row (placed between matches when there is a new match type).</td>
+				<td>see match row</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_match_table_date_row_template</td>
+				<td>HTML for the date row (placed between matches when there is a new match date).</td>
+				<td>see match row</td>
+			</tr>
+		</table>
+		</p>
+		<p>Template example (for a match row in the prediction form):<br /><br />
+		<span class="code"><?php echo htmlentities( '<tr><td>%match_time%</td><td>%home_team% %home_team_flag%</td><td>%home_input% - %away_input%</td><td>%away_team_flag% %away_team%</td></tr>' ); ?>
+		</span><br />
+		</p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
+		<h2 id="shortcodes">Shortcodes</h2>
+		<p>This plugin has several shortcodes that can be added in the content of your posts or pages. Because adding a shortcode and remembering all the options of a shortcode can be a hassle, the visual editor of WordPress is extended with a button that makes adding these shortcodes a bit easier.
+		</p>
+		
+		<p class="help back-to-top"><a href="#">back to top</a></p>
+		
 		<p>
 		<img class="screenshot" src="<?php echo $img_dir; ?>screenshot-shortcode-button-editor.png" alt="screenshot" />
 		</p>
@@ -789,7 +932,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
-		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin.</p>
+		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin (<a href="http://codex.wordpress.org/Writing_a_Plugin">how write your own plugin<a/>).</p>
 		
 		<script>
 		function show_footballpool_hooks() {
@@ -802,113 +945,9 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		}
 		</script>
 		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
-		<!--
-		<a href="javascript:show_footballpool_hooks()">Display a list of all available hooks</a>.-->
 		</p>
 		
-		<div id="hooks-table" style="display: none;">
-		<table class="widefat help">
-			<tr><th>hook</th><th>description</th><th>type</th></tr>
-			<tr>
-				<td class="row-title">footballpool_shortcode_html_{$shortcode}</td>
-				<td>Alter the HTML of a shortcode. Replace {$shortcode} with the actual shortcode name, e.g. <span class="code">footballpool_shortcode_html_fp-ranking</span>.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_widget_html_{$widget}</td>
-				<td>Alter the HTML of a widget. Replace {$widget} with the widget name, e.g. <span class="code">footballpool_widget_html_group</span>. Except for widgets with special hooks (see below): ranking widget</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_ranking_widget_thead</td>
-				<td>Overwrite (or add) the table head of the ranking widget.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_ranking_widget_before_rank</td>
-				<td>Perform an action before the rank of a player is displayed. User ID of current player is passed to the callback.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_ranking_widget_after_rank</td>
-				<td>Perform an action after the rank of a player is displayed. User ID of current player is passed to the callback.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_ranking_widget_before_points</td>
-				<td>Perform an action before the total points of a player is displayed. User ID of current player is passed to the callback.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_ranking_widget_after_points</td>
-				<td>Perform an action after the total points of a player is displayed. User ID of current player is passed to the callback.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_lastgames_query</td>
-				<td>Query returns the last games from the tournament.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_matches</td>
-				<td>Alter the set of matches in the plugin.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_get_groups</td>
-				<td>Alter the set of groups.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_group_composition</td>
-				<td>Alter the array that holds the teams in a group.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_group_standing_array</td>
-				<td>Alter the ranking array that is used for the group standing table.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_group_plays</td>
-				<td>Alter the matches array for a given group.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_group_standing_thead</td>
-				<td>Alter the html of the table header in the group standing table.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_group_standing_row</td>
-				<td>Alter the html of a row in the group standing table.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_shoutbox_before_save</td>
-				<td>Perform an action before a shoutbox message is saved.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_shoutbox_after_save</td>
-				<td>Perform an action after a shoutbox message is saved.</td>
-				<td>action</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_shoutbox_messages</td>
-				<td>Alter the array of shoutbox messages.</td>
-				<td>filter</td>
-			</tr>
-			<tr>
-				<td class="row-title">footballpool_shoutbox_widget_html</td>
-				<td>Alter the html of a single message in the shoutbox widget.</td>
-				<td>filter</td>
-			</tr>
-
-		</table>
-		</div>
-		
-		<h3>Simple and short examples:</h3>
+		<h3>Simple and/or short examples:</h3>
 		<?php 
 		Football_Pool_Utils::highlight_string( '<?php
 // show the page ID at the top of a page from the plugin
@@ -932,6 +971,46 @@ add_filter( \'footballpool_userselector_widget_users\', function ( $a ) {
 } );
 ?>' );
 		
+		Football_Pool_Utils::highlight_string( '<?php
+// Show number of predictions in the ranking table.
+// If you want the page, shortcode or widget to have different layouts,
+// you can differentiate with the $type.
+add_filter( \'footballpool_ranking_template_start\', 
+				function( $template_start, $league, $user, $ranking_id, $all_user_view, $type ) {
+	// add a row with column headers
+	$template_start .= sprintf( \'<tr>
+									<th></th>
+									<th class="user">%s</th>
+									<th class="num-predictions">%s</th>
+									<th class="score">%s</th>
+									%s</tr>\'
+								, __( \'user\', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( \'predictions\', FOOTBALLPOOL_TEXT_DOMAIN )
+								, __( \'points\', FOOTBALLPOOL_TEXT_DOMAIN )
+								, ( $all_user_view ? \'<th></th>\' : \'\' )
+						);
+	return $template_start;
+}, null, 6 );
+add_filter( \'footballpool_ranking_ranking_row_template\', function( $template, $all_user_view, $type ) {
+	if ( $all_user_view ) {
+		$ranking_template = \'<tr class="%css_class%">
+								<td style="width:3em; text-align: right;">%rank%.</td>
+								<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+								<td class="num-predictions">%num_predictions%</td>
+								<td class="ranking score">%points%</td>
+								<td>%league_image%</td>
+								</tr>\';
+	} else {
+		$ranking_template = \'<tr class="%css_class%">
+								<td style="width:3em; text-align: right;">%rank%.</td>
+								<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+								<td class="num-predictions">%num_predictions%</td>
+								<td class="ranking score">%points%</td>
+								</tr>\';
+	}
+	return $ranking_template;
+}, null, 3 );
+?>' );
 		?>
 		<h3>A bit more advanced examples:</h3>
 		<?php
@@ -1002,13 +1081,13 @@ add_filter( \'footballpool_widget_html_group\', function( $html ) {
 		
 		<h2 id="the-end">Anything else?</h2>
 		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
-		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br>
+		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br />
 		Or a little fan mail is also appreciated :)</p>
 		<?php self::admin_footer(); ?>
 		<p>
 		<?php self::donate_button(); ?>
-		Thank you!<br>
-		Antoine Hurkmans<br><br>
+		Thank you!<br />
+		Antoine Hurkmans<br /><br />
 		<em>wordpressfootballpool [ at ] gmail [ dot ] com</em>
 		</p>
 		

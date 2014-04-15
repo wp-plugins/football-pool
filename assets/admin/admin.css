@@ -132,6 +132,7 @@ table.fp-radio-list { border-collapse: collapse; }
 .fp-radio-list label { display: block; padding-right: 5em; }
 .fp-radio-list td { padding: 5px 4px; vertical-align: top; }
 .fp-radio-list tr.csv-file:hover { background-color: #2ea2cc; color: #fff; }
+.fp-radio-list tr.csv-file:hover a { color: #fff; }
 .fp-radio-list input[type=radio] { margin-right: 1.5em; }
 .fp-radio-list td.file {  }
 .fp-radio-list th { text-align: left; font-weight: normal; font-style: italic; }

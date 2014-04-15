@@ -461,8 +461,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							// array( 'text', __( 'Number of jokers', FOOTBALLPOOL_TEXT_DOMAIN ) . ' *', 'number_of_jokers', __( 'The number of jokers a user can use. Default is 1, if set to 0 the joker functionality is disabled.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'number_of_jokers' => 
 							array( 'checkbox', __( 'Enable jokers?', FOOTBALLPOOL_TEXT_DOMAIN ), 'number_of_jokers', __( 'When checked the joker is enabled and users can add the joker to one prediction to multiply the score.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-						'show_num_predictions_in_ranking' => 
-							array( 'checkbox', __( 'Show number of predictions?', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_num_predictions_in_ranking', __( 'When checked the number of predictions (matches and questions) a user saved is shown on the ranking page. This setting also effects the default value for the ranking widget and the ranking shortcode (but can be changed with their parameters).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					);
 		
 		$donate = sprintf( '<div class="donate">%s%s</div>'
@@ -543,6 +541,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		self::intro( __( 'If values in the fields marked with an asterisk are left empty, then the plugin will default to the initial values.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
+		do_action( 'footballpool_admin_options_screen_pre', $action );
+		
 		self::admin_sectiontitle( __( 'Scoring Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array( 
 									$options['joker_multiplier'],
@@ -563,7 +563,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 									$options['auto_calculation'],
 									$options['ranking_display'],
 									$options['show_ranking'],
-									$options['show_num_predictions_in_ranking'],
 								)
 							);
 		echo '<p class="submit">';
@@ -684,6 +683,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 							// );
 		// submit_button( null, 'primary', null, true );
 		// self::back_to_top();
+		
+		do_action( 'footballpool_admin_options_screen_post', $action );
 		
 		self::admin_footer();
 	}

@@ -211,8 +211,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$cols = array(
 					array( 'text', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), 'question', $values['question'], '' ),
 					array( 'integer', __( 'points', FOOTBALLPOOL_TEXT_DOMAIN ), 'points', $values['points'], __( 'The points a user gets as an award for answering the question correctly.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
-					array( 'date', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
-					array( 'date', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date. If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
+					array( 'datetime', __( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'lastdate', $values['answer_before_date'], __( 'A user may give an answer untill this date and time.', FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
+					array( 'datetime', __( 'score date', FOOTBALLPOOL_TEXT_DOMAIN ).'<br/><span style="font-size:80%">(e.g. ' . self::example_date() . ')</span>', 'scoredate', $values['score_date'], __( "The points awarded will be added to the total points for a user after this date. If not supplied, the points won't be added.", FOOTBALLPOOL_TEXT_DOMAIN ) . sprintf( ' (%s)', __( 'local time', FOOTBALLPOOL_TEXT_DOMAIN ) ) ),
 					array( 
 						'select', 
 						__( 'link to match', FOOTBALLPOOL_TEXT_DOMAIN ), 

@@ -2,8 +2,8 @@
 global $wpdb;
 
 // admin screen options (defaults per page)
-define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
-define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
+if ( ! defined( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE' ) ) define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
+if ( ! defined( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE' ) ) define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
 
 // database and path constants
 if ( ! defined( 'FOOTBALLPOOL_DB_PREFIX' ) ) define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
@@ -69,6 +69,7 @@ if ( ! defined( 'FOOTBALLPOOL_MEDIUM_AVATAR' ) ) define( 'FOOTBALLPOOL_MEDIUM_AV
 if ( ! defined( 'FOOTBALLPOOL_LARGE_AVATAR' ) ) define( 'FOOTBALLPOOL_LARGE_AVATAR', 36 ); // size in px
 if ( ! defined( 'FOOTBALLPOOL_TIME_FORMAT' ) ) define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
 if ( ! defined( 'FOOTBALLPOOL_DATE_FORMAT' ) ) define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
+if ( ! defined( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER' ) ) define( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER', '%' );
 
 // cache
 define( 'FOOTBALLPOOL_CACHE_MATCHES', 'fp_match_info' );

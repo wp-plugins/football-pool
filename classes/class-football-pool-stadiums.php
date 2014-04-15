@@ -20,12 +20,13 @@ class Football_Pool_Stadiums {
 		while ( $stadium = array_shift( $stadiums ) ) {
 			$photo = ( $thumbs_in_listing && $stadium->photo != '' ) ? $stadium->HTML_image( 'thumb' ) : '';
 			$comments = ( $comments_in_listing ) ? $stadium->comments : '';
-			$output .= sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
+			$line = sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
 								, add_query_arg( array( 'stadium' => $stadium->id ) )
 								, $photo
 								, htmlentities( $stadium->name, null, 'UTF-8' )
 								, $comments
-						);
+							);
+			$output .= apply_filters( 'footballpool_stadiums_print_line', $line, $stadium );
 		}
 		return $output;
 	}

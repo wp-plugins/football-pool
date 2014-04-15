@@ -125,12 +125,13 @@ class Football_Pool_Teams {
 			if ( $team->is_real == 1 && $team->is_active == 1 ) {
 				$photo = ( $thumbs_in_listing && $team->photo != '' ) ? $team->HTML_thumb( 'thumb' ) : '';
 				$comments = ( $comments_in_listing ) ? $team->comments : '';
-				$output .= sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
+				$line = sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
 									, add_query_arg( array( 'team' => $team->id ) )
 									, $photo
 									, htmlentities( $team->name, null, 'UTF-8' )
 									, $comments
-							);
+								);
+				$output .= apply_filters( 'footballpool_teams_print_line', $line, $team );
 			}
 		}
 		return $output;

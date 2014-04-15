@@ -91,7 +91,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 			echo '</span><br />';
 			$id = Football_Pool_Utils::get_counter_value( 'fp_shoutbox_id' );
 			printf( '<textarea id="shouttext-%d" name="shouttext" 
-					onkeyup="footballpool_update_chars( this.id, %d )" title="%s"></textarea>'
+					onkeyup="FootballPool.update_chars( this.id, %d )" title="%s"></textarea>'
 					, $id
 					, $max_chars
 					, sprintf( __( 'all text longer than %s characters will be removed!'

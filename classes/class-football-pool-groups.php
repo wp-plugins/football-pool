@@ -341,7 +341,7 @@ class Football_Pool_Groups {
 		foreach ( $ranking as $group => $rank ) {
 			if ( $group_id == '' || $group_id == $group ) {
 				$output .= sprintf( '<div class="ranking%s"><h2>%s</h2>', $class, $group_names[$group] );
-				$output .= '<table class="ranking">';
+				$output .= '<table class="ranking group-ranking">';
 				$thead = sprintf( '<thead><tr><th class="team"></th><th class="plays">%s</th>', $th1 );
 				$thead .= $wdl;
 				$thead .= sprintf( '<th class="points">%s</th><th class="goals"></th></tr></thead>', $th2 );
