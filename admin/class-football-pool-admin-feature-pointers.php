@@ -19,7 +19,7 @@ class Football_Pool_Admin_Feature_Pointers {
 							, '#adminmenu'
 							, 'left'
 							, 'top'
-							, '<a href="admin.php?page=footballpool-options" onclick="calculate_score_history(); return false;">recalculate now</a>.'
+							, '<a href="admin.php?page=footballpool-options" onclick="FootballPoolAdmin.calculate(); return false;">recalculate now</a>.'
 						);
 		self::add_pointer( $version
 							, 'redirecturl'

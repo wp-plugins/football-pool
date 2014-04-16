@@ -196,7 +196,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				} else {
 					$output .= self::link_button( 
 													__( 'Continue', FOOTBALLPOOL_TEXT_DOMAIN ), 
-													array( '', 'calculate_score_history( 1 )' ), 
+													array( '', 'FootballPoolAdmin.calculate( 1 )' ), 
 													false, 
 													'js-button',
 													null,

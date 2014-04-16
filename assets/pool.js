@@ -149,4 +149,3 @@ var FootballPool = (function ( $ ) {
 	};
 
 } )( jQuery );
-

@@ -53,9 +53,9 @@ function match_options() {
 	<title><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></title>
 	<meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
-	<script type="text/javascript" src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
-	<script type="text/javascript" src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js"></script>
+	<script src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
+	<script src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
+	<script src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js"></script>
 	<base target="_self" />
 	
 	<style type="text/css">
@@ -72,10 +72,10 @@ function match_options() {
 	.info { font-style: italic; }
 	</style>
 	
-	<script type="text/javascript">
+	<script>
 	jQuery( document ).ready( function() {
-		tinyMCEPopup.executeOnLoad( 'tinymce_init()' );
-		footballpool_tinymce_init_tabs( 'tabs' );
+		tinyMCEPopup.executeOnLoad( 'FootballPoolAdmin.tinymce_init()' );
+		FootballPoolAdmin.tinymce_init_tabs( 'tabs' );
 	});
 	
 	function toggle_atts( select_id, atts ) {
@@ -92,11 +92,11 @@ function match_options() {
 	function toggle_count_texts( id ) {
 		var text_ids = ['#text-1', '#text-2', '#text-3', '#text-4'];
 		if ( jQuery( '#' + id ).is( ':checked' ) ) {
-			set_input_param( 'placeholder', text_ids, 'none' );
+			FootballPoolAdmin.set_input_param( 'placeholder', text_ids, 'none' );
 		} else {
-			restore_input_param( 'placeholder', text_ids );
+			FootballPoolAdmin.restore_input_param( 'placeholder', text_ids );
 		}
-		disable_inputs( text_ids, id );
+		FootballPoolAdmin.disable_inputs( text_ids, id );
 	}
 	
 	function toggle_select_row( clicked, shortcode ) {
@@ -583,8 +583,8 @@ function match_options() {
 					<label for=""><?php _e( 'Countdown to', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td><label>
-					<input type="radio" id="count-to-match" name="count_to" value="match" checked="checked" onclick="toggle_linked_radio_options( '#tr-count-match', '#tr-count-date' )" /> <?php _e( 'Match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
-					<label><input type="radio" id="count-to-date" name="count_to" value="date" onclick="toggle_linked_radio_options( '#tr-count-date', '#tr-count-match' )" /> <?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<input type="radio" id="count-to-match" name="count_to" value="match" checked="checked" onclick="FootballPoolAdmin.toggle_linked_options( '#tr-count-match', '#tr-count-date' )" /> <?php _e( 'Match', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="count-to-date" name="count_to" value="date" onclick="FootballPoolAdmin.toggle_linked_options( '#tr-count-date', '#tr-count-match' )" /> <?php _e( 'Date', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
 				</td>
 			</tr>
 			<tr id="tr-count-date" class="tr-count atts">
@@ -657,7 +657,7 @@ function match_options() {
 			<input type="button" id="cancel" name="cancel" value="<?php _e( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="tinyMCEPopup.close();" />
 		</div>
 		<div style="float: right">
-			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="footballpool_tinymce_insert_shortcode();" />
+			<input type="submit" id="insert" name="insert" value="<?php _e( 'Insert', FOOTBALLPOOL_TEXT_DOMAIN ); ?>" onclick="FootballPoolAdmin.tinymce_insert_shortcode();" />
 		</div>
 	</div>
 

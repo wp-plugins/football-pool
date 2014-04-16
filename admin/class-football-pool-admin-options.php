@@ -240,8 +240,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								), 
 								__( 'Select which method to use for the prediction stop.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								array(
-									'onclick="toggle_linked_radio_options( \'#r-maxperiod\', [ \'#r-matches_locktime\' ] )"',
-									'onclick="toggle_linked_radio_options( \'#r-matches_locktime\', [ \'#r-maxperiod\' ] )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-maxperiod\', [ \'#r-matches_locktime\' ] )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-matches_locktime\', [ \'#r-maxperiod\' ] )"',
 								),
 							),
 						'maxperiod' => 
@@ -272,8 +272,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								),
 								__( 'Select which method to use for the prediction stop.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								array(
-									'onclick="toggle_linked_radio_options( \'\', [ \'#r-bonus_question_locktime\' ] )"',
-									'onclick="toggle_linked_radio_options( \'#r-bonus_question_locktime\', null )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'\', [ \'#r-bonus_question_locktime\' ] )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-bonus_question_locktime\', null )"',
 								),
 							),
 						'bonus_question_locktime' => 
@@ -347,9 +347,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								), 
 								__( 'Select which method to use for the display of match times.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								array(
-									'onclick="toggle_linked_radio_options( null, \'#r-match_time_offset\' )"',
-									'onclick="toggle_linked_radio_options( null, \'#r-match_time_offset\' )"',
-									'onclick="toggle_linked_radio_options( \'#r-match_time_offset\', null )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( null, \'#r-match_time_offset\' )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( null, \'#r-match_time_offset\' )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-match_time_offset\', null )"',
 								),
 							),
 						'match_time_offset' =>
@@ -406,9 +406,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								), 
 								__( 'The ranking page and charts page can show different rankings. Use this setting to decide which ranking to show.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								array(
-									'onclick="toggle_linked_radio_options( null, \'#r-show_ranking\' )"',
-									'onclick="toggle_linked_radio_options( null, \'#r-show_ranking\' )"',
-									'onclick="toggle_linked_radio_options( \'#r-show_ranking\', null )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( null, \'#r-show_ranking\' )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( null, \'#r-show_ranking\' )"',
+									'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-show_ranking\', null )"',
 								),
 							),
 						'show_ranking' =>
@@ -432,8 +432,8 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								// ),
 								// __( 'Select the prediction method for matches. Possible choices are \'Scores\' for the prediction of the match result in goals/points and \'Match winner\' for picking the winner of the match', FOOTBALLPOOL_TEXT_DOMAIN ),
 								// array(
-									// 'onclick="toggle_linked_radio_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
-									// 'onclick="toggle_linked_radio_options( \'#r-prediction_type_draw\', null )"',
+									// 'onclick="FootballPoolAdmin.toggle_linked_options( \'\', [ \'#r-prediction_type_draw\' ] )"',
+									// 'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-prediction_type_draw\', null )"',
 								// ),
 							// ),
 						// 'prediction_type_draw' => 

@@ -837,7 +837,7 @@ class Football_Pool_Admin {
 						, $action[1]
 				);
 			}
-			echo "</select><input onclick=\"return bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
+			echo "</select><input onclick=\"return FootballPoolAdmin.bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
 			echo '</div>';
 		}
 		
@@ -1025,7 +1025,7 @@ class Football_Pool_Admin {
 	
 	private function recalculate_scorehistory_lightbox( $ranking_id = 0 ) {
 		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
-		echo "<script> calculate_score_history({$single_ranking}) </script>";
+		echo "<script> FootballPoolAdmin.calculate({$single_ranking}) </script>";
 	}
 	
 	public function recalculate_button( $ranking_id = 0 ) {
@@ -1041,7 +1041,7 @@ class Football_Pool_Admin {
 			$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
 			
 			self::secondary_button( __( 'Recalculate Scores', FOOTBALLPOOL_TEXT_DOMAIN )
-									, array( '', "calculate_score_history({$single_ranking})" )
+									, array( '', "FootballPoolAdmin.calculate({$single_ranking})" )
 									, false
 									, 'js-button' 
 			);

@@ -203,6 +203,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Removed 'number of predictions' as an option for the ranking table. This functionality is now available as a template parameter in the new template structure. See the help page under the Actions and Filters section if you want the number of predictions back.
 * Reduced the number of queries on the frontend when linked questions are used.
 * New favicon and touch icons in the 2014 World Cup style.
+* Restructured javascript code.
 * Added prediction log that logs all prediction changes by users to a table (accessible via a database tool).
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).

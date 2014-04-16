@@ -144,8 +144,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 					$points = $answer['points'] == 0 ? '' : $answer['points'];
 					
 					echo '<tr><td>', $answer['name'], '</td><td>', nl2br( $answer['answer'] ), '</td>';
-					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="1" type="radio" ', $correct, ' /></td>';
-					echo '<td><input onchange="toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="0" type="radio" ', $wrong, ' /></td>';
+					echo '<td><input onchange="FootballPoolAdmin.toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="1" type="radio" ', $correct, ' /></td>';
+					echo '<td><input onchange="FootballPoolAdmin.toggle_points( this.name )" name="_user_', $answer['user_id'], '" value="0" type="radio" ', $wrong, ' /></td>';
 					echo '<td><input name="_user_', $answer['user_id'], '_points" id="_user_', $answer['user_id'], '_points" title="', __( "Leave empty if you don't want to change the standard points.", FOOTBALLPOOL_TEXT_DOMAIN ), '" value="', $points, '" type="text" size="3" ', $input, ' /></td>';
 					echo '</tr>';
 				}
@@ -230,11 +230,11 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						$types, 
 						'',
 						array(
-							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
-							'onclick="toggle_linked_radio_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
-							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
-							'onclick="toggle_linked_radio_options( \'#r-options\', \'#r-max_answers\' )"',
-							'onclick="toggle_linked_radio_options( [ \'#r-options\', \'#r-max_answers\' ], null )"',
+							'onclick="FootballPoolAdmin.toggle_linked_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
+							'onclick="FootballPoolAdmin.toggle_linked_options( null, [ \'#r-options\', \'#r-max_answers\' ] )"',
+							'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-options\', \'#r-max_answers\' )"',
+							'onclick="FootballPoolAdmin.toggle_linked_options( \'#r-options\', \'#r-max_answers\' )"',
+							'onclick="FootballPoolAdmin.toggle_linked_options( [ \'#r-options\', \'#r-max_answers\' ], null )"',
 						),
 					),
 					array( 
