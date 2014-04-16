@@ -191,7 +191,7 @@ var FootballPoolAdmin = (function ( $ ) {
 		}
 		
 		if ( window.tinyMCE ) {
-			window.tinyMCE.execInstanceCommand( 'content', 'mceInsertContent', false, shortcode );
+			window.tinyMCE.execCommand( 'mceInsertContent', 0, shortcode );
 			//Peforms a clean up of the current editor HTML.
 			//tinyMCEPopup.editor.execCommand( 'mceCleanup' );
 			//Repaints the editor. Sometimes the browser has graphic glitches.

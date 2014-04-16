@@ -59,6 +59,7 @@ function match_options() {
 	<base target="_self" />
 	
 	<style type="text/css">
+	#tabs li:focus { outline-width: 0; }
 	#tabs li, .dialog-table label { cursor: pointer; }
 	.dialog-table { border: 0; border-collapse: collapse; }
 	.dialog-table td { padding: 3px 5px 3px 3px; vertical-align: top; }
@@ -70,6 +71,7 @@ function match_options() {
 	.shortcode-select td p { margin-bottom: 8px; }
 	.shortcode-select td { font-weight: bold; }
 	.info { font-style: italic; }
+	.tr-count input[type=text] { width: 150px; }
 	</style>
 	
 	<script>

@@ -235,7 +235,7 @@ class Football_Pool_Admin {
 	}
 	
 	public static function register_tinymce_footballpool_button( $buttons ) {
-		array_push( $buttons, "|", "footballpool" );
+		array_push( $buttons, '|', 'footballpool' );
 		return $buttons;
 	}
 	

@@ -2,7 +2,7 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: 2.3.8
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
@@ -210,6 +210,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).
 * Bug fix: multiple ranking widgets always showed the same ranking (thanks oswaldine for reporting the bug).
 * Bug fix: [fp-user-score] sometimes returned an incorrect score (thanks sillery4ever for reporting the bug).
+* Bug fix: shortcode insert in editor failed in WP 3.9 (WP 3.9 uses a new tinyMCE version).
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.
