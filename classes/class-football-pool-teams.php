@@ -4,6 +4,7 @@ class Football_Pool_Teams {
 	public $team_types;
 	public $team_names;
 	public $team_flags;
+	public $team_info;
 	public $show_team_links;
 	public $page;
 	
@@ -15,6 +16,8 @@ class Football_Pool_Teams {
 		$this->team_names = $this->get_team_names();
 		// get the flags
 		$this->team_flags = $this->get_team_flags();
+		// get the team info for all teams
+		$this->team_info = $this->get_team_info();
 		// show links?
 		$this->show_team_links = Football_Pool_Utils::get_fp_option( 'show_team_link', true );
 		
@@ -205,6 +208,22 @@ class Football_Pool_Teams {
 			$flags[$team->id] = $team->flag;
 		}
 		return $flags;
+	}
+	
+	/* get an array with the team info (for real and active teams) */
+	private function get_team_info() {
+		$team_info = array();
+		foreach( $this->teams as $team ) {
+			$team_info[(int) $team->id] = array(
+				'id' => (int) $team->id,
+				'type' => ( $team->is_real == 1 ),
+				'team_name' => $team->name,
+				'team_flag' => $team->flag,
+				'group_id' => (int) $team->group_id,
+				'group_name' => $team->group_name,
+			);
+		}
+		return $team_info;
 	}
 	
 	/* return IMG tag for team flag or logo */

@@ -188,10 +188,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 = 2.4.0 =
 * **Important!** Changes were made in the scorehistory table. If you're upgrading from a previous version please do a full calculation after the upgrade.
-* New: change the HTML template for the matches table, prediction form or ranking table via hooks. See help for details.
-* New: HTML and CSS that works better on mobile devices. Choose the new layout in the options ("off" by default for upgrades and "on" for new installs). Old layout is deprecated and will be removed in a future version.
+* New: HTML templates for the matches table, prediction form or ranking table. The templates can be changed via hooks. See help for details.
+* New: Changed default width of matches table to 100% so it works better on responsive themes.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme CSS.
-* Added option to custom rankings to exclude them from a recalculation.
 * New bonus question types: multiline text and dropdown.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
 * New option: joker multiplier can now be changed in the options.
@@ -201,6 +200,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
 * Removed user_label functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the 'footballpool_user_info_display_name' filter.
 * Removed 'number of predictions' as an option for the ranking table. This functionality is now available as a template parameter in the new template structure. See the help page under the Actions and Filters section if you want the number of predictions back.
+* Added option to custom rankings to exclude them from a recalculation.
 * Reduced the number of queries on the frontend when linked questions are used.
 * New favicon and touch icons in the 2014 World Cup style.
 * Restructured javascript code.
@@ -211,6 +211,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: multiple ranking widgets always showed the same ranking (thanks oswaldine for reporting the bug).
 * Bug fix: [fp-user-score] sometimes returned an incorrect score (thanks sillery4ever for reporting the bug).
 * Bug fix: shortcode insert in editor failed in WP 3.9 (WP 3.9 uses a new tinyMCE version).
+* Bug fix: shoutbox admin threw a warning on the start screen.
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.

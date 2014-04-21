@@ -11,8 +11,8 @@ if ( ! defined( 'FOOTBALLPOOL_OPTIONS' ) ) define( 'FOOTBALLPOOL_OPTIONS', 'foot
 
 if ( ! defined( 'FOOTBALLPOOL_PLUGIN_URL' ) ) define( 'FOOTBALLPOOL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 if ( ! defined( 'FOOTBALLPOOL_PLUGIN_DIR' ) ) define( 'FOOTBALLPOOL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-if ( ! defined( 'FOOTBALLPOOL_PLUGIN_NAME' ) ) define( 'FOOTBALLPOOL_PLUGIN_NAME', 'Football Pool' );
-if ( ! defined( 'FOOTBALLPOOL_TEXT_DOMAIN' ) ) define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
+define( 'FOOTBALLPOOL_PLUGIN_NAME', 'Football Pool' );
+define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
 
 if ( ! defined( 'FOOTBALLPOOL_HIGHCHARTS_API' ) ) define( 'FOOTBALLPOOL_HIGHCHARTS_API', '/highcharts-js/highcharts.js' );
 
@@ -21,7 +21,7 @@ define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_error_log.txt' );
 define( 'FOOTBALLPOOL_SQL_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_sql_log.sql' );
 
 // leagues
-if ( ! defined( 'FOOTBALLPOOL_LEAGUE_ALL' ) ) define( 'FOOTBALLPOOL_LEAGUE_ALL',     1 );
+if ( ! defined( 'FOOTBALLPOOL_LEAGUE_ALL' ) ) define( 'FOOTBALLPOOL_LEAGUE_ALL', 1 );
 if ( ! defined( 'FOOTBALLPOOL_LEAGUE_DEFAULT' ) ) define( 'FOOTBALLPOOL_LEAGUE_DEFAULT', 3 );
 
 // scorehistory
@@ -62,6 +62,7 @@ define( 'FOOTBALLPOOL_DEFAULT_JOKERS', 1 );
 // others
 define( 'FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE', 20 );
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
+if ( ! defined( 'FOOTBALLPOOL_SHOUTBOX_DOUBLE_POST_INTERVAL' ) ) define( 'FOOTBALLPOOL_SHOUTBOX_DOUBLE_POST_INTERVAL', 60 * 60 );	// time allowed between two (same) shoutbox messages from one user (in seconds)
 define( 'FOOTBALLPOOL_DONATE_LINK', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=S83YHERL39GHA');
 define( 'FOOTBALLPOOL_MATCH_SORT', 0 ); // date asc
 if ( ! defined( 'FOOTBALLPOOL_SMALL_AVATAR' ) ) define( 'FOOTBALLPOOL_SMALL_AVATAR', 18 ); // size in px
@@ -100,7 +101,8 @@ if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	$wpdb->show_errors();
 	// http://wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405
 	define( 'ALTERNATE_WP_CRON', true );
-	if ( ! class_exists( 'ChromePhp' ) && file_exists( FOOTBALLPOOL_PLUGIN_DIR . '_dev/ChromePhp.php' ) ) require_once '_dev/ChromePhp.php';
+	if ( ! class_exists( 'ChromePhp' ) && file_exists( FOOTBALLPOOL_PLUGIN_DIR . '_dev/ChromePhp.php' ) ) 
+		require_once '_dev/ChromePhp.php';
 } else {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', false );
 }

@@ -7,12 +7,6 @@ class Football_Pool_Admin_Feature_Pointers {
 		// define the pointers for v2.4.0
 		$version = '240';
 		self::add_pointer( $version
-							, 'resplayout'
-							, 'Responsive layout'
-							, 'A new layout option that is optimized for mobile devices.'
-							, '#responsive_layout'
-						);
-		self::add_pointer( $version
 							, 'recalc'
 							, 'Important'
 							, 'After upgrading the Football Pool plugin to version 2.4.0 you have to do a full recalculation: '

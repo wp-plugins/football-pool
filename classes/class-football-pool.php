@@ -115,7 +115,6 @@ class Football_Pool {
 		$options['calculation_type_preference'] = FOOTBALLPOOL_RANKING_CALCULATION_SMART;
 		$options['show_num_predictions_in_ranking'] = 0; // 1: yes, 0: no
 		$options['redirect_url_after_login'] = home_url(); // redirect users to this page_id after login
-		$options['responsive_layout'] = 1; // 1: yes, 0: no
 		
 		foreach ( $options as $key => $value ) {
 			Football_Pool_Utils::update_fp_option( $key, $value, 'keep existing values' );
@@ -190,8 +189,6 @@ class Football_Pool {
 			if ( ! self::is_at_least_version( '2.4.0' ) ) {
 				$update_sql = self::prepare( self::read_from_file( FOOTBALLPOOL_PLUGIN_DIR . 'data/update-2.4.0.txt' ) );
 				self::db_actions( $update_sql );
-				// for upgrades the responsive layout is "off" by default
-				Football_Pool_Utils::set_fp_option( 'responsive_layout', 0 );
 			}
 			/** END UPDATES **/
 		}
@@ -349,11 +346,6 @@ class Football_Pool {
 									'count_post_after' => __( ' ago the tournament started.', FOOTBALLPOOL_TEXT_DOMAIN ),
 								)
 			);
-			// pure grids for responsive layout
-			if ( Football_Pool_Utils::get_fp_option( 'responsive_layout' ) == 1 ) {
-				self::include_css( 'assets/grids-min.css', 'css-pure-grids' );
-				self::include_css( 'assets/responsive.css', 'css-responsive' );
-			}
 		} else {
 			// the admin
 			
@@ -382,7 +374,8 @@ class Football_Pool {
 			
 			// datetimepicker
 			self::include_css( 'assets/admin/datetimepicker/jquery.datetimepicker.css', 'css-datetimepicker' );
-			self::include_js( 'assets/admin/datetimepicker/jquery.datetimepicker.js', 'js-datetimepicker', array( 'jquery' ) );
+			self::include_js( 'assets/admin/datetimepicker/jquery.datetimepicker.js'
+								, 'js-datetimepicker', array( 'jquery' ) );
 		}
 		
 		// colorbox jQuery plugin for lightboxes

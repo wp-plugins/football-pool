@@ -442,6 +442,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 					away_team_flag<br />
 					home_score<br />
 					away_score<br />
+					group_id<br />
+					group_name<br />
 					home_input<br />
 					away_input<br />
 					joker<br />
@@ -508,6 +510,8 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 					away_team_flag<br />
 					home_score<br />
 					away_score<br />
+					group_id<br />
+					group_name<br />
 					css_class
 				</td>
 			</tr>

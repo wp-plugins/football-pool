@@ -117,8 +117,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		
 		// definition of all configurable options
 		$options = array(
-						'responsive_layout' =>
-							array( 'checkbox', __( 'Responsive layout', FOOTBALLPOOL_TEXT_DOMAIN ), 'responsive_layout', __( 'If checked the output for the pool is better optimized for mobile devices. Make sure your theme is also optimized.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'page_id_tournament' =>
 							array(
 								array( 'select', 'integer' ), 
@@ -603,8 +601,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::back_to_top();
 		
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
-		self::options_form( array( 
-									$options['responsive_layout'],
+		self::options_form( array(
 									$options['use_spin_controls'],
 									$options['show_avatar'],
 									$options['match_time_display'],

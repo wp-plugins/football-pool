@@ -84,39 +84,40 @@
 
 #sidebar ul .widget_footballpoolnextpredictionwidget p a { display: inline; }
 
-/*
-img.flag { width: 18px; height: 18px; border: 0; }
-img.fp-joker { width: 13px;  height: 13px; }
-*/
-td.flag img { border: 1px solid #ccc; }
-
-tr.odd { }
-
+td.flag img { border: 1px solid #ccc; min-width: 10px; }
 td.numeric { text-align: right; }
 
-.matchtype { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; text-align: center; }
-.matchdate { color: #fff; background-color: #ccc; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
-
-table.matchinfo { border: none; width: 580px; }
-table.matchinfo.input { width: 580px; }
-table.matchinfo td { padding: 0 .2em 0 0; border: none; font-size: .9em; }
+.matchinfo { border-spacing: 0 5px; border-collapse: separate; }
+table.matchinfo td a { text-decoration: none; }
+table.matchinfo td a:hover { text-decoration: underline; }
+table.matchinfo { border: none; width: 100%; max-width: 700px; }
+table.matchinfo td { padding: 0 .2em .1em 0; border: none; font-size: .9em; }
+table.matchinfo .matchtype { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; text-align: center; }
+table.matchinfo .matchdate { color: #fff; background-color: #ccc; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 table.matchinfo td.flag { text-align: center; }
-table.matchinfo td.time { text-align: left; font-size: .7em; vertical-align: bottom; padding-left: 1em; }
+table.matchinfo td.time { text-align: left; font-size: .7em; padding-left: 1em; }
 table.matchinfo td.home { text-align: right; padding-right: .5em; }
 table.matchinfo td.away { text-align: left; padding-left: .5em; }
 table.matchinfo td.score { text-align: center; font-weight: bold; padding: 0 .5em; }
-table.matchinfo td.fp-joker { background-image: url(images/site/ball_over.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
-table.matchinfo td.fp-nojoker { background-image: url(images/site/ball.jpg); background-repeat: no-repeat; cursor: pointer; width: 30px; height: 20px; }
-table.matchinfo td.fp-joker.readonly, table.matchinfo td.fp-nojoker.readonly { cursor: default; }
+table.matchinfo .fp-joker { background-image: url(images/site/ball_over.jpg); background-repeat: no-repeat; cursor: pointer; min-width: 30px; min-height: 20px; display: inline-block; }
+table.matchinfo .fp-nojoker { background-image: url(images/site/ball.jpg); background-repeat: no-repeat; cursor: pointer; min-width: 30px; min-height: 20px; display: inline-block; }
+table.matchinfo .closed .fp-joker, table.matchinfo .closed .fp-nojoker,
+table.matchinfo .fp-joker.readonly, table.matchinfo .fp-nojoker.readonly { cursor: default; }
+table.matchinfo tr.matchstats td { vertical-align: middle; }
+table.matchinfo span.matchstats img { min-width: 16px; }
+table.matchinfo td.matchstats { text-align: right; }
 table.matchinfo th { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
-table.matchinfo th.username { width: 200px; }
-table.statistics  { width: 400px; }
+table.matchinfo th.username { max-width: 200px; }
+table.matchinfo tr.linked-question td { padding: 5px 0 5px; }
+table.matchinfo tr.linked-question td div { border: none; }
+
+table.statistics  { width: 100%; max-width: 500px; }
 table.statistics th { color: #fff; background-color: #000; font-weight: bold; font-size: .8em; line-height: 1.8em; vertical-align: middle; }
 table.statistics td { border-bottom: 1px solid #ccc; }
-table.statistics td.score { text-align: center; }
+table.statistics td.result { text-align: center; }
 
-table.prediction-table-questions a, table.matchinfo a { text-decoration: none; }
-table.prediction-table-questions a:hover, table.matchinfo a:hover { text-decoration: underline; }
+table.prediction-table-questions a, .match-table a { text-decoration: none; }
+table.prediction-table-questions a:hover, .match-table a:hover { text-decoration: underline; }
 
 .nopointer { cursor: default!important; }
 
@@ -133,7 +134,7 @@ ol.team-list, ol.stadium-list { list-style-type: none; margin: 0; padding: 0; }
 ol.team-list li, ol.stadium-list li { clear: both; margin-bottom: 5px; }
 
 /* group ranking */
-div.ranking { border: 1px solid #000; padding: .25em; margin: 0 2em 2em 0; width: auto; width: 300px; float: left; }
+div.ranking { border: 1px solid #000; padding: .25em; margin: 0 2em 2em 0; width: 100%; max-width: 300px; float: left; }
 div.ranking h2 { margin: .2em 0; padding: 0; }
 table.ranking { border: none; border-collapse: collapse; width: 100%; }
 table.ranking th { text-align: center; font-weight: normal; font-style: italic; border-bottom: 1px solid #000; }
@@ -166,9 +167,10 @@ table.pool-ranking tr.currentuser td a,
 table.pool-ranking tr.currentuser td a:visited { color: #000; font-weight: bolder; }
 table.pool-ranking td.score  { text-align:right; padding-right: 1em; }
 table.pool-ranking { font-size: 100%; }
-table.ranking-shortcode { width: 300px; }
 table.pool-ranking.ranking-widget { font-size: 75%; }
-table.pool-ranking.ranking-page { width: 500px; }
+table.pool-ranking.ranking-page { width: 100%; max-width: 500px; }
+
+table.ranking-shortcode { width: 100%; max-width: 300px; }
 
 table.gamesbox td { padding: 1px 2px; font-size: 75%; }
 table.gamesbox td.score { white-space: nowrap; }
@@ -192,7 +194,13 @@ div.chart.stats-pie { float: left; margin-right: 20px; }
 */
 
 div.statistics { float: right; }
-a.statistics { background-image: url(images/site/stats.png); display: block; width: 62px; height: 62px; text-indent: -2000px; }
+a.statistics { 
+	background-image: url(images/site/stats.png); 
+	display: block; 
+	width: 62px; 
+	height: 62px; 
+	text-indent: -2000px; 
+}
 a.statistics:hover { background-position: 0 62px; }
 
 label { cursor: pointer; }
@@ -200,8 +208,8 @@ label { cursor: pointer; }
 span.username { color: #000; font-weight: bolder; }
 
 div.bonus { border-bottom: 1px solid #000; }
-div.bonus, p.bonus, input.bonus { width: 550px; }
-table.matchinfo div.bonus, table.matchinfo p.bonus, table.matchinfo input.bonus { width: 100%; }
+div.bonus, p.bonus, input.bonus { width: 100%; max-width: 670px; }
+.match-table div.bonus, .match-table p.bonus, .match-table input.bonus { width: 100%; }
 div.bonus.userview { margin-top: 1em; padding-bottom: .5em; }
 div.bonus.userview p { margin: 0; padding: 0; }
 div.bonus.userview span { color: #000; }
@@ -221,12 +229,13 @@ div.bonus ul.multi-select span {
 	margin-left: 20px;
 	padding-left: 10px;
 	display: block;
-	width: 530px; /* standard column width = 550px */
+	width: 100%;
+	max-width: 650px; /* standard column max-width = 670px */
 }
 /* handle the multi-select option with user input */
-div.bonus ul.multi-select label + span { width: 530px; float: left; }
+div.bonus ul.multi-select label + span { width: 100%; max-width: 650px; float: left; }
 div.bonus ul.multi-select label + span input[type=text] { width: 100%; }
-div.bonus ul.multi-select label.user-input span { width: 530px; }
+div.bonus ul.multi-select label.user-input span { width: 100%; max-width: 650px; }
 
 /* example 4 column layout for question with ID 1
 #q1 ul.multi-select li { float: left; width: 25%; }
@@ -251,11 +260,11 @@ div.football-pool-widget .widget.button:hover {
 }
 
 .widget_footballpoolshoutboxwidget div.wrapper { 
-	height: 240px; 
-	overflow: auto; 
-	overflow-x: hidden; 
-	overflow-y: scroll; 
-	margin: 0 0 1em 0; 
+	height: 240px;
+	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	margin: 0 0 1em 0;
 }
 .widget_footballpoolshoutboxwidget textarea { width: 100%; }
 .widget_footballpoolshoutboxwidget a.name { font-weight: bolder; }
@@ -276,8 +285,6 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 	display: inline;
 }
 
-.user-label { font-size: 70%; font-style: italic; }
-
 .widget div.football-pool-widget div.ranking { padding: 0 .5em; margin: 0; } 
 
 /* avatars */
@@ -289,15 +296,6 @@ ul li.widget_footballpoolnextpredictionwidget div.football-pool-widget a {
 	padding: 0 .5em 0 0; vertical-align: middle; 
 }
 
-/*
-.prediction-table-questions td { min-width: 16px; min-height: 16px; }
-.prediction-table-questions td.correct, .prediction-table-questions td.wrong {
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-.prediction-table-questions td.correct { background-image: url('images/site/correct.png'); }
-.prediction-table-questions td.wrong { background-image: url('images/site/wrong.png'); }
-*/
 .prediction-table-questions td .correct { color: #12c312; }
 .prediction-table-questions td .wrong { color: #ff2133; }
 .prediction-table-questions.statistics { width: 390px; }
@@ -327,3 +325,30 @@ span.charts-settings-text:before { content: "settings"; font-size: 75%; }
 .user-selector ol li.selected { background-color: #e1dfdf; }
 
 .ranking-select-block { margin-bottom: 1em; }
+
+/* media queries
+
+	breakpoints:
+		phone		( max-width: 767px )
+		tablet		( min-width: 768px ) and ( max-width: 979px )
+		desktop		( min-width: 980px )
+*/
+@media ( max-width: 767px ) {
+	/* match and prediction table */
+	.matchinfo { border-spacing: 0 20px; border-collapse: separate; }
+	.matchinfo td.home, .matchinfo td.away { font-size: 125%; padding: 0 2px; }
+	.matchinfo td.time, .matchinfo td.flag { display: none; }
+	.matchinfo td.matchtype { font-size: 140%; }
+	/* widgets */
+	.widget div.football-pool-widget table.pool-ranking.ranking-widget { font-size: 100%; }
+	.widget div.football-pool-widget p, .widget div.football-pool-widget td { font-size: 120%; }
+	.widget div.football-pool-widget .wrapper.fp-shoutbox p { font-size: 130%; }
+	.widget div.football-pool-widget .wrapper.next-prediction-countdown { font-size: 130%; }
+	.widget div.football-pool-widget span.notice { font-size: 100%; }
+}
+@media ( min-width: 768px ) and ( max-width: 979px ) {
+
+}
+@media ( min-width: 980px ) {
+
+}

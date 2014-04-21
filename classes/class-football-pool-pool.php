@@ -10,17 +10,16 @@ class Football_Pool_Pool {
 	public $always_show_predictions = false;
 	public $show_avatar = false;
 	private $pool_has_jokers;
-	public $responsive_layout;
 	public $pool_id = 1;
 	public $pool_users; // array of users in a pool
 	
 	public function __construct() {
-		$this->responsive_layout = Football_Pool_Utils::get_fp_option( 'responsive_layout', 1, 'int' );
 		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
 		$this->pool_has_jokers = ( $this->num_jokers > 0 );
 		
 		$this->leagues = $this->get_leagues();
-		$this->has_leagues = ( Football_Pool_Utils::get_fp_option( 'use_leagues' ) == '1' ) && ( count( $this->leagues ) > 1 );
+		$this->has_leagues = ( Football_Pool_Utils::get_fp_option( 'use_leagues' ) == '1' ) 
+								&& ( count( $this->leagues ) > 1 );
 		
 		$this->lock_datestring = Football_Pool_Utils::get_fp_option( 'bonus_question_locktime', '' );
 		$this->force_lock_time = 

@@ -9,8 +9,10 @@ class Football_Pool_Shoutbox {
 				FROM {$prefix}shoutbox s, {$wpdb->users} u 
 				WHERE s.user_id = u.ID 
 				ORDER BY s.date_entered DESC, s.id DESC";
-		if ( $nr > 0 ) $sql .= " LIMIT %d";
-		$sql = $wpdb->prepare( $sql, $nr );
+		if ( $nr > 0 ) {
+			$sql .= " LIMIT %d";
+			$sql = $wpdb->prepare( $sql, $nr );
+		}
 		return apply_filters( 'footballpool_shoutbox_messages', $wpdb->get_results( $sql, ARRAY_A ) );
 	}
 	
@@ -30,11 +32,11 @@ class Football_Pool_Shoutbox {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		if ( ! $this->is_double_post( $text, $user ) && $user > 0 ) {
+		$shout_date = Football_Pool_Utils::gmt_from_date( current_time( 'mysql' ) );
+		if ( ! $this->is_double_post( $text, $user, $shout_date ) && $user > 0 ) {
 			if ( strlen( $text ) > $max_chars )
 				$text = substr( $text, 0, $max_chars );
 			
-			$shout_date = Football_Pool_Utils::gmt_from_date( current_time( 'mysql' ) );
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}shoutbox ( user_id, shout_text, date_entered ) 
 									VALUES ( %d, %s, %s )",
 									$user, $text, $shout_date );
@@ -44,18 +46,17 @@ class Football_Pool_Shoutbox {
 		}
 	}
 	
-	private function is_double_post( $text, $user ) {
+	private function is_double_post( $text, $user, $date ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$interval = 2 * 60 * 60; // 2 hours in seconds
-		
-		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM {$prefix}shoutbox 
-								WHERE user_id = %d AND shout_text = %s 
-									AND ( %d - UNIX_TIMESTAMP( date_entered ) ) < %d",
-								$user, $text, time(), $interval );
+		$sql = $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}shoutbox
+								WHERE user_id = %d AND shout_text = %s
+									AND TIMESTAMPDIFF( SECOND, date_entered, %s ) <= %d",
+								$user, $text, $date, FOOTBALLPOOL_SHOUTBOX_DOUBLE_POST_INTERVAL );
 		
 		$result = $wpdb->get_var( $sql );
+		
 		return ( $result > 0 );
 	}
 }
