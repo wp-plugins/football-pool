@@ -81,9 +81,8 @@ th.manage-column { vertical-align: top; }
 .football-pool_page_footballpool-bonus th.manage-column.column-points { width: 50px; }
 
 /* matches */
-/* .matchinfo { width: 500px; } */
-.-matchinfo tr.match-row-edit { display: none; }
 input.score { width: 3em; }
+.matchinfo .home, .matchinfo .away { font-size: 120%; font-weight: bolder; }
 
 table.help th { text-align: left; text-decoration: underline; }
 table.help th, table.help td { padding-right: 1em; }
