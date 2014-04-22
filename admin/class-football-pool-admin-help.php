@@ -24,7 +24,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<li><a href="#players">Players</a></li>
 				<li><a href="#bonusquestions">Bonus questions</a></li>
 				<li><a href="#teams-groups-and-matches">Teams, groups and matches</a></li>
-				<li><a href="#layout">Plugin layout</a></li>
+				<li><a href="#layout">Changing the plugin layout</a></li>
 				<li><a href="#shortcodes">Shortcodes</a></li>
 				<li><a href="#charts">Using charts</a></li>
 				<li><a href="#hooks">Extending the plugin: Actions and Filters</a></li>
@@ -393,7 +393,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		
-		<h2 id="layout">Plugin layout</h2>
+		<h2 id="layout">Changing the plugin layout</h2>
 		<h3>Style</h3>
 		<p>The plugin has some basic styling that will hopefully not interfere with your theme. If you want to change the style of the plugin, you can do so by using a seperate CSS file, or by adding rules to the CSS file of your theme. Just follow the CSS rules about specificity to overwrite the plugin's style (see Keegan Street's <a href="http://specificity.keegan.st/">specificity calculator</a> for a cool help in determining the specificity of a selector). I don't recommend changing the CSS of the plugin, as it will be overwritten on every update.
 		</p>

@@ -9,11 +9,11 @@ class Football_Pool_Admin_Feature_Pointers {
 		self::add_pointer( $version
 							, 'recalc'
 							, 'Important'
-							, 'After upgrading the Football Pool plugin to version 2.4.0 you have to do a full recalculation: '
+							, 'If you are upgrading the Football Pool plugin to version 2.4.0 (from a lower version) you have to do a full recalculation. If it is a first install, you can ignore this message.'
 							, '#adminmenu'
 							, 'left'
 							, 'top'
-							, '<a href="admin.php?page=footballpool-options" onclick="FootballPoolAdmin.calculate(); return false;">recalculate now</a>.'
+							, '<br /><br /><a href="admin.php?page=footballpool-options" onclick="FootballPoolAdmin.calculate(); return false;">recalculate now</a>.'
 						);
 		self::add_pointer( $version
 							, 'redirecturl'
