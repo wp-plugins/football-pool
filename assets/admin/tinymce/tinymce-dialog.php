@@ -5,6 +5,7 @@ require_once( '../../../define.php' );
 $site_url = get_option( 'siteurl' );
 $admin_url = get_admin_url();
 $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
+$tinymce_ver = get_bloginfo( 'version' );
 $pool = new Football_Pool_Pool;
 
 function group_options() {
@@ -40,7 +41,6 @@ function match_options() {
 								, $match['id']
 								, $match['home_team']
 								, $match['away_team']
-								// , $match['match_datetime']
 								, Football_Pool_Utils::date_from_gmt( $match['date'] )
 						);
 		printf( '<option value="%d">%s</option>', $match['id'], $option_text );
@@ -52,9 +52,9 @@ function match_options() {
 	<title><?php _e( 'Select a shortcode', FOOTBALLPOOL_TEXT_DOMAIN ); ?></title>
 	<meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="<?php echo $tinymce_url; ?>tiny_mce_popup.js"></script>
-	<script src="<?php echo $tinymce_url; ?>utils/mctabs.js"></script>
-	<script src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js"></script>
+	<script src="<?php echo $tinymce_url; ?>tiny_mce_popup.js?ver=<?php echo $tinymce_ver; ?>"></script>
+	<script src="<?php echo $tinymce_url; ?>utils/mctabs.js?ver=<?php echo $tinymce_ver; ?>"></script>
+	<script src="<?php echo FOOTBALLPOOL_PLUGIN_URL ?>assets/admin/admin.min.js?ver=<?php echo FOOTBALLPOOL_DB_VERSION; ?>"></script>
 	<base target="_self" />
 	
 	<style type="text/css">
