@@ -711,9 +711,14 @@ class Football_Pool_Pool {
 	private function bonus_question_multiple( $question, $type = 'radio' ) {
 		$options = explode( ';', $question['options'] );
 		// strip out any empty options
-		$options = array_filter( $options, function( $option ) { 
-						return ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ); 
-					} );
+		// $options = array_filter( $options, function( $option ) { 
+						// return ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ); 
+					// } );
+		$temp = array();
+		foreach ( $options as $option ) {
+			if ( str_replace( array( ' ', "\t", "\r", "\n" ), '', $option ) != '' ) $temp[] = $option;
+		}
+		$options = $temp;
 		// bail out if there are no options
 		if ( count( $options ) == 0 ) return '';
 		

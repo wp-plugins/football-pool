@@ -37,7 +37,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		The Football Pool plugin install a pool in your WordPress blog. In the default configuration this plugin enables you to define matches between (football) teams and lets your blog visitors predict the outcomes of the matches. Players earn points for correct predictions and the best player wins the pool.
 		</p>
 		<p>
-		There are several ways you can customize the plugin: different scores for correct answers, add bonus questions, add your own rankings, etc. See the contents of this help file for details. If you have any questions, you may leave them at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.
+		There are several ways you can customize the plugin: different scores for correct answers, add bonus questions, add your own rankings, etc. See the contents of this help file for details. If you have any questions, you may leave them at the <a target="_blank" href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.
 		</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
@@ -65,7 +65,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<h3>Matches</h3>
 		<p>
-		<strong>Matches have to be entered or imported with <a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
+		<strong>Matches have to be entered or imported with <a target="_blank" href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a> times</strong> for the kickoff. The admin screen also shows the times for the match in your own timezone (according to the <a href="options-general.php">setting in WordPress</a>) so you can check if the times are correct.
 		</p>
 		
 		<div class="help important">
@@ -238,7 +238,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<h3>csv file import</h3>
 		<p>
-		The csv file (must be in <a href="http://superuser.com/questions/479756/eol-in-notepad-and-notepad" title="tip: use Notepad++ to convert to the correct EOL format">UNIX or Windows/DOS EOL format</a>) can be uploaded in one of the following formats:
+		The csv file (must be in <a target="_blank" href="http://superuser.com/questions/479756/eol-in-notepad-and-notepad" title="tip: use Notepad++ to convert to the correct EOL format">UNIX or Windows/DOS EOL format</a>) can be uploaded in one of the following formats:
 		<ol>
 			<li>minimal data (only the basic information about teams);</li>
 			<li>full data (all information).</li>
@@ -395,7 +395,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		
 		<h2 id="layout">Changing the plugin layout</h2>
 		<h3>Style</h3>
-		<p>The plugin has some basic styling that will hopefully not interfere with your theme. If you want to change the style of the plugin, you can do so by using a seperate CSS file, or by adding rules to the CSS file of your theme. Just follow the CSS rules about specificity to overwrite the plugin's style (see Keegan Street's <a href="http://specificity.keegan.st/">specificity calculator</a> for a cool help in determining the specificity of a selector). I don't recommend changing the CSS of the plugin, as it will be overwritten on every update.
+		<p>The plugin has some basic styling that will hopefully not interfere with your theme. If you want to change the style of the plugin, you can do so by using a seperate CSS file, or by adding rules to the CSS file of your theme. Just follow the CSS rules about specificity to overwrite the plugin's style (see Keegan Street's <a target="_blank" href="http://specificity.keegan.st/">specificity calculator</a> for a cool help in determining the specificity of a selector). I don't recommend changing the CSS of the plugin, as it will be overwritten on every update.
 		</p>
 		<h3>Templates</h3>
 		<p>Some data that is displayed in the plugin is handled via a template. These templates consist of HTML and parameters. See the table below for an overview of the templates that are available in the plugin at the moment and the parameters that can be used. A parameter must be surrounded by "<?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>", e.g. <?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>home_team<?php echo FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER; ?>.</p>
@@ -918,10 +918,10 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 
 		<h2 id="charts">Using charts</h2>
 		<p>
-		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
+		The charts feature uses the Highcharts API to display the interactive charts. Because of the <a target="_blank" href="http://wordpress.org/extend/plugins/about/">WordPress license guidelines</a> I may not include this library in the package. Maybe if I find a library in the near future that has the same nice features and design (and I find the time to rewrite the charts code) I will change the plugin.</p>
 		<p>For now you have to follow these steps:
 		<ol>
-			<li>Download the Highcharts API from <a href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
+			<li>Download the Highcharts API from <a target="_blank" href="http://www.highcharts.com/download">http://www.highcharts.com/download</a>.</li>
 			<li>Place the <span class="code">highcharts.js</span> file in the following path <span class="code">/wp-content/plugins/highcharts-js/highcharts.js</span>.</li>
 			<li>Enable the charts on the <a href="?page=footballpool-options">Options page</a>.</li>
 		</ol>
@@ -936,20 +936,12 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
-		<p>If you want to alter the output of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin (<a href="http://codex.wordpress.org/Writing_a_Plugin">how write your own plugin<a/>).</p>
-		
-		<script>
-		function show_footballpool_hooks() {
-			var hooks_table = jQuery( '#hooks-table' );
-			if ( hooks_table.is( ':hidden' ) ) {
-				hooks_table.slideDown( 'slow' );
-			} else {
-				hooks_table.slideUp( 'slow' );
-			}
-		}
-		</script>
+		<p>If you want to alter the output or behavior of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a target="_blank" href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a target="_blank" href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin (<a href="http://codex.wordpress.org/Writing_a_Plugin" target="_blank">how write your own plugin</a>).</p>
 		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
 		</p>
+		<div class="help important">
+			<p>Please note that some of the examples below use <a title="more on closures" href="http://www.php.net/manual/en/functions.anonymous.php" target="_blank">closures</a>. If you don't have PHP version 5.3 or higher, you'll have to rewrite the example to a named function.</p>
+		</div>
 		
 		<h3>Simple and/or short examples:</h3>
 		<?php 
@@ -1084,7 +1076,7 @@ add_filter( \'footballpool_widget_html_group\', function( $html ) {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		
 		<h2 id="the-end">Anything else?</h2>
-		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
+		<p>It was real fun writing this plugin and I hope you had/have as much fun using it. If not, please let me know. You can leave a question, feature request or a bug report at the <a target="_blank" href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.</p>
 		<p>Writing this plugin and maintaining it takes a lot of time. If you liked using this plugin please consider a small donation.<br />
 		Or a little fan mail is also appreciated :)</p>
 		<?php self::admin_footer(); ?>
