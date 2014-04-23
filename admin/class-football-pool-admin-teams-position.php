@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Teams_Position extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$teams = new Football_Pool_Teams;

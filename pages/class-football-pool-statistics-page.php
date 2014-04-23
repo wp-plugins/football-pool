@@ -1,18 +1,21 @@
 <?php
 class Football_Pool_Statistics_Page {
-	public function the_title( $title ) {
+	public static function the_title( $title ) {
 		if ( in_the_loop() && is_page() && get_the_ID() == Football_Pool_Utils::get_fp_option( 'page_id_statistics' ) ) {
 			$view = Football_Pool_Utils::get_string( 'view', 'stats' );
 			if ( ! in_array( $view, array( 'bonusquestion' ,'matchpredictions' ) ) ) {
-				// $class = ( Football_Pool_Utils::wordpress_is_at_least_version( '3.8' ) ) ? 'fa fa-cog' : 'chart-settings-text';
-				$title .= sprintf( '<span title="%s" class="fp-icon-cog charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
-									, __( 'Chart settings', FOOTBALLPOOL_TEXT_DOMAIN )
-								);
+				$stats = new Football_Pool_Statistics;
+				if ( $stats->data_available ) {
+					$title .= sprintf( '<span title="%s" class="fp-icon-cog charts-settings-switch" onclick="jQuery( \'#fp-charts-settings\' ).slideToggle( \'slow\' )"></span>'
+										, __( 'Chart settings', FOOTBALLPOOL_TEXT_DOMAIN )
+									);
+				}
 			}
 		}
 		
 		return $title;
 	}
+	
 	private function settings_panel( $panel_content ) {
 		$output = sprintf( '<div id="fp-charts-settings">%s<p><input type="submit" value="%s" /></p></div>'
 							, $panel_content

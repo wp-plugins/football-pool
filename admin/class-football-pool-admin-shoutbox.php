@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -15,7 +15,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Shoutbox', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$shout_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -55,7 +55,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		global $current_user;
 		
 		$values = array(
@@ -84,12 +84,12 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function get_message( $id ) {
+	private static function get_message( $id ) {
 		$shoutbox = new Football_Pool_Shoutbox();
 		return $shoutbox->get_message( $id );
 	}
 	
-	private function view() {
+	private static function view() {
 		$shoutbox = new Football_Pool_Shoutbox;
 		$messages = $shoutbox->get_messages();
 		
@@ -113,7 +113,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $shout_id ) {
+	private static function update( $shout_id ) {
 		$message = array(
 						$shout_id,
 						Football_Pool_Utils::post_string( 'message' )
@@ -123,7 +123,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $shout_id ) {
+	private static function delete( $shout_id ) {
 		if ( is_array( $shout_id ) ) {
 			foreach ( $shout_id as $id ) self::delete_shout( $id );
 		} else {
@@ -131,7 +131,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_shout( $id ) {
+	private static function delete_shout( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -139,7 +139,7 @@ class Football_Pool_Admin_Shoutbox extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_message( $input ) {
+	private static function update_message( $input ) {
 		global $wpdb, $current_user;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

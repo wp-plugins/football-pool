@@ -604,7 +604,7 @@ class Football_Pool_Matches {
 		return $datetime->format( $format );
 	}
 	
-	public function get_match_types() {
+	public static function get_match_types() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

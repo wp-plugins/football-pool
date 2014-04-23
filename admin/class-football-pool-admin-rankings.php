@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -27,7 +27,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'User defined rankings', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -95,7 +95,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function set_calculate_option( $ids, $value ) {
+	private static function set_calculate_option( $ids, $value ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -104,7 +104,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function define_ranking( $id ) {
+	private static function define_ranking( $id ) {
 		echo '<div class="ranking-definition">';
 		$ranking = self::get_ranking( $id );
 		if ( $ranking != null ) {
@@ -130,7 +130,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		echo '</div>';
 	}
 	
-	private function print_questions( $id ) {
+	private static function print_questions( $id ) {
 		$pool = new Football_Pool_Pool;
 		
 		$ranking_questions = array();
@@ -158,7 +158,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 	}
 	
-	private function print_matches( $id ) {
+	private static function print_matches( $id ) {
 		$matchtype = null;
 		
 		$teams = new Football_Pool_Teams;
@@ -207,7 +207,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 	}
 	
-	private function save_ranking_definition( $id ) {
+	private static function save_ranking_definition( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -272,7 +272,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						'calculate' => 1,
@@ -299,7 +299,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function get_ranking_log( $id ) {
+	private static function get_ranking_log( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -309,8 +309,9 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $wpdb->get_results( $sql, ARRAY_A );
 	}
 	
-	private function get_ranking( $id ) {
-		$ranking = Football_Pool_Pool::get_ranking_by_id( $id );
+	private static function get_ranking( $id ) {
+		$pool = new Football_Pool_Pool;
+		$ranking = $pool->get_ranking_by_id( $id );
 		$log = self::get_ranking_log( $id );
 		if ( $ranking != null && is_array( $ranking ) ) {
 			$output = array(
@@ -326,7 +327,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function ranking_log_summary( $log ) {
+	private static function ranking_log_summary( $log ) {
 		$summary = '';
 		$log_count = count( $log );
 		$j = 2;
@@ -353,8 +354,9 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $summary;
 	}
 	
-	private function get_rankings() {
-		$rankings = Football_Pool_Pool::get_rankings( 'user defined' );
+	private static function get_rankings() {
+		$pool = new Football_Pool_Pool;
+		$rankings = $pool->get_rankings( 'user defined' );
 		$output = array();
 		foreach ( $rankings as $ranking ) {
 			$log = self::ranking_log_summary( self::get_ranking_log( $ranking['id'] ) );
@@ -369,7 +371,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function view() {
+	private static function view() {
 		$items = self::get_rankings();
 		
 		$cols = array(
@@ -415,7 +417,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
 	
-	private function update( $item_id ) {
+	private static function update( $item_id ) {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
@@ -427,7 +429,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::delete_item( $id );
 		} else {
@@ -435,7 +437,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_item( $id ) {
+	private static function delete_item( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -451,7 +453,7 @@ class Football_Pool_Admin_Rankings extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_item( $input ) {
+	private static function update_item( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

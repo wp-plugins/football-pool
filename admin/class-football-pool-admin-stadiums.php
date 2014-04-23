@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -15,7 +15,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Venues', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$venue_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -55,7 +55,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						'photo' => '',
@@ -81,7 +81,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function get_venue( $id ) {
+	private static function get_venue( $id ) {
 		if ( $id > 0 ) {
 			$venue = new Football_Pool_Stadium( $id );
 			if ( isset( $venue->id ) ) {
@@ -98,8 +98,9 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function get_venues() {
-		$venues = Football_Pool_Stadiums::get_stadiums();
+	private static function get_venues() {
+		$venues = new Football_Pool_Stadiums;
+		$venues = $venues->get_stadiums();
 		$output = array();
 		foreach ( $venues as $venue ) {
 			$output[] = array(
@@ -112,7 +113,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function view() {
+	private static function view() {
 		$items = self::get_venues();
 		
 		$cols = array(
@@ -135,7 +136,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $item_id ) {
+	private static function update( $item_id ) {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
@@ -147,7 +148,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::delete_item( $id );
 		} else {
@@ -155,7 +156,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_item( $id ) {
+	private static function delete_item( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -163,7 +164,7 @@ class Football_Pool_Admin_Stadiums extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_item( $input ) {
+	private static function update_item( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

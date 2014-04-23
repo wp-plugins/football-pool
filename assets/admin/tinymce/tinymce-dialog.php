@@ -8,8 +8,7 @@ $tinymce_url = $site_url . '/wp-includes/js/tinymce/';
 $pool = new Football_Pool_Pool;
 
 function group_options() {
-	$o = new Football_Pool_Groups;
-	$groups = $o->get_groups();
+	$groups = Football_Pool_Groups::get_groups();
 	foreach ( $groups as $group ) {
 		printf( '<option value="%d">%s</option>', $group->id, $group->name );
 	}
@@ -154,9 +153,7 @@ function match_options() {
 							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						</optgroup>
 						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
-							<?php
-							ranking_options();
-							?>
+							<?php ranking_options(); ?>
 						</optgroup>
 					</select>
 				</td>
@@ -228,9 +225,7 @@ function match_options() {
 				<td>
 					<select id="predictions-question">
 						<option value="0"><?php _e( 'Select a question', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
-						<?php
-						bonusquestion_options();
-						?>
+						<?php bonusquestion_options(); ?>
 					</select>
 				</td>
 			</tr>
@@ -273,7 +268,7 @@ function match_options() {
 							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						</optgroup>
 						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
-							<?php ranking_options() ; ?>
+							<?php ranking_options(); ?>
 						</optgroup>
 					</select>
 				</td>
@@ -357,12 +352,7 @@ function match_options() {
 				</td>
 				<td>
 					<select id="group-id">
-					<?php
-					$groups = Football_Pool_Groups::get_groups();
-					foreach( $groups as $group ) {
-						printf( '<option value="%d">%s</option>', $group->id, $group->name );
-					}
-					?>
+					<?php group_options(); ?>
 					</select>
 				</td>
 			</tr>
@@ -492,9 +482,7 @@ function match_options() {
 							<option value="0" selected="selected"><?php _e( 'all scores', FOOTBALLPOOL_TEXT_DOMAIN ); ?></option>
 						</optgroup>
 						<optgroup label="<?php _e( 'or choose a user defined ranking', FOOTBALLPOOL_TEXT_DOMAIN ); ?>">
-							<?php
-							ranking_options();
-							?>
+							<?php ranking_options(); ?>
 						</optgroup>
 					</select>
 				</td>

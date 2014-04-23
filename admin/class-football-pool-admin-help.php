@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Help extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function admin() {
+	public static function admin() {
 		$img_dir = FOOTBALLPOOL_ASSETS_URL . 'admin/images/';
 		$totopoints = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 		$fullpoints = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );

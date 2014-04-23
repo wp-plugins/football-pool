@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 	private static $start = 0;
 	
-	public function process() {
+	public static function process() {
 		// get step number and other parameters
 		$step = $sub_step = $total_steps = $progress = 0;
 		$user_set = $total_user_sets = $total_users = $calculation_type = 0;
@@ -588,12 +588,12 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		}
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::$start = ( Football_Pool_Utils::post_string( 'action' ) == 'choose_calculation_type' ) ? 1 : 0;
 		self::process();
 	}
 	
-	private function get_user_set( $offset, $amount, $has_leagues ) {
+	private static function get_user_set( $offset, $amount, $has_leagues ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -614,7 +614,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		return $wpdb->get_col( $sql );
 	}
 	
-	private function post_int( $key, $default = 0 ) {
+	private static function post_int( $key, $default = 0 ) {
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			return Football_Pool_Utils::get_int( $key, $default );
 		} else {
@@ -622,7 +622,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		}
 	}
 	
-	private function post_string( $key, $default = '' ) {
+	private static function post_string( $key, $default = '' ) {
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			return Football_Pool_Utils::get_str( $key, $default );
 		} else {
@@ -630,7 +630,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 		}
 	}
 	
-	private function get_ranking_order( 
+	private static function get_ranking_order( 
 									$has_leagues,
 									$ranking_id = FOOTBALLPOOL_RANKING_DEFAULT,
 									$score_order = 0 ) {

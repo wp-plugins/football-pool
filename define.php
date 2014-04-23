@@ -98,6 +98,7 @@ if ( function_exists( 'wp_enqueue_media' ) ) {
 define( 'FOOTBALLPOOL_DEBUG_EMAIL', 'wordpressfootballpool@gmail.com' );
 if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
+	error_reporting( -1 );
 	$wpdb->show_errors();
 	// http://wordpress.org/support/topic/scheduled-posts-still-not-working-in-282#post-1175405
 	define( 'ALTERNATE_WP_CRON', true );

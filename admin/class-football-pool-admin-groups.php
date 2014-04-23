@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -17,7 +17,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Groups', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -57,13 +57,12 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						);
 		
-		$groups = new Football_Pool_Groups;
-		$group = $groups->get_group_by_id( $id );
+		$group = Football_Pool_Groups::get_group_by_id( $id );
 		if ( $id > 0 && is_object( $group ) && $group->id != 0 ) {
 			$values = (array) $group;
 		}
@@ -81,7 +80,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function view() {
+	private static function view() {
 		$items = self::get_items();
 		
 		$cols = array(
@@ -100,12 +99,12 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $item_id ) {
+	private static function update( $item_id ) {
 		$name = Football_Pool_Utils::post_string( 'name' );
 		return Football_Pool_Groups::update( $item_id, $name );
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::delete_item( $id );
 		} else {
@@ -113,7 +112,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_item( $id ) {
+	private static function delete_item( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		// update all teams in the given group (reset to default)
@@ -123,7 +122,7 @@ class Football_Pool_Admin_Groups extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function get_items() {
+	private static function get_items() {
 		$groups = Football_Pool_Groups::get_groups();
 		$output = array();
 		foreach ( $groups as $group ) {

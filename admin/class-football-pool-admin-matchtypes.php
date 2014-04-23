@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -15,7 +15,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Match Types', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -80,7 +80,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						'visible' => 1,
@@ -104,8 +104,9 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function get_match_type( $id ) {
-		$match_type = Football_Pool_Matches::get_match_type_by_id( $id );
+	private static function get_match_type( $id ) {
+		$matches = new Football_Pool_Matches;
+		$match_type = $matches->get_match_type_by_id( $id );
 		if ( is_object( $match_type ) ) {
 			$output = array(
 							'name' => $match_type->name,
@@ -118,8 +119,9 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function get_match_types() {
-		$match_types = Football_Pool_Matches::get_match_types();
+	private static function get_match_types() {
+		$matches = new Football_Pool_Matches;
+		$match_types = $matches->get_match_types();
 		$output = array();
 		foreach ( $match_types as $match_type ) {
 			$output[] = array(
@@ -131,7 +133,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function view() {
+	private static function view() {
 		$items = self::get_match_types();
 		
 		$cols = array(
@@ -154,7 +156,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $item_id ) {
+	private static function update( $item_id ) {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
@@ -165,7 +167,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::delete_item( $id );
 		} else {
@@ -173,7 +175,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_item( $id ) {
+	private static function delete_item( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -181,7 +183,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_item( $input ) {
+	private static function update_item( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -208,7 +210,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 
-	private function change_visibility( $item_id, $visible = 'visible' ) {
+	private static function change_visibility( $item_id, $visible = 'visible' ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::change_visibility_matchtype( $id, $visible );
 		} else {
@@ -216,7 +218,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		}
 	}
 
-	private function change_visibility_matchtype( $id, $visible = 'visible' ) {
+	private static function change_visibility_matchtype( $id, $visible = 'visible' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

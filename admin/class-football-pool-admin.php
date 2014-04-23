@@ -12,13 +12,13 @@ class Football_Pool_Admin {
 		echo "<!-- admin hook for current page is: {$hook_suffix} -->";
 	}
 	
-	public function set_screen_options( $status, $option, $value ) {
+	public static function set_screen_options( $status, $option, $value ) {
 		if ( strpos( $option, 'footballpool_' ) !== false ) return $value;
 		
 		return $status;
 	}
 	
-	public function get_screen_option( $option, $type = 'int' ) {
+	public static function get_screen_option( $option, $type = 'int' ) {
 		$screen = get_current_screen();
 		
 		$screen_option = $screen->get_option( $option, 'option' );
@@ -32,7 +32,7 @@ class Football_Pool_Admin {
 		return $option_value;
 	}
 	
-	private function add_submenu_page( $parent_slug, $page_title, $menu_title
+	private static function add_submenu_page( $parent_slug, $page_title, $menu_title
 									, $capability, $menu_slug, $class, $toplevel = false ) {
 		if ( is_array( $class ) ) {
 			$function = array( $class['admin'], 'admin' );
@@ -256,21 +256,21 @@ class Football_Pool_Admin {
 		return $links;
 	}
 	
-	public function get_value( $key, $default = '' ) {
+	public static function get_value( $key, $default = '' ) {
 		return Football_Pool_Utils::get_fp_option( $key, $default );
 	}
 	
-	public function set_value( $key, $value, $type = 'text' ) {
+	public static function set_value( $key, $value, $type = 'text' ) {
 		Football_Pool_Utils::update_fp_option( $key, $value );
 	}
 	
 	// use type 'updated' for yellow message and type 'error' or 'important' for the red one
-	public function notice( $msg, $type = 'updated', $fade = true ) {
+	public static function notice( $msg, $type = 'updated', $fade = true ) {
 		if ( $type == 'important' ) $type = 'error';
 		echo '<div id="message" class="', esc_attr( $type ), ( $fade ? ' fade' : '' ), '"><p>', $msg, '</p></div>';
 	}
 	
-	private function image_input_WP3_5( $label, $key, $value, $description, $type ) {
+	private static function image_input_WP3_5( $label, $key, $value, $description, $type ) {
 		$key = esc_attr( $key );
 		$title = __( 'Choose Image', FOOTBALLPOOL_TEXT_DOMAIN );
 		// based on http://mikejolley.com/2012/12/using-the-new-wordpress-3-5-media-uploader-in-plugins/
@@ -318,7 +318,7 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description );
 	}
 	
-	private function image_input_old( $label, $key, $value, $description, $type ) {
+	private static function image_input_old( $label, $key, $value, $description, $type ) {
 		$key = esc_attr( $key );
 		echo '<script type="text/javascript">
 			jQuery( document ).ready( function() {
@@ -358,7 +358,7 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description );
 	}
 	
-	public function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
+	public static function image_input( $label, $key, $value, $description = '', $type = 'regular-text' ) {
 		if ( FOOTBALLPOOL_WP_MEDIA ) {
 			self::image_input_WP3_5( $label, $key, $value, $description, $type );
 		} else {
@@ -366,7 +366,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function checkbox_input( $label, $key, $checked, $description = ''
+	public static function checkbox_input( $label, $key, $checked, $description = ''
 									, $extra_attr = '', $depends_on = '' ) {
 		$input = sprintf( '<input name="%s" type="checkbox" id="%s" value="1" %s %s>'
 							, esc_attr( $key )
@@ -377,7 +377,7 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description, $depends_on );
 	}
 	
-	public function dropdown( $key, $value, $options, $extra_attr = '', $multi = 'single' ) {
+	public static function dropdown( $key, $value, $options, $extra_attr = '', $multi = 'single' ) {
 		$i = 0;
 		$multiple = '';
 		$name = esc_attr( $key );
@@ -410,7 +410,7 @@ class Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function check_selected_value( $check_value, $option_value ) {
+	private static function check_selected_value( $check_value, $option_value ) {
 		if ( is_array( $check_value ) ) {
 			return in_array( $option_value, $check_value );
 		} else {
@@ -418,19 +418,19 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function multiselect_input( $label, $key, $value, $options, $description = '', 
+	public static function multiselect_input( $label, $key, $value, $options, $description = '', 
 									$extra_attr = '', $depends_on = '' ) {
 		echo self::option_row( $key, $label, self::dropdown( $key, $value, $options, $extra_attr, 'multi' )
 								, $description, $depends_on );
 	}
 	
-	public function dropdown_input( $label, $key, $value, $options, $description = '', 
+	public static function dropdown_input( $label, $key, $value, $options, $description = '', 
 									$extra_attr = '', $depends_on = '' ) {
 		echo self::option_row( $key, $label, self::dropdown( $key, $value, $options, $extra_attr )
 								, $description, $depends_on );
 	}
 	
-	public function radiolist_input( $label, $key, $value, $options, $description = '', 
+	public static function radiolist_input( $label, $key, $value, $options, $description = '', 
 									$extra_attr = '', $depends_on = '' ) {
 		$hide = self::hide_input( $depends_on ) ? ' style="display:none;"' : '';
 		
@@ -459,7 +459,7 @@ class Football_Pool_Admin {
 		echo self::option_row( $key, $label, $input, $description, $depends_on, $label_extra );
 	}
 	
-	public function hidden_input( $key, $value, $return = 'echo' ) {
+	public static function hidden_input( $key, $value, $return = 'echo' ) {
 		$output = sprintf( '<input type="hidden" name="%s" id="%s" value="%s">'
 						, esc_attr( $key )
 						, esc_attr( $key )
@@ -473,7 +473,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function no_input( $label, $value, $description ) {
+	public static function no_input( $label, $value, $description ) {
 		echo '<tr valign="top">
 			<th scope="row"><label>', $label, '</label></th>
 			<td>', $value, '</td>
@@ -483,7 +483,7 @@ class Football_Pool_Admin {
 	
 	// helper function for the date_time input. 
 	// returns the combined date(time) string from the individual inputs
-	public function make_date_from_input( $input_name, $type = 'datetime' ) {
+	public static function make_date_from_input( $input_name, $type = 'datetime' ) {
 		$y = Football_Pool_Utils::post_integer( $input_name . '_y' );
 		$m = Football_Pool_Utils::post_integer( $input_name . '_m' );
 		$d = Football_Pool_Utils::post_integer( $input_name . '_d' );
@@ -498,7 +498,7 @@ class Football_Pool_Admin {
 		return $value;
 	}
 	
-	public function the_datetime_input( $key, $value ) {
+	public static function the_datetime_input( $key, $value ) {
 		if ( $value != '' ) {
 			if ( is_object( $value ) ) {
 				$date = $value;
@@ -550,19 +550,19 @@ class Football_Pool_Admin {
 		return $input;
 	}
 	
-	public function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
+	public static function datetime_input( $label, $key, $value, $description = '', $extra_attr = ''
 									, $depends_on = '' ) {
 		$input = self::the_datetime_input( $key, $value );
 		echo self::option_row( $key, $label, $input, $description, $depends_on );
 	}
 	
-	public function datetimepicker_input( $label, $key, $value, $description = '', $extra_attr = ''
+	public static function datetimepicker_input( $label, $key, $value, $description = '', $extra_attr = ''
 									, $depends_on = '' ) {
 		$input = self::datetimepicker( $key, $value, null, 'return' );
 		echo self::option_row( $key, $label, $input, $description, $depends_on );
 	}
 	
-	public function datepicker( $key, $value, $return = 'echo' ) {
+	public static function datepicker( $key, $value, $return = 'echo' ) {
 		$input = sprintf( '<input type="text" id="%s" name="%s" size="10" maxlength="10" value="%s" />'
 							, esc_attr( $key ), esc_attr( $key ), esc_attr( $value ) );
 		$input .= sprintf( '<script>jQuery( function() { jQuery( "#%s" ).datetimepicker( { format: "Y-m-d", timepicker: false, closeOnDateSelect: true, lazyInit: false } ); } );</script>'
@@ -575,7 +575,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function datetimepicker( $key, $value, $step = 60, $return = 'echo' ) {
+	public static function datetimepicker( $key, $value, $step = 60, $return = 'echo' ) {
 		$input = sprintf( '<input type="text" id="%s" name="%s" size="16" maxlength="16" value="%s" />'
 							, esc_attr( $key ), esc_attr( $key ), esc_attr( $value ) );
 		$input .= sprintf( '<script>jQuery( function() { jQuery( "#%s" ).datetimepicker( { format: "Y-m-d H:i", step: %d, lazyInit: false } ); } );</script>'
@@ -588,18 +588,18 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function textarea_field( $key, $value, $type = '' ) {
+	public static function textarea_field( $key, $value, $type = '' ) {
 		return sprintf( '<textarea name="%s" class="%s" cols="50" rows="5">%s</textarea>'
 							, esc_attr( $key ), $type, $value
 					);
 	}
 	
-	public function textarea_input( $label, $key, $value, $description = '', $type = '', $depends_on = '' ) {
+	public static function textarea_input( $label, $key, $value, $description = '', $type = '', $depends_on = '' ) {
 		echo self::option_row( $key, $label, self::textarea_field( $key, $value, $type )
 								, $description, $depends_on );
 	}
 	
-	public function text_input_field( $key, $value, $type = 'regular-text', $capability = '' ) {
+	public static function text_input_field( $key, $value, $type = 'regular-text', $capability = '' ) {
 		if ( $capability == '' || ( $capability != '' && current_user_can( $capability ) ) ) {
 			$output = '<input name="' . esc_attr( $key ) . '" type="text" id="' . esc_attr( $key ) 
 					. '" value="' . esc_attr( $value ) . '" class="' . esc_attr( $type ) . '" />';
@@ -609,13 +609,13 @@ class Football_Pool_Admin {
 		return $output;
 	}
 	
-	public function text_input( $label, $key, $value, $description = ''
+	public static function text_input( $label, $key, $value, $description = ''
 								, $type = 'regular-text', $depends_on = '' ) {
 		echo self::option_row( $key, $label, self::text_input_field( $key, $value, $type )
 								, $description, $depends_on );
 	}
 	
-	private function hide_input( $depends_on ) {
+	private static function hide_input( $depends_on ) {
 		if ( is_bool( $depends_on ) ) {
 			$hide = $depends_on;
 		} elseif ( is_array( $depends_on ) ) {
@@ -630,7 +630,7 @@ class Football_Pool_Admin {
 		return $hide;
 	}
 	
-	private function option_row( $id, $label, $input, $description, $depends_on = '', $label_extra = '' ) {
+	private static function option_row( $id, $label, $input, $description, $depends_on = '', $label_extra = '' ) {
 		$hide = self::hide_input( $depends_on ) ? ' style="display: none"' : '';
 		$class = ( $depends_on == '' ) ? '' : ' class="no-border"';
 		
@@ -644,7 +644,7 @@ class Football_Pool_Admin {
 				);
 	}
 	
-	public function show_option( $option ) {
+	public static function show_option( $option ) {
 		if ( is_array( $option[0] ) ) {
 			$type = $option[0][0];
 		} else {
@@ -688,7 +688,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function show_value( $option ) {
+	public static function show_value( $option ) {
 		if ( is_array( $option[0] ) ) {
 			$type = $option[0][0];
 		} else {
@@ -737,19 +737,19 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function intro( $txt ) {
+	public static function intro( $txt ) {
 		echo sprintf( '<p>%s</p>', $txt );
 	}
 	
 	// overwrite in the individual help pages
-	public function help() {
+	public static function help() {
 		self::add_help_tabs();
 	}
 	
 	// Define a method named 'help' on each admin page that calls this method with 
 	// the tab definition (array of tabs) and an optional sidebar.
 	// Don't forget to add the admin_head-hook!
-	public function add_help_tabs( $help_tabs = '', $help_sidebar = '' ) {
+	public static function add_help_tabs( $help_tabs = '', $help_sidebar = '' ) {
 		if ( ! is_array( $help_tabs ) ) return;
 		
 		$screen = get_current_screen();
@@ -774,11 +774,11 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function admin_sectiontitle( $title ) {
+	public static function admin_sectiontitle( $title ) {
 		echo '<h3>', $title, '</h3>';
 	}
 	
-	public function admin_header( $title, $subtitle = '', $addnew = '', $extra = '' ) {
+	public static function admin_header( $title, $subtitle = '', $addnew = '', $extra = '' ) {
 		echo '<div class="wrap fp-admin">';
 		
 		// season greetings
@@ -821,11 +821,11 @@ class Football_Pool_Admin {
 		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
 	}
 	
-	public function admin_footer() {
+	public static function admin_footer() {
 		echo '</form></div>';
 	}
 	
-	public function bulk_actions( $actions, $name = 'action', $pagination = false ) {
+	public static function bulk_actions( $actions, $name = 'action', $pagination = false ) {
 		echo '<div class="tablenav top">';
 		if ( count($actions) > 0 ) {
 			echo '<div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
@@ -847,7 +847,8 @@ class Football_Pool_Admin {
 		echo '<br class="clear"></div>';
 	}
 	
-	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {
+	protected static function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array()
+										, $pagination = false ) {
 		self::bulk_actions( $bulkactions, 'action', $pagination );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed'>";
 		self::list_table_def( $cols, 'head' );
@@ -857,7 +858,7 @@ class Football_Pool_Admin {
 		self::bulk_actions( $bulkactions, 'action2' );
 	}
 	
-	protected function list_table_def( $cols, $tag ) {
+	protected static function list_table_def( $cols, $tag ) {
 		echo "<t{$tag}><tr>";
 		echo '
 			<th class="manage-column column-cb check-column" id="cb" scope="col">
@@ -870,7 +871,7 @@ class Football_Pool_Admin {
 		echo "</tr></t{$tag}>";
 	}
 
-	protected function list_table_body( $cols, $rows, $rowactions ) {
+	protected static function list_table_body( $cols, $rows, $rowactions ) {
 		echo "<tbody id='the-list'>";
 		
 		$r = count( $rows );
@@ -946,7 +947,7 @@ class Football_Pool_Admin {
 		echo '</tbody>';
 	}
 	
-	public function value_form( $values ) {
+	public static function value_form( $values ) {
 		echo '<table class="form-table">';
 		foreach ( $values as $value ) {
 			self::show_value( $value );
@@ -954,7 +955,7 @@ class Football_Pool_Admin {
 		echo '</table>';
 	}
 
-	public function options_form( $values ) {
+	public static function options_form( $values ) {
 		echo '<table class="form-table fp-options">';
 		foreach ( $values as $value ) {
 			self::show_option( $value );
@@ -962,7 +963,7 @@ class Football_Pool_Admin {
 		echo '</table>';
 	}
 	
-	public function empty_scorehistory( $ranking_id = 'all' ) {
+	public static function empty_scorehistory( $ranking_id = 'all' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -995,7 +996,7 @@ class Football_Pool_Admin {
 		return $check;
 	}
 	
-	public function empty_table( $table_name = '' ) {
+	public static function empty_table( $table_name = '' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -1023,12 +1024,12 @@ class Football_Pool_Admin {
 		return $check;
 	}
 	
-	private function recalculate_scorehistory_lightbox( $ranking_id = 0 ) {
+	private static function recalculate_scorehistory_lightbox( $ranking_id = 0 ) {
 		$single_ranking = ( $ranking_id > 0 ) ? "0, {$ranking_id}" : '';
 		echo "<script> FootballPoolAdmin.calculate({$single_ranking}) </script>";
 	}
 	
-	public function recalculate_button( $ranking_id = 0 ) {
+	public static function recalculate_button( $ranking_id = 0 ) {
 		if ( FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX ) {
 			$nonce = wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC );
 			self::secondary_button( 
@@ -1048,7 +1049,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function update_score_history( $force = 'no', $ranking_id = 0 ) {
+	public static function update_score_history( $force = 'no', $ranking_id = 0 ) {
 		$auto_calc = Football_Pool_Utils::get_fp_option( 'auto_calculation'
 														, FOOTBALLPOOL_RANKING_AUTOCALCULATION
 														, 'int' );
@@ -1061,7 +1062,7 @@ class Football_Pool_Admin {
 		return true;
 	}
 	
-	public function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
+	public static function update_ranking_log( $ranking_id, $old_set, $new_set, $log_message
 										, $preserve_keys = 'no', $is_single_calculation = 0 ) {
 		if ( $new_set == null || $old_set == null ) {
 			$log = true;
@@ -1090,7 +1091,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	private function get_button_action_val( $action ) {
+	private static function get_button_action_val( $action ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -1107,7 +1108,7 @@ class Football_Pool_Admin {
 	}
 	
 	// this function returns HTML for a secondary button, rather than echoing it
-	public function link_button( $text, $action, $wrap = false, $other_attributes = null, $type = 'secondary' ) {
+	public static function link_button( $text, $action, $wrap = false, $other_attributes = null, $type = 'secondary' ) {
 		$actions = self::get_button_action_val( $action );
 		$action_val  = $actions[0];
 		$onclick_val = $actions[1];
@@ -1137,7 +1138,7 @@ class Football_Pool_Admin {
 		return $button;
 	}
 	
-	public function secondary_button( $text, $action, $wrap = false, $type = 'button'
+	public static function secondary_button( $text, $action, $wrap = false, $type = 'button'
 									, $other_attributes = null ) {
 		$actions = self::get_button_action_val( $action );
 		$action_val  = $actions[0];
@@ -1165,7 +1166,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function primary_button( $text, $action, $wrap = false ) {
+	public static function primary_button( $text, $action, $wrap = false ) {
 		$onclick_val = '';
 		
 		if ( is_array( $action ) ) {
@@ -1190,12 +1191,12 @@ class Football_Pool_Admin {
 		);
 	}
 	
-	public function cancel_button( $wrap = false, $text = '' ) {
+	public static function cancel_button( $wrap = false, $text = '' ) {
 		if ( $text == '' ) $text = __( 'Cancel', FOOTBALLPOOL_TEXT_DOMAIN );
 		self::secondary_button( $text, 'cancel', $wrap );
 	}
 	
-	public function donate_button( $return_type = 'echo' ) {
+	public static function donate_button( $return_type = 'echo' ) {
 		$str = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_s-xclick">
 			<input type="hidden" name="hosted_button_id" value="J7YJ9VMSLYTBJ">
@@ -1209,7 +1210,7 @@ class Football_Pool_Admin {
 		}
 	}
 	
-	public function example_date( $gmt = 'false', $offset = -1 ) {
+	public static function example_date( $gmt = 'false', $offset = -1 ) {
 		if ( $offset == -1 ) $offset = 14 * 24 * 60 * 60;
 		$date = date( 'Y-m-d 18:00', time() + $offset );
 		if ( $gmt == 'gmt' ) $date = Football_Pool_Utils::gmt_from_date( $date );

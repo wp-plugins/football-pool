@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -20,7 +20,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Teams', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		self::intro( __( 'Add, change or delete teams.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::intro( __( 'If you delete a team all matches for the team and predictions for those matches are also deleted. After a delete action the scores in the pool are recalculated.', FOOTBALLPOOL_TEXT_DOMAIN ) );
@@ -87,7 +87,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						'photo' => '',
@@ -134,7 +134,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function view() {
+	private static function view() {
 		$items = self::get_teams();
 		
 		$cols = array(
@@ -159,7 +159,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $item_id ) {
+	private static function update( $item_id ) {
 		$item = array(
 						$item_id,
 						Football_Pool_Utils::post_string( 'name' ),
@@ -177,7 +177,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		if ( is_array( $item_id ) ) {
 			foreach ( $item_id as $id ) self::delete_item( $id );
 		} else {
@@ -187,7 +187,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		self::update_score_history();
 	}
 	
-	private function delete_item( $id ) {
+	private static function delete_item( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		// delete all teams, matches for that team and predictions made for those matches
@@ -204,7 +204,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		wp_cache_delete( FOOTBALLPOOL_CACHE_TEAMS );
 	}
 	
-	private function update_item( $input ) {
+	private static function update_item( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -234,8 +234,9 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		return ( $id == 0 ) ? $wpdb->insert_id : $id;
 	}
 
-	private function get_teams() {
-		$teams = Football_Pool_Teams::get_teams();
+	private static function get_teams() {
+		$teams = new Football_Pool_Teams;
+		$teams = $teams->get_teams();
 		$output = array();
 		foreach ( $teams as $team ) {
 			$output[] = array(
@@ -248,7 +249,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function activate( $team_id, $active = 'activate' ) {
+	private static function activate( $team_id, $active = 'activate' ) {
 		if ( is_array( $team_id ) ) {
 			foreach ( $team_id as $id ) self::activate_team( $id, $active );
 		} else {
@@ -256,7 +257,7 @@ class Football_Pool_Admin_Teams extends Football_Pool_Admin {
 		}
 	}
 
-	private function activate_team( $id, $active = 'activate' ) {
+	private static function activate_team( $id, $active = 'activate' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

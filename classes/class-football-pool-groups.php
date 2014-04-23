@@ -1,6 +1,6 @@
 <?php
 class Football_Pool_Groups {
-	public function add( $name ) {
+	public static function add( $name ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "INSERT INTO {$prefix}groups ( name )
@@ -13,7 +13,7 @@ class Football_Pool_Groups {
 		return $wpdb->insert_id;
 	}
 	
-	public function update( $id, $name ) {
+	public static function update( $id, $name ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -29,7 +29,7 @@ class Football_Pool_Groups {
 		return $id;
 	}
 	
-	public function get_groups() {
+	public static function get_groups() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -37,7 +37,7 @@ class Football_Pool_Groups {
 		return apply_filters( 'footballpool_get_groups', $wpdb->get_results( $sql ) );
 	}
 	
-	public function get_group_by_id( $id ) {
+	public static function get_group_by_id( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -45,7 +45,7 @@ class Football_Pool_Groups {
 		return $wpdb->get_row( $sql );
 	}
 	
-	public function get_group_by_name( $name, $addnew = '' ) {
+	public static function get_group_by_name( $name, $addnew = '' ) {
 		if ( $name == '' ) return 0;
 		
 		global $wpdb;

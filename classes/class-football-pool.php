@@ -25,11 +25,11 @@ class Football_Pool {
 	
 	public function __construct() {}
 	
-	public function get_pages() {
+	public static function get_pages() {
 		return self::$pages;
 	}
 	
-	public function activate( $action = 'install' ) {
+	public static function activate( $action = 'install' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -225,7 +225,7 @@ class Football_Pool {
 	
 	// checks if plugin is at least a certain version (makes sure it has sufficient comparison decimals)
 	// based on http://wikiduh.com/1611/php-function-to-check-if-wordpress-is-at-least-version-x-y-z
-	private function is_at_least_version( $is_ver ) {
+	private static function is_at_least_version( $is_ver ) {
 		$plugin_ver = explode( '.', self::get_db_version() );
 		$is_ver = explode( '.', $is_ver );
 		for ( $i = 0; $i <= count( $is_ver ); $i++ )
@@ -237,13 +237,13 @@ class Football_Pool {
 		return true;
 	}
 	
-	public function update_db_check() {
+	public static function update_db_check() {
 		if ( self::get_db_version() != FOOTBALLPOOL_DB_VERSION ) {
 			self::activate( 'update' );
 		}
 	}
 	
-	private function get_db_version() {
+	private static function get_db_version() {
 		// new style options
 		$db_version = Football_Pool_Utils::get_fp_option( 'db_version', false );
 		// old style options
@@ -252,7 +252,7 @@ class Football_Pool {
 		return $db_version;
 	}
 	
-	public function deactivate() {
+	public static function deactivate() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -282,7 +282,7 @@ class Football_Pool {
 		}
 	}
 	
-	public function show_admin_bar( $content ) {
+	public static function show_admin_bar( $content ) {
 		// normal users do not get the admin bar after log in
 		$no_show = current_user_can( 'subscriber' ) 
 					&& Football_Pool_Utils::get_fp_option( 'hide_admin_bar', 1 ) == 1;
@@ -290,13 +290,13 @@ class Football_Pool {
 		return $no_show ? false : $content;
 	}
 	
-	public function get_locale() {
+	public static function get_locale() {
 		$domain = FOOTBALLPOOL_TEXT_DOMAIN;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		return $locale;
 	}
 	
-	public function init() {
+	public static function init() {
 		// i18n support:
 		//   http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
@@ -383,7 +383,7 @@ class Football_Pool {
 		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
 	}
 	
-	public function the_content( $content ) {
+	public static function the_content( $content ) {
 		if ( is_page() && is_main_query() ) { // http://pippinsplugins.com/playing-nice-with-the-content-filter/
 			$page_id = get_the_ID();
 			switch ( $page_id ) {
@@ -427,7 +427,7 @@ class Football_Pool {
 		return $content;
 	}
 	
-	public function get_page_link( $slug ) {
+	public static function get_page_link( $slug ) {
 		$id = Football_Pool_Utils::get_fp_option( 'page_id_' . $slug );
 		return $id ? get_page_link( $id ) : '';
 	}
@@ -504,14 +504,14 @@ class Football_Pool {
 	}
 	
 	// the dashboard can be a bit confusing for new users, so add a widget for an easy way to click to the homepage
-	public function dashboard_widget() {
+	public static function dashboard_widget() {
 		$img = Football_Pool_Utils::get_fp_option( 'dashboard_image' );
 		
 		echo '<p>', __( 'Click below to go to the football pool and predict your scores. Good luck!', FOOTBALLPOOL_TEXT_DOMAIN ), '</p>';
 		echo '<p style="text-align:center"><a href="', Football_Pool::get_page_link( 'pool' ), '"><img src="', $img, '" alt="', __( 'Fill in your predictions.', FOOTBALLPOOL_TEXT_DOMAIN ), '" /></a></p>';
 	}
 	
-	function add_dashboard_widgets() {
+	public static function add_dashboard_widgets() {
 		wp_add_dashboard_widget( 
 				'fp_dashboard_widget', 
 				__( 'Start immediately with your predictions', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -537,7 +537,7 @@ class Football_Pool {
 	} 
 
 	// if theme supports the wp_head action then add some images
-	public function change_html_head() {
+	public static function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
 		
 		if ( Football_Pool_Utils::get_fp_option( 'use_favicon' ) == 1 ) {
@@ -575,8 +575,8 @@ class Football_Pool {
 	
 //======================================================================================================//
 	
-	private function include_css( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false
-								, $pages = null ) {
+	private static function include_css( $file, $handle, $deps = null, $forced_exit = true
+										, $custom_path = '', $external = false, $pages = null ) {
 		$external = ( $external === 'external' );
 		if ( $external || $custom_path != '' ) {
 			$url = $external ? esc_url_raw( $file ) : $file;
@@ -594,8 +594,8 @@ class Football_Pool {
 		}
 	}
 	
-	private function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = '', $external = false
-								, $pages = null ) {
+	private static function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = ''
+								, $external = false, $pages = null ) {
 		$external = ( $external === 'external' );
 		if ( $external || $custom_path != '' ) {
 			$url = $external ? esc_url_raw( $file ) : $file;

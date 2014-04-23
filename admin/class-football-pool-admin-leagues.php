@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -14,7 +14,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Leagues', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$league_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -54,7 +54,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'name' => '',
 						'image' => ''
@@ -78,7 +78,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function get_league( $id ) {
+	private static function get_league( $id ) {
 		$pool = new Football_Pool_Pool();
 		$leagues = $pool->leagues;
 		if ( array_key_exists( $id, $leagues ) ) {
@@ -93,7 +93,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function get_leagues() {
+	private static function get_leagues() {
 		$pool = new Football_Pool_Pool();
 		$leagues = $pool->get_leagues( true );
 		$output = array();
@@ -107,7 +107,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		return $output;
 	}
 	
-	private function view() {
+	private static function view() {
 		$pool = new Football_Pool_Pool();
 		if ( ! $pool->has_leagues ) {
 			self::notice( __( '<strong>Important:</strong> at this moment you are not using leagues. This may be caused by the fact that you didn\'t add any leagues in the admin, or because you changed this setting in the <a href="?page=footballpool-options">plugin options</a>.', FOOTBALLPOOL_TEXT_DOMAIN ), 'important' );
@@ -135,7 +135,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions );
 	}
 	
-	private function update( $league_id ) {
+	private static function update( $league_id ) {
 		$league = array(
 						$league_id,
 						Football_Pool_Utils::post_string( 'name' ),
@@ -146,7 +146,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function delete( $league_id ) {
+	private static function delete( $league_id ) {
 		if ( is_array( $league_id ) ) {
 			foreach ( $league_id as $id ) self::delete_league( $id );
 		} else {
@@ -154,7 +154,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete_league( $id ) {
+	private static function delete_league( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -164,7 +164,7 @@ class Football_Pool_Admin_Leagues extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update_league( $input ) {
+	private static function update_league( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

@@ -6,7 +6,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		echo '<p class="options-page back-to-top"><a href="#">back to top</a></p>';
 	}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -21,7 +21,7 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		$action = Football_Pool_Utils::post_string( 'action' );
 		$date = date_i18n( 'Y-m-d H:i' );
 		

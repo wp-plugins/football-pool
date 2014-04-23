@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -29,7 +29,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
 		$question_id = Football_Pool_Utils::request_int( 'item_id', 0 );
@@ -83,8 +83,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function update_ranking_log_questions( $item_id, $old_set, $new_set, $log_msg
-													, $preserve_keys = 'no' ) {
+	private static function update_ranking_log_questions( $item_id, $old_set, $new_set, $log_msg
+														, $preserve_keys = 'no' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -96,7 +96,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 	}
 	
-	private function edit_user_answers() {
+	private static function edit_user_answers() {
 		$id = Football_Pool_Utils::request_integer( 'item_id' );
 		
 		if ( $id > 0 ) {
@@ -168,7 +168,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 	}
 	
-	private function edit( $id ) {
+	private static function edit( $id ) {
 		$values = array(
 						'question'				=> '',
 						'points'				=> '',
@@ -268,7 +268,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function view() {
+	private static function view() {
 		$pool = new Football_Pool_Pool();
 		$questions = $pool->get_bonus_questions();
 
@@ -309,7 +309,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::list_table( $cols, $rows, $bulkactions, $rowactions );
 	}
 	
-	private function delete( $question_id ) {
+	private static function delete( $question_id ) {
 		if ( is_array( $question_id ) ) {
 			foreach ( $question_id as $id ) self::delete_bonus_question( $id );
 		} else {
@@ -319,7 +319,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::update_score_history();
 	}
 	
-	private function delete_bonus_question( $id ) {
+	private static function delete_bonus_question( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -340,7 +340,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 	}
 	
-	private function update( $question_id ) {
+	private static function update( $question_id ) {
 		$question = array(
 						$question_id,
 						Football_Pool_Utils::post_string( 'question' ),
@@ -360,7 +360,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function update_bonus_question( $input ) {
+	private static function update_bonus_question( $input ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -433,13 +433,13 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private function set_bonus_question_for_users( $question ) {
+	private static function set_bonus_question_for_users( $question ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
 		$users = get_users();
 		foreach ( $users as $user ) {
-			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, 0 );
+			$correct = Football_Pool_Utils::post_integer( '_user_' . $user->ID, -1 );
 			$points = Football_Pool_Utils::post_integer( '_user_' . $user->ID . '_points', 0 );
 			if ( $correct != -1 ) {
 				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers 
@@ -453,11 +453,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		}
 		
 		// If the score date for this question is not set, then set it to the current time and date.
-		// $now = new DateTime();
-		// $now = $now->setTimestamp( time() );
-		$ts = time();
-		$now = new DateTime( "@$ts" );
-		$now = $now->format( 'Y-m-d H:i' );
+		$now = current_time( 'mysql', 1 );
 		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions
 								SET score_date = %s
 								WHERE score_date IS NULL AND id = %d"

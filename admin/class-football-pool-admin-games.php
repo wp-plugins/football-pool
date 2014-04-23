@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	public function __construct() {}
 	
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -37,7 +37,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		add_screen_option( 'per_page', $args );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		$action  = Football_Pool_Utils::request_string( 'action' );
 		$item_id = Football_Pool_Utils::request_int( 'item_id', 0 );
 		
@@ -86,7 +86,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function upload_csv() {
+	private static function upload_csv() {
 		$err = false;
 		if ( is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) {
 			$new_file = FOOTBALLPOOL_CSV_UPLOAD_DIR . $_FILES['csv_file']['name'];
@@ -106,7 +106,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function import_csv( $action = 'import_csv', $file = '' ) {
+	private static function import_csv( $action = 'import_csv', $file = '' ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -279,7 +279,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $log;
 	}
 	
-	private function get_meta_from_csv( $file ) {
+	private static function get_meta_from_csv( $file ) {
 		$all_headers = array(
 							'contributor'	=> 'Contributor',
 							'assets'		=> 'Assets URI',
@@ -287,7 +287,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return get_file_data( $file, $all_headers );
 	}
 	
-	private function view_schedules( $log = '' ) {
+	private static function view_schedules( $log = '' ) {
 		if ( is_array( $log ) ) {
 			$errors = $log[0];
 			$import_log = $log[1];
@@ -401,7 +401,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function view() {
+	private static function view() {
 		$matches = new Football_Pool_Matches();
 		$rows = $matches->matches;
 		
@@ -438,7 +438,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		submit_button();
 	}
 	
-	private function edit_handler( $item_id, $action ) {
+	private static function edit_handler( $item_id, $action ) {
 		switch ( $action ) {
 			case 'update':
 				$success = self::update();
@@ -467,7 +467,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function delete( $item_id ) {
+	private static function delete( $item_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -511,7 +511,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $success;
 	}
 	
-	private function edit( $item_id ) {
+	private static function edit( $item_id ) {
 		$values = array(
 						'play_date' => '',
 						'home_team_id' => '',
@@ -535,7 +535,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 		$types = $options;
 		
-		$venues = Football_Pool_Stadiums::get_stadiums();
+		$venues = new Football_Pool_Stadiums;
+		$venues = $venues->get_stadiums();
 		$options = array();
 		foreach ( $venues as $venue ) {
 			$options[] = array( 'value' => $venue->id, 'text' => $venue->name );
@@ -578,7 +579,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		echo '</p>';
 	}
 	
-	private function update_single_match( $item_id ) {
+	private static function update_single_match( $item_id ) {
 		$home_score = Football_Pool_Utils::post_integer( 'home_score', 'NULL' );
 		$away_score = Football_Pool_Utils::post_integer( 'away_score', 'NULL' );
 		$home_team = Football_Pool_Utils::post_integer( 'home_team_id', -1 );
@@ -593,7 +594,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $success;
 	}
 	
-	private function update() {
+	private static function update() {
 		$matches = new Football_Pool_Matches;
 		$rows = $matches->matches;
 		
@@ -618,7 +619,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $success;
 	}
 	
-	private function print_matches( $rows ) {	
+	private static function print_matches( $rows ) {	
 		$date_title = '';
 		$matchtype = '';
 		
@@ -674,12 +675,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function show_input( $name, $value, $max_length = 3, $class = 'score' ) {
+	private static function show_input( $name, $value, $max_length = 3, $class = 'score' ) {
 		return sprintf( '<input type="text" name="%s" value="%s" maxlength="%s" class="%s" />', 
 						$name, $value, $max_length, $class );
 	}
 	
-	private function teamname_input( $team, $input_name ) {
+	private static function teamname_input( $team, $input_name ) {
 		$teams = new Football_Pool_Teams;
 		if ( ! is_integer( $team ) || ! isset( $teams->team_names[$team] ) ) return '';
 		
@@ -691,7 +692,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		}
 	}
 	
-	private function team_select( $team, $input_name ) {
+	private static function team_select( $team, $input_name ) {
 		$teams = new Football_Pool_Teams;
 		
 		$select = '<select name="' . $input_name . '" id="' . $input_name . '">';
@@ -702,7 +703,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		return $select;
 	}
 	
-	private function update_match( $id, $home_team, $away_team, $home_score, $away_score, 
+	private static function update_match( $id, $home_team, $away_team, $home_score, $away_score, 
 									$match_date, $stadium_id = null, $match_type_id = null ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;

@@ -2,7 +2,7 @@
 class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	public function __construct() {}
 
-	public function help() {
+	public static function help() {
 		$help_tabs = array(
 					array(
 						'id' => 'overview',
@@ -39,7 +39,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		add_screen_option( 'per_page', $args );
 	}
 	
-	public function admin() {
+	public static function admin() {
 		self::admin_header( sprintf( '%s %s'
 									, __( 'Football Pool', FOOTBALLPOOL_TEXT_DOMAIN )
 									, __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ) 
@@ -116,7 +116,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		self::admin_footer();
 	}
 	
-	private function get_users( $offset = 0, $number = 0 ) {
+	private static function get_users( $offset = 0, $number = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$pool = new Football_Pool_Pool;
@@ -167,7 +167,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		return $output;
 	}
 
-	private function view() {
+	private static function view() {
 		global $wpdb;
 		$pool = new Football_Pool_Pool;
 		$has_leagues = $pool->has_leagues;
@@ -224,7 +224,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		self::secondary_button( __( 'List player email addresses', FOOTBALLPOOL_TEXT_DOMAIN ), 'list_email', true );
 	}
 
-	private function list_email_addresses( $users ) {
+	private static function list_email_addresses( $users ) {
 		$players = $not_players = array();
 		
 		foreach ( $users as $user ) {
@@ -252,7 +252,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		);
 	}
 	
-	private function update() {
+	private static function update() {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -280,7 +280,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
-	private function remove( $user_id ) {
+	private static function remove( $user_id ) {
 		if ( is_array( $user_id ) ) {
 			foreach ( $user_id as $id ) self::remove_user( $id );
 		} else {
@@ -288,7 +288,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
-	private function remove_user( $id ) {
+	private static function remove_user( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -313,7 +313,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
-	private function add( $user_id ) {
+	private static function add( $user_id ) {
 		if ( is_array( $user_id ) ) {
 			foreach ( $user_id as $id ) self::add_user( $id );
 		} else {
@@ -321,7 +321,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
-	private function add_user( $id ) {
+	private static function add_user( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 
@@ -353,7 +353,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		do_action( 'footballpool_admin_add_user', $id, $default_league );
 	}
 
-	protected function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array(), $pagination = false ) {
+	protected static function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array()
+										, $pagination = false ) {
 		parent::bulk_actions( $bulkactions, 'action', $pagination );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed user-list'>";
 		parent::list_table_def( $cols, 'head' );
@@ -363,7 +364,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		parent::bulk_actions( $bulkactions, 'action2' );
 	}
 
-	protected function list_table_field( $type, $value, $name = '', $source = '' ) {
+	protected static function list_table_field( $type, $value, $name = '', $source = '' ) {
 		switch ( $type ) {
 			case 'checkbox':
 			case 'boolean':
@@ -388,7 +389,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		return $output;
 	}
 
-	protected function list_table_body( $cols, $rows, $rowactions ) {
+	protected static function list_table_body( $cols, $rows, $rowactions ) {
 		echo "<tbody id='the-list'>";
 
 		$r = count( $rows );
@@ -446,7 +447,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		echo '</tbody>';
 	}
 
-	public function update_user_options( $user_id ) {
+	public static function update_user_options( $user_id ) {
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
 			return false;
 		}
@@ -454,7 +455,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
 	}
 	
-	public function add_extra_profile_fields( $user ) {
+	public static function add_extra_profile_fields( $user ) {
 		// add extra profile fields to user edit page
 		$pool = new Football_Pool_Pool();
 				
@@ -489,7 +490,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 	
-	private function get_ranking_ids_from_scorehistory_for_user( $user_id ) {
+	private static function get_ranking_ids_from_scorehistory_for_user( $user_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$sql = $wpdb->prepare( "SELECT DISTINCT( ranking_id ) FROM {$prefix}scorehistory
@@ -497,7 +498,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		return $wpdb->get_col( $sql );
 	}
 	
-	public function delete_user_from_pool( $user_id ) {
+	public static function delete_user_from_pool( $user_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
