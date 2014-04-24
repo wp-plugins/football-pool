@@ -195,9 +195,10 @@ div.ranking-log-rest { display: none; }
 
 div.ranking-log span { padding-right: 10px; }
 
-.football-pool_page_footballpool-rankings th.manage-column.column-name { width: 30%; }
-.football-pool_page_footballpool-rankings th.manage-column.column-log { width: 50%; }
-.football-pool_page_footballpool-rankings th.manage-column.column-calculate { width: 20%; }
+.football-pool_page_footballpool-rankings th.column-name { width: 30%; }
+.football-pool_page_footballpool-rankings th.column-calculate { width: 10%; }
+.football-pool_page_footballpool-rankings th.column-log { width: 30%; }
+.football-pool_page_footballpool-rankings th.column-single_calculation { width: 15%; }
 
 /* score calculation */
 #ajax-loader { display: none; float: right; background-image: url(images/ajax-loader-blue.gif); width: 16px; height: 16px; }
