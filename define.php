@@ -17,8 +17,7 @@ define( 'FOOTBALLPOOL_TEXT_DOMAIN', 'football-pool' );
 if ( ! defined( 'FOOTBALLPOOL_HIGHCHARTS_API' ) ) define( 'FOOTBALLPOOL_HIGHCHARTS_API', '/highcharts-js/highcharts.js' );
 
 define( 'FOOTBALLPOOL_ASSETS_URL', FOOTBALLPOOL_PLUGIN_URL . 'assets/' );
-define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_error_log.txt' );
-define( 'FOOTBALLPOOL_SQL_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_sql_log.sql' );
+if ( ! defined( 'FOOTBALLPOOL_ERROR_LOG' ) ) define( 'FOOTBALLPOOL_ERROR_LOG', FOOTBALLPOOL_PLUGIN_DIR . '_error_log.txt' );
 
 // leagues
 if ( ! defined( 'FOOTBALLPOOL_LEAGUE_ALL' ) ) define( 'FOOTBALLPOOL_LEAGUE_ALL', 1 );

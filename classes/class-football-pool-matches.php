@@ -464,20 +464,20 @@ class Football_Pool_Matches {
 								<td class="score">%away_input%</td>
 								<td class="flag">%away_team_flag%</td>
 								<td class="away">%away_team%</td>
-								%joker%
+								<td>%joker%</td>
 								<td title="' . __( 'score', FOOTBALLPOOL_TEXT_DOMAIN ) . '" class="numeric">%user_score%</td>
 								<td>%stats_link%</td>
 								</tr>';
 		$match_template = apply_filters( 'footballpool_predictionform_match_template', $match_template );
 		
-		$match_type_template = '<tr><td class="matchtype" colspan="10">%match_type%</td></tr>';
+		$match_type_template = '<tr><td class="matchtype" colspan="11">%match_type%</td></tr>';
 		$match_type_template = apply_filters( 'footballpool_predictionform_match_type_template', $match_type_template );
 		
-		$date_row_template = '<tr><td class="matchdate" colspan="10">%match_datetime_formatted%</td></tr>';
+		$date_row_template = '<tr><td class="matchdate" colspan="11">%match_datetime_formatted%</td></tr>';
 		$date_row_template = apply_filters( 'footballpool_predictionform_date_row_template', $date_row_template );
 		
 		$linked_question_template = '<tr id="match-%match_id-%form_id-question-%question_id%" class="linked-question">
-									<td colspan="10">%question%</td></tr>';
+									<td colspan="11">%question%</td></tr>';
 		$linked_question_template = apply_filters( 'footballpool_predictionform_linked_questions_template'
 													, $linked_question_template );
 		
@@ -492,6 +492,8 @@ class Football_Pool_Matches {
 		$output = Football_Pool_Utils::placeholder_replace( $template_start, $template_params );
 		foreach ( $matches as $row ) {
 			$info = $this->get_match_info( (int) $row['id'] );
+			
+			if ( (int) $row['has_joker'] === 1 ) $joker = (int) $row['id'];
 			
 			$matchdate = new DateTime( $row['play_date'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
@@ -558,7 +560,7 @@ class Football_Pool_Matches {
 				$output .= Football_Pool_Utils::placeholder_replace( $date_row_template, $match_template_params );
 			}
 			
-			if ( (int) $row['has_joker'] == 1 ) {
+			if ( (int) $row['has_joker'] === 1 ) {
 				$joker = (int) $row['id'];
 			}
 			
@@ -732,7 +734,7 @@ class Football_Pool_Matches {
 	}
 	
 	private function show_pool_joker( $joker, $match, $ts, $form_id = 1 ) {
-		if ( ! $this->pool_has_jokers ) return '<td></td>';
+		if ( ! $this->pool_has_jokers ) return '';
 		
 		$add_joker = '';
 		$style = '';

@@ -52,15 +52,12 @@ If you find bugs, please contact me via the <a href="http://wordpress.org/suppor
 3. Edit the plugin configuration via the admin menu
 4. Optional: add the pages for the pool to your menu, or use some other method to link to the pages
 5. Optional: add the "Football pool" widgets to your sidebar
-   (Please note: User Selector Widget is needed for the stats page)
 6. Optional: add bonus questions
-7. Optional: 'upgrade' existing users in your blog to pool users
+7. Optional: 'upgrade' existing users in your blog to pool players
 8. Optional: make the `upload` directory in the plugin folder writable (if you want to use the import function)
 9. If you want to use the charts feature please download the Highcharts API (http://www.highcharts.com/download) and put the `highcharts.js` file in the following path: `/wp-content/plugins/highcharts-js/highcharts.js`
 
 After the pool has been set up, all you have to do is monitor the users that subscribe and fill in the right scores for the matches and the right answers for the bonus questions.
-
-For easier/front-end user registration you may consider using an extra plugin and widget. E.g. <a href="http://wordpress.org/extend/plugins/custom-user-registration-lite/">Custom User Registration Lite</a>. Just don't forget the extra user meta that this plugin needs. But you can also use the Login/logout button Widget that is included with this plugin; the plugin adds the needed extra inputs to the WordPress register screen.
 
 == Frequently Asked Questions ==
 
@@ -163,7 +160,7 @@ Some themes prevent the plugin from displaying its content. See <a href="http://
 == Upgrade Notice ==
 
 = 2.4.0 =
-After upgrading to version 2.4.0, a full calculation is needed. Please back up your database before updating!
+After upgrading to version 2.4.0 a full calculation is needed. Please back up your database before updating!
 
 = 2.3.0 =
 Please back up your database before updating! If you made changes to the plugin, also make a backup of your changes.
@@ -189,7 +186,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 = 2.4.0 =
 * **Important!** Changes were made in the scorehistory table. If you're upgrading from a previous version please do a full calculation after the upgrade.
 * New: HTML templates for the matches table, prediction form or ranking table. The templates can be changed via hooks. See help for details.
-* New: Changed default width of matches table to 100% so it works better on responsive themes.
+* Changed default width of matches table to 100% so it works better on responsive themes.
 * Changed charts to a 100% width and made them responsive. If you want to change the width of the charts to a fixed width, you can do so in your theme CSS.
 * New bonus question types: multiline text and dropdown.
 * New option: users (not admins) will be redirected to a configurable page after registration (defaults to homepage).
@@ -198,13 +195,14 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * New shortcode: display info from a league with [fp-league-info].
 * Changed shortcode: [fp-predictionform] will no longer display a form when the visitor is not logged in.
 * Removed the userselector widget and placed the functionality on the charts page. Old selector wasn't working well for mobile devices, where in a lot of themes the widget zones are placed at the bottom of the page.
-* Removed user_label functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the 'footballpool_user_info_display_name' filter.
+* Removed `user_label` functionality (the meta key is still in the database if you want to use it). User name display can now be altered via the `footballpool_user_info_display_name` filter.
 * Removed 'number of predictions' as an option for the ranking table. This functionality is now available as a template parameter in the new template structure. See the help page under the Actions and Filters section if you want the number of predictions back.
 * Added option to custom rankings to exclude them from a recalculation.
 * Reduced the number of queries on the frontend when linked questions are used.
 * New favicon and touch icons in the 2014 World Cup style.
 * Restructured javascript code.
 * Added prediction log that logs all prediction changes by users to a table (accessible via a database tool).
+* Fixed strict warnings caused by calling non-static functions statically.
 * Bug fix: score calculations went wrong for bonus questions when not using the leagues options (thanks sillery4ever for reporting the bug).
 * Bug fix: ranking selector did not work in WordPress installs with default permalink setting (thanks sillery4ever for reporting the bug).
 * Bug fix: save of user answers in the bonus question admin gave an error on PHP 5.2 installs (thanks sillery4ever for reporting the bug).
@@ -212,6 +210,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: [fp-user-score] sometimes returned an incorrect score (thanks sillery4ever for reporting the bug).
 * Bug fix: shortcode insert in editor failed in WP 3.9 (WP 3.9 uses a new tinyMCE version).
 * Bug fix: shoutbox admin threw a warning on the start screen.
+* Bug fix: if jokers are disabled then jokers that were already set, are still counted in the scoring.
 
 = 2.3.8 =
 * Bug fix: the score calculation contained a bug for installs with a big gap in the user ID's. Thanks Sergio for reporting the bug and helping me with the debug info.

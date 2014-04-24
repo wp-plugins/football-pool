@@ -232,7 +232,11 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			function step2_matches() {}
 				check predictions with actual match result (score type = 0)
 			*/
-				$joker_multiplier = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+				if ( $pool->has_jokers ) {
+					$joker_multiplier = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+				} else {
+					$joker_multiplier = 1;
+				}
 				$offset = FOOTBALLPOOL_RECALC_STEP2_DIV * ( $sub_step - 1 );
 				$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
 				

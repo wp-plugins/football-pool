@@ -176,8 +176,9 @@ class Football_Pool_Statistics {
 		if ( count( $rows ) > 0 ) {
 			$output .= '<table class="matchinfo statistics">';
 			$output .= sprintf( '<tr><th class="username">%s</th>
-									<th colspan="4">%s</th><th>%s</th></tr>',
+									<th colspan="%d">%s</th><th>%s</th></tr>',
 									__( 'name', FOOTBALLPOOL_TEXT_DOMAIN ),
+									( $pool->has_jokers ? 4 : 3 ),
 									__( 'prediction', FOOTBALLPOOL_TEXT_DOMAIN ),
 									__( 'score', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
@@ -192,8 +193,11 @@ class Football_Pool_Statistics {
 									$row['home_score'],
 									$row['away_score']
 							);
-				$output .= sprintf( '<td class="nopointer %s">&nbsp;</td>', 
-									( $row['has_joker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
+				if ( $pool->has_jokers ) {
+					$output .= sprintf( '<td title="%s"><span class="nopointer %s"></span></td>',
+										( $row['has_joker'] == 1 ? __( 'joker set', FOOTBALLPOOL_TEXT_DOMAIN ) : '' ),
+										( $row['has_joker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
+				}
 				$score = $pool->calc_score(
 									$match_info['home_score'], 
 									$match_info['away_score'], 
@@ -201,7 +205,7 @@ class Football_Pool_Statistics {
 									$row['away_score'], 
 									$row['has_joker']
 								);
-				$output .= sprintf( '<td class="score">%s&nbsp;</td></tr>', $score);
+				$output .= sprintf( '<td class="score">%s</td></tr>', $score);
 			}
 			$output .= '</table>';
 		}

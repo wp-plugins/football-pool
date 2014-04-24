@@ -432,7 +432,7 @@ class Football_Pool {
 		return $id ? get_page_link( $id ) : '';
 	}
 	
-	public function new_pool_user( $user_id ) {
+	public static function new_pool_user( $user_id ) {
 		// add extra meta fields
 		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 		$league = Football_Pool_Utils::post_int( 'league', $default_league );
@@ -447,7 +447,7 @@ class Football_Pool {
 		do_action( 'footballpool_new_user', $user_id, $league );
 	}
 	
-	public function player_login_redirect( $redirect_to, $request, $user ){
+	public static function player_login_redirect( $redirect_to, $request, $user ){
 		//is there a user to check?
 		global $user;
 		if( isset( $user->roles ) && is_array( $user->roles ) ) {
@@ -463,7 +463,7 @@ class Football_Pool {
 		return $redirect_to;
 	}
 	
-	public function update_user_custom_tables( $user_id, $league_id ) {
+	public static function update_user_custom_tables( $user_id, $league_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -480,7 +480,7 @@ class Football_Pool {
 		}
 	}
 	
-	public function registration_form_extra_fields() {
+	public static function registration_form_extra_fields() {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			echo '<p><label for="league">', __( 'Play in league', FOOTBALLPOOL_TEXT_DOMAIN ), '<br>', 
@@ -488,11 +488,11 @@ class Football_Pool {
 		}
 	}
 	
-	public function registration_form_post() {
+	public static function registration_form_post() {
 		// handle the registration
 	}
 	
-	public function registration_check_fields( $errors ) {
+	public static function registration_check_fields( $errors ) {
 		$pool = new Football_Pool_Pool();
 		if ( $pool->has_leagues ) {
 			// check if the new player picked a league to play in
@@ -613,7 +613,7 @@ class Football_Pool {
 		}
 	}
 	
-	private function create_page( $page, $menu_order = null ) {
+	private static function create_page( $page, $menu_order = null ) {
 		if ( ! Football_Pool_Utils::get_fp_option( "page_id_{$page['slug']}", false ) ) {
 			global $current_user;
 			
@@ -643,7 +643,7 @@ class Football_Pool {
 		}
 	}
 	
-	private function read_from_file( $file ) {
+	private static function read_from_file( $file ) {
 		if ( file_exists( $file ) ) {
 			return file_get_contents( $file );
 		} else {
@@ -652,11 +652,11 @@ class Football_Pool {
 	}
 	
 	// replaces {$prefix} in string with actual database prefix
-	private function prepare( $sql ) {
+	private static function prepare( $sql ) {
 		return str_replace( '{$prefix}', FOOTBALLPOOL_DB_PREFIX, $sql );
 	}
 	
-	private function db_actions( $text ) {
+	private static function db_actions( $text ) {
 		global $wpdb;
 		$array = explode( ';', $text );
 		if ( count( $array ) > 0 ) {

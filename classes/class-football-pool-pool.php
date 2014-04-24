@@ -9,13 +9,13 @@ class Football_Pool_Pool {
 	private $lock_datestring;
 	public $always_show_predictions = false;
 	public $show_avatar = false;
-	private $pool_has_jokers;
+	public $has_jokers;
 	public $pool_id = 1;
 	public $pool_users; // array of users in a pool
 	
 	public function __construct() {
 		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
-		$this->pool_has_jokers = ( $this->num_jokers > 0 );
+		$this->has_jokers = ( $this->num_jokers > 0 );
 		
 		$this->leagues = $this->get_leagues();
 		$this->has_leagues = ( Football_Pool_Utils::get_fp_option( 'use_leagues' ) == '1' ) 
@@ -116,7 +116,7 @@ class Football_Pool_Pool {
 			$score += $goal_diff_bonus;
 		}
 		
-		if ( $joker == 1 ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+		if ( $joker == 1 && $this->has_jokers ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 		
 		return $score;
 	}
@@ -1142,7 +1142,7 @@ class Football_Pool_Pool {
 			$m = new Football_Pool_Matches;
 			$output .= $m->print_matches_for_input( $matches, $id, $current_user->ID );
 			
-			if ( $this->pool_has_jokers ) {
+			if ( $this->has_jokers ) {
 				$joker = $m->joker_value;
 				$output .= sprintf( '<input type="hidden" id="_joker_%d" name="_joker" value="%d" />', $id, $joker );
 			}

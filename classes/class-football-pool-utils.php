@@ -185,8 +185,7 @@ class Football_Pool_Utils {
 	public static function request_int( $key, $default = 0 ) {
 		return self::request_integer( $key, $default );
 	}
-	public static function request_integer($key, $default = 0)
-	{
+	public static function request_integer($key, $default = 0) {
 		return ( $_POST ? self::post_integer( $key, $default ) : self::get_integer( $key, $default ) );
 	}
 	public static function get_integer( $key, $default = 0 ) {
@@ -327,17 +326,6 @@ class Football_Pool_Utils {
 		}
 		
 		if ( is_int( $sleep ) && $sleep > 0 ) usleep( $sleep );
-	}
-
-	// http://stackoverflow.com/questions/4660692/is-it-possible-to-print-a-log-of-all-database-queries-for-a-page-request-in-word
-	public static function sql_logger() {
-		global $wpdb;
-		$log_file = @fopen( FOOTBALLPOOL_SQL_LOG, 'a' );
-		@fwrite( $log_file, "//////////////////////////////////////////\n\n" . date( "F j, Y, g:i:s a" ) . "\n" );
-		foreach( $wpdb->queries as $q ) {
-			@fwrite( $log_file, $q[0] . " - ({$q[1]} s)" . "\n\n" );
-		}
-		@fclose( $log_file );
 	}
 	
 }
