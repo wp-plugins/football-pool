@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Football pool v2.4.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/football-pool\n"
-"POT-Creation-Date: 2014-04-21 23:11+0100\n"
-"PO-Revision-Date: 2014-04-21 23:31+0100\n"
+"POT-Creation-Date: 2014-04-24 22:32+0100\n"
+"PO-Revision-Date: 2014-04-24 22:33+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language-Team: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
 "Language: nl_NL\n"
@@ -21,12 +21,11 @@ msgstr ""
 
 #: ../_dev/hooks.php:21 ../_dev/hooks.php:157
 #: ../admin/class-football-pool-admin-bonusquestions.php:126
-#: ../classes/class-football-pool-statistics.php:115
+#: ../classes/class-football-pool-statistics.php:121
 msgid "user"
 msgstr "speler"
 
 #: ../_dev/hooks.php:22 ../_dev/hooks.php:158
-#: ../classes/class-football-pool.php:11
 msgid "predictions"
 msgstr "voorspellingen"
 
@@ -36,10 +35,10 @@ msgstr "voorspellingen"
 #: ../admin/class-football-pool-admin-bonusquestions.php:277
 #: ../classes/class-football-pool-chart.php:207
 #: ../classes/class-football-pool-groups.php:329
-#: ../classes/class-football-pool-pool.php:851
-#: ../classes/class-football-pool-pool.php:1187
-#: ../classes/class-football-pool-statistics.php:92
-#: ../pages/class-football-pool-statistics-page.php:289
+#: ../classes/class-football-pool-pool.php:856
+#: ../classes/class-football-pool-pool.php:1192
+#: ../classes/class-football-pool-statistics.php:86
+#: ../pages/class-football-pool-statistics-page.php:292
 msgid "points"
 msgstr "punten"
 
@@ -139,9 +138,9 @@ msgstr "Vraag opgeslagen."
 #: ../admin/class-football-pool-admin-bonusquestions.php:118
 #: ../admin/class-football-pool-admin-bonusquestions.php:160
 #: ../admin/class-football-pool-admin-bonusquestions.php:264
-#: ../admin/class-football-pool-admin-games.php:575
+#: ../admin/class-football-pool-admin-games.php:576
 #: ../admin/class-football-pool-admin-groups.php:36
-#: ../admin/class-football-pool-admin-groups.php:78
+#: ../admin/class-football-pool-admin-groups.php:77
 #: ../admin/class-football-pool-admin-leagues.php:33
 #: ../admin/class-football-pool-admin-leagues.php:75
 #: ../admin/class-football-pool-admin-matchtypes.php:59
@@ -177,15 +176,15 @@ msgstr "%s vragen verwijderd."
 #: ../admin/class-football-pool-admin-bonusquestions.php:127
 #: ../admin/class-football-pool-admin-bonusquestions.php:224
 #: ../admin/class-football-pool-admin-bonusquestions.php:280
-#: ../classes/class-football-pool-pool.php:835
-#: ../classes/class-football-pool-pool.php:1203
-#: ../classes/class-football-pool-statistics.php:90
-#: ../classes/class-football-pool-statistics.php:116
+#: ../classes/class-football-pool-pool.php:840
+#: ../classes/class-football-pool-pool.php:1208
+#: ../classes/class-football-pool-statistics.php:93
+#: ../classes/class-football-pool-statistics.php:122
 msgid "answer"
 msgstr "antwoord"
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:112
-#: ../classes/class-football-pool-pool.php:848
+#: ../classes/class-football-pool-pool.php:853
 msgid "variable"
 msgstr "variabele"
 
@@ -196,7 +195,7 @@ msgstr "punt(en)"
 #: ../admin/class-football-pool-admin-bonusquestions.php:114
 #: ../admin/class-football-pool-admin-bonusquestions.php:214
 #: ../admin/class-football-pool-admin-bonusquestions.php:278
-#: ../classes/class-football-pool-pool.php:830
+#: ../classes/class-football-pool-pool.php:835
 msgid "answer before"
 msgstr "beantwoorden vóór"
 
@@ -264,7 +263,7 @@ msgstr "Een speler mag deze vraag beantwoorden tot deze datum en tijd."
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:214
 #: ../admin/class-football-pool-admin-bonusquestions.php:215
-#: ../admin/class-football-pool-admin-games.php:648
+#: ../admin/class-football-pool-admin-games.php:649
 msgid "local time"
 msgstr "lokale tijd"
 
@@ -328,7 +327,7 @@ msgstr ""
 "antwoorden."
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:258
-#: ../classes/class-football-pool-pool.php:810
+#: ../classes/class-football-pool-pool.php:815
 msgid "photo question"
 msgstr "fotovraag"
 
@@ -354,13 +353,13 @@ msgid "linked to match"
 msgstr "koppelen aan wedstrijd"
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:307
-#: ../admin/class-football-pool-admin-games.php:664
-#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-games.php:665
+#: ../admin/class-football-pool-admin-groups.php:98
 #: ../admin/class-football-pool-admin-leagues.php:134
-#: ../admin/class-football-pool-admin-matchtypes.php:151
-#: ../admin/class-football-pool-admin-rankings.php:411
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+#: ../admin/class-football-pool-admin-rankings.php:413
 #: ../admin/class-football-pool-admin-shoutbox.php:112
-#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-stadiums.php:135
 #: ../admin/class-football-pool-admin-teams.php:158
 msgid "Delete"
 msgstr "Verwijderen"
@@ -370,13 +369,13 @@ msgid "You are about to delete one or more bonus questions."
 msgstr "Je staat op het punt om een of meer bonusvragen te verwijderen."
 
 #: ../admin/class-football-pool-admin-bonusquestions.php:307
-#: ../admin/class-football-pool-admin-games.php:661
-#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-games.php:662
+#: ../admin/class-football-pool-admin-groups.php:98
 #: ../admin/class-football-pool-admin-leagues.php:134
-#: ../admin/class-football-pool-admin-matchtypes.php:151
-#: ../admin/class-football-pool-admin-rankings.php:411
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+#: ../admin/class-football-pool-admin-rankings.php:413
 #: ../admin/class-football-pool-admin-shoutbox.php:112
-#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-stadiums.php:135
 #: ../admin/class-football-pool-admin-teams.php:158
 msgid "Are you sure? `OK` to delete, `Cancel` to stop."
 msgstr "Weet je het zeker? `OK` om te verwijderen, `Annuleren` om te stoppen."
@@ -460,7 +459,7 @@ msgstr "Plugin Instellingen"
 #: ../admin/class-football-pool-admin-games.php:33
 #: ../admin/class-football-pool-admin-games.php:44
 #: ../admin/class-football-pool-admin.php:109
-#: ../assets/admin/tinymce/tinymce-dialog.php:141
+#: ../assets/admin/tinymce/tinymce-dialog.php:140
 msgid "Matches"
 msgstr "Wedstrijden"
 
@@ -644,7 +643,7 @@ msgstr "Waarden aangepast."
 msgid "match %d deleted"
 msgstr "wedstrijd %d verwijderd"
 
-#: ../admin/class-football-pool-admin-games.php:555
+#: ../admin/class-football-pool-admin-games.php:556
 #, php-format
 msgid ""
 "You have to enter some <a href=\"%s\">teams</a>, <a href=\"%s\">venues</a> "
@@ -653,89 +652,89 @@ msgstr ""
 "Je moet eerst <a href=\"%s\">teams</a>, <a href=\"%s\">stadions</a> en <a "
 "href=\"%s\">wedstrijdtypes</a> toevoegen."
 
-#: ../admin/class-football-pool-admin-games.php:556
+#: ../admin/class-football-pool-admin-games.php:557
 #: ../admin/class-football-pool-admin-users.php:71
 msgid "Back"
 msgstr "Terug"
 
-#: ../admin/class-football-pool-admin-games.php:564
+#: ../admin/class-football-pool-admin-games.php:565
 msgid "match date (UTC)"
 msgstr "Wedstrijddatum (UTC)"
 
-#: ../admin/class-football-pool-admin-games.php:564
-#: ../admin/class-football-pool-admin-games.php:648
+#: ../admin/class-football-pool-admin-games.php:565
+#: ../admin/class-football-pool-admin-games.php:649
 msgid "time of the match in local time (WordPress setting)"
 msgstr "tijd van de wedstrijd in lokale tijd (WordPress instelling)"
 
-#: ../admin/class-football-pool-admin-games.php:564
+#: ../admin/class-football-pool-admin-games.php:565
 #, php-format
 msgid "local time is %s"
 msgstr "lokale tijd is %s"
 
-#: ../admin/class-football-pool-admin-games.php:565
+#: ../admin/class-football-pool-admin-games.php:566
 msgid "home team"
 msgstr "thuisteam"
 
-#: ../admin/class-football-pool-admin-games.php:566
+#: ../admin/class-football-pool-admin-games.php:567
 msgid "away team"
 msgstr "uit-team"
 
-#: ../admin/class-football-pool-admin-games.php:567
+#: ../admin/class-football-pool-admin-games.php:568
 msgid "home score"
 msgstr "score thuis-team"
 
-#: ../admin/class-football-pool-admin-games.php:568
+#: ../admin/class-football-pool-admin-games.php:569
 msgid "away score"
 msgstr "score uit-team"
 
-#: ../admin/class-football-pool-admin-games.php:569
+#: ../admin/class-football-pool-admin-games.php:570
 msgid "stadium"
 msgstr "stadion"
 
-#: ../admin/class-football-pool-admin-games.php:570
-#: ../admin/class-football-pool-admin-matchtypes.php:138
+#: ../admin/class-football-pool-admin-games.php:571
+#: ../admin/class-football-pool-admin-matchtypes.php:140
 msgid "match type"
 msgstr "wedstrijdtype"
 
-#: ../admin/class-football-pool-admin-games.php:576
-#: ../classes/class-football-pool-pool.php:1251
+#: ../admin/class-football-pool-admin-games.php:577
+#: ../classes/class-football-pool-pool.php:1256
 msgid "Save"
 msgstr "Opslaan"
 
-#: ../admin/class-football-pool-admin-games.php:628
 #: ../admin/class-football-pool-admin-games.php:629
+#: ../admin/class-football-pool-admin-games.php:630
 msgid "import a new schedule here"
 msgstr "Upload een nieuw wedstrijdschema"
 
 #. Translators: this is a date format string (see http://php.net/date)
-#: ../admin/class-football-pool-admin-games.php:643
+#: ../admin/class-football-pool-admin-games.php:644
 #: ../classes/class-football-pool-matches.php:364
-#: ../classes/class-football-pool-matches.php:499
+#: ../classes/class-football-pool-matches.php:501
 msgid "M d, Y"
 msgstr "d M Y"
 
-#: ../admin/class-football-pool-admin-games.php:649
+#: ../admin/class-football-pool-admin-games.php:650
 msgid "UTC"
 msgstr "UTC"
 
-#: ../admin/class-football-pool-admin-games.php:658
+#: ../admin/class-football-pool-admin-games.php:659
 #, php-format
 msgid "You are about to delete match %d."
 msgstr "Je staat op het punt om wedstrijd %d te verwijderen."
 
-#: ../admin/class-football-pool-admin-games.php:664
+#: ../admin/class-football-pool-admin-games.php:665
 msgid "Edit"
 msgstr "Wijzig"
 
-#: ../admin/class-football-pool-admin-games.php:665
+#: ../admin/class-football-pool-admin-games.php:666
 msgid "change match time"
 msgstr "speeldatum wijzigen"
 
-#: ../admin/class-football-pool-admin-games.php:720
+#: ../admin/class-football-pool-admin-games.php:721
 msgid "match with end score added to pool"
 msgstr "wedstrijd met eindscore toegevoegd aan de pool"
 
-#: ../admin/class-football-pool-admin-games.php:758
+#: ../admin/class-football-pool-admin-games.php:759
 #, php-format
 msgid "match %d changed"
 msgstr "wedstrijd %d gewijzigd"
@@ -774,7 +773,7 @@ msgstr "Poule id:%d verwijderd."
 msgid "%d groups deleted."
 msgstr "%d poules verwijderd."
 
-#: ../admin/class-football-pool-admin-groups.php:72
+#: ../admin/class-football-pool-admin-groups.php:71
 #: ../admin/class-football-pool-admin-matchtypes.php:94
 #: ../admin/class-football-pool-admin-rankings.php:287
 #: ../admin/class-football-pool-admin-shoutbox.php:73
@@ -782,16 +781,16 @@ msgstr "%d poules verwijderd."
 #: ../admin/class-football-pool-admin-stadiums.php:70
 #: ../admin/class-football-pool-admin-teams.php:117
 #: ../admin/class-football-pool-admin-users.php:186
-#: ../classes/class-football-pool-statistics.php:180
+#: ../classes/class-football-pool-statistics.php:189
 msgid "name"
 msgstr "naam"
 
-#: ../admin/class-football-pool-admin-groups.php:88
+#: ../admin/class-football-pool-admin-groups.php:87
 #: ../admin/class-football-pool-admin-teams.php:122
 msgid "group"
 msgstr "poule"
 
-#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-groups.php:98
 msgid "You are about to delete one or more groups."
 msgstr "Je staat op het punt om een of meerdere poules te verwijderen."
 
@@ -912,28 +911,28 @@ msgstr "%s wedstrijdtypes verwijderd."
 msgid "visible on the website"
 msgstr "zichtbaar op de website"
 
-#: ../admin/class-football-pool-admin-matchtypes.php:139
+#: ../admin/class-football-pool-admin-matchtypes.php:141
 msgid "visible"
 msgstr "zichtbaar"
 
-#: ../admin/class-football-pool-admin-matchtypes.php:151
+#: ../admin/class-football-pool-admin-matchtypes.php:153
 msgid "You are about to delete one or more match types."
 msgstr "Je staat op het punt om een of meer wedstrijdtypes te verwijderen."
 
-#: ../admin/class-football-pool-admin-matchtypes.php:152
+#: ../admin/class-football-pool-admin-matchtypes.php:154
 msgid "Make visible"
 msgstr "Tonen op de website"
 
-#: ../admin/class-football-pool-admin-matchtypes.php:152
+#: ../admin/class-football-pool-admin-matchtypes.php:154
 msgid "You are about to make one or more match types visible."
 msgstr ""
 "Je staat op het punt om een of meer wedstrijdtypes zichtbaar te maken op de "
 "website."
 
-#: ../admin/class-football-pool-admin-matchtypes.php:152
-#: ../admin/class-football-pool-admin-matchtypes.php:153
-#: ../admin/class-football-pool-admin-rankings.php:412
-#: ../admin/class-football-pool-admin-rankings.php:413
+#: ../admin/class-football-pool-admin-matchtypes.php:154
+#: ../admin/class-football-pool-admin-matchtypes.php:155
+#: ../admin/class-football-pool-admin-rankings.php:414
+#: ../admin/class-football-pool-admin-rankings.php:415
 #: ../admin/class-football-pool-admin-teams.php:156
 #: ../admin/class-football-pool-admin-teams.php:157
 #: ../admin/class-football-pool-admin-users.php:215
@@ -941,11 +940,11 @@ msgstr ""
 msgid "Are you sure? `OK` to continue, `Cancel` to stop."
 msgstr "Weet je het zeker? `OK` om door te gaan, `Annuleren` om te stoppen."
 
-#: ../admin/class-football-pool-admin-matchtypes.php:153
+#: ../admin/class-football-pool-admin-matchtypes.php:155
 msgid "Make invisible"
 msgstr "Niet tonen op de website"
 
-#: ../admin/class-football-pool-admin-matchtypes.php:153
+#: ../admin/class-football-pool-admin-matchtypes.php:155
 msgid "You are about to make one or more match types invisible."
 msgstr ""
 "Je staat op het punt om een of meer wedstrijdtypes niet zichtbaar te maken "
@@ -1041,7 +1040,7 @@ msgstr ""
 "de plugin."
 
 #: ../admin/class-football-pool-admin-options.php:213
-#: ../assets/admin/tinymce/tinymce-dialog.php:524
+#: ../assets/admin/tinymce/tinymce-dialog.php:512
 msgid "Webmaster"
 msgstr "Webmaster"
 
@@ -1050,7 +1049,7 @@ msgid "This value is used for the shortcode [fp-webmaster]."
 msgstr "Deze waarde wordt gebruikt voor de shortcode [fp-webmaster]."
 
 #: ../admin/class-football-pool-admin-options.php:215
-#: ../assets/admin/tinymce/tinymce-dialog.php:526
+#: ../assets/admin/tinymce/tinymce-dialog.php:514
 msgid "Money"
 msgstr "Inleg"
 
@@ -1063,7 +1062,7 @@ msgstr ""
 "De shortcode [fp-money] geeft deze waarde weer in de content."
 
 #: ../admin/class-football-pool-admin-options.php:217
-#: ../assets/admin/tinymce/tinymce-dialog.php:525
+#: ../assets/admin/tinymce/tinymce-dialog.php:513
 msgid "Bank"
 msgstr "Bank"
 
@@ -1076,7 +1075,7 @@ msgstr ""
 "betaald. De shortcode [fp-bank] geeft deze waarde weer in de content."
 
 #: ../admin/class-football-pool-admin-options.php:219
-#: ../assets/admin/tinymce/tinymce-dialog.php:527
+#: ../assets/admin/tinymce/tinymce-dialog.php:515
 msgid "Start date"
 msgstr "Startdatum"
 
@@ -1089,7 +1088,7 @@ msgstr ""
 "weer in de content."
 
 #: ../admin/class-football-pool-admin-options.php:221
-#: ../assets/admin/tinymce/tinymce-dialog.php:520
+#: ../assets/admin/tinymce/tinymce-dialog.php:508
 msgid "Joker multiplier"
 msgstr "Joker vermenigvuldigfactor"
 
@@ -1136,7 +1135,7 @@ msgstr ""
 "totaal aantal punten van een speler."
 
 #: ../admin/class-football-pool-admin-options.php:227
-#: ../assets/admin/tinymce/tinymce-dialog.php:523
+#: ../assets/admin/tinymce/tinymce-dialog.php:511
 msgid "Goal bonus"
 msgstr "Goalbonus"
 
@@ -1461,8 +1460,8 @@ msgstr ""
 "Standaardwaarde is wedstrijdtype met id %d."
 
 #: ../admin/class-football-pool-admin-options.php:375
-#: ../assets/admin/tinymce/tinymce-dialog.php:374
-#: ../assets/admin/tinymce/tinymce-dialog.php:417
+#: ../assets/admin/tinymce/tinymce-dialog.php:364
+#: ../assets/admin/tinymce/tinymce-dialog.php:407
 msgid "Use CTRL+click to select multiple values."
 msgstr "Gebruik CTRL+klik om meerdere waarden te selecteren."
 
@@ -1537,7 +1536,7 @@ msgstr ""
 
 #: ../admin/class-football-pool-admin-options.php:415
 #: ../pages/class-football-pool-ranking-page.php:44
-#: ../pages/class-football-pool-statistics-page.php:105
+#: ../pages/class-football-pool-statistics-page.php:108
 msgid "Choose ranking"
 msgstr "Kies stand"
 
@@ -1628,8 +1627,8 @@ msgid "Plugin Options"
 msgstr "Plugin Instelllingen"
 
 #: ../admin/class-football-pool-admin-options.php:486
-#: ../admin/class-football-pool-admin.php:1035
-#: ../admin/class-football-pool-admin.php:1043
+#: ../admin/class-football-pool-admin.php:1036
+#: ../admin/class-football-pool-admin.php:1044
 msgid "Recalculate Scores"
 msgstr "Scores opnieuw berekenen"
 
@@ -1640,7 +1639,7 @@ msgstr "plugin instelllingen opgeslagen"
 #: ../admin/class-football-pool-admin-options.php:532
 #: ../admin/class-football-pool-admin-teams-position.php:14
 #: ../admin/class-football-pool-admin-users.php:76
-#: ../classes/class-football-pool-pool.php:894
+#: ../classes/class-football-pool-pool.php:899
 msgid "Changes saved."
 msgstr "Wijzigingen zijn opgeslagen."
 
@@ -1818,54 +1817,54 @@ msgid "questions added or removed from ranking"
 msgstr "bonusvragen toegevoegd of verwijderd uit de stand"
 
 #: ../admin/class-football-pool-admin-rankings.php:288
-#: ../admin/class-football-pool-admin-rankings.php:377
+#: ../admin/class-football-pool-admin-rankings.php:379
 msgid "calculate"
 msgstr "berekenen"
 
-#: ../admin/class-football-pool-admin-rankings.php:339
+#: ../admin/class-football-pool-admin-rankings.php:340
 msgid "show more"
 msgstr "toon meer"
 
-#: ../admin/class-football-pool-admin-rankings.php:376
+#: ../admin/class-football-pool-admin-rankings.php:378
 #: ../classes/class-football-pool.php:9
 msgid "ranking"
 msgstr "stand"
 
-#: ../admin/class-football-pool-admin-rankings.php:378
+#: ../admin/class-football-pool-admin-rankings.php:380
 msgid "log"
 msgstr "logboek"
 
-#: ../admin/class-football-pool-admin-rankings.php:379
-#: ../admin/class-football-pool-admin-rankings.php:386
-#: ../admin/class-football-pool-admin-rankings.php:393
+#: ../admin/class-football-pool-admin-rankings.php:381
+#: ../admin/class-football-pool-admin-rankings.php:388
+#: ../admin/class-football-pool-admin-rankings.php:395
 msgid "single calculation"
 msgstr "enkele berekening"
 
-#: ../admin/class-football-pool-admin-rankings.php:411
+#: ../admin/class-football-pool-admin-rankings.php:413
 msgid "You are about to delete one or more rankings."
 msgstr "Je staat op het punt om een of meer standdefinities te verwijderen."
 
-#: ../admin/class-football-pool-admin-rankings.php:412
+#: ../admin/class-football-pool-admin-rankings.php:414
 msgid "Enable calculation"
 msgstr "Berekening inschakelen"
 
-#: ../admin/class-football-pool-admin-rankings.php:412
+#: ../admin/class-football-pool-admin-rankings.php:414
 msgid "You are about to set the calculate option on one or more rankings."
 msgstr ""
 "Je staat op het punt om de bereken instelling voor een of meerdere standen "
 "te wijzigen."
 
-#: ../admin/class-football-pool-admin-rankings.php:413
+#: ../admin/class-football-pool-admin-rankings.php:415
 msgid "Disable calculation"
 msgstr "Berekening uitschakelen"
 
-#: ../admin/class-football-pool-admin-rankings.php:413
+#: ../admin/class-football-pool-admin-rankings.php:415
 msgid "You are about to exclude one or more rankings from the calculation."
 msgstr ""
 "Je staat op het punt om een of meerdere standen uit te sluiten van "
 "berekening."
 
-#: ../admin/class-football-pool-admin-rankings.php:414
+#: ../admin/class-football-pool-admin-rankings.php:416
 msgid "Ranking composition"
 msgstr "Samenstelling stand"
 
@@ -1965,16 +1964,16 @@ msgid "Continue"
 msgstr "Doorgaan"
 
 #: ../admin/class-football-pool-admin-score-calculation.php:207
-#: ../admin/class-football-pool-admin.php:1194
-#: ../assets/admin/tinymce/tinymce-dialog.php:659
+#: ../admin/class-football-pool-admin.php:1195
+#: ../assets/admin/tinymce/tinymce-dialog.php:647
 msgid "Cancel"
 msgstr "Annuleer"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:562
+#: ../admin/class-football-pool-admin-score-calculation.php:566
 msgid "Step"
 msgstr "Stap"
 
-#: ../admin/class-football-pool-admin-score-calculation.php:564
+#: ../admin/class-football-pool-admin-score-calculation.php:568
 #: ../classes/class-football-pool.php:370
 msgid ""
 "Something went wrong while (re)calculating the scores. Please check if "
@@ -2013,9 +2012,9 @@ msgid "%s messages deleted."
 msgstr "%s berichten verwijderd."
 
 #: ../admin/class-football-pool-admin-shoutbox.php:64
-#: ../assets/admin/tinymce/tinymce-dialog.php:204
-#: ../assets/admin/tinymce/tinymce-dialog.php:294
-#: ../assets/admin/tinymce/tinymce-dialog.php:348
+#: ../assets/admin/tinymce/tinymce-dialog.php:201
+#: ../assets/admin/tinymce/tinymce-dialog.php:289
+#: ../assets/admin/tinymce/tinymce-dialog.php:343
 msgid "now"
 msgstr "nu"
 
@@ -2058,7 +2057,7 @@ msgid "%s venues deleted."
 msgstr "%s stadions verwijderd."
 
 #: ../admin/class-football-pool-admin-stadiums.php:71
-#: ../admin/class-football-pool-admin-stadiums.php:120
+#: ../admin/class-football-pool-admin-stadiums.php:121
 #: ../admin/class-football-pool-admin-teams.php:118
 #: ../pages/class-football-pool-teams-page.php:57
 msgid "photo"
@@ -2077,15 +2076,15 @@ msgstr ""
 "Een optionele tekst met extra informatie over het stadion. De tekst wordt "
 "getoond op de stadionpagina in de plugin."
 
-#: ../admin/class-football-pool-admin-stadiums.php:119
+#: ../admin/class-football-pool-admin-stadiums.php:120
 msgid "venue"
 msgstr "stadion"
 
-#: ../admin/class-football-pool-admin-stadiums.php:121
+#: ../admin/class-football-pool-admin-stadiums.php:122
 msgid "venue nr"
 msgstr "stadionnummer"
 
-#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-stadiums.php:135
 msgid "You are about to delete one or more venues."
 msgstr "Je staat op het punt om een of meer stadions te verwijderen."
 
@@ -2349,7 +2348,7 @@ msgstr "Helpsectie over groepen"
 
 #: ../admin/class-football-pool-admin-users.php:35
 #: ../admin/class-football-pool-admin-users.php:45
-#: ../admin/class-football-pool-admin-users.php:472
+#: ../admin/class-football-pool-admin-users.php:473
 #: ../admin/class-football-pool-admin.php:100
 msgid "Users"
 msgstr "Spelers"
@@ -2400,7 +2399,7 @@ msgid "%d users added as user."
 msgstr "%d spelers toegevoegd als deelnemer."
 
 #: ../admin/class-football-pool-admin-users.php:146
-#: ../admin/class-football-pool-admin-users.php:480
+#: ../admin/class-football-pool-admin-users.php:481
 #: ../classes/class-football-pool-pool.php:58
 msgid "unknown"
 msgstr "onbekend"
@@ -2468,17 +2467,17 @@ msgstr "Spelen niet mee"
 msgid "user %d removed from pool"
 msgstr "speler %d verwijderd uit de pool"
 
-#: ../admin/class-football-pool-admin-users.php:399
-#: ../admin/class-football-pool-admin.php:881
+#: ../admin/class-football-pool-admin-users.php:400
+#: ../admin/class-football-pool-admin.php:882
 msgid "no data"
 msgstr "geen gegevens"
 
-#: ../admin/class-football-pool-admin-users.php:469
+#: ../admin/class-football-pool-admin-users.php:470
 #: ../classes/class-football-pool.php:486
 msgid "Play in league"
 msgstr "Speel mee in de pool"
 
-#: ../admin/class-football-pool-admin-users.php:472
+#: ../admin/class-football-pool-admin-users.php:473
 msgid ""
 "<strong>Important:</strong> An administrator can change users in the "
 "plugin's admin page for"
@@ -2486,11 +2485,11 @@ msgstr ""
 "<strong>Let op:</strong> Als admin kan je de spelers in de voetbalpool "
 "bijwerken op de plugin admin pagina"
 
-#: ../admin/class-football-pool-admin-users.php:483
+#: ../admin/class-football-pool-admin-users.php:484
 msgid "The webmaster put you in this league"
 msgstr "De webmaster heeft je ingedeeld in"
 
-#: ../admin/class-football-pool-admin-users.php:486
+#: ../admin/class-football-pool-admin-users.php:487
 msgid ""
 "if this value is different from the one you entered on registration, then "
 "the webmaster did not approve it yet."
@@ -2498,7 +2497,7 @@ msgstr ""
 "als dit afwijkt van wat je hebt aangegeven bij registratie, dan heeft de "
 "webmaster je inschrijving nog niet aangepast."
 
-#: ../admin/class-football-pool-admin-users.php:512
+#: ../admin/class-football-pool-admin-users.php:513
 #, php-format
 msgid "user %d deleted from blog"
 msgstr "speler %d verwijderd"
@@ -2576,291 +2575,291 @@ msgstr "Voor meer informatie:"
 msgid "Add New"
 msgstr "Nieuw"
 
-#: ../admin/class-football-pool-admin.php:899
+#: ../admin/class-football-pool-admin.php:900
 msgid "yes"
 msgstr "ja"
 
-#: ../admin/class-football-pool-admin.php:900
+#: ../admin/class-football-pool-admin.php:901
 msgid "no"
 msgstr "nee"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:53
-#: ../assets/admin/tinymce/tinymce-dialog.php:132
-#: ../assets/admin/tinymce/tinymce-dialog.php:517
-#: ../assets/admin/tinymce/tinymce-dialog.php:538
-#: ../assets/admin/tinymce/tinymce-dialog.php:576
+#: ../assets/admin/tinymce/tinymce-dialog.php:52
+#: ../assets/admin/tinymce/tinymce-dialog.php:131
+#: ../assets/admin/tinymce/tinymce-dialog.php:505
+#: ../assets/admin/tinymce/tinymce-dialog.php:526
+#: ../assets/admin/tinymce/tinymce-dialog.php:564
 msgid "Select a shortcode"
 msgstr "Selecteer een shortcode"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:120
+#: ../assets/admin/tinymce/tinymce-dialog.php:119
 msgid "Pool"
 msgstr "Pool"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:121
+#: ../assets/admin/tinymce/tinymce-dialog.php:120
 msgid "Options"
 msgstr "Plugin Opties"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:122
+#: ../assets/admin/tinymce/tinymce-dialog.php:121
 msgid "Links"
 msgstr "Links"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:123
+#: ../assets/admin/tinymce/tinymce-dialog.php:122
 msgid "Other"
 msgstr "Overig"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:135
+#: ../assets/admin/tinymce/tinymce-dialog.php:134
 #: ../widgets/widget-football-pool-ranking.php:13
 msgid "Ranking"
 msgstr "Stand"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:136
+#: ../assets/admin/tinymce/tinymce-dialog.php:135
 msgid "Predictions for match or question"
 msgstr "Voorspellingen voor wedstrijd of vraag"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:137
+#: ../assets/admin/tinymce/tinymce-dialog.php:136
 msgid "Score for a user"
 msgstr "Score voor een speler"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:138
+#: ../assets/admin/tinymce/tinymce-dialog.php:137
 msgid "Ranking for a user"
 msgstr "Stand in ranglijst voor speler"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:139
+#: ../assets/admin/tinymce/tinymce-dialog.php:138
 msgid "Group"
 msgstr "Poule"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:140
+#: ../assets/admin/tinymce/tinymce-dialog.php:139
 msgid "Prediction form"
 msgstr "Voorspellingenformulier"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:142
+#: ../assets/admin/tinymce/tinymce-dialog.php:141
 msgid "League info"
 msgstr "League info"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:149
-#: ../assets/admin/tinymce/tinymce-dialog.php:268
-#: ../assets/admin/tinymce/tinymce-dialog.php:322
-#: ../assets/admin/tinymce/tinymce-dialog.php:487
+#: ../assets/admin/tinymce/tinymce-dialog.php:148
+#: ../assets/admin/tinymce/tinymce-dialog.php:263
+#: ../assets/admin/tinymce/tinymce-dialog.php:317
+#: ../assets/admin/tinymce/tinymce-dialog.php:477
 msgid "Select a ranking"
 msgstr "Selecteer een stand"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:153
-#: ../assets/admin/tinymce/tinymce-dialog.php:170
-#: ../assets/admin/tinymce/tinymce-dialog.php:252
-#: ../assets/admin/tinymce/tinymce-dialog.php:272
-#: ../assets/admin/tinymce/tinymce-dialog.php:306
-#: ../assets/admin/tinymce/tinymce-dialog.php:326
-#: ../assets/admin/tinymce/tinymce-dialog.php:491
-#: ../assets/admin/tinymce/tinymce-dialog.php:606
+#: ../assets/admin/tinymce/tinymce-dialog.php:152
+#: ../assets/admin/tinymce/tinymce-dialog.php:167
+#: ../assets/admin/tinymce/tinymce-dialog.php:247
+#: ../assets/admin/tinymce/tinymce-dialog.php:267
+#: ../assets/admin/tinymce/tinymce-dialog.php:301
+#: ../assets/admin/tinymce/tinymce-dialog.php:321
+#: ../assets/admin/tinymce/tinymce-dialog.php:481
+#: ../assets/admin/tinymce/tinymce-dialog.php:594
 msgid "default"
 msgstr "standaard"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:154
-#: ../assets/admin/tinymce/tinymce-dialog.php:273
-#: ../assets/admin/tinymce/tinymce-dialog.php:327
-#: ../assets/admin/tinymce/tinymce-dialog.php:492
+#: ../assets/admin/tinymce/tinymce-dialog.php:153
+#: ../assets/admin/tinymce/tinymce-dialog.php:268
+#: ../assets/admin/tinymce/tinymce-dialog.php:322
+#: ../assets/admin/tinymce/tinymce-dialog.php:482
 msgid "all scores"
 msgstr "alle scores"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:156
-#: ../assets/admin/tinymce/tinymce-dialog.php:275
-#: ../assets/admin/tinymce/tinymce-dialog.php:329
-#: ../assets/admin/tinymce/tinymce-dialog.php:494
+#: ../assets/admin/tinymce/tinymce-dialog.php:155
+#: ../assets/admin/tinymce/tinymce-dialog.php:270
+#: ../assets/admin/tinymce/tinymce-dialog.php:324
+#: ../assets/admin/tinymce/tinymce-dialog.php:484
 msgid "or choose a user defined ranking"
 msgstr "of kies een stand"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:166
-#: ../assets/admin/tinymce/tinymce-dialog.php:458
+#: ../assets/admin/tinymce/tinymce-dialog.php:163
+#: ../assets/admin/tinymce/tinymce-dialog.php:448
 msgid "Select a league"
 msgstr "Selecteer een pool"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:171
+#: ../assets/admin/tinymce/tinymce-dialog.php:168
 msgid "all players"
 msgstr "alle spelers"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:173
+#: ../assets/admin/tinymce/tinymce-dialog.php:170
 msgid "or choose a league"
 msgstr "of kies een pool"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:188
+#: ../assets/admin/tinymce/tinymce-dialog.php:185
 msgid "Number of players"
 msgstr "Aantal spelers"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:196
+#: ../assets/admin/tinymce/tinymce-dialog.php:193
 msgid "Show number of predictions?"
 msgstr "Toon aantal voorspellingen?"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:201
-#: ../assets/admin/tinymce/tinymce-dialog.php:291
-#: ../assets/admin/tinymce/tinymce-dialog.php:345
-#: ../assets/admin/tinymce/tinymce-dialog.php:594
+#: ../assets/admin/tinymce/tinymce-dialog.php:198
+#: ../assets/admin/tinymce/tinymce-dialog.php:286
+#: ../assets/admin/tinymce/tinymce-dialog.php:340
+#: ../assets/admin/tinymce/tinymce-dialog.php:582
 msgid "information about PHP's date format"
 msgstr "informatie over het 'date' formaat van PHP"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:201
-#: ../assets/admin/tinymce/tinymce-dialog.php:291
-#: ../assets/admin/tinymce/tinymce-dialog.php:345
-#: ../assets/admin/tinymce/tinymce-dialog.php:589
-#: ../assets/admin/tinymce/tinymce-dialog.php:594
+#: ../assets/admin/tinymce/tinymce-dialog.php:198
+#: ../assets/admin/tinymce/tinymce-dialog.php:286
+#: ../assets/admin/tinymce/tinymce-dialog.php:340
+#: ../assets/admin/tinymce/tinymce-dialog.php:577
+#: ../assets/admin/tinymce/tinymce-dialog.php:582
 msgid "Date"
 msgstr "Datum"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:205
-#: ../assets/admin/tinymce/tinymce-dialog.php:295
-#: ../assets/admin/tinymce/tinymce-dialog.php:349
+#: ../assets/admin/tinymce/tinymce-dialog.php:202
+#: ../assets/admin/tinymce/tinymce-dialog.php:290
+#: ../assets/admin/tinymce/tinymce-dialog.php:344
 msgid "postdate"
 msgstr "datum van het bericht"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:206
-#: ../assets/admin/tinymce/tinymce-dialog.php:296
-#: ../assets/admin/tinymce/tinymce-dialog.php:350
+#: ../assets/admin/tinymce/tinymce-dialog.php:203
+#: ../assets/admin/tinymce/tinymce-dialog.php:291
+#: ../assets/admin/tinymce/tinymce-dialog.php:345
 msgid "custom date"
 msgstr "handmatige datum"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:212
-#: ../assets/admin/tinymce/tinymce-dialog.php:588
-#: ../assets/admin/tinymce/tinymce-dialog.php:602
+#: ../assets/admin/tinymce/tinymce-dialog.php:209
+#: ../assets/admin/tinymce/tinymce-dialog.php:576
+#: ../assets/admin/tinymce/tinymce-dialog.php:590
 msgid "Match"
 msgstr "Wedstrijd"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:216
+#: ../assets/admin/tinymce/tinymce-dialog.php:213
 msgid "Select a match"
 msgstr "Selecteer een wedstrijd"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:222
+#: ../assets/admin/tinymce/tinymce-dialog.php:219
 msgid "and/or"
 msgstr "en/of"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:226
+#: ../assets/admin/tinymce/tinymce-dialog.php:223
 msgid "Question"
 msgstr "Vraag"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:230
+#: ../assets/admin/tinymce/tinymce-dialog.php:227
 msgid "Select a question"
 msgstr "Selecteer een vraag"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:239
-#: ../assets/admin/tinymce/tinymce-dialog.php:283
-#: ../assets/admin/tinymce/tinymce-dialog.php:337
+#: ../assets/admin/tinymce/tinymce-dialog.php:234
+#: ../assets/admin/tinymce/tinymce-dialog.php:278
+#: ../assets/admin/tinymce/tinymce-dialog.php:332
 msgid "Text"
 msgstr "Tekst"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:242
+#: ../assets/admin/tinymce/tinymce-dialog.php:237
 msgid "Text to display if there is nothing to show"
 msgstr "Tekst wanneer er niets is om te tonen."
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:248
-#: ../assets/admin/tinymce/tinymce-dialog.php:302
+#: ../assets/admin/tinymce/tinymce-dialog.php:243
+#: ../assets/admin/tinymce/tinymce-dialog.php:297
 msgid "Select a user"
 msgstr "Selecteer een speler"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:253
-#: ../assets/admin/tinymce/tinymce-dialog.php:307
+#: ../assets/admin/tinymce/tinymce-dialog.php:248
+#: ../assets/admin/tinymce/tinymce-dialog.php:302
 msgid "logged in user"
 msgstr "ingelogde speler"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:255
-#: ../assets/admin/tinymce/tinymce-dialog.php:309
+#: ../assets/admin/tinymce/tinymce-dialog.php:250
+#: ../assets/admin/tinymce/tinymce-dialog.php:304
 msgid "or choose another user"
 msgstr "of kies een andere speler"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:356
-#: ../assets/admin/tinymce/tinymce-dialog.php:447
+#: ../assets/admin/tinymce/tinymce-dialog.php:351
+#: ../assets/admin/tinymce/tinymce-dialog.php:437
 msgid "Select a group"
 msgstr "Selecteer een poule"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:372
-#: ../assets/admin/tinymce/tinymce-dialog.php:415
+#: ../assets/admin/tinymce/tinymce-dialog.php:362
+#: ../assets/admin/tinymce/tinymce-dialog.php:405
 msgid "Click a label to show the options."
 msgstr "Klik op een label om de opties te zien."
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:379
-#: ../assets/admin/tinymce/tinymce-dialog.php:422
+#: ../assets/admin/tinymce/tinymce-dialog.php:369
+#: ../assets/admin/tinymce/tinymce-dialog.php:412
 msgid "Select one or more matches"
 msgstr "Selecteer een of meer wedstrijden"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:389
-#: ../assets/admin/tinymce/tinymce-dialog.php:432
+#: ../assets/admin/tinymce/tinymce-dialog.php:379
+#: ../assets/admin/tinymce/tinymce-dialog.php:422
 msgid "Select one or more match types"
 msgstr "Selecteer een of meer wedstrijdtypes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:404
+#: ../assets/admin/tinymce/tinymce-dialog.php:394
 msgid "Select one or more questions"
 msgstr "Selecteer een of meer vragen"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:475
+#: ../assets/admin/tinymce/tinymce-dialog.php:465
 msgid "Show this info"
 msgstr "Toon deze info"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:504
+#: ../assets/admin/tinymce/tinymce-dialog.php:492
 #: ../widgets/widget-football-pool-next-prediction.php:15
 msgid "Format"
 msgstr "Formaat"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:521
+#: ../assets/admin/tinymce/tinymce-dialog.php:509
 msgid "Full points"
 msgstr "Volledige punten"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:522
+#: ../assets/admin/tinymce/tinymce-dialog.php:510
 msgid "Toto points"
 msgstr "Toto punten"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:541
+#: ../assets/admin/tinymce/tinymce-dialog.php:529
 msgid "Link to page"
 msgstr "Link naar de pagina"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:542
+#: ../assets/admin/tinymce/tinymce-dialog.php:530
 msgid "Link to registration"
 msgstr "Link naar registratiepagina"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:547
+#: ../assets/admin/tinymce/tinymce-dialog.php:535
 msgid "Select a page"
 msgstr "Selecteer een pagina"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:561
+#: ../assets/admin/tinymce/tinymce-dialog.php:549
 msgid "Link title"
 msgstr "Link tooltip"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:562
+#: ../assets/admin/tinymce/tinymce-dialog.php:550
 msgid "New window?"
 msgstr "Nieuw venster?"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:579
+#: ../assets/admin/tinymce/tinymce-dialog.php:567
 msgid "Countdown"
 msgstr "Aftellen"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:585
+#: ../assets/admin/tinymce/tinymce-dialog.php:573
 msgid "Countdown to"
 msgstr "Aftellen naar"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:607
+#: ../assets/admin/tinymce/tinymce-dialog.php:595
 msgid "first match"
 msgstr "eerste wedstrijd"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:609
+#: ../assets/admin/tinymce/tinymce-dialog.php:597
 msgid "or choose a match"
 msgstr "of kies een wedstrijd"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:617
+#: ../assets/admin/tinymce/tinymce-dialog.php:605
 msgid "More information about this on the Help page."
 msgstr "Meer informatie hierover op de helppagina."
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:617
+#: ../assets/admin/tinymce/tinymce-dialog.php:605
 msgid "Texts for counter"
 msgstr "Teksten bij aftellen"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:621
+#: ../assets/admin/tinymce/tinymce-dialog.php:609
 msgid "no texts"
 msgstr "geen tekst"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:624
+#: ../assets/admin/tinymce/tinymce-dialog.php:612
 msgid "before - time not passed"
 msgstr "tekst voor (tijd niet verstreken)"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:624
-#: ../assets/admin/tinymce/tinymce-dialog.php:625
-#: ../assets/admin/tinymce/tinymce-dialog.php:627
-#: ../assets/admin/tinymce/tinymce-dialog.php:628
+#: ../assets/admin/tinymce/tinymce-dialog.php:612
+#: ../assets/admin/tinymce/tinymce-dialog.php:613
+#: ../assets/admin/tinymce/tinymce-dialog.php:615
+#: ../assets/admin/tinymce/tinymce-dialog.php:616
 msgid ""
 "Leave empty for the default texts. Don't forget spaces between a text and "
 "the timer."
@@ -2868,66 +2867,66 @@ msgstr ""
 "Laat leeg om de standaardteksten te gebruiken. Vergeet niet om spaties toe "
 "te voegen tussen de teksten en de teller."
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:625
+#: ../assets/admin/tinymce/tinymce-dialog.php:613
 msgid "after - time not passed"
 msgstr "tekst na (tijd is niet verstreken)"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:627
+#: ../assets/admin/tinymce/tinymce-dialog.php:615
 msgid "before - time passed"
 msgstr "tekst voor (tijd is verstreken)"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:628
+#: ../assets/admin/tinymce/tinymce-dialog.php:616
 msgid "after - time passed"
 msgstr "tekst na ( tijd is verstreken)"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:634
+#: ../assets/admin/tinymce/tinymce-dialog.php:622
 msgid "Display inline"
 msgstr "Toon in de regel"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:642
+#: ../assets/admin/tinymce/tinymce-dialog.php:630
 msgid "Time format"
 msgstr "Tijdformaat"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:646
+#: ../assets/admin/tinymce/tinymce-dialog.php:634
 #: ../widgets/widget-football-pool-next-prediction.php:125
 msgid "days, hours, minutes, seconds"
 msgstr "dagen, uren, minuten, secondes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:647
+#: ../assets/admin/tinymce/tinymce-dialog.php:635
 #: ../widgets/widget-football-pool-next-prediction.php:126
 msgid "hours, minutes, seconds"
 msgstr "uren, minuten, secondes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:648
+#: ../assets/admin/tinymce/tinymce-dialog.php:636
 #: ../widgets/widget-football-pool-next-prediction.php:127
 msgid "only seconds"
 msgstr "alleen secondes"
 
-#: ../assets/admin/tinymce/tinymce-dialog.php:662
+#: ../assets/admin/tinymce/tinymce-dialog.php:650
 msgid "Insert"
 msgstr "Invoegen"
 
 #: ../classes/class-football-pool-chart-data.php:231
 #: ../classes/class-football-pool-chart-data.php:255
-#: ../pages/class-football-pool-statistics-page.php:234
+#: ../pages/class-football-pool-statistics-page.php:237
 msgid "full score"
 msgstr "volle score"
 
 #: ../classes/class-football-pool-chart-data.php:232
 #: ../classes/class-football-pool-chart-data.php:256
-#: ../pages/class-football-pool-statistics-page.php:235
+#: ../pages/class-football-pool-statistics-page.php:238
 msgid "toto score"
 msgstr "toto score"
 
 #: ../classes/class-football-pool-chart-data.php:233
 #: ../classes/class-football-pool-chart-data.php:257
-#: ../pages/class-football-pool-statistics-page.php:236
+#: ../pages/class-football-pool-statistics-page.php:239
 msgid "no score"
 msgstr "geen score"
 
 #: ../classes/class-football-pool-chart-data.php:239
 #: ../classes/class-football-pool-chart-data.php:263
-#: ../pages/class-football-pool-statistics-page.php:238
+#: ../pages/class-football-pool-statistics-page.php:241
 msgid "just the goal bonus"
 msgstr "alleen de goalbonus"
 
@@ -2936,12 +2935,12 @@ msgid "goal difference bonus"
 msgstr "bonus voor goalverschil"
 
 #: ../classes/class-football-pool-chart-data.php:266
-#: ../pages/class-football-pool-statistics-page.php:241
+#: ../pages/class-football-pool-statistics-page.php:244
 msgid "toto score with goal difference bonus"
 msgstr "toto-score met goalverschilbonus"
 
 #: ../classes/class-football-pool-chart-data.php:275
-#: ../pages/class-football-pool-statistics-page.php:287
+#: ../pages/class-football-pool-statistics-page.php:290
 msgid "points scored"
 msgstr "puntenopbouw"
 
@@ -2968,7 +2967,7 @@ msgid "match"
 msgstr "wedstrijd"
 
 #: ../classes/class-football-pool-chart-data.php:343
-#: ../pages/class-football-pool-statistics-page.php:261
+#: ../pages/class-football-pool-statistics-page.php:264
 msgid "bonus question"
 msgstr "bonusvraag"
 
@@ -3036,21 +3035,21 @@ msgstr "Wedstrijdstatistieken"
 
 #. Translators: this is a date format string (see http://php.net/date)
 #: ../classes/class-football-pool-matches.php:366
-#: ../classes/class-football-pool-matches.php:501
+#: ../classes/class-football-pool-matches.php:503
 msgctxt "a date format string (see http://php.net/date)"
 msgid "l"
 msgstr "l"
 
 #: ../classes/class-football-pool-matches.php:468
-#: ../classes/class-football-pool-statistics.php:182
+#: ../classes/class-football-pool-statistics.php:192
 msgid "score"
 msgstr "score"
 
-#: ../classes/class-football-pool-matches.php:675
+#: ../classes/class-football-pool-matches.php:677
 msgid "view other users predictions"
 msgstr "bekijk de voorspellingen van andere spelers"
 
-#: ../classes/class-football-pool-matches.php:758
+#: ../classes/class-football-pool-matches.php:760
 msgid "use your joker?"
 msgstr "gouden bal inzetten?"
 
@@ -3061,31 +3060,31 @@ msgid_plural "%s items"
 msgstr[0] "1 item"
 msgstr[1] "%s items"
 
-#: ../classes/class-football-pool-pool.php:826
+#: ../classes/class-football-pool-pool.php:831
 msgid "Important:"
 msgstr "Let op:"
 
-#: ../classes/class-football-pool-pool.php:829
+#: ../classes/class-football-pool-pool.php:834
 msgid "answer this question before this date"
 msgstr "beantwoord deze vraag vóór deze datum"
 
-#: ../classes/class-football-pool-pool.php:842
+#: ../classes/class-football-pool-pool.php:847
 msgid ""
 "it's is no longer possible to answer this question, or change your answer"
 msgstr "je kan deze vraag niet meer beantwoorden, of je antwoord wijzigen"
 
-#: ../classes/class-football-pool-pool.php:843
+#: ../classes/class-football-pool-pool.php:848
 msgid "closed on"
 msgstr "gesloten op"
 
-#: ../classes/class-football-pool-pool.php:855
-#: ../classes/class-football-pool-pool.php:864
-#: ../classes/class-football-pool-pool.php:1191
-#: ../classes/class-football-pool-pool.php:1200
+#: ../classes/class-football-pool-pool.php:860
+#: ../classes/class-football-pool-pool.php:869
+#: ../classes/class-football-pool-pool.php:1196
+#: ../classes/class-football-pool-pool.php:1205
 msgid "view other users answers"
 msgstr "bekijk antwoorden van andere spelers"
 
-#: ../classes/class-football-pool-pool.php:898
+#: ../classes/class-football-pool-pool.php:903
 msgid ""
 "Something went wrong during the save. Check if you are still logged in. If "
 "the problems persist, then contact your webmaster."
@@ -3120,33 +3119,33 @@ msgstr "Speler onbekend."
 
 #: ../classes/class-football-pool-statistics.php:70
 #: ../classes/class-football-pool-statistics.php:73
-#: ../classes/class-football-pool-statistics.php:97
-#: ../classes/class-football-pool-statistics.php:101
+#: ../classes/class-football-pool-statistics.php:98
+#: ../classes/class-football-pool-statistics.php:103
 msgid "This data is not (yet) available."
 msgstr "Deze gegevens zijn nog niet beschikbaar. Nog even geduld."
 
-#: ../classes/class-football-pool-statistics.php:85
-msgid "Bonus question"
-msgstr "Bonusvraag"
-
-#: ../classes/class-football-pool-statistics.php:117
+#: ../classes/class-football-pool-statistics.php:123
 msgid "correct?"
 msgstr "goed?"
 
-#: ../classes/class-football-pool-statistics.php:126
-#: ../pages/class-football-pool-statistics-page.php:264
+#: ../classes/class-football-pool-statistics.php:134
+#: ../pages/class-football-pool-statistics-page.php:267
 msgid "correct answer"
 msgstr "antwoord goed"
 
-#: ../classes/class-football-pool-statistics.php:130
-#: ../pages/class-football-pool-statistics-page.php:265
+#: ../classes/class-football-pool-statistics.php:138
+#: ../pages/class-football-pool-statistics-page.php:268
 msgid "wrong answer"
 msgstr "foutief antwoord"
 
-#: ../classes/class-football-pool-statistics.php:181
-#: ../classes/class-football-pool.php:8
+#: ../classes/class-football-pool-statistics.php:191
 msgid "prediction"
 msgstr "voorspelling"
+
+#: ../classes/class-football-pool-statistics.php:207
+msgctxt "to indicate that a user has set a joker for this match"
+msgid "joker set"
+msgstr "joker ingezet"
 
 #: ../classes/class-football-pool-team.php:81
 #: ../classes/class-football-pool-team.php:91
@@ -3184,9 +3183,17 @@ msgstr "stadions"
 msgid "rules"
 msgstr "regels"
 
+#: ../classes/class-football-pool.php:8
+msgid "prediction sheet"
+msgstr "voorspelling invoeren"
+
 #: ../classes/class-football-pool.php:10
-msgid "charts"
-msgstr "grafieken"
+msgid "statistics"
+msgstr "statistieken"
+
+#: ../classes/class-football-pool.php:11
+msgid "player predictions"
+msgstr "voorspellingen van spelers"
 
 #. Translators: this is a date format string (see http://php.net/date)
 #: ../classes/class-football-pool.php:63
@@ -3309,76 +3316,76 @@ msgstr "Er hebben zich (nog) geen spelers geregistreerd."
 msgid "view all venues"
 msgstr "bekijk alle stadions"
 
-#: ../pages/class-football-pool-statistics-page.php:9
+#: ../pages/class-football-pool-statistics-page.php:10
 msgid "Chart settings"
 msgstr "Grafiekinstellingen"
 
-#: ../pages/class-football-pool-statistics-page.php:19
+#: ../pages/class-football-pool-statistics-page.php:22
 msgid "Change charts"
 msgstr "Grafieken aanpassen"
 
-#: ../pages/class-football-pool-statistics-page.php:58
+#: ../pages/class-football-pool-statistics-page.php:61
 msgid "Statistics not yet available"
 msgstr "Statistieken nog niet beschikbaar"
 
-#: ../pages/class-football-pool-statistics-page.php:59
+#: ../pages/class-football-pool-statistics-page.php:62
 msgid ""
 "After the first match you can view your scores and those of other users here."
 msgstr ""
 "Na de eerste wedstrijd kan je hier de scores van jezelf en de andere spelers "
 "zien."
 
-#: ../pages/class-football-pool-statistics-page.php:123
+#: ../pages/class-football-pool-statistics-page.php:126
 msgid "what dit other users score?"
 msgstr "wat hebben de spelers gescoord?"
 
-#: ../pages/class-football-pool-statistics-page.php:140
+#: ../pages/class-football-pool-statistics-page.php:143
 msgid "other users scores"
 msgstr "scoreverdeling alle spelers"
 
-#: ../pages/class-football-pool-statistics-page.php:161
+#: ../pages/class-football-pool-statistics-page.php:164
 #, php-format
 msgid "Compare the scores of %s with other users."
 msgstr "Vergelijk de scores van %s met andere spelers."
 
-#: ../pages/class-football-pool-statistics-page.php:176
+#: ../pages/class-football-pool-statistics-page.php:179
 msgid "scores in matches"
 msgstr "scoreverdeling wedstrijden"
 
-#: ../pages/class-football-pool-statistics-page.php:191
+#: ../pages/class-football-pool-statistics-page.php:194
 msgid "scores in bonus questions"
 msgstr "scoreverdeling bonusvragen"
 
-#: ../pages/class-football-pool-statistics-page.php:203
+#: ../pages/class-football-pool-statistics-page.php:206
 #, no-php-format
 msgid "% of the max points"
 msgstr "% van max punten"
 
-#: ../pages/class-football-pool-statistics-page.php:205
+#: ../pages/class-football-pool-statistics-page.php:208
 msgid "with the joker used"
 msgstr "met inzet van joker"
 
-#: ../pages/class-football-pool-statistics-page.php:216
+#: ../pages/class-football-pool-statistics-page.php:219
 msgid "No users selected :'("
 msgstr "Geen speler(s) geselecteerd :'("
 
-#: ../pages/class-football-pool-statistics-page.php:217
-#: ../pages/class-football-pool-statistics-page.php:219
+#: ../pages/class-football-pool-statistics-page.php:220
+#: ../pages/class-football-pool-statistics-page.php:222
 msgid "You can select other users in the chart settings."
 msgstr "Je kan andere spelers kiezen in de grafiekinstellingen."
 
-#: ../pages/class-football-pool-statistics-page.php:231
+#: ../pages/class-football-pool-statistics-page.php:234
 msgid "scores"
 msgstr "scoreverdeling"
 
-#: ../pages/class-football-pool-statistics-page.php:313
-#: ../pages/class-football-pool-statistics-page.php:317
-#: ../pages/class-football-pool-statistics-page.php:332
+#: ../pages/class-football-pool-statistics-page.php:316
+#: ../pages/class-football-pool-statistics-page.php:320
+#: ../pages/class-football-pool-statistics-page.php:335
 msgid "position in the pool"
 msgstr "positie in de pool"
 
 #. Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
-#: ../pages/class-football-pool-statistics-page.php:316
+#: ../pages/class-football-pool-statistics-page.php:319
 msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
 msgstr "[\"e\", \"e\", \"e\", \"e\", \"e\"]"
 
@@ -3575,3 +3582,9 @@ msgstr "tekst langer dan %s karakters wordt afgekapt!"
 #: ../widgets/widget-football-pool-shoutbox.php:101
 msgid "save"
 msgstr "opslaan"
+
+#~ msgid "Bonus question"
+#~ msgstr "Bonusvraag"
+
+#~ msgid "charts"
+#~ msgstr "grafieken"

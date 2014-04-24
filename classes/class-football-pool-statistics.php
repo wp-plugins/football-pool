@@ -81,22 +81,24 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		$info = $pool->get_bonus_question_info( $question );
 		if ( $info ) {
-			$output .= sprintf( '<h1>%s</h1><h2>%s</h2>'
-								, __( 'Bonus question', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $info['question'] 
-						);
-			if ( $pool->always_show_predictions || $info['question_is_editable'] == false ) {
-				$output .= sprintf( '<p>%s: %s<br/>%s: %d</p>',
-									__( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ),
-									$info['answer'],
-									__( 'points', FOOTBALLPOOL_TEXT_DOMAIN ),
-									$info['points']
-								);
+			$output .= sprintf( '<h2>%s</h2>', $info['question'] );
+			$output .= sprintf( '<p class="question-info"><span class="question-points">%s: %s</span>'
+								, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
+								, $info['points']
+							);
+			if ( $pool->always_show_predictions || ! $info['question_is_editable'] ) {
 				$this->stats_visible = true;
+				if ( ! $info['question_is_editable'] ) {
+					$output .= sprintf( '<br /><span class="question-answer">%s: %s</span>'
+									, __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN )
+									, $info['answer']
+								);
+				}
 			} else {
 				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$this->stats_visible = false;
 			}
+			$output .= '</p>';
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			$this->stats_visible = false;
@@ -107,6 +109,10 @@ class Football_Pool_Statistics {
 	
 	public function show_answers_for_bonus_question( $id ) {
 		$pool = new Football_Pool_Pool;
+		$info = $pool->get_bonus_question_info( $id );
+		
+		$show_answer_status = ( $info && $info['score_date'] != null );
+		
 		$answers = $pool->get_bonus_question_answers_for_users( $id );
 		$rows = apply_filters( 'footballpool_statistics_bonusquestion', $answers );
 		
@@ -119,15 +125,18 @@ class Football_Pool_Statistics {
 		
 		$userpage = Football_Pool::get_page_link( 'user' );
 		
+		$class = $title = '';
 		foreach ( $rows as $answer ) {
-			if ( $answer['correct'] == 1 ) {
-				// $class = 'correct fp-icon-checkmark-circle';
-				$class = 'correct fp-icon-checkmark';
-				$title = __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN );
-			} else {
-				// $class = 'wrong fp-icon-cancel-circle';
-				$class = 'wrong fp-icon-close';
-				$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
+			if ( $show_answer_status ) {
+				if ( $answer['correct'] == 1 ) {
+					// $class = 'correct fp-icon-checkmark-circle';
+					$class = 'correct fp-icon-checkmark';
+					$title = __( 'correct answer', FOOTBALLPOOL_TEXT_DOMAIN );
+				} else {
+					// $class = 'wrong fp-icon-cancel-circle';
+					$class = 'wrong fp-icon-close';
+					$title = __( 'wrong answer', FOOTBALLPOOL_TEXT_DOMAIN );
+				}
 			}
 			$output .= sprintf( '<tr><td><a href="%s">%s</a></td><td>%s</td>'
 								, esc_url( add_query_arg( array( 'user' => $answer['user_id'] ), $userpage ) )
@@ -135,7 +144,7 @@ class Football_Pool_Statistics {
 								, $answer['answer'] 
 						);
 			$output .= sprintf( '<td class="score"><span class="score %s" title="%s"></span></td></tr>'
-								, $class 
+								, $class
 								, $title
 						);
 		}
@@ -195,7 +204,7 @@ class Football_Pool_Statistics {
 							);
 				if ( $pool->has_jokers ) {
 					$output .= sprintf( '<td title="%s"><span class="nopointer %s"></span></td>',
-										( $row['has_joker'] == 1 ? __( 'joker set', FOOTBALLPOOL_TEXT_DOMAIN ) : '' ),
+										( $row['has_joker'] == 1 ? _x( 'joker set', 'to indicate that a user has set a joker for this match', FOOTBALLPOOL_TEXT_DOMAIN ) : '' ),
 										( $row['has_joker'] == 1 ? 'fp-joker' : 'fp-nojoker' ) );
 				}
 				$score = $pool->calc_score(

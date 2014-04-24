@@ -115,7 +115,7 @@ class Football_Pool_Statistics_Page {
 			
 			switch ( $view ) {
 				case 'bonusquestion': 
-					$questionInfo = $stats->show_bonus_question_info( $question );
+					$output .= $stats->show_bonus_question_info( $question );
 					if ( $stats->stats_visible ) {
 						$output .= $stats->show_answers_for_bonus_question( $question );
 						if ( $stats->stats_enabled ) {

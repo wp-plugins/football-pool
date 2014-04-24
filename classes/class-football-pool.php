@@ -5,10 +5,10 @@ $fp_translate_this = __( 'teams', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'groups', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'venues', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'rules', FOOTBALLPOOL_TEXT_DOMAIN );
-$fp_translate_this = __( 'prediction', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'prediction sheet', FOOTBALLPOOL_TEXT_DOMAIN );
 $fp_translate_this = __( 'ranking', FOOTBALLPOOL_TEXT_DOMAIN );
-$fp_translate_this = __( 'charts', FOOTBALLPOOL_TEXT_DOMAIN );
-$fp_translate_this = __( 'predictions', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'statistics', FOOTBALLPOOL_TEXT_DOMAIN );
+$fp_translate_this = __( 'player predictions', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool {
 	private static $pages = array(
@@ -17,10 +17,10 @@ class Football_Pool {
 							array( 'slug' => 'groups', 'title' => 'groups', 'parent' => 'tournament', 'comment' => 'closed' ),
 							array( 'slug' => 'stadiums', 'title' => 'venues', 'parent' => 'tournament', 'comment' => 'closed' ),
 						'rules' => array( 'slug' => 'rules', 'title' => 'rules', 'text' => '' ),
-						array( 'slug' => 'pool', 'title' => 'prediction', 'comment' => 'closed' ),
+						array( 'slug' => 'pool', 'title' => 'prediction sheet', 'comment' => 'closed' ),
 						array( 'slug' => 'ranking', 'title' => 'ranking', 'comment' => 'closed' ),
-						array( 'slug' => 'statistics', 'title' => 'charts', 'comment' => 'closed' ),
-						array( 'slug' => 'user', 'title' => 'predictions', 'comment' => 'closed' )
+						array( 'slug' => 'statistics', 'title' => 'statistics', 'comment' => 'closed' ),
+						array( 'slug' => 'user', 'title' => 'player predictions', 'comment' => 'closed' )
 					);
 	
 	public function __construct() {}

@@ -1258,7 +1258,7 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_avatar( $user_id, $size = 'small', $wrap = true ) {
-		if ( ! $this->show_avatar ) return;
+		if ( ! $this->show_avatar ) return '';
 		
 		if ( ! is_int( $size ) ) {
 			switch ( $size ) {
