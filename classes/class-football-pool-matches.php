@@ -387,10 +387,10 @@ class Football_Pool_Matches {
 				'stadium_name' => $row['stadium_name'],
 				'home_team_id' => $row['home_team_id'],
 				'away_team_id' => $row['away_team_id'],
-				'home_team' => isset( $teams->team_names[ (int) $row['home_team_id'] ] ) ?
-								htmlentities( $teams->team_names[ (int) $row['home_team_id'] ], null, 'UTF-8' ) : '',
-				'away_team' => isset( $teams->team_names[ (int) $row['away_team_id'] ] ) ?
-								htmlentities( $teams->team_names[ (int) $row['away_team_id'] ], null, 'UTF-8' ) : '',
+				'home_team' => isset( $teams->team_names[(int) $row['home_team_id']] ) ?
+								htmlentities( $teams->team_names[(int) $row['home_team_id']], null, 'UTF-8' ) : '',
+				'away_team' => isset( $teams->team_names[(int) $row['away_team_id']] ) ?
+								htmlentities( $teams->team_names[(int) $row['away_team_id']], null, 'UTF-8' ) : '',
 				'home_team_flag' => $teams->flag_image( (int) $row['home_team_id'] ),
 				'away_team_flag' => $teams->flag_image( (int) $row['away_team_id'] ),
 				'home_score' => $row['home_score'],

@@ -323,6 +323,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		do_action( 'footballpool_admin_question_delete', $id );
+		
 		// ranking update log
 		self::update_ranking_log_questions( 
 									$id, null, null, 
@@ -430,6 +432,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						WHERE score_date = '0000-00-00 00:00'" );
 		
 		wp_cache_delete( FOOTBALLPOOL_CACHE_QUESTIONS );
+		
+		do_action( 'footballpool_admin_question_save', $input, $id );
 		return $id;
 	}
 	

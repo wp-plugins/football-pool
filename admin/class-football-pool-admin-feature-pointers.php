@@ -82,6 +82,9 @@ class Football_Pool_Admin_Feature_Pointers {
 	}
 	
 	public static function init() {
+		// only for admins
+		if ( ! current_user_can( 'manage_football_pool' ) ) return;
+		
 		// array of pointers the user already clicked away
 		self::$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 		// define the pointers

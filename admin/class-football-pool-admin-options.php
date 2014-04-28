@@ -84,6 +84,10 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		// get the pages for the redirect option & the plugin pages
 		$redirect_pages = $plugin_pages = array();
 		$redirect_pages[] = array(
+									'value' => '', 
+									'text' => ''
+							);
+		$redirect_pages[] = array(
 									'value' => home_url(), 
 									'text' => __( 'homepage', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
@@ -204,7 +208,9 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								__( 'Page after registration', FOOTBALLPOOL_TEXT_DOMAIN ), 
 								'redirect_url_after_login', 
 								$redirect_pages,
-								__( 'You can set the page where users must be redirected to after registration (and first time login).', FOOTBALLPOOL_TEXT_DOMAIN ),
+								sprintf( '%s %s'
+										, __( 'You can set the page where users must be redirected to after registration (and first time login).', FOOTBALLPOOL_TEXT_DOMAIN )
+										, __( 'Leave empty to use default behavior of WordPress.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 								''
 							),
 						'keep_data_on_uninstall' =>

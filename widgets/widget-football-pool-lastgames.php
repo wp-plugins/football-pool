@@ -73,9 +73,9 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 				
 				$output .= sprintf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
 									, $url_home
-									, $teams->team_names[ (int) $row['home_team_id'] ]
+									, $teams->team_names[(int) $row['home_team_id']]
 									, $url_away
-									, $teams->team_names[ (int) $row['away_team_id'] ]
+									, $teams->team_names[(int) $row['away_team_id']]
 								);
 				
 				$output .= sprintf( '<td class="score"><a href="%s" title="%s">%s - %s</a></td></tr>'

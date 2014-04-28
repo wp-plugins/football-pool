@@ -471,6 +471,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		do_action( 'footballpool_admin_match_delete', $item_id );
+		
 		// ranking update log
 		$sql = $wpdb->prepare( "SELECT ranking_id FROM {$prefix}rankings_matches
 								WHERE match_id = %d", $item_id );
@@ -487,19 +489,6 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		if ( $success ) {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE match_id = %d", $item_id );
 			$success = ( $wpdb->query( $sql ) !== false );
-			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type 
-									// WHERE question_id IN (
-										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
-									// )"
-								// , $item_id );
-			// $success &= ( $wpdb->query( $sql ) !== false );
-			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers
-									// WHERE question_id IN (
-										// SELECT id FROM {$prefix}bonusquestions WHERE match_id = %d
-									// )"
-								// , $item_id );
-			// $success &= ( $wpdb->query( $sql ) !== false );
-			// $sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE match_id = %d", $item_id );
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET match_id = 0 WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_matches WHERE match_id = %d", $item_id );
@@ -688,7 +677,12 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			// for matches beyond the group phase and for non-real teams a dropdown
 			return self::team_select( $team, $input_name );
 		} else {
-			return $teams->team_names[$team] . '<input type="hidden" name="' . $input_name . '" id="' . $input_name . '" value="' . $team . '" />';
+			return sprintf( '%s<input type="hidden" name="%s" id="%s" value="%s" />'
+							, $teams->team_names[$team]
+							, esc_attr( $input_name )
+							, esc_attr( $input_name )
+							, esc_attr( $team )
+					);
 		}
 	}
 	
@@ -776,7 +770,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		if ( $id  > 0 ) {
 			return $success;
 		} else {
-			return $success ? $wpdb->insert_id : 0;
+			$id = $success ? $wpdb->insert_id : 0;
+			do_action( 'footballpool_admin_match_save', $id );
+			return $id;
 		}
 	}
 

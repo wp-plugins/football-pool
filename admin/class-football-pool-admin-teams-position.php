@@ -32,7 +32,7 @@ class Football_Pool_Admin_Teams_Position extends Football_Pool_Admin {
 			foreach( $rank as $teamranking ) {
 				echo '<tr>',
 						 '<td><input type="text" name="_order_', esc_attr( $teamranking['team'] ), '" size="1" maxlength="1" value="', esc_attr( $teams->get_group_order( (integer) $teamranking['team'] ) ), '" /></td>',
-						 '<td class="team"><input type="text" name="_name_', esc_attr( $teamranking['team'] ), '" value="', esc_attr( $team_names[ $teamranking['team'] ] ), '" maxlength="30" class="regular-text" /></td>',
+						 '<td class="team"><input type="text" name="_name_', esc_attr( $teamranking['team'] ), '" value="', esc_attr( $team_names[$teamranking['team']] ), '" maxlength="30" class="regular-text" /></td>',
 						 '<td class="plays">', $teamranking['plays'], '</td>',
 						 '<td class="wins">', $teamranking['wins'], '</td>',
 						 '<td class="draws">', $teamranking['draws'], '</td>',

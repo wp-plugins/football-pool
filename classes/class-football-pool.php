@@ -450,13 +450,14 @@ class Football_Pool {
 	public static function player_login_redirect( $redirect_to, $request, $user ){
 		//is there a user to check?
 		global $user;
-		if( isset( $user->roles ) && is_array( $user->roles ) ) {
+		if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 			//check for non admins
-			if( ! in_array( 'administrator', $user->roles ) ) {
-				$default_url = apply_filters( 'footballpool_login_redirect_url', 
-									Football_Pool_Utils::get_fp_option( 'redirect_url_after_login', home_url() )
-								);
-				$redirect_to = ( $request == admin_url() ) ? $default_url : $request;
+			if ( ! in_array( 'administrator', $user->roles ) ) {
+				$plugin_option = Football_Pool_Utils::get_fp_option( 'redirect_url_after_login', home_url() );
+				if ( $plugin_option != '' ) {
+					$default_url = apply_filters( 'footballpool_login_redirect_url', $plugin_option );
+					$redirect_to = ( $request == admin_url() ) ? $default_url : $request;
+				}
 			}
 		}
 		

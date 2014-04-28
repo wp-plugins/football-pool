@@ -167,7 +167,6 @@ class Football_Pool_Chart {
 	private function pie_definition() {
 		$this->options[] = "tooltip: {
 								formatter: function() {
-									//return '<b>'+ this.point.name +'</b>: '+ sprintf('%1.0f', this.percentage) +' %';
 									return '<b>'+ this.point.name +'</b>: '+ this.y + ' (' + this.percentage.toFixed(0) +' %)';
 								}
 							}";

@@ -657,6 +657,7 @@ class Football_Pool_Pool {
 				$question_info[$i]['max_answers'] = $row['max_answers'];
 			}
 			
+			$question_info = apply_filters( 'footballpool_questions', $question_info );
 			wp_cache_set( FOOTBALLPOOL_CACHE_QUESTIONS, $question_info );
 		}
 		

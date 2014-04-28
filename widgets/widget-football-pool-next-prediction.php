@@ -107,11 +107,11 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		}
 		$output .= sprintf( '<p>' . $team_str . ' - ' . $team_str . '</p></div>'
 							, $url_home
-							, ( isset( $teams->team_names[ (int) $this->match['home_team_id'] ] ) ?
-										$teams->team_names[ (int) $this->match['home_team_id'] ] : '' )
+							, ( isset( $teams->team_names[(int) $this->match['home_team_id']] ) ?
+										$teams->team_names[(int) $this->match['home_team_id']] : '' )
 							, $url_away
-							, ( isset( $teams->team_names[ (int) $this->match['away_team_id'] ] ) ?
-										$teams->team_names[ (int) $this->match['away_team_id'] ] : '' )
+							, ( isset( $teams->team_names[(int) $this->match['away_team_id']] ) ?
+										$teams->team_names[(int) $this->match['away_team_id']] : '' )
 						);
 		
 		echo apply_filters( 'footballpool_widget_html_next-prediction', $output );

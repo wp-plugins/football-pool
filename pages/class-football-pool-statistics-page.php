@@ -216,8 +216,11 @@ class Football_Pool_Statistics_Page {
 				case 'stats':
 					if ( $view != 'user' ) {
 						if ( count( $users ) < 1 ) {
-							$output .= sprintf( '<h2>%s</h2>', __( 'No users selected :\'(', FOOTBALLPOOL_TEXT_DOMAIN ) );
-							$output .= sprintf( '<p>%s</p>', __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<h2>%s</h2>', __( 'No users selected', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							$output .= sprintf( '<p>%s %s</p>', __( 'The top 5 players are shown below.', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							
+							$rows = $pool->get_pool_ranking_limited( FOOTBALLPOOL_LEAGUE_ALL, 5, $ranking );
+							foreach( $rows as $row ) $users[] = $row['user_id'];
 						} elseif ( count( $users ) == 1 ) {
 							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						}
