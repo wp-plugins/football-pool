@@ -438,6 +438,7 @@ function match_options() {
 				</td>
 				<td>
 					<select id="matches-group-id" style="width:320px; display:none;">
+					<option value=""></option>
 					<?php group_options(); ?>
 					</select>
 				</td>

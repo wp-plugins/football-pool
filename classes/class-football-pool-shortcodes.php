@@ -303,7 +303,11 @@ class Football_Pool_Shortcodes {
 		$question_ids = Football_Pool_Utils::extract_ids( $question );
 		$matchtype_ids = Football_Pool_Utils::extract_ids( $matchtype );
 		// add all matches in the match types collection to the match_ids
+		ChromePhp::log($match_ids);
 		$match_ids = array_merge( $match_ids, $matches->get_matches_for_match_type( $matchtype_ids ) );
+
+
+		ChromePhp::log($matches->get_matches_for_match_type( $matchtype_ids ));
 		
 		$matches = $matches->get_match_info_for_user( $current_user->ID, $match_ids );
 		$questions = $pool->get_bonus_questions_for_user( $current_user->ID, $question_ids );

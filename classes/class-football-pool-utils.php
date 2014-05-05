@@ -67,8 +67,7 @@ class Football_Pool_Utils {
 	public static function extract_ids( $input ) {
 		// remove all spaces and tabs
 		$replace = array( ' ', "\t" );
-		$replace_with = array( '', '' );
-		$input = str_replace( $replace, $replace_with, $input );
+		$input = str_replace( $replace, '', $input );
 		$ids = array();
 		// split for single numbers
 		$input = explode( ',', $input );

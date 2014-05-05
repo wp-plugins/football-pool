@@ -2,6 +2,7 @@
 class Football_Pool_User_Page {
 	public function page_content() {
 		$user_id = Football_Pool_Utils::get_integer( 'user', 0 );
+		if ( $user_id == 0 ) $user_id = get_current_user_id();
 		$user = get_userdata( $user_id );
 		
 		$output = '';
@@ -49,10 +50,12 @@ class Football_Pool_User_Page {
 				$output .= sprintf( '<h2>%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				$output .= $pool->print_bonus_question_for_user( $questions );
 			}
+			
+			$output = apply_filters( 'footballpool_user_page_html', $output, $match_rows );
 		} else {
-			$output .= sprintf( '<p>%s</p>', __( 'No user selected.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			$output = sprintf( '<p>%s</p>', __( 'No user selected.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 
-		return apply_filters( 'footballpool_user_page_html', $output, $match_rows );
+		return $output;
 	}
 }

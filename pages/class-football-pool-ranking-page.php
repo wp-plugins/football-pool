@@ -82,7 +82,8 @@ class Football_Pool_Ranking_Page {
 		$filtered_users = apply_filters( 'footballpool_ranking_users', $users );
 		
 		if ( count( $filtered_ranking ) > 0 ) {
-			$output .= $pool->print_pool_ranking( $league, $current_user->ID, $ranking_id, $filtered_users, $filtered_ranking );
+			$output .= $pool->print_pool_ranking( $league, $current_user->ID, $ranking_id
+													, $filtered_users, $filtered_ranking );
 		}
 		
 		return apply_filters( 'footballpool_ranking_page_html', $output );

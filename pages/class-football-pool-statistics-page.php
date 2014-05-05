@@ -17,6 +17,8 @@ class Football_Pool_Statistics_Page {
 	}
 	
 	private function settings_panel( $panel_content ) {
+		if ( $panel_content == '' ) $panel_content = __( 'No settings available', FOOTBALLPOOL_TEXT_DOMAIN );
+		
 		$output = sprintf( '<div id="fp-charts-settings">%s<p><input type="submit" value="%s" /></p></div>'
 							, $panel_content
 							, __( 'Change charts', FOOTBALLPOOL_TEXT_DOMAIN ) 
@@ -66,8 +68,6 @@ class Football_Pool_Statistics_Page {
 			
 			// show the user selector
 			if ( $view != 'matchpredictions' && $view != 'bonusquestion' && $view != 'user' ) {
-				$show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
-				
 				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
 				$user_selector = '';
 				if ( count( $rows ) > 0 ) {
@@ -77,13 +77,12 @@ class Football_Pool_Statistics_Page {
 					foreach( $rows as $row ) {
 						$selected = ( in_array( $row['user_id'], $users ) ) ? true : false;
 						$user_selector .= sprintf( '<li class="user-%d%s">
-													<label><input type="checkbox" name="users[]" value="%d" %s/> %s %s</label>
+													<label><input type="checkbox" name="users[]" value="%d" %s/> %s</label>
 													</li>'
 												, $row['user_id']
 												, ( $selected ? ' selected' : '' )
 												, $row['user_id']
 												, ( $selected ? 'checked="checked" ' : '' )
-												, $pool->get_avatar( $row['user_id'], 'small' )
 												, $pool->user_name( $row['user_id'] )
 										);
 					}

@@ -212,7 +212,7 @@ class Football_Pool_Groups {
 		}
 		$match_types = implode( ',', $match_types );
 		
-		$sql = $wpdb->prepare( "SELECT DISTINCT m.id
+		$sql = $wpdb->prepare( "SELECT DISTINCT m.id, t.name AS matchtype
 								FROM {$prefix}matches m, {$prefix}matchtypes t, {$prefix}teams tm 
 								WHERE m.matchtype_id = t.id AND t.id IN ( {$match_types} )
 									AND ( m.home_team_id = tm.id OR m.away_team_id = tm.id )

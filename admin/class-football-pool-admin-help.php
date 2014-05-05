@@ -527,12 +527,40 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 				<td>HTML for the date row (placed between matches when there is a new match date).</td>
 				<td>see match row</td>
 			</tr>
+			<tr>
+				<td>ranking table</td>
+				<td>footballpool_ranking_template_start</td>
+				<td>Opening HTML for the ranking table.</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_ranking_template_end</td>
+				<td>Closing HTML for the ranking table.</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>footballpool_ranking_ranking_row_template</td>
+				<td>HTML for a row in the ranking table.</td>
+				<td>rank<br />
+					user_name<br />
+					user_link<br />
+					user_avatar<br />
+					num_predictions<br />
+					points<br />
+					league_image<br />
+					css_class<br />
+				</td>
+			</tr>
+
 		</table>
 		</p>
 		<p>Template example (for a match row in the prediction form):<br /><br />
 		<span class="code"><?php echo htmlentities( '<tr><td>%match_time%</td><td>%home_team% %home_team_flag%</td><td>%home_input% - %away_input%</td><td>%away_team_flag% %away_team%</td></tr>' ); ?>
 		</span><br />
 		</p>
+		<p>See the <a href="#hooks">hooks section</a> in this help file for an example about how to use a hook to change the template for the ranking table.</p>
 		
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 		
@@ -936,7 +964,7 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		<p class="help back-to-top"><a href="#">back to top</a></p>
 
 		<h2 id="hooks">Extending the plugin: Actions and Filters</h2>
-		<p>If you want to alter the output or behavior of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a target="_blank" href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a target="_blank" href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin (<a href="http://codex.wordpress.org/Writing_a_Plugin" target="_blank">how write your own plugin</a>).</p>
+		<p>If you want to alter the output or behavior of the plugin there are several hooks you can use. If you want to learn more about hooks, see <a target="_blank" href="http://wp.tutsplus.com/tutorials/plugins/writing-extensible-plugins-with-actions-and-filters/">this tutorial</a> or <a target="_blank" href="http://codex.wordpress.org/Plugin_API">the Codex</a>. Place your custom code in your theme's functions.php file or in your own plugin (<a href="http://codex.wordpress.org/Writing_a_Plugin" target="_blank">how to write your own plugin</a>).</p>
 		<p>Search for <span class="code">do_action</span> or <span class="code">apply_filters</span> in the plugin's PHP files for the exact location of the different hooks.
 		</p>
 		<div class="help important">
@@ -968,7 +996,7 @@ add_filter( \'footballpool_userselector_widget_users\', function ( $a ) {
 ?>' );
 		
 		Football_Pool_Utils::highlight_string( '<?php
-// Show number of predictions in the ranking table.
+// Show number of predictions in the ranking table and also the user avatar.
 // If you want the page, shortcode or widget to have different layouts,
 // you can differentiate with the $type.
 add_filter( \'footballpool_ranking_template_start\', 

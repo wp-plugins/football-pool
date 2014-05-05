@@ -86,10 +86,10 @@ class Football_Pool_Matches {
 		$order = Football_Pool_Utils::get_fp_option( 'match_sort_method', FOOTBALLPOOL_MATCH_SORT, 'int' );
 		switch ( $order ) {
 			case 3:
-				$order = 'm.matchtype ASC, m.play_date DESC, m.id DESC';
+				$order = 'matchtype ASC, m.play_date DESC, m.id DESC';
 				break;
 			case 2:
-				$order = 'm.matchtype DESC, m.play_date ASC, m.id ASC';
+				$order = 'matchtype DESC, m.play_date ASC, m.id ASC';
 				break;
 			case 1:
 				$order = 'm.play_date DESC, m.id DESC';
@@ -236,7 +236,7 @@ class Football_Pool_Matches {
 			$ids = " AND m.id IN ( {$match_ids} ) ";
 		}
 		
-		$sql = $wpdb->prepare( "SELECT m.id, p.home_score, p.away_score, p.has_joker
+		$sql = $wpdb->prepare( "SELECT m.id, p.home_score, p.away_score, p.has_joker, t.name AS matchtype
 								FROM {$prefix}matches m 
 								JOIN {$prefix}matchtypes t 
 									ON ( m.matchtype_id = t.id {$ids})

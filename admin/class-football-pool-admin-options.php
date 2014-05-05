@@ -394,8 +394,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 								),
 								__( 'Select the order in which matches must be displayed on the matches page and the prediction page..', FOOTBALLPOOL_TEXT_DOMAIN ),
 							),
-						'show_avatar' => 
-							array( 'checkbox', __( 'Show (gr)avatars', FOOTBALLPOOL_TEXT_DOMAIN ), 'show_avatar', __( 'Show the user\'s (gr)avatar in ranking tables (if available).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'auto_calculation' =>
 							array( 'checkbox', __( 'Automatic calculation', FOOTBALLPOOL_TEXT_DOMAIN ), 'auto_calculation', __( 'By default the rankings are automatically (re)calculated in the admin. Change this setting if you want to (temporarily) disable this behaviour.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 						'ranking_display' =>
@@ -609,7 +607,6 @@ class Football_Pool_Admin_Options extends Football_Pool_Admin {
 		self::admin_sectiontitle( __( 'Pool Layout Options', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		self::options_form( array(
 									$options['use_spin_controls'],
-									$options['show_avatar'],
 									$options['match_time_display'],
 									$options['match_time_offset'],
 									$options['show_team_link'],

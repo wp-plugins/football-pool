@@ -8,7 +8,6 @@ class Football_Pool_Pool {
 	private $lock_timestamp;
 	private $lock_datestring;
 	public $always_show_predictions = false;
-	public $show_avatar = false;
 	public $has_jokers;
 	public $pool_id = 1;
 	public $pool_users; // array of users in a pool
@@ -34,7 +33,6 @@ class Football_Pool_Pool {
 		
 		// override hiding of predictions for editable questions?
 		$this->always_show_predictions = ( (int) Football_Pool_Utils::get_fp_option( 'always_show_predictions' ) === 1 );
-		$this->show_avatar = ( Football_Pool_Utils::get_fp_option( 'show_avatar' ) == 1 );
 		
 		$matches = new Football_Pool_Matches;
 		$this->has_matches = $matches->has_matches;
@@ -364,14 +362,14 @@ class Football_Pool_Pool {
 		if ( $all_user_view ) {
 			$ranking_template = '<tr class="%css_class%">
 									<td style="width:3em; text-align: right;">%rank%.</td>
-									<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+									<td><a href="%user_link%">%user_name%</a></td>
 									<td class="ranking score">%points%</td>
 									<td>%league_image%</td>
 									</tr>';
 		} else {
 			$ranking_template = '<tr class="%css_class%">
 									<td style="width:3em; text-align: right;">%rank%.</td>
-									<td><a href="%user_link%">%user_avatar%%user_name%</a></td>
+									<td><a href="%user_link%">%user_name%</a></td>
 									<td class="ranking score">%points%</td>
 									</tr>';
 		}
@@ -1259,8 +1257,6 @@ class Football_Pool_Pool {
 	}
 	
 	public function get_avatar( $user_id, $size = 'small', $wrap = true ) {
-		if ( ! $this->show_avatar ) return '';
-		
 		if ( ! is_int( $size ) ) {
 			switch ( $size ) {
 				case 'large':
