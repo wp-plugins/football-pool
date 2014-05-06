@@ -2,6 +2,7 @@
 class Football_Pool_User_Page {
 	public function page_content() {
 		$user_id = Football_Pool_Utils::get_integer( 'user', 0 );
+		// default to the currently logged in user, if no user is given.
 		if ( $user_id == 0 ) $user_id = get_current_user_id();
 		$user = get_userdata( $user_id );
 		

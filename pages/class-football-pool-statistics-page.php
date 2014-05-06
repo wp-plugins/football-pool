@@ -174,7 +174,8 @@ class Football_Pool_Statistics_Page {
 						if ( count( $raw_data ) > 0 ) {
 							$chart = new Football_Pool_Chart( 'chart1', 'pie' );
 							// only one user
-							$chart->data = array_shift( $chart_data->score_chart_series( $raw_data ) );
+							$chart->data = $chart_data->score_chart_series( $raw_data );
+							$chart->data = array_shift( $chart->data );
 							$chart->title = __( 'scores in matches', FOOTBALLPOOL_TEXT_DOMAIN );
 							$chart->custom_css = 'stats-page';
 							if ( $pool->has_bonus_questions ) $chart->custom_css .= ' stats-pie';
@@ -203,8 +204,10 @@ class Football_Pool_Statistics_Page {
 							$chart->data = $chart_data->points_total_pie_series( $raw_data );
 							/* xgettext:no-php-format */
 							$chart->title = __( '% of the max points', FOOTBALLPOOL_TEXT_DOMAIN );
-							$chart->options[] = sprintf( "subtitle: { text: '(%s)' }"
-														, __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							if ( $pool->has_jokers ) {
+								$chart->options[] = sprintf( "subtitle: { text: '(%s)' }"
+															, __( 'with the joker used', FOOTBALLPOOL_TEXT_DOMAIN ) );
+							}
 							$chart->JS_options[] = "options.series[0].data[0].sliced = true";
 							$chart->JS_options[] = "options.series[0].data[0].selected = true";
 							$chart->custom_css = 'stats-page stats-pie';

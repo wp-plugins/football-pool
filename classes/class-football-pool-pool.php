@@ -13,7 +13,7 @@ class Football_Pool_Pool {
 	public $pool_users; // array of users in a pool
 	
 	public function __construct() {
-		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
+		$this->num_jokers = $this->get_jokers();
 		$this->has_jokers = ( $this->num_jokers > 0 );
 		
 		$this->leagues = $this->get_leagues();
@@ -39,6 +39,11 @@ class Football_Pool_Pool {
 		$this->has_bonus_questions = ( $this->get_number_of_bonusquestions() > 0 );
 		
 		$this->pool_users = $this->get_pool_user_info( $this->pool_id );
+	}
+	
+	public function get_jokers() {
+		$num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
+		return apply_filters( 'footballpool_get_jokers', $num_jokers );
 	}
 	
 	public function user_name( $user_id ) {
@@ -288,14 +293,14 @@ class Football_Pool_Pool {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
+		$num_predictions = array();
+		
 		if ( is_array( $users ) && count( $users ) > 0 ) {
 			$users = implode( ',', $users );
 			$users = "WHERE p.user_id IN ( {$users} )";
 		} else {
 			$users = '';
 		}
-		
-		$num_predictions = array();
 		
 		// matches
 		if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
@@ -312,7 +317,7 @@ class Football_Pool_Pool {
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 		
 		foreach ( $rows as $row ) {
-			$num_predictions[$row['user_id']] = $row['num_predictions'];
+			$num_predictions[$row['user_id']] = (int) $row['num_predictions'];
 		}
 		
 		// questions
@@ -331,7 +336,9 @@ class Football_Pool_Pool {
 		
 		foreach ( $rows as $row ) {
 			if ( array_key_exists( $row['user_id'], $num_predictions) ) {
-				$num_predictions[$row['user_id']] += $row['num_predictions'];
+				$num_predictions[$row['user_id']] += (int) $row['num_predictions'];
+			} else {
+				$num_predictions[$row['user_id']] = (int) $row['num_predictions'];
 			}
 		}
 		

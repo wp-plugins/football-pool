@@ -1,6 +1,6 @@
 <?php
 class Football_Pool_Matches {
-	private $joker_blocked;
+	private $joker_blocked = false;
 	private $teams;
 	private $matches_are_editable;
 	public $joker_value;
@@ -12,13 +12,8 @@ class Football_Pool_Matches {
 	public $has_matches = false;
 	private $time_format;
 	private $date_format;
-	private $num_jokers = FOOTBALLPOOL_DEFAULT_JOKERS;
-	private $pool_has_jokers;
 	
 	public function __construct() {
-		$this->num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
-		$this->pool_has_jokers = ( $this->num_jokers > 0 );
-		$this->joker_blocked = $this->pool_has_jokers ? false : true;
 		$this->enable_edits();
 		
 		$datetime = Football_Pool_Utils::get_fp_option( 'matches_locktime', '' );
@@ -267,7 +262,8 @@ class Football_Pool_Matches {
 	}
 	
 	public function get_joker_value_for_user( $user_id ) {
-		if ( ! $this->pool_has_jokers ) return 0;
+		$pool = new Football_Pool_Pool;
+		if ( ! $pool->has_jokers ) return 0;
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -734,7 +730,8 @@ class Football_Pool_Matches {
 	}
 	
 	private function show_pool_joker( $joker, $match, $ts, $form_id = 1 ) {
-		if ( ! $this->pool_has_jokers ) return '';
+		$pool = new Football_Pool_Pool;
+		if ( ! $pool->has_jokers ) return '';
 		
 		$add_joker = '';
 		$style = '';
@@ -755,7 +752,7 @@ class Football_Pool_Matches {
 			$this->block_joker();
 		}
 		
-		if ( ! $this->joker_blocked ) {
+		if ( $pool->has_jokers && ! $this->joker_blocked ) {
 			if ( $this->match_is_editable( $ts ) ) {
 				$add_joker = ' onclick="FootballPool.change_joker( this.id )" title="' . __( 'use your joker?', FOOTBALLPOOL_TEXT_DOMAIN ) . '"';
 			}

@@ -149,7 +149,8 @@ class Football_Pool_Chart_Data {
 		// on a full score you get the fullpoints and two times the goal bonus
 		$full = Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' ) +
 				( 2 * Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) );
-		$num_jokers = (int) Football_Pool_Utils::get_fp_option( 'number_of_jokers' );
+		$pool = new Football_Pool_Pool;
+		$num_jokers = $pool->get_jokers();
 		$output['max_score'] = 0;
 		if ( $num_jokers > 0 ) {
 			// count first match(es) with joker

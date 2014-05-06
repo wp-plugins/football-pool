@@ -184,9 +184,10 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.4.2 =
+* Removed 'show avatar' option. I'm in the midst of changing some parts of the plugin to use HTML templates for the display of data. The avatar can already be added to the ranking table (see help page for details); other parts of the plugin will follow later.
 * Bug fix: matches dissappeared when using a match sorting method that included the match type (thanks Kevin for reporting the problem and allowing me to do some bug tracking on your site).
 * Bug fix: shortcode pop-up in the WP admin always included a group ID for the [fp-matches] shortcode.
-* Removed 'show avatar' option. I'm in the midst of changing some parts of the plugin to use HTML templates for the display of data. The avatar can already be added to the ranking table (see help page for details); other parts of the plugin will follow later.
+* Bug fix: calculation of number of predictions went wrong for custom rankings with only bonus questions (thanks Daniel for reporting the bug).
 
 = 2.4.1 =
 * Changed option: redirect after login option can now be left empty to use the default WP behavior (go to profile page).
