@@ -52,7 +52,7 @@ class Football_Pool_Ranking_Page {
 						);
 			$output .= '</div></form>';
 		}
-
+		
 		$rows = $pool->get_pool_ranking( $league, $ranking_id );
 		$ranking = $users = array();
 		if ( count( $rows ) > 0 ) {

@@ -70,6 +70,7 @@ if ( ! defined( 'FOOTBALLPOOL_LARGE_AVATAR' ) ) define( 'FOOTBALLPOOL_LARGE_AVAT
 if ( ! defined( 'FOOTBALLPOOL_TIME_FORMAT' ) ) define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
 if ( ! defined( 'FOOTBALLPOOL_DATE_FORMAT' ) ) define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
 if ( ! defined( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER' ) ) define( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER', '%' );
+if ( ! defined( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY' ) ) define( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY', 10 );
 
 // cache
 define( 'FOOTBALLPOOL_CACHE_MATCHES', 'fp_match_info' );
@@ -95,7 +96,7 @@ if ( function_exists( 'wp_enqueue_media' ) ) {
 // debug
 // define( 'FOOTBALLPOOL_DEBUG_FORCE', 'file' );
 define( 'FOOTBALLPOOL_DEBUG_EMAIL', 'wordpressfootballpool@gmail.com' );
-if ( $_SERVER['HTTP_HOST'] == 'localhost' ) {
+if ( defined( 'FOOTBALLPOOL_LOCAL_MODE' ) ) {
 	define( 'FOOTBALLPOOL_ENABLE_DEBUG', true );
 	error_reporting( -1 );
 	$wpdb->show_errors();

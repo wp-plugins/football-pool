@@ -137,7 +137,6 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				show a form to select the calculation type (smart/full)
 			*/
 				$params['step'] = 0;
-				// Football_Pool_Utils::set_fp_option( 'calculation_type_preference', $calculation_type );
 				$calculation_type_preference = Football_Pool_Utils::get_fp_option( 
 																			'calculation_type_preference'
 																			, FOOTBALLPOOL_RANKING_CALCULATION_FULL );
@@ -548,6 +547,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			function step8_the_end() {}
 			*/
 				// calculation complete
+				Football_Pool_Utils::set_fp_option( 'calculation_type_preference', $calculation_type );
 				$params['step'] = 9;
 		}
 		

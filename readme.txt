@@ -188,6 +188,8 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: matches dissappeared when using a match sorting method that included the match type (thanks Kevin for reporting the problem and allowing me to do some bug tracking on your site).
 * Bug fix: shortcode pop-up in the WP admin always included a group ID for the [fp-matches] shortcode.
 * Bug fix: calculation of number of predictions went wrong for custom rankings with only bonus questions (thanks Daniel for reporting the bug).
+* Bug fix: undefined index 'league_id' on the ranking page (thanks sillery4ever for reporting the bug).
+* Bug fix: match schedule was wrong for the querter finals. The matches were imported sorted on date causing the match numbers to not match correctly for the semi-finals (e.g. winner match 57). (thanks Bobby Groenen for reporting the bug).
 
 = 2.4.1 =
 * Changed option: redirect after login option can now be left empty to use the default WP behavior (go to profile page).

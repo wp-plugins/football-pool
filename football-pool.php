@@ -75,7 +75,7 @@ add_action( 'init', array( 'Football_Pool', 'init' ) );
 // admin bar and content handling
 if ( ! is_admin() ) {
 	add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
-	add_filter( 'the_content', array( 'Football_Pool', 'the_content' ) );
+	add_filter( 'the_content', array( 'Football_Pool', 'the_content' ), FOOTBALL_POOL_CONTENT_FILTER_PRIORITY );
 	add_filter( 'the_title', array( 'Football_Pool_Statistics_Page', 'the_title' ) );
 	add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
 }
@@ -107,7 +107,7 @@ if ( is_admin() ) {
 	require_once 'admin/class-football-pool-admin-feature-pointers.php';
 	
 	// add_action( 'admin_head', array( 'Football_Pool_Admin', 'adminhook_suffix' ) );
-	add_action( 'delete_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
+	add_action( 'deleted_user', array( 'Football_Pool_Admin_Users', 'delete_user_from_pool' ) );
 	add_action( 'show_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'edit_user_profile', array( 'Football_Pool_Admin_Users', 'add_extra_profile_fields' ) );
 	add_action( 'personal_options_update', array( 'Football_Pool_Admin_Users', 'update_user_options' ) );

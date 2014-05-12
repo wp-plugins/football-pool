@@ -402,7 +402,7 @@ class Football_Pool_Pool {
 				'user_avatar' => $this->get_avatar( $row['user_id'], 'medium' ),
 				'num_predictions' => array_key_exists( $row['user_id'], $predictions ) ? $predictions[$row['user_id']] : 0,
 				'points' => $row['points'],
-				'league_image' => $this->league_image( $row['league_id'] ),
+				'league_image' => ( isset( $row['league_id'] ) ? $this->league_image( $row['league_id'] ) : '' ),
 				'css_class' => $class,
 			);
 			$ranking_template_params = apply_filters( 'footballpool_ranking_ranking_row_params'

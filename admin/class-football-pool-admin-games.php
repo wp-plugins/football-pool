@@ -156,6 +156,9 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 				}
 				if ( count( $err ) == 0 ) {
 					// import the data (note: teams are always imported as active)
+					$teams = new Football_Pool_Teams;
+					$stadiums = new Football_Pool_Stadiums;
+					$matches = new Football_Pool_Matches;
 					
 					// if action is 'overwrite' then first empty all tables
 					if ( $action == 'import_csv_overwrite' ) {
@@ -194,7 +197,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 												'is_active' => 1,
 												);
 						}
-						$home_team = Football_Pool_Teams::get_team_by_name( $data[1], 'addnew', $extra_data );
+						$home_team = $teams->get_team_by_name( $data[1], 'addnew', $extra_data );
 						$home_team_id = $home_team->id;
 						if ( isset( $home_team->inserted ) && $home_team->inserted == true ) {
 							$msg[] = sprintf(
@@ -218,7 +221,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 												'is_active' => 1,
 												);
 						}
-						$away_team = Football_Pool_Teams::get_team_by_name( $data[2], 'addnew', $extra_data );
+						$away_team = $teams->get_team_by_name( $data[2], 'addnew', $extra_data );
 						$away_team_id = $away_team->id;
 						if ( isset( $away_team->inserted ) && $away_team->inserted == true ) {
 							$msg[] = sprintf(
@@ -231,7 +234,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						if ( $full_data ) {
 							$extra_data = array( 'photo' => $data[17] );
 						}
-						$stadium = Football_Pool_Stadiums::get_stadium_by_name( $data[3], 'addnew', $extra_data );
+						$stadium = $stadiums->get_stadium_by_name( $data[3], 'addnew', $extra_data );
 						$stadium_id = ( is_object( $stadium ) ? $stadium->id : 0 );
 						if ( isset( $stadium->inserted ) && $stadium->inserted == true ) {
 							$msg[] = sprintf(
@@ -240,7 +243,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 									);
 						}
 						// match type
-						$match_type = Football_Pool_Matches::get_match_type_by_name( $data[4], 'addnew' );
+						$match_type = $matches->get_match_type_by_name( $data[4], 'addnew' );
 						$match_type_id = $match_type->id;
 						if ( isset( $match_type->inserted ) && $match_type->inserted == true ) {
 							$msg[] = sprintf(

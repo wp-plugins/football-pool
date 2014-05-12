@@ -12,18 +12,16 @@ $fp_translate_this = __( 'player predictions', FOOTBALLPOOL_TEXT_DOMAIN );
 
 class Football_Pool {
 	private static $pages = array(
-						array( 'slug' => 'tournament', 'title' => 'matches', 'comment' => 'closed' ),
-							array( 'slug' => 'teams', 'title' => 'teams', 'parent' => 'tournament', 'comment' => 'closed' ),
-							array( 'slug' => 'groups', 'title' => 'groups', 'parent' => 'tournament', 'comment' => 'closed' ),
-							array( 'slug' => 'stadiums', 'title' => 'venues', 'parent' => 'tournament', 'comment' => 'closed' ),
-						'rules' => array( 'slug' => 'rules', 'title' => 'rules', 'text' => '' ),
-						array( 'slug' => 'pool', 'title' => 'prediction sheet', 'comment' => 'closed' ),
-						array( 'slug' => 'ranking', 'title' => 'ranking', 'comment' => 'closed' ),
-						array( 'slug' => 'statistics', 'title' => 'statistics', 'comment' => 'closed' ),
-						array( 'slug' => 'user', 'title' => 'player predictions', 'comment' => 'closed' )
-					);
-	
-	public function __construct() {}
+		array( 'slug' => 'tournament', 'title' => 'matches', 'comment' => 'closed' ),
+			array( 'slug' => 'teams', 'title' => 'teams', 'parent' => 'tournament', 'comment' => 'closed' ),
+			array( 'slug' => 'groups', 'title' => 'groups', 'parent' => 'tournament', 'comment' => 'closed' ),
+			array( 'slug' => 'stadiums', 'title' => 'venues', 'parent' => 'tournament', 'comment' => 'closed' ),
+		'rules' => array( 'slug' => 'rules', 'title' => 'rules', 'text' => '' ),
+		array( 'slug' => 'pool', 'title' => 'prediction sheet', 'comment' => 'closed' ),
+		array( 'slug' => 'ranking', 'title' => 'ranking', 'comment' => 'closed' ),
+		array( 'slug' => 'statistics', 'title' => 'statistics', 'comment' => 'closed' ),
+		array( 'slug' => 'user', 'title' => 'player predictions', 'comment' => 'closed' )
+	);
 	
 	public static function get_pages() {
 		return self::$pages;
@@ -216,7 +214,7 @@ class Football_Pool {
 		
 		// if this is a first time install, set the 'keep_data_on_uninstall' to true
 		$plugin_ver = self::get_db_version();
-		if ( $plugin_ver == false ) Football_Pool_Utils::update_fp_option( 'keep_data_on_uninstall', 1 );
+		if ( $plugin_ver === false ) Football_Pool_Utils::update_fp_option( 'keep_data_on_uninstall', 1 );
 		
 		// all database installs and updates are finished, so update the db version value
 		Football_Pool_Utils::update_fp_option( 'db_version', FOOTBALLPOOL_DB_VERSION );
@@ -614,7 +612,7 @@ class Football_Pool {
 	}
 	
 	private static function create_page( $page, $menu_order = null ) {
-		if ( ! Football_Pool_Utils::get_fp_option( "page_id_{$page['slug']}", false ) ) {
+		if ( Football_Pool_Utils::get_fp_option( "page_id_{$page['slug']}", false ) === false ) {
 			global $current_user;
 			
 			$newpage = array();

@@ -525,5 +525,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE user_id = %d", $user_id );
 		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}user_updatelog_matches WHERE user_id = %d", $user_id );
+		$wpdb->query( $sql );
+		$sql = $wpdb->prepare( "DELETE FROM {$prefix}user_updatelog_questions WHERE user_id = %d", $user_id );
+		$wpdb->query( $sql );
 	}
 }

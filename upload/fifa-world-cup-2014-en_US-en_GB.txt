@@ -59,10 +59,10 @@ play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;
 "2014-06-30 20:00:00";"Winner Group G";"Runner-up Group H";"Estadio Beira-Rio, Porto Alegre";"Round of 16";;;;;0;0;;;;;0;0;estadio-beira-rio.jpg
 "2014-07-01 16:00:00";"Winner Group F";"Runner-up Group E";"Arena De Sao Paulo, Sao Paulo";"Round of 16";;;;;0;0;;;;;0;0;arena-de-sao-paulo.jpg
 "2014-07-01 20:00:00";"Winner Group H";"Runner-up Group G";"Arena Fonte Nova, Salvador";"Round of 16";;;;;0;0;;;;;0;0;arena-fonte-nova.jpg
-"2014-07-04 16:00:00";"Winner match 53";"Winner match 54";"Estadio Do Maracana, Rio de Janeiro";"Quarter Finals";;;;;0;0;;;;;0;0;estadio-do-maracana.jpg
 "2014-07-04 20:00:00";"Winner match 49";"Winner match 50";"Estadio Castelao, Fortaleza";"Quarter Finals";;;;;0;0;;;;;0;0;estadio-castelao.jpg
-"2014-07-05 16:00:00";"Winner match 55";"Winner match 56";"Estadio Nacional, Brasilia";"Quarter Finals";;;;;0;0;;;;;0;0;estadio-nacional.jpg
+"2014-07-04 16:00:00";"Winner match 53";"Winner match 54";"Estadio Do Maracana, Rio de Janeiro";"Quarter Finals";;;;;0;0;;;;;0;0;estadio-do-maracana.jpg
 "2014-07-05 20:00:00";"Winner match 51";"Winner match 52";"Arena Fonte Nova, Salvador";"Quarter Finals";;;;;0;0;;;;;0;0;arena-fonte-nova.jpg
+"2014-07-05 16:00:00";"Winner match 55";"Winner match 56";"Estadio Nacional, Brasilia";"Quarter Finals";;;;;0;0;;;;;0;0;estadio-nacional.jpg
 "2014-07-08 20:00:00";"Winner match 57";"Winner match 58";"Estadio Mineirao, Belo Horizonte";Semi-Finals;;;;;0;0;;;;;0;0;estadio-mineirao.jpg
 "2014-07-09 20:00:00";"Winner match 59";"Winner match 60";"Arena De Sao Paulo, Sao Paulo";Semi-Finals;;;;;0;0;;;;;0;0;arena-de-sao-paulo.jpg
 "2014-07-12 20:00:00";"Loser match 61";"Loser match 62";"Estadio Nacional, Brasilia";"Play-off for third place";;;;;0;0;;;;;0;0;estadio-nacional.jpg

@@ -59,10 +59,10 @@ play_date;home_team;away_team;stadium;match_type;home_team_photo;home_team_flag;
 "2014-06-30 20:00:00";"Winnaar Poule G";"2e Plaats Poule H";"Estadio Beira-Rio, Porto Alegre";"Achtste finale";;;;;0;0;;;;;0;0;estadio-beira-rio.jpg
 "2014-07-01 16:00:00";"Winnaar Poule F";"2e Plaats Poule E";"Arena De Sao Paulo, Sao Paulo";"Achtste finale";;;;;0;0;;;;;0;0;arena-de-sao-paulo.jpg
 "2014-07-01 20:00:00";"Winnaar Poule H";"2e Plaats Poule G";"Arena Fonte Nova, Salvador";"Achtste finale";;;;;0;0;;;;;0;0;arena-fonte-nova.jpg
-"2014-07-04 16:00:00";"Winnaar wedstrijd 53";"Winnaar wedstrijd 54";"Estadio Do Maracana, Rio de Janeiro";"Kwartfinale";;;;;0;0;;;;;0;0;estadio-do-maracana.jpg
 "2014-07-04 20:00:00";"Winnaar wedstrijd 49";"Winnaar wedstrijd 50";"Estadio Castelao, Fortaleza";"Kwartfinale";;;;;0;0;;;;;0;0;estadio-castelao.jpg
-"2014-07-05 16:00:00";"Winnaar wedstrijd 55";"Winnaar wedstrijd 56";"Estadio Nacional, Brasilia";"Kwartfinale";;;;;0;0;;;;;0;0;estadio-nacional.jpg
+"2014-07-04 16:00:00";"Winnaar wedstrijd 53";"Winnaar wedstrijd 54";"Estadio Do Maracana, Rio de Janeiro";"Kwartfinale";;;;;0;0;;;;;0;0;estadio-do-maracana.jpg
 "2014-07-05 20:00:00";"Winnaar wedstrijd 51";"Winnaar wedstrijd 52";"Arena Fonte Nova, Salvador";"Kwartfinale";;;;;0;0;;;;;0;0;arena-fonte-nova.jpg
+"2014-07-05 16:00:00";"Winnaar wedstrijd 55";"Winnaar wedstrijd 56";"Estadio Nacional, Brasilia";"Kwartfinale";;;;;0;0;;;;;0;0;estadio-nacional.jpg
 "2014-07-08 20:00:00";"Winnaar wedstrijd 57";"Winnaar wedstrijd 58";"Estadio Mineirao, Belo Horizonte";"Halve finale";;;;;0;0;;;;;0;0;estadio-mineirao.jpg
 "2014-07-09 20:00:00";"Winnaar wedstrijd 59";"Winnaar wedstrijd 60";"Arena De Sao Paulo, Sao Paulo";"Halve finale";;;;;0;0;;;;;0;0;arena-de-sao-paulo.jpg
 "2014-07-12 20:00:00";"Verliezer wedstrijd 61";"Verliezer wedstrijd 62";"Estadio Nacional, Brasilia";"Wedstrijd voor derde plek";;;;;0;0;;;;;0;0;estadio-nacional.jpg

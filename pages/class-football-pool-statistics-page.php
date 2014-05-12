@@ -31,6 +31,9 @@ class Football_Pool_Statistics_Page {
 	public function page_content() {
 		$output = sprintf( '<form action="%s" method="get">', get_page_link() );
 		
+		$stats = new Football_Pool_Statistics;
+		$pool = new Football_Pool_Pool;
+		
 		$view = Football_Pool_Utils::get_string( 'view', 'stats' );
 		$match = Football_Pool_Utils::get_integer( 'match' );
 		$question = Football_Pool_Utils::get_integer( 'question' );
@@ -55,9 +58,6 @@ class Football_Pool_Statistics_Page {
 			$ranking = FOOTBALLPOOL_RANKING_DEFAULT;
 		}
 		
-		$stats = new Football_Pool_Statistics;
-		$pool = new Football_Pool_Pool;
-
 		if ( ! $stats->data_available && $view != 'matchpredictions' ) {
 			$output.= sprintf( '<h2>%s</h2><p>%s</p>'
 								, __( 'Statistics not yet available', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -68,7 +68,7 @@ class Football_Pool_Statistics_Page {
 			
 			// show the user selector
 			if ( $view != 'matchpredictions' && $view != 'bonusquestion' && $view != 'user' ) {
-				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( FOOTBALLPOOL_LEAGUE_ALL ) );
+				$rows = apply_filters( 'footballpool_userselector_users', $pool->get_users( $league_id ) );
 				$user_selector = '';
 				if ( count( $rows ) > 0 ) {
 					$user_selector .= '<div class="user-selector">';
