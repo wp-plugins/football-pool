@@ -426,7 +426,7 @@ class Football_Pool {
 	
 	public static function get_page_link( $slug ) {
 		$id = Football_Pool_Utils::get_fp_option( 'page_id_' . $slug );
-		return $id ? get_page_link( $id ) : '';
+		return $id && get_post( $id ) ? get_page_link( $id ) : '';
 	}
 	
 	public static function new_pool_user( $user_id ) {
