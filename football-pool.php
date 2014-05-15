@@ -76,7 +76,9 @@ add_action( 'init', array( 'Football_Pool', 'init' ) );
 if ( ! is_admin() ) {
 	add_filter( 'show_admin_bar', array( 'Football_Pool', 'show_admin_bar' ) );
 	add_filter( 'the_content', array( 'Football_Pool', 'the_content' ), FOOTBALL_POOL_CONTENT_FILTER_PRIORITY );
-	add_filter( 'the_title', array( 'Football_Pool_Statistics_Page', 'the_title' ) );
+	if ( FOOTBALLPOOL_CHANGE_STATS_TITLE ) {
+		add_filter( 'the_title', array( 'Football_Pool_Statistics_Page', 'the_title' ) );
+	}
 	add_action( 'wp_head', array( 'Football_Pool', 'change_html_head' ) );
 }
 

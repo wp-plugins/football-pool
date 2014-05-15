@@ -16,6 +16,7 @@ add_shortcode( 'fp-goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_go
 add_shortcode( 'fp-diffpoints', array( 'Football_Pool_Shortcodes', 'shortcode_diffpoints' ) );
 add_shortcode( 'fp-jokermultiplier', array( 'Football_Pool_Shortcodes', 'shortcode_jokermultiplier' ) );
 add_shortcode( 'fp-league-info', array( 'Football_Pool_Shortcodes', 'shortcode_league_info' ) );
+add_shortcode( 'fp-stats-settings', array( 'Football_Pool_Shortcodes', 'shortcode_stats_settings' ) );
 
 // deprecated since v2.4.0, these will be removed in a future version
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
@@ -53,6 +54,13 @@ class Football_Pool_Shortcodes {
 		}
 		
 		return $input;
+	}
+	
+	//[fp-stats-settings] 
+	//    Displays a link to the stats settings (only works on the statistics page when needed, otherwise it 
+	//    returns an empty string).
+	public static function shortcode_stats_settings() {
+		return Football_Pool_Statistics_Page::the_title( '' );
 	}
 	
 	//[fp-league-info] 

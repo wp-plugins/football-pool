@@ -602,7 +602,7 @@ class Football_Pool_Pool {
 			}
 		}
 		
-		return $questions;
+		return apply_filters( 'footballpool_bonusquestions_for_user', $questions, $user_id );
 	}
 	
 	private function get_number_of_bonusquestions() {

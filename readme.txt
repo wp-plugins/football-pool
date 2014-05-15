@@ -184,6 +184,8 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.4.2 =
+* Some themes don't show the cog icon for the chart settings in the title of the page. Added shortcode [fp-chart-settings] that can be used to display the cog icon somewhere in the text. The shortcode only works for the statistics page.
+* Added `FOOTBALLPOOL_CHANGE_STATS_TITLE` that can be set to `false` in the wp-config file to disable the cog icon in the page title (in case something goes wrong in your theme).
 * Removed 'show avatar' option. I'm in the midst of changing some parts of the plugin to use HTML templates for the display of data. The avatar can already be added to the ranking table (see help page for details); other parts of the plugin will follow later.
 * Bug fix: matches dissappeared when using a match sorting method that included the match type (thanks Kevin for reporting the problem and allowing me to do some bug tracking on your site).
 * Bug fix: shortcode pop-up in the WP admin always included a group ID for the [fp-matches] shortcode.

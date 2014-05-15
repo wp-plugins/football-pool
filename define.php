@@ -59,6 +59,7 @@ define( 'FOOTBALLPOOL_TEAM_POINTS_DRAW', 1 );
 define( 'FOOTBALLPOOL_DEFAULT_JOKERS', 1 );
 
 // others
+if ( ! defined( 'FOOTBALLPOOL_CHANGE_STATS_TITLE' ) ) define( 'FOOTBALLPOOL_CHANGE_STATS_TITLE', true );
 define( 'FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE', 20 );
 define( 'FOOTBALLPOOL_SHOUTBOX_MAXCHARS', 150 );
 if ( ! defined( 'FOOTBALLPOOL_SHOUTBOX_DOUBLE_POST_INTERVAL' ) ) define( 'FOOTBALLPOOL_SHOUTBOX_DOUBLE_POST_INTERVAL', 60 * 60 );	// time allowed between two (same) shoutbox messages from one user (in seconds)

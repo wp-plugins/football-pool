@@ -45,6 +45,8 @@ class Football_Pool_Statistics_Page {
 		global $current_user;
 		get_currentuserinfo();
 		
+		$league_id = FOOTBALLPOOL_LEAGUE_ALL; //@todo: maybe change this later to the user's league
+		
 		$users = Football_Pool_Utils::get_integer_array( 'users' );
 		if ( $user > 0 && ! in_array( $user, $users ) ) $users[] = $user;
 		if ( $current_user->ID != 0 && ! in_array( $current_user->ID, $users ) ) $users[] = $current_user->ID;
