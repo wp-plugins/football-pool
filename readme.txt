@@ -193,6 +193,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: undefined index 'league_id' on the ranking page (thanks sillery4ever for reporting the bug).
 * Bug fix: match schedule was wrong for the querter finals. The matches were imported sorted on date causing the match numbers to not match correctly for the semi-finals (e.g. winner match 57). (thanks Bobby Groenen for reporting the bug).
 * Bug fix: get_page_link() caused a notice when plugin pages are deleted from the database.
+* Bug fix: sometimes not all linked questions were shown when more than one question was linked to a match (thanks avdhulst for reporting the bug).
 
 = 2.4.1 =
 * Changed option: redirect after login option can now be left empty to use the default WP behavior (go to profile page).
