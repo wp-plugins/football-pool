@@ -188,9 +188,8 @@ class Football_Pool_Matches {
 			}
 			
 			// get linked questions
-			$sql = "SELECT id, match_id FROM {$prefix}bonusquestions WHERE match_id > 0 
-					ORDER BY match_id ASC, answer_before_date ASC";
-			$rows = apply_filters( 'footballpool_linked_questions', $wpdb->get_results( $sql, ARRAY_A ) );
+			$sql = "SELECT id, match_id FROM {$prefix}bonusquestions WHERE match_id > 0";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
 			if ( $rows ) {
 				$match_id = 0;
 				foreach ( $rows as $row ) {

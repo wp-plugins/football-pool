@@ -282,7 +282,7 @@ class Football_Pool_Pool {
 				$row['ranking'] = $i++;
 				$ranking[] = $row;
 			}
-			$rows = $ranking;
+			$rows = apply_filters( 'footballpool_get_ranking', $ranking );
 			wp_cache_set( $cache_key, $rows );
 		}
 		

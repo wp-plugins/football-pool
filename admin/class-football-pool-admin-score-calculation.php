@@ -663,6 +663,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				. "LOWER( u.display_name ) ASC";
 		
 		$sql = $wpdb->prepare( $sql, $ranking_id, $score_order );
+		$sql = apply_filters( 'footballpool_get_ranking_order', $sql, $has_leagues, $ranking_id, $score_order );
 		return $sql;
 	}
 }
