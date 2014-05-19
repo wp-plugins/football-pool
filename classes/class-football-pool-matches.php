@@ -472,7 +472,7 @@ class Football_Pool_Matches {
 		$date_row_template = '<tr><td class="matchdate" colspan="11">%match_datetime_formatted%</td></tr>';
 		$date_row_template = apply_filters( 'footballpool_predictionform_date_row_template', $date_row_template );
 		
-		$linked_question_template = '<tr id="match-%match_id-%form_id-question-%question_id%" class="linked-question">
+		$linked_question_template = '<tr id="match-%match_id%-%form_id%-question-%question_id%" class="linked-question">
 									<td colspan="11">%question%</td></tr>';
 		$linked_question_template = apply_filters( 'footballpool_predictionform_linked_questions_template'
 													, $linked_question_template );
