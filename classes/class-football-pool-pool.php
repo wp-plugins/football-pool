@@ -56,7 +56,7 @@ class Football_Pool_Pool {
 	
 	private function user_info( $user_id, $info ) {
 		if ( array_key_exists( $user_id, $this->pool_users ) ) {
-			return apply_filters( "footballpool_user_info_{$info}", $this->pool_users[$user_id][$info] );
+			return apply_filters( "footballpool_user_info_{$info}", $this->pool_users[$user_id][$info], $user_id );
 		} else {
 			return __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
 		}
@@ -130,7 +130,7 @@ class Football_Pool_Pool {
 		
 		$sql = "SELECT u.ID AS user_id, u.display_name AS user_name, u.user_email AS email, ";
 		$sql .= ( $this->has_leagues ? "lu.league_id, " : "" );
-		$sql .= "0 AS points, 0 AS full, 0 AS toto, 0 AS bonus FROM {$wpdb->users} u ";
+		$sql .= "0 AS `points`, 0 AS `full`, 0 AS `toto`, 0 AS `bonus` FROM {$wpdb->users} u ";
 		if ( $this->has_leagues ) {
 			$sql .= "INNER JOIN {$prefix}league_users lu 
 						ON (u.ID = lu.user_id" . ( $league > 1 ? ' AND lu.league_id = ' . $league : '' ) . ") ";

@@ -331,15 +331,18 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 									sprintf( __( 'question %d deleted', FOOTBALLPOOL_TEXT_DOMAIN ), $id )
 								);
 		
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE question_id = %d", $id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
-		$wpdb->query( $sql );
-		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers 
-								WHERE question_id = %d", $id );
-		$wpdb->query( $sql );
 		$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions WHERE id = %d", $id );
-		$wpdb->query( $sql );
+		$success = ( $wpdb->query( $sql ) !== false );
+		if ( $success ) {
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}rankings_bonusquestions WHERE question_id = %d", $id );
+			$wpdb->query( $sql );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_type WHERE question_id = %d", $id );
+			$wpdb->query( $sql );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}bonusquestions_useranswers WHERE question_id = %d", $id );
+			$wpdb->query( $sql );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}user_updatelog_questions WHERE question_id = %d", $id );
+			$wpdb->query( $sql );
+		}
 	}
 	
 	private static function update( $question_id ) {

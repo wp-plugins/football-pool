@@ -251,7 +251,7 @@ class Football_Pool_Chart_Data {
 		$goal_bonus = ( Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' ) > 0 );
 		$goal_diff_bonus = ( Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' ) > 0 );
 		
-		$toto = $goal_diff_bonus ? (int) $row['scoretoto'] - (int) $row['diffbonus']: (int) $row['scoretoto'];
+		$toto = $goal_diff_bonus ? (int) $row['scoretoto'] - (int) $row['diffbonus'] : (int) $row['scoretoto'];
 		$data = array(
 					array( __( 'full score', FOOTBALLPOOL_TEXT_DOMAIN ), (int) $row['scorefull'] ),
 					array( __( 'toto score', FOOTBALLPOOL_TEXT_DOMAIN ), $toto ),

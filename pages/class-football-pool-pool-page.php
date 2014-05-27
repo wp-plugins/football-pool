@@ -11,7 +11,16 @@ class Football_Pool_Pool_Page {
 		
 		if ( $current_user->ID != 0 && $user_is_player ) {
 			$questions = $pool->get_bonus_questions_for_user( $current_user->ID );
-			
+			// determine if there are any questions not linked to a match
+			$show_question_form = false;
+			if ( $pool->has_bonus_questions ) {
+				foreach ( $questions as $question ) {
+					if ( $question['match_id'] == 0 ) {
+						$show_question_form = true;
+						break;
+					}
+				}
+			}
 			$matches = new Football_Pool_Matches;
 			// example code for http://wordpress.org/support/topic/only-display-x-number-of-games-in-the-future
 			// $ids = array( 0 ); // force empty set
@@ -26,16 +35,18 @@ class Football_Pool_Pool_Page {
 			// $result = $matches->get_match_info_for_user( $current_user->ID, $ids );
 			$result = $matches->get_match_info_for_user( $current_user->ID );
 			
+			$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
+			
 			$empty_prediction = $matches->first_empty_match_for_user( $current_user->ID );
-			if ( $pool->has_bonus_questions && $pool->has_matches ) {
-				$output .= sprintf( '<p><a href="#bonus">%s</a> | <a href="#match-%d">%s</a></p>'
+			if ( $show_question_form && $pool->has_matches ) {
+				$output .= sprintf( '<p><a href="#bonus">%s</a> | <a href="#match-%d-%d">%s</a></p>'
 									, __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN )
 									, $empty_prediction
+									, $id
 									, __( 'Predictions', FOOTBALLPOOL_TEXT_DOMAIN )
 							);
 			}
 			
-			$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
 			$output .= $pool->prediction_form_start( $id );
 			
 			if ( $pool->has_matches ) {
@@ -45,7 +56,7 @@ class Football_Pool_Pool_Page {
 			}
 			
 			// the questions
-			if ( $pool->has_bonus_questions ) {
+			if ( $show_question_form ) {
 				$nr = 1;
 				$output .= sprintf( '<h2 id="bonus">%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				foreach ( $questions as $question ) {

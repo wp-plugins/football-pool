@@ -64,6 +64,9 @@ After the pool has been set up, all you have to do is monitor the users that sub
 = Wow, there are a lot of options. Do I need to change them? =
 You can, but it's not necessary. With default settings the plugin should be fine. You can play around with the options before you start the pool.
 
+= Do you have a theme that I can use with the plugin? =
+No. I'm not a designer, so I don't have the skills to make one.
+
 = I installed the plugin, but there are no matches. What happened? =
 Since version 2.0.0 the plugin does not add the matches on install. But it does contain an example match schedule as an exported csv file. Go to the Matches admin page and do an import of a schedule file ("Bulk change match schedule").
 
@@ -79,7 +82,8 @@ Yes. There are two ways to do this:
 And, of course, choose a theme or make one yourself that fits your competition or blog.
 
 = The plugin won't calculate the ranking =
-If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method open the `define.php` file and change the `FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX` value to `true`. If you have any information that may help me solve your problem (e.g. the apache error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
+If you experience problems with the calculation of the ranking, you may wanna try the old calculation method. To enable the old method add the following line to your `wp-config.php` file: `define( 'FOOTBALLPOOL_RANKING_CALCULATION_NOAJAX', true );`. 
+If you have any information that may help me solve your problem (e.g. the error log), please send the information to wordpressfootballpool [at] gmail [dot] com.
 
 = The charts are gone! What happened? =
 I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
@@ -184,16 +188,21 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 == Changelog ==
 
+= 2.4.3 =
+* Added a filter that adds the team name, stadium name or group name to the corresponding page's title tag.
+* Updated Dutch translation file.
+* Bug fix: when all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
+
 = 2.4.2 =
 * Some themes don't show the cog icon for the chart settings in the title of the page. Added shortcode [fp-chart-settings] that can be used to display the cog icon somewhere in the text. The shortcode only works for the statistics page.
-* Added `FOOTBALLPOOL_CHANGE_STATS_TITLE` that can be set to `false` in the wp-config file to disable the cog icon in the page title (in case something goes wrong in your theme).
+* Added `FOOTBALLPOOL_CHANGE_STATS_TITLE` constant that can be set to `false` in the wp-config file to disable the cog icon in the page title (in case something goes wrong in your theme).
 * Removed 'show avatar' option. I'm in the midst of changing some parts of the plugin to use HTML templates for the display of data. The avatar can already be added to the ranking table (see help page for details); other parts of the plugin will follow later.
 * Moved the plugin screenshots from the plugin's zip to the svn assets folder (they're only needed for the wordpress.org site).
-* Bug fix: matches dissappeared when using a match sorting method that included the match type (thanks Kevin for reporting the problem and allowing me to do some bug tracking on your site).
+* Bug fix: matches disappeared when using a match sorting method that included the match type (thanks Kevin for reporting the problem and allowing me to do some bug tracking on your site).
 * Bug fix: shortcode pop-up in the WP admin always included a group ID for the [fp-matches] shortcode.
 * Bug fix: calculation of number of predictions went wrong for custom rankings with only bonus questions (thanks Daniel for reporting the bug).
 * Bug fix: undefined index 'league_id' on the ranking page (thanks sillery4ever for reporting the bug).
-* Bug fix: match schedule was wrong for the querter finals. The matches were imported sorted on date causing the match numbers to not match correctly for the semi-finals (e.g. winner match 57). (thanks Bobby Groenen for reporting the bug).
+* Bug fix: match schedule was wrong for the quarter finals. The matches were imported sorted on date causing the match numbers to not match correctly for the semi-finals (e.g. winner match 57). (thanks Bobby Groenen for reporting the bug).
 * Bug fix: get_page_link() caused a notice when plugin pages are deleted from the database.
 * Bug fix: typo in match template; match ID and form ID weren't replaced with the params.
 

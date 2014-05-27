@@ -250,8 +250,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 								, ranking, ranking_id )
 							SELECT 
 								  0, %d AS score_type, m.play_date AS score_date, m.id AS match_id, u.ID AS user_id
-								, IF ( p.has_joker = 1, %d, 1 ) AS score
-								, IF ( m.home_score = p.home_score AND m.away_score = p.away_score, 1, NULL ) AS full
+								, IF ( p.has_joker = 1, %d, 1 ) AS `score`
+								, IF ( m.home_score = p.home_score AND m.away_score = p.away_score, 1, NULL ) AS `full`
 								, IF ( m.home_score = p.home_score AND m.away_score = p.away_score, NULL, 
 									IF (
 										IF ( m.home_score > m.away_score, 1, IF ( m.home_score = m.away_score, 3, 2 ) )
@@ -260,11 +260,11 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 										, IF ( p.home_score IS NULL OR p.away_score IS NULL, NULL, 1 )
 										, NULL 
 									)
-								  ) AS toto
+								  ) AS `toto`
 								, IF ( m.home_score = p.home_score, 
 										IF ( m.away_score = p.away_score, 2, 1 ),
 										IF ( m.away_score = p.away_score, 1, NULL )
-								  ) AS goal_bonus
+								  ) AS `goal_bonus`
 								, IF( m.home_score = p.home_score AND m.away_score = p.away_score, NULL,
 									IF( 
 										m.home_score <> m.away_score AND
@@ -273,9 +273,9 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 										( CAST( m.away_score AS SIGNED ) - CAST( p.away_score AS SIGNED ) )
 										, 1, NULL 
 									)
-								  ) AS goal_diff_bonus
-								, 0 AS ranking
-								, %d AS ranking_id
+								  ) AS `goal_diff_bonus`
+								, 0 AS `ranking`
+								, %d AS `ranking_id`
 							FROM {$wpdb->users} u 
 							LEFT OUTER JOIN {$prefix}matches m ON ( 1 = 1 )
 							LEFT OUTER JOIN {$prefix}predictions p
@@ -565,7 +565,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			$params['error'] = sprintf( '%s %d: %s'
 										, __( 'Step', FOOTBALLPOOL_TEXT_DOMAIN )
 										, ( $params['step'] - 1 )
-										, __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database and try again.', FOOTBALLPOOL_TEXT_DOMAIN )
+										, __( 'Something went wrong while (re)calculating the scores. See the <a href="?page=footballpool-help#ranking-calculation">help page</a> for details on solving this problem.', FOOTBALLPOOL_TEXT_DOMAIN )
 								);
 			do_action( "footballpool_score_calc_error" );
 		}

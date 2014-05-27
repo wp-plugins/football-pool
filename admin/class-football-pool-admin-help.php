@@ -177,11 +177,24 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		</p>
 		<p>See the <a href="#shortcodes">shortcode section</a> for details about the use of these custom rankings in your posts or pages.
 		</p>
-		<h3>Ranking calculation</h3>
+		<h3 id="ranking-calculation">Ranking calculation</h3>
 		<p>By default an admin will be automatically notified for a (re)calculation of the rankings when saving a match or question, or when changing your pool players. If you want to (temporarily) disable this automatic calculation, e.g. when you want to enter multiple matches at once, you may disable this feature in the <a href="?page=footballpool-options">plugin options</a> and do a manual recalculation when you're finished editing.
 		</p>
 		<div class="help important">
 			<p><strong>Important:</strong> calculating a ranking takes time. The more players or rankings you have, the more time it takes to (re)calculate the ranking tables. The rankings are 'cached' in the database. So, once calculated, your players/visitors shouldn't notice a delay when displaying a ranking, but an admin saving a match will have to wait for the ranking calculations to finish.</p>
+		</div>
+		<div class="help important">
+			<p><strong>What if the calculation gives an error</strong><br />
+			When the calculation gives an error there are several things that can be the cause of that. For example, the necessary truncate/drop or delete rights on the database could be missing, or some other database error. There is only one thing that you can do to know what caused the error: set the <a href="http://codex.wordpress.org/Debugging_in_WordPress" title="More info about the debug settings of WordPress" target="_blank">debug settings</a> of WordPress to true. Go to your wp-config.php file, set/change the following constants and do a calculation. This will generate a debug.log file in your wp-content folder.</p>
+			<?php
+			Football_Pool_Utils::highlight_string( '<?php
+// Enable WP_DEBUG mode
+define( \'WP_DEBUG\' , true );
+
+// Enable Debug logging to the /wp-content/debug.log file
+define( \'WP_DEBUG_LOG\', true );');
+			?>
+			<p>If you need help with the error then open a topic on the <a href="http://wordpress.org/support/plugin/football-pool" target="_blank">support forum</a> of the plugin. Please also post the log messages.</p>
 		</div>
 		<h3>Smart vs. full vs. single calculations</h3>
 		<p>The plugin has 3 different kind of recalculations. The easiest to explain is the full calculation: everything is recalculated. If you have a small competition (e.g. World Cup), one ranking and not too many users (say 50 to 100) you can use this calculation. Success guaranteed, when in doubt, use this one.</p>

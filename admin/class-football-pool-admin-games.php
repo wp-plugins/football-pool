@@ -173,6 +173,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 						// remove all match data except matchtypes
 						self::empty_table( 'scorehistory' );
 						self::empty_table( 'predictions' );
+						self::empty_table( 'user_updatelog_matches' );
+						self::empty_table( 'user_updatelog_questions' );
 						self::empty_table( 'stadiums' );
 						self::empty_table( 'rankings_matches' );
 						self::empty_table( 'matches' );
@@ -491,6 +493,8 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$success = ( $wpdb->query( $sql ) !== false );
 		if ( $success ) {
 			$sql = $wpdb->prepare( "DELETE FROM {$prefix}predictions WHERE match_id = %d", $item_id );
+			$success = ( $wpdb->query( $sql ) !== false );
+			$sql = $wpdb->prepare( "DELETE FROM {$prefix}user_updatelog_matches WHERE match_id = %d", $item_id );
 			$success = ( $wpdb->query( $sql ) !== false );
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET match_id = 0 WHERE match_id = %d", $item_id );
 			$success &= ( $wpdb->query( $sql ) !== false );

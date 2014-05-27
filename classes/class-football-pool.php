@@ -94,7 +94,7 @@ class Football_Pool {
 		$options['csv_file_filter'] = '*'; // defaults to 'all files'
 		$options['add_tinymce_button'] = 1; // 1: button, 0: disable button
 		$options['always_show_predictions'] = 0; // 1: yes, 0: no
-		$options['use_spin_controls'] = 1; // 1: yes, 0: no
+		$options['use_spin_controls'] = 0; // 1: yes, 0: no
 		$options['groups_page_match_types'] = array( FOOTBALLPOOL_GROUPS_PAGE_DEFAULT_MATCHTYPE ); // array of match type ids
 		$options['match_sort_method'] = FOOTBALLPOOL_MATCH_SORT; // 0: date asc, 1: date desc
 		$options['auto_calculation'] = 1; // 1: yes, 0: no
@@ -364,7 +364,7 @@ class Football_Pool {
 									'fp_recalc_nonce' => wp_create_nonce( FOOTBALLPOOL_NONCE_SCORE_CALC ),
 									'colorbox_close' => __( 'close', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'colorbox_html' => '',
-									'error_message' => __( 'Something went wrong while (re)calculating the scores. Please check if TRUNCATE/DROP or DELETE rights are available at the database and try again.', FOOTBALLPOOL_TEXT_DOMAIN ),
+									'error_message' => __( 'Something went wrong while (re)calculating the scores. See the <a href="?page=footballpool-help#ranking-calculation">help page</a> for details on solving this problem.', FOOTBALLPOOL_TEXT_DOMAIN ),
 									'error_label' => __( 'Error message', FOOTBALLPOOL_TEXT_DOMAIN )
 								)
 			);
@@ -378,50 +378,6 @@ class Football_Pool {
 		// colorbox jQuery plugin for lightboxes
 		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
 		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
-	}
-	
-	public static function the_content( $content ) {
-		if ( is_page() && is_main_query() ) { // http://pippinsplugins.com/playing-nice-with-the-content-filter/
-			$page_id = get_the_ID();
-			switch ( $page_id ) {
-				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
-					$page = new Football_Pool_Ranking_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_teams' ):
-					$page = new Football_Pool_Teams_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_stadiums' ):
-					$page = new Football_Pool_Stadiums_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_groups' ):
-					$page = new Football_Pool_Groups_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_statistics' ):
-					$page = new Football_Pool_Statistics_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_tournament' ):
-					$page = new Football_Pool_Tournament_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_user' ):
-					$page = new Football_Pool_User_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				case Football_Pool_Utils::get_fp_option( 'page_id_pool' ):
-					$page = new Football_Pool_Pool_Page();
-					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
-					break;
-				default:
-					// nothing
-			}
-		}
-		
-		return $content;
 	}
 	
 	public static function get_page_link( $slug ) {
@@ -533,7 +489,74 @@ class Football_Pool {
 		// Save the sorted array back into the original metaboxes 
 		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;	
 	} 
-
+	
+	public static function the_content( $content ) {
+		if ( is_page() && is_main_query() ) { // http://pippinsplugins.com/playing-nice-with-the-content-filter/
+			$page_id = get_the_ID();
+			switch ( $page_id ) {
+				case Football_Pool_Utils::get_fp_option( 'page_id_ranking' ):
+					$page = new Football_Pool_Ranking_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_teams' ):
+					$page = new Football_Pool_Teams_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_stadiums' ):
+					$page = new Football_Pool_Stadiums_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_groups' ):
+					$page = new Football_Pool_Groups_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_statistics' ):
+					$page = new Football_Pool_Statistics_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_tournament' ):
+					$page = new Football_Pool_Tournament_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_user' ):
+					$page = new Football_Pool_User_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_pool' ):
+					$page = new Football_Pool_Pool_Page();
+					$content .= apply_filters( 'footballpool_pages_html', $page->page_content(), $page_id );
+					break;
+				default:
+					// nothing
+			}
+		}
+		
+		return $content;
+	}
+	
+	// http://codex.wordpress.org/Template_Tags/wp_title#Customizing_with_the_filter
+	public static function change_wp_title( $title, $sep ) {
+		if ( is_page() && is_main_query() ) { // http://pippinsplugins.com/playing-nice-with-the-content-filter/
+			$page_id = get_the_ID();
+			switch ( $page_id ) {
+				case Football_Pool_Utils::get_fp_option( 'page_id_teams' ):
+					$team = new Football_Pool_Team( Football_Pool_Utils::get_int( 'team' ) );
+					if ( $team->id != 0 ) $title = "{$team->name} {$sep} {$title}"; 
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_stadiums' ):
+					$stadium = new Football_Pool_Stadium( Football_Pool_Utils::get_int( 'stadium' ) );
+					if ( $stadium->id != 0 ) $title = "{$stadium->name} {$sep} {$title}"; 
+					break;
+				case Football_Pool_Utils::get_fp_option( 'page_id_groups' ):
+					$group = Football_Pool_Groups::get_group_by_id( Football_Pool_Utils::get_int( 'group' ) );
+					if ( $group != null ) $title = "{$group->name} {$sep} {$title}"; 
+					break;
+			}
+		}
+		
+		return $title;
+	}
+	
 	// if theme supports the wp_head action then add some images
 	public static function change_html_head() {
 		$assets_dir = esc_url( FOOTBALLPOOL_ASSETS_URL . 'images/site/' );
