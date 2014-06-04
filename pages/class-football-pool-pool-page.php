@@ -52,7 +52,7 @@ class Football_Pool_Pool_Page {
 			if ( $pool->has_matches ) {
 				$output .= sprintf( '<h2>%s</h2>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				// the matches
-				$output .= $pool->prediction_form_matches( $result, false, $id );
+				$output .= $pool->prediction_form_matches( $result, false, $id, 'matches pool-page' );
 			}
 			
 			// the questions
@@ -64,7 +64,7 @@ class Football_Pool_Pool_Page {
 						$output .= $pool->print_bonus_question( $question, $nr++ );
 					}
 				}
-				$output .= $pool->save_button( 'pool-page' );
+				$output .= $pool->save_button( 'questions pool-page' );
 			}
 			
 			$output .= $pool->prediction_form_end();

@@ -466,11 +466,12 @@ function match_options() {
 					<label><?php _e( 'Show this info', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label>
 				</td>
 				<td>
-					<label><input type="radio" id="league-info-name" name="league-info-info" value="name" checked="checked" /> name</label><br />
+					<label><input type="radio" id="league-info-name" name="league-info-info" value="name" checked="checked" /> <?php _e( 'name', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
 					<label><input type="radio" id="league-info-points" name="league-info-info" value="points" /> points</label><br />
-					<label><input type="radio" id="league-info-avgpoints" name="league-info-info" value="avgpoints" /> average points</label><br />
-					<label><input type="radio" id="league-info-playernames" name="league-info-info" value="playernames" /> player names</label><br />
-					<label><input type="radio" id="league-info-numplayers" name="league-info-info" value="numplayers" /> number of players</label><br />
+					<label><input type="radio" id="league-info-avgpoints" name="league-info-info" value="avgpoints" /> <?php _e( 'average points', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="league-info-wavgpoints" name="league-info-info" value="wavgpoints" /> <?php _e( 'weighted average points', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="league-info-playernames" name="league-info-info" value="playernames" /> <?php _e( 'player names', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
+					<label><input type="radio" id="league-info-numplayers" name="league-info-info" value="numplayers" /> <?php _e( 'number of players', FOOTBALLPOOL_TEXT_DOMAIN ); ?></label><br />
 				</td>
 			</tr>
 			<tr class="tr-league-info atts">

@@ -153,7 +153,7 @@ class Football_Pool_Statistics {
 		return apply_filters( 'footballpool_statistics_bonusquestion_html', $output, $answers );
 	}
 	
-	function show_predictions_for_match( $match_info ) {
+	public function show_predictions_for_match( $match_info ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		

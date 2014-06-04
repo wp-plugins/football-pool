@@ -1046,6 +1046,8 @@ class Football_Pool_Pool {
 							$log = ( $wpdb->query( $sql ) > 0 );
 						}
 					} else {
+						do_action( 'footballpool_prediction_save_match_no_prediction'
+									, $user, $match, $home, $away, $set_joker );
 						// fix for the multiple-joker-bug
 						$sql = $wpdb->prepare( "UPDATE {$prefix}predictions
 												SET has_joker = %d
@@ -1136,7 +1138,7 @@ class Football_Pool_Pool {
 	// also includes linked questions (if any).
 	//    wrap:        (optional) if true, wrap the matches in its own form
 	//    id:          unique form id
-	public function prediction_form_matches( $matches, $wrap = false, $id = 1 ) {
+	public function prediction_form_matches( $matches, $wrap = false, $id = 1, $type = 'matches' ) {
 		$output = '';
 		if ( $this->has_matches ) {
 			
@@ -1154,7 +1156,7 @@ class Football_Pool_Pool {
 			}
 			
 			if ( count( $matches ) > 0 ) {
-				$output .= $this->save_button( 'matches', $id );
+				$output .= $this->save_button( $type, $id );
 			}
 			
 			if ( $wrap ) $output .= $this->prediction_form_end( $id );

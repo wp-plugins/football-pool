@@ -48,7 +48,7 @@ class Football_Pool_Shortcodes {
 		return $the_date;
 	}
 	
-	private static function format_helper( $input, $format) {
+	private static function format_helper( $input, $format ) {
 		if ( isset( $format ) && is_string( $format ) ) {
 			$input = sprintf( $format, $input );
 		}
@@ -67,20 +67,29 @@ class Football_Pool_Shortcodes {
 	//    Displays info about a league. E.g the total points or the average points (points divided by the number of players) of a league.
 	//
 	//    league  : league ID
-	//    info    : what info to show (name, points, avgpoints, numplayers, playernames)
-	//    ranking : optional ranking ID (defaults to the default ranking) when used in conjunction with the points or avgpoints
+	//    info    : what info to show:
+	//              - name: name of league
+	//              - points: total points in the league
+	//              - avgpoints: average points (total divided by number of players)
+	//              - wavgpoints: weighted average points (average weighted by the number of predictions)
+	//              - numplayers: number of players in the league
+	//              - playernames: list of players names
+	//    ranking : optional ranking ID (defaults to the default ranking) when used in conjunction with the points,
+	//              average points or weighted average
 	//    format  : optional format for the output (uses sprintf notation: http://php.net/sprintf)
 	public static function shortcode_league_info( $atts ) {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
 					'info' => 'name',
+					'weighted' => 'false',
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'format' => null,
 				), $atts ) );
 		
 		$output = '';
 		
-		if ( is_numeric( $league ) && in_array( $info, array( 'name', 'points', 'avgpoints', 'numplayers', 'playernames' ) ) ) {
+		if ( is_numeric( $league ) 
+				&& in_array( $info, array( 'name', 'points', 'avgpoints', 'wavgpoints', 'numplayers', 'playernames' ) ) ) {
 			$pool = new Football_Pool_Pool;
 			if ( $pool->has_leagues && array_key_exists( $league, $pool->leagues ) ) {
 				if ( $info == 'name' ) {
@@ -90,12 +99,30 @@ class Football_Pool_Shortcodes {
 					$numplayers = count( $rows );
 					if ( $info == 'numplayers' ) {
 						$output = $numplayers;
-					} elseif ( $info == 'points' || $info == 'avgpoints' ) {
+					} elseif ( in_array( $info, array( 'points', 'avgpoints', 'wavgpoints' ) ) ) {
 						$points = 0;
+						$users = array();
 						foreach ( $rows as $row ) {
+							$users[] = $row['user_id'];
 							$points += $row['points'];
 						}
-						$output = ( $info == 'avgpoints' ) ? ( $points / $numplayers ) : $points;
+						if ( $info == 'points' ) {
+							$output = $points;
+						} elseif ( $info == 'avgpoints' ) {
+							$output = ( $numplayers > 0 ) ? ( $points / $numplayers ) : 0;
+						} elseif ( $info == 'wavgpoints' ) {
+							// weighted average, number of predictions is the weight
+							$num_predictions = $pool->get_prediction_count_per_user( $users, $ranking );
+							$w = $x = $wx = $sum_w = $sum_wx = 0;
+							foreach ( $rows as $row ) {
+								$w = isset( $num_predictions[$row['user_id']] ) ? $num_predictions[$row['user_id']] : 0;
+								$x = $row['points'];
+								$wx = $w * $x;
+								$sum_w += $w;
+								$sum_wx += $wx;
+							}
+							$output = ( $sum_w > 0 ) ? ( $sum_wx / $sum_w ) : 0;
+						}
 					} elseif ( $info == 'playernames' ) {
 						$output = '<ul class="fp-player-list shortcode">';
 						foreach ( $rows as $row ) {

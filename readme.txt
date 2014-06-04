@@ -189,7 +189,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 == Changelog ==
 
 = 2.4.3 =
+* Added 'auto set' function to bonus questions. This makes it easier for admins when rewarding points for multiple choice questions with a fixed set of answers a user can choose from.
 * Added a filter that adds the team name, stadium name or group name to the corresponding page's title tag.
+* Added weighted average points as an option for the [fp-league-info] shortcode.
 * Updated Dutch translation file.
 * Bug fix: when all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
 

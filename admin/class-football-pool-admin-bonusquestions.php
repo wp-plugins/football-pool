@@ -222,6 +222,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						__( 'Linked questions are placed directly beneath the match on the prediction form.', FOOTBALLPOOL_TEXT_DOMAIN )
 					),
 					array( 'textarea', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), 'answer', $values['answer'], __( 'The correct answer (used as a reference).', FOOTBALLPOOL_TEXT_DOMAIN ) ),
+					array( 'checkbox', __( 'auto set user answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'auto_set', 0, __( 'If checked on save the user answers will be checked against the given answer (a text compare is used). Useful for questions of type multiple choice.', FOOTBALLPOOL_TEXT_DOMAIN ) ),
 					array( 
 						'radiolist', 
 						__( 'type', FOOTBALLPOOL_TEXT_DOMAIN ), 
@@ -358,6 +359,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 						Football_Pool_Utils::post_string( 'image' ),
 						Football_Pool_Utils::post_int( 'max_answers', 0 ),
 						Football_Pool_Utils::post_int( 'match_id', 0 ),
+						Football_Pool_Utils::post_int( 'auto_set', 0 ),
 					);
 		
 		$id = self::update_bonus_question( $question );
@@ -380,6 +382,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$image = $input[8];
 		$max_answers = $input[9];
 		$match_id = $input[10];
+		$auto_set = $input[11];
 		
 		$new_set = array( $points, $scoredate );
 		
@@ -428,6 +431,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 									WHERE question_id = %d"
 									, $type, $options, $image, $max_answers, $id );
 			$wpdb->query( $sql );
+			// auto set user answers?
+			if ( $auto_set ) self::auto_set( $id, $answer );
 		}
 		
 		// quick & dirty work-around for prepare's lack of null value support
@@ -440,7 +445,38 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		return $id;
 	}
 	
-	private static function set_bonus_question_for_users( $question ) {
+	private static function set_score_date( $question_id ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET score_date = %s WHERE score_date IS NULL AND id = %d"
+								, current_time( 'mysql', 1 )
+								, $question_id );
+		Football_Pool_Utils::debug($sql);
+		$wpdb->query( $sql );
+	}
+	
+	private static function auto_set( $question_id, $answer ) {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
+		$answer = trim( strtolower( $answer ) );
+		if ( $answer != '' ) {
+			$answers = explode( ';', $answer );
+			foreach ( $answers as $answer ) {
+				$answer = trim( $answer );
+				if ( $answer != '' ) {
+					$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_useranswers SET correct = 1 
+											WHERE question_id = %d AND LOWER( answer ) = %s"
+											, $question_id
+											, $answer );
+					$wpdb->query( $sql );
+				}
+			}
+			// if the score date for this question is not set, then set it to the current time and date.
+			self::set_score_date( $question_id );
+		}
+	}
+	private static function set_bonus_question_for_users( $question_id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
@@ -453,20 +489,14 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 											SET correct = %d, 
 												points = %d 
 											WHERE user_id = %d AND question_id = %d", 
-										$correct, $points, $user->ID, $question
+										$correct, $points, $user->ID, $question_id
 								);
 				$wpdb->query( $sql );
 			}
 		}
 		
-		// If the score date for this question is not set, then set it to the current time and date.
-		$now = current_time( 'mysql', 1 );
-		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions
-								SET score_date = %s
-								WHERE score_date IS NULL AND id = %d"
-								, $now, $question
-						);
-		$wpdb->query( $sql );
+		// if the score date for this question is not set, then set it to the current time and date.
+		self::set_score_date( $question_id );
 	}
 
 }

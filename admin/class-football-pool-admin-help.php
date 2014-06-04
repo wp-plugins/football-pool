@@ -219,15 +219,15 @@ define( \'WP_DEBUG_LOG\', true );');
 		<h3>Types</h3>
 		<p>There are 3 types of bonus questions: 
 		<ol>
-			<li>Text questions</li>
+			<li>Text questions (single line and multi-line)</li>
 			<li>Multiple choice questions (one answer)</li>
 			<li>Multiple choice questions (one or more answers)</li>
 		</ol>
 		Each question type can also show an (optional) image.
 		</p>
-		<p>For multiple choice questions you have to give 2 or more options to the players. The possible answers must be entered as a semicolon separated list.</p>
+		<p>For multiple choice questions you have to give 2 or more options to the players. The possible answers must be entered as a semicolon separated list. Bonus questions have an 'auto set' checkbox for the multiple choice questions. If this checkbox is checked on a save of the answer, all user answers will be checked against this answer (using a case-insensitive text compare) and the 'correct' setting for these user answers will be auto set after the save action.</p>
 		<h3>Giving points</h3>
-		<p>After the 'answer before' date has passed and your players may not alter their answers, an admin has to manually approve all answers for a question. For this, go to the <a href="?page=footballpool-bonus">Questions admin screen</a> and click on the "User Answers" link.<br />
+		<p>After the 'answer before' date has passed and your players may not alter their answers, an admin has to manually approve all answers for a question. For this, go to the <a href="?page=footballpool-bonus">Questions admin screen</a> and click on the "User Answers" link. Multiple choice questions can be automatically validated with the 'auto set' checkbox on the edit screen of the question (just make sure the answer you use on this screen is exactly the same as one of the given options).<br />
 		<img class="screenshot" src="<?php echo $img_dir; ?>example-bonus-user-answers-1.png" alt="screenshot" />
 		</p>
 		<p>In the answer screen information about the question is shown as a reference (1). The answer and default points are shown and - if an admin has filled in the answer - the answer is also shown.<br />
