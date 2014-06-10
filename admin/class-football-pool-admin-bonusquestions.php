@@ -293,8 +293,10 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				} else {
 					$match = '';
 				}
+				$question_text = strip_tags( $question['question'] );
+				$question_text = strlen( $question_text ) > 180 ? substr( $question_text, 0, 177 ) . '...': $question_text;
 				$rows[] = array(
-							$question['question'], 
+							$question_text, 
 							$question['points'], 
 							Football_Pool_Utils::date_from_gmt( $question['answer_before_date'] ), 
 							Football_Pool_Utils::date_from_gmt( $question['score_date'] ), 
@@ -384,8 +386,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$match_id = $input[10];
 		$auto_set = $input[11];
 		
-		$new_set = array( $points, $scoredate );
-		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
 										( question, points, answer_before_date, score_date, answer, match_id )
@@ -419,13 +419,19 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 										question = %s,
 										points = %d,
 										answer_before_date = %s,
-										score_date = %s,
 										answer = %s,
+										score_date = NULL,
 										match_id = %d
 									WHERE id = %d",
-							$question, $points, $date, $scoredate, $answer, $match_id, $id
+							$question, $points, $date, $answer, $match_id, $id
 						);
 			$wpdb->query( $sql );
+			// set the score date if the date is valid
+			if ( $scoredate != '' && Football_Pool_Utils::is_valid_mysql_date( $scoredate ) ) {
+				$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET score_date = %s WHERE id = %d", $scoredate, $id );
+				$wpdb->query( $sql );
+			}
+			
 			$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions_type 
 									SET type = %d, options = %s, image = %s, max_answers = %d 
 									WHERE question_id = %d"
@@ -434,10 +440,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			// auto set user answers?
 			if ( $auto_set ) self::auto_set( $id, $answer );
 		}
-		
-		// quick & dirty work-around for prepare's lack of null value support
-		$wpdb->query( "UPDATE {$prefix}bonusquestions SET score_date = NULL 
-						WHERE score_date = '0000-00-00 00:00'" );
 		
 		wp_cache_delete( FOOTBALLPOOL_CACHE_QUESTIONS );
 		
@@ -451,7 +453,6 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET score_date = %s WHERE score_date IS NULL AND id = %d"
 								, current_time( 'mysql', 1 )
 								, $question_id );
-		Football_Pool_Utils::debug($sql);
 		$wpdb->query( $sql );
 	}
 	

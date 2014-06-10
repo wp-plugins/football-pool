@@ -147,10 +147,10 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 	
 	public function widget( $args, $instance ) {
 		// only for logged in users?
-		if ( $instance['all_users'] != 'on' && ! is_user_logged_in() ) return;
+		if ( isset( $instance['all_users'] ) && $instance['all_users'] != 'on' && ! is_user_logged_in() ) return;
 		
 		$matches = new Football_Pool_Matches;
-		if ( $instance['team_id'] > 0 ) {
+		if ( isset( $instance['team_id'] ) && $instance['team_id'] > 0 ) {
 			$match = $matches->get_next_match( null, $instance['team_id'] );
 		} else {
 			$match = $matches->get_next_match();

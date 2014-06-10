@@ -86,6 +86,6 @@ class Football_Pool_Ranking_Page {
 													, $filtered_users, $filtered_ranking );
 		}
 		
-		return apply_filters( 'footballpool_ranking_page_html', $output );
+		return apply_filters( 'footballpool_ranking_page_html', $output, $ranking );
 	}
 }

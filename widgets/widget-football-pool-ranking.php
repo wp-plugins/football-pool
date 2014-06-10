@@ -55,7 +55,7 @@ class Football_Pool_Ranking_Widget extends Football_Pool_Widget {
 	public function html( $title, $args, $instance ) {
 		extract( $args );
 		
-		$num_users = $instance['num_users'];
+		$num_users = isset( $instance['num_users'] ) ? $instance['num_users'] : 5;
 		$league = ! empty( $instance['league'] ) ? $instance['league'] : FOOTBALLPOOL_LEAGUE_ALL;
 		$ranking_id = ! empty( $instance['ranking_id'] ) ? $instance['ranking_id'] : FOOTBALLPOOL_RANKING_DEFAULT;
 		

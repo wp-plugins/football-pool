@@ -294,6 +294,8 @@ class Football_Pool {
 	}
 	
 	public static function init() {
+		do_action( 'footballpool_pre_init' );
+		
 		// i18n support:
 		//   http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 		// The "plugin_locale" filter is also used in load_plugin_textdomain()
@@ -318,13 +320,13 @@ class Football_Pool {
 				//highcharts
 				$highcharts_url = plugins_url() . FOOTBALLPOOL_HIGHCHARTS_API;
 				$highcharts_dir = WP_PLUGIN_DIR . FOOTBALLPOOL_HIGHCHARTS_API;
-				self::include_js( $highcharts_url, 'js-highcharts', null, false, $highcharts_dir );
-				self::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery', 'js-pool' ) );
+				Football_Pool_Utils::include_js( $highcharts_url, 'js-highcharts', null, false, $highcharts_dir );
+				Football_Pool_Utils::include_js( 'assets/pool-charts.min.js', 'js-pool-charts', array( 'jquery', 'js-pool' ) );
 			}
 			
 			// pool js & css
-			self::include_css( 'assets/pool.css', 'css-pool' );
-			self::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
+			Football_Pool_Utils::include_css( 'assets/pool.css', 'css-pool' );
+			Football_Pool_Utils::include_js( 'assets/pool.min.js', 'js-pool', array( 'jquery' ) );
 			// localized countdown code
 			wp_localize_script( 'js-pool'
 								, 'FootballPool_i18n'
@@ -347,8 +349,8 @@ class Football_Pool {
 			// the admin
 			
 			// global admin js & css
-			self::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
-			self::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
+			Football_Pool_Utils::include_css( 'assets/admin/admin.css', 'css-pool-admin' );
+			Football_Pool_Utils::include_js( 'assets/admin/admin.min.js', 'js-pool-admin'
 								, array( 
 										'jquery', 
 										'jquery-ui-core', 
@@ -356,7 +358,7 @@ class Football_Pool {
 										) 
 							);
 			
-			self::include_css( 'assets/admin/jquery-ui/jquery-ui-1.10.4.custom.min.css'
+			Football_Pool_Utils::include_css( 'assets/admin/jquery-ui/jquery-ui-1.10.4.custom.min.css'
 								, 'css-pool-admin-custom-jquery-ui' );
 			wp_localize_script( 'js-pool-admin'
 								, 'FootballPoolAjax'
@@ -370,14 +372,16 @@ class Football_Pool {
 			);
 			
 			// datetimepicker
-			self::include_css( 'assets/admin/datetimepicker/jquery.datetimepicker.css', 'css-datetimepicker' );
-			self::include_js( 'assets/admin/datetimepicker/jquery.datetimepicker.js'
+			Football_Pool_Utils::include_css( 'assets/admin/datetimepicker/jquery.datetimepicker.css', 'css-datetimepicker' );
+			Football_Pool_Utils::include_js( 'assets/admin/datetimepicker/jquery.datetimepicker.js'
 								, 'js-datetimepicker', array( 'jquery' ) );
 		}
 		
 		// colorbox jQuery plugin for lightboxes
-		self::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
-		self::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
+		Football_Pool_Utils::include_js( 'assets/colorbox/jquery.colorbox-min.js', 'js-colorbox', array( 'jquery' ) );
+		Football_Pool_Utils::include_css( 'assets/colorbox/colorbox.css', 'css-colorbox' );
+		
+		do_action( 'footballpool_post_init' );
 	}
 	
 	public static function get_page_link( $slug ) {
@@ -595,44 +599,6 @@ class Football_Pool {
 	}
 	
 //======================================================================================================//
-	
-	private static function include_css( $file, $handle, $deps = null, $forced_exit = true
-										, $custom_path = '', $external = false, $pages = null ) {
-		$external = ( $external === 'external' );
-		if ( $external || $custom_path != '' ) {
-			$url = $external ? esc_url_raw( $file ) : $file;
-			$dir = $custom_path;
-		} else {
-			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
-			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
-		}
-		
-		if ( $external || file_exists( $dir ) ) {
-			wp_register_style( $handle, $url, $deps, FOOTBALLPOOL_DB_VERSION );
-			wp_enqueue_style( $handle );
-		} else {
-            if ( $forced_exit ) wp_die( $dir . ' not found' );
-		}
-	}
-	
-	private static function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = ''
-								, $external = false, $pages = null ) {
-		$external = ( $external === 'external' );
-		if ( $external || $custom_path != '' ) {
-			$url = $external ? esc_url_raw( $file ) : $file;
-			$dir = $custom_path;
-		} else {
-			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
-			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
-		}
-		
-		if ( $external || file_exists( $dir ) ) {
-			wp_register_script( $handle, $url, $deps, FOOTBALLPOOL_DB_VERSION );
-			wp_enqueue_script( $handle );
-		} else {
-            if ( $forced_exit ) wp_die( $dir . ' not found' );
-		}
-	}
 	
 	private static function create_page( $page, $menu_order = null ) {
 		if ( Football_Pool_Utils::get_fp_option( "page_id_{$page['slug']}", false ) === false ) {

@@ -110,6 +110,7 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
+* Swedish (`sv_SE`) by Paul Söderholm.
 * Albanian (`sq`) by Migen Nepravishta.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher and Bruce Feuillette.
@@ -152,6 +153,7 @@ The following plugins have been reported as not compatible with the Football Poo
 * DB Cache Reloaded Fix (v2.3)
 * Cimy User Extra Fields (v2.6.1) when using the email confirmation option
 * Easy Timer (for football pool version 2.3.8 and below)
+* W3 total cache
 
 Some themes prevent the plugin from displaying its content. See <a href="http://wordpress.org/support/topic/no-content-team-pages?replies=8#post-4981300">this post on the forum</a> for a tip on how to resolve this.
 
@@ -192,7 +194,8 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Added 'auto set' function to bonus questions. This makes it easier for admins when rewarding points for multiple choice questions with a fixed set of answers a user can choose from.
 * Added a filter that adds the team name, stadium name or group name to the corresponding page's title tag.
 * Added weighted average points as an option for the [fp-league-info] shortcode.
-* Updated Dutch translation file.
+* Updated Dutch translation.
+* Added Swedish translation.
 * Bug fix: when all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
 
 = 2.4.2 =

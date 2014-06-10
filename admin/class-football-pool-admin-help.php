@@ -1054,7 +1054,7 @@ add_filter( \'footballpool_ranking_ranking_row_template\', function( $template, 
 		Football_Pool_Utils::highlight_string( '<?php
 // add a simple pagination to the ranking page
 add_filter( \'footballpool_ranking_array\', \'fp_pagination\' );
-add_filter( \'footballpool_ranking_html\', \'fp_pagination_html\', null, 2 );
+add_filter( \'footballpool_ranking_page_html\', \'fp_pagination_html\', null, 2 );
 // and, with the same functions, add a simple pagination to the statistics page (view=matchpredictions)
 add_filter( \'footballpool_statistics_matchpredictions\', \'fp_pagination\' );
 add_filter( \'footballpool_statistics_matchpredictions_html\', \'fp_pagination_html\', null, 2 );

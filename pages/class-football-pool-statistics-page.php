@@ -225,7 +225,7 @@ class Football_Pool_Statistics_Page {
 							
 							$rows = $pool->get_pool_ranking_limited( FOOTBALLPOOL_LEAGUE_ALL, 5, $ranking );
 							foreach( $rows as $row ) $users[] = $row['user_id'];
-						} elseif ( count( $users ) == 1 ) {
+						} elseif ( count( $users ) >= 1 ) {
 							$output .= sprintf( '<h2>%s</h2>', __( 'You can select other users in the chart settings.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 						}
 					}

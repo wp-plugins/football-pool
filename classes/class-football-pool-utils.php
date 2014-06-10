@@ -1,5 +1,55 @@
 <?php
 class Football_Pool_Utils {
+	public static function is_valid_mysql_date( $date, $format = 'Y-m-d H:i' ) {
+		// $d = DateTime::createFromFormat( $format, $date );
+		$d = new DateTime();
+		preg_match( '/([0-9]{4})-([0-9]{2})-([0-9]{2})\s([0-9]{2}):([0-9]{2})/', $date, $matches );
+		if ( $matches && count( $matches ) == 6 ) {
+			$d->setDate( (int) $matches[1], (int) $matches[2], (int) $matches[3] );
+			$d->setTime( (int) $matches[4], (int) $matches[5] );
+		}
+		return $d && $d->format( $format ) == $date;
+	}
+	
+	public static function include_css( $file, $handle, $deps = null, $forced_exit = true
+										, $custom_path = '', $external = false, $pages = null
+										, $version = FOOTBALLPOOL_DB_VERSION ) {
+		$external = ( $external === 'external' );
+		if ( $external || $custom_path != '' ) {
+			$url = $external ? esc_url_raw( $file ) : $file;
+			$dir = $custom_path;
+		} else {
+			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
+			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
+		}
+		
+		if ( $external || file_exists( $dir ) ) {
+			wp_register_style( $handle, $url, $deps, $version );
+			wp_enqueue_style( $handle );
+		} else {
+            if ( $forced_exit ) wp_die( $dir . ' not found' );
+		}
+	}
+	
+	public static function include_js( $file, $handle, $deps = null, $forced_exit = true, $custom_path = ''
+								, $external = false, $pages = null, $version = FOOTBALLPOOL_DB_VERSION ) {
+		$external = ( $external === 'external' );
+		if ( $external || $custom_path != '' ) {
+			$url = $external ? esc_url_raw( $file ) : $file;
+			$dir = $custom_path;
+		} else {
+			$url = FOOTBALLPOOL_PLUGIN_URL . $file;
+			$dir = FOOTBALLPOOL_PLUGIN_DIR . $file;
+		}
+		
+		if ( $external || file_exists( $dir ) ) {
+			wp_register_script( $handle, $url, $deps, $version );
+			wp_enqueue_script( $handle );
+		} else {
+            if ( $forced_exit ) wp_die( $dir . ' not found' );
+		}
+	}
+	
 	/**
 	* Checks if WordPress is at least at version $version
 	* @param $version

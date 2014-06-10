@@ -39,7 +39,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 	public function html( $title, $args, $instance ) {
 		extract( $args );
 		
-		$num_messages = ( is_numeric( $instance['num_messages'] ) ? $instance['num_messages'] : 20 );
+		$num_messages = ( isset( $instance['num_messages'] ) && is_numeric( $instance['num_messages'] ) ? $instance['num_messages'] : 20 );
 		$max_chars = Football_Pool_Utils::get_fp_option( 'shoutbox_max_chars'
 														, FOOTBALLPOOL_SHOUTBOX_MAXCHARS, 'int' );
 		

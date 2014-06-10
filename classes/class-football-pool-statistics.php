@@ -179,7 +179,7 @@ class Football_Pool_Statistics {
 		$sql = $wpdb->prepare( $sql, $match_info['id'] );
 		
 		$predictions = $wpdb->get_results( $sql, ARRAY_A );
-		$rows = apply_filters( 'footballpool_statistics_matchpredictions', $predictions );
+		$rows = apply_filters( 'footballpool_statistics_matchpredictions', $predictions, $match_info );
 		
 		$output = '';
 		if ( count( $rows ) > 0 ) {
