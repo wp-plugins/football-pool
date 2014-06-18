@@ -81,7 +81,6 @@ class Football_Pool_Shortcodes {
 		extract( shortcode_atts( array(
 					'league' => FOOTBALLPOOL_LEAGUE_ALL,
 					'info' => 'name',
-					'weighted' => 'false',
 					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
 					'format' => null,
 				), $atts ) );
@@ -345,9 +344,9 @@ class Football_Pool_Shortcodes {
 		
 		// display form(s)
 		$output .= $pool->prediction_form_start( $id );
-		$output .= $pool->prediction_form_matches( $matches, true, $id );
-		$output .= $pool->prediction_form_questions( $questions, true, $id );
-		$output .= $pool->prediction_form_end();
+		$output .= $pool->prediction_form_matches( $matches, false, $id );
+		$output .= $pool->prediction_form_questions( $questions, false, $id );
+		$output .= $pool->prediction_form_end( $id );
 		
 		return apply_filters( 'footballpool_shortcode_html_fp-predictionform', $output );
 	}

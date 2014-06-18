@@ -98,7 +98,8 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 								, FOOTBALLPOOL_TEXT_DOMAIN ), $max_chars 
 							)
 			);
-			printf( '<input type="submit" name="submit" value="%s" />', __( 'save', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			printf( '<input class="fp-shoutbox-save" type="submit" name="submit" value="%s" />'
+					, _x( 'save', 'Save button for the shoutbox widget', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			echo '</p></form>';
 		}
 	}

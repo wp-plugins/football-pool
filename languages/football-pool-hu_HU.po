@@ -1,0 +1,3815 @@
+# Copyright (C) 2012 Football pool
+# This file is distributed under the same license as the Football pool package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Football pool 2.3.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/football-pool\n"
+"POT-Creation-Date: 2013-11-26 22:41+0100\n"
+"PO-Revision-Date: 2014-06-12 19:38+0100\n"
+"Last-Translator: \n"
+"Language-Team: Migen Nepravishta <wordpressfootballpool@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: hu_HU\n"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:9
+#: ../admin/class-football-pool-admin-games.php:9
+#: ../admin/class-football-pool-admin-groups.php:9
+#: ../admin/class-football-pool-admin-leagues.php:9
+#: ../admin/class-football-pool-admin-matchtypes.php:9
+#: ../admin/class-football-pool-admin-options.php:9
+#: ../admin/class-football-pool-admin-rankings.php:9
+#: ../admin/class-football-pool-admin-shoutbox.php:9
+#: ../admin/class-football-pool-admin-stadiums.php:9
+#: ../admin/class-football-pool-admin-teams.php:9
+#: ../admin/class-football-pool-admin-users.php:9
+msgid "Overview"
+msgstr "Összegzés"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:10
+msgid ""
+"<p>On this page you can add, change or delete bonus questions.</p><p>The "
+"<em>'User Answers'</em> link in the table view, or <em>'Edit User Answers'</"
+"em> button in the detail view, is used to check answers from your players.</"
+"p><p><strong>Important:</strong> points are only rewarded <em>after</em> the "
+"admin has checked the user answers!</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz bónusz "
+"kérdéseket.</p><p>A <em>'Felhasználói válaszok'</em> linkkel a táblázat "
+"nézetben, vagy a <em>'Felhasználói válaszok szerkesztése'</em> gombbal a "
+"részletek nézetben ellenőrizheted a játékosaid válaszait.</"
+"p><p><strong>Fontos:</strong> pontok <em>csak azután</em> adhatók, miután az "
+"admin ellenőrizte a felhasználói válaszokat!</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:14
+msgid "Score calculation"
+msgstr "Pontszám számítás"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:15
+msgid ""
+"<p>The score for a bonus question will be added to the players total score "
+"after an admin has 'approved' the answer (<em>'Edit user answers'</em>) and "
+"when the Score Date is filled. The Score Date is the point in time where the "
+"points are added to the total (needed for the charts and/or a ranking for a "
+"given date).</p>\n"
+"\t\t\t\t\t\t<p>You can give a user more points (or less) for a question. Use "
+"the field <em>'points'</em> in the Edit User Answers screen for this; leave "
+"the field empty for standard points.</p>"
+msgstr ""
+"<p>A bónusz kérdésért járó pontszám azután adódik hozzá a játékosok "
+"összpontszámához, miután egy admin 'elfogadta' a választ (<em>'Felhasználói "
+"válaszok szerkesztése'</em>) és amikor a Pontszám Dátum is ki van töltve. A "
+"Pontszám Dátum az az időpont, amikor a pontszám hozzáadódik az "
+"összpontszámhoz (erre az egyes dátumok szerinti grafikonok és rangsorok "
+"miatt van szükség).</p>\n"
+"\t\t\t\t\t\t<p>Egy felhasználó kaphat több pontot is (vagy kevesebbet) egy "
+"kérdésért. Használd a <em>'pontszámok'</em> mezőt a Felhasználói válaszok "
+"szerkesztése ablakban; ha meg akarod hagyni a standard pontszámokat, hagyd "
+"ezt a mezőt üresen.</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:20
+#: ../admin/class-football-pool-admin-feature-pointers.php:55
+msgid "Linked questions"
+msgstr "Kapcsolódó kérdések"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:21
+msgid ""
+"<p>If a question is linked to a match it will be shown beneath that match in "
+"the prediction screen. Linked questions cannot be shown separately on a "
+"prediction form for questions, but are always shown with the linked match.</"
+"p><p>When the linked match is deleted the question will be unlinked, but "
+"will still be available in the prediction form.</p>"
+msgstr ""
+"<p>Ha egy kérdés egy mérkőzéshez kapcsolódik, akkor az alatt a meccs allatt "
+"fog megjelenni a Fogadás ablakban. A kapcsolódó kérdések nem láthatók külön "
+"egy fogadási kérdőíven, csak a kapcsolódó mérkőzéssel együtt.</p><p>Mikor a "
+"kapcsolódó mérkőzést törlik, utána a kérdés is csak a fogadási íven lesz "
+"elérhető.</p>"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:25
+msgid "Help section about bonus questions"
+msgstr "Bónusz kérdések Súgó"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:26
+msgid "Help section about ranking calculation"
+msgstr "Rangsorolási számítás Súgó"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:33
+#: ../pages/class-football-pool-pool-page.php:32
+msgid "Bonus questions"
+msgstr "Bónusz kérdések"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:47
+msgid "Question saved."
+msgstr "Kérdés mentve."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:48
+#: ../admin/class-football-pool-admin-bonusquestions.php:62
+#: ../admin/class-football-pool-admin-bonusquestions.php:117
+#: ../admin/class-football-pool-admin-bonusquestions.php:159
+#: ../admin/class-football-pool-admin-bonusquestions.php:259
+#: ../admin/class-football-pool-admin-games.php:582
+#: ../admin/class-football-pool-admin-groups.php:36
+#: ../admin/class-football-pool-admin-groups.php:78
+#: ../admin/class-football-pool-admin-leagues.php:33
+#: ../admin/class-football-pool-admin-leagues.php:75
+#: ../admin/class-football-pool-admin-matchtypes.php:59
+#: ../admin/class-football-pool-admin-matchtypes.php:101
+#: ../admin/class-football-pool-admin-rankings.php:42
+#: ../admin/class-football-pool-admin-rankings.php:55
+#: ../admin/class-football-pool-admin-rankings.php:97
+#: ../admin/class-football-pool-admin-rankings.php:270
+#: ../admin/class-football-pool-admin-shoutbox.php:34
+#: ../admin/class-football-pool-admin-shoutbox.php:81
+#: ../admin/class-football-pool-admin-stadiums.php:34
+#: ../admin/class-football-pool-admin-stadiums.php:78
+#: ../admin/class-football-pool-admin-teams.php:66
+#: ../admin/class-football-pool-admin-teams.php:131
+msgid "Save & Close"
+msgstr "Mentés és Kilépés"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:61
+msgid "Answers updated."
+msgstr "Válaszok frissítve."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:73
+#, php-format
+msgid "Question id:%s deleted."
+msgstr "id:%s kérdés törölve."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:77
+#, php-format
+msgid "%s questions deleted."
+msgstr "%s kérdés törölve."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:108
+#: ../admin/class-football-pool-admin-bonusquestions.php:209
+#: ../admin/class-football-pool-admin-bonusquestions.php:271
+msgid "question"
+msgstr "kérdés"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:109
+#: ../admin/class-football-pool-admin-bonusquestions.php:126
+#: ../admin/class-football-pool-admin-bonusquestions.php:221
+#: ../admin/class-football-pool-admin-bonusquestions.php:275
+#: ../classes/class-football-pool-pool.php:789
+#: ../classes/class-football-pool-pool.php:1060
+#: ../classes/class-football-pool-statistics.php:91
+#: ../classes/class-football-pool-statistics.php:116
+msgid "answer"
+msgstr "válasz"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:111
+#: ../classes/class-football-pool-pool.php:801
+msgid "variable"
+msgstr "változó"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:112
+msgid "point(s)"
+msgstr "pont(ok)"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:113
+#: ../admin/class-football-pool-admin-bonusquestions.php:211
+#: ../admin/class-football-pool-admin-bonusquestions.php:273
+#: ../classes/class-football-pool-pool.php:784
+msgid "answer before"
+msgstr "előző válasz"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:125
+#: ../classes/class-football-pool-pool.php:360
+#: ../classes/class-football-pool-shortcodes.php:315
+#: ../classes/class-football-pool-statistics.php:115
+#: ../widgets/widget-football-pool-ranking.php:107 ../_dev/hooks.php:24
+msgid "user"
+msgstr "felhasználó"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:127
+#: ../classes/class-football-pool-chart-data.php:290
+#: ../classes/class-football-pool-chart-data.php:304
+#: ../classes/class-football-pool-statistics.php:123
+msgid "correct"
+msgstr "helyes"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:128
+msgid "false"
+msgstr "hiba"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:129
+#: ../admin/class-football-pool-admin-bonusquestions.php:148
+msgid "Leave empty if you don't want to change the standard points."
+msgstr "Hagyd üresen, ha nem szeretnéd megváltoztatni a standard pontszámokat."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:129
+#: ../admin/class-football-pool-admin-bonusquestions.php:210
+#: ../admin/class-football-pool-admin-bonusquestions.php:272
+#: ../classes/class-football-pool-chart.php:186
+#: ../classes/class-football-pool-groups.php:332
+#: ../classes/class-football-pool-pool.php:362
+#: ../classes/class-football-pool-pool.php:804
+#: ../classes/class-football-pool-pool.php:1044
+#: ../classes/class-football-pool-shortcodes.php:317
+#: ../classes/class-football-pool-statistics.php:93
+#: ../pages/class-football-pool-statistics-page.php:259
+#: ../widgets/widget-football-pool-ranking.php:109 ../_dev/hooks.php:26
+msgid "points"
+msgstr "pontok"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:152
+msgid "No answers yet."
+msgstr "Még nincsenek válaszok."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:166
+msgid "No questions, users or answers found."
+msgstr "Nem találni kérdéseket, felhasználókat vagy válaszokat."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:192
+msgid "text"
+msgstr "szöveg"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:193
+msgid "multiple choice (1 answer)"
+msgstr "Többválaszos kérdés (egy helyes válasz)"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:194
+msgid "multiple choice (one or more answers)"
+msgstr "Többválaszos kérdés (egy vagy több helyes válasz)"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:199
+msgid "not linked"
+msgstr "nem kapcsolódó"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:210
+msgid ""
+"The points a user gets as an award for answering the question correctly."
+msgstr "A pontszám, melyet a játékos kap a helyes válaszért."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:211
+msgid "A user may give an answer untill this date and time."
+msgstr "A felhasználó eddig válaszolhat a kérdésre."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:212
+#: ../admin/class-football-pool-admin-bonusquestions.php:274
+msgid "score date"
+msgstr "Pontszám Dátum"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:212
+msgid ""
+"The points awarded will be added to the total points for a user after this "
+"date (for the charts). If not supplied, the points won't be added."
+msgstr ""
+"A kapott pontok ezután adódnak hozzá a felhasználó összpontszámához (a "
+"grafikonok miatt). Ha a dátum nincs megadva, a pontok nem lesznek hozzáadva."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:215
+msgid "link to match"
+msgstr "link a mérkőzéshez"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:219
+msgid ""
+"Linked questions are placed directly beneath the match on the prediction "
+"form."
+msgstr ""
+"A kapcsolódó kérdések közvetlenül a mérkőzés alatt vannak a fogadási íven."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:221
+msgid "The correct answer (used as a reference)."
+msgstr "A helyes válasz (mint hivatkozás)."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:224
+msgid "type"
+msgstr "típus"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:237
+msgid "multiple choice options"
+msgstr "Többválaszos lehetőségek"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:240
+msgid ""
+"A semicolon separated list of answer possibilities. Only applicable for "
+"multiple choice questions."
+msgstr ""
+"Pontosvesszőkkel elválasztott válaszlehetősegeket tartalmazó lista. Csak "
+"többválaszos kérdéseknél alkalmazható."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:246
+msgid "max answers for multiple choice"
+msgstr "max. válasz többválaszos kérdésre"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:249
+msgid ""
+"Optional: The maximum number of options a user may select (empty = "
+"unlimited). Only applicable for multiple choice questions with one or more "
+"answers."
+msgstr ""
+"Nem kötelező: legtöbb adható válasz (üres = végtelen). Csak azoknál a "
+"többválaszos kérdéseknél, melyekre egy vagy több helyes válasz adható."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:253
+#: ../classes/class-football-pool-pool.php:764
+msgid "photo question"
+msgstr "fényképes kérdés"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:253
+msgid ""
+"Add a URL to a photo for a photo question, or choose one from the media "
+"library (optional)."
+msgstr ""
+"URL hozzáadása egy fényképes kérdéshez, vagy válassz a médiakönyvtárból (nem "
+"kötelező)."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:262
+msgid "Edit User Answers"
+msgstr "Felhasználói válaszok szerkesztése"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:273
+#: ../admin/class-football-pool-admin-bonusquestions.php:274
+msgid "e.g."
+msgstr "pl."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-leagues.php:134
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+#: ../admin/class-football-pool-admin-rankings.php:382
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-teams.php:158
+msgid "Delete"
+msgstr "Törlés"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+msgid "You are about to delete one or more bonus questions."
+msgstr "Egy vagy több bónusz kérdést készülsz törölni."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:292
+#: ../admin/class-football-pool-admin-games.php:666
+#: ../admin/class-football-pool-admin-groups.php:99
+#: ../admin/class-football-pool-admin-leagues.php:134
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+#: ../admin/class-football-pool-admin-rankings.php:382
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+#: ../admin/class-football-pool-admin-stadiums.php:134
+#: ../admin/class-football-pool-admin-teams.php:158
+#: ../admin/class-football-pool-admin-users.php:215
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "Are you sure? `OK` to delete, `Cancel` to stop."
+msgstr "Biztos vagy benne? `OK` igen, `Mégse` nem."
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:293
+msgid "User Answers"
+msgstr "Felhasználói válaszok "
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:314
+#, php-format
+msgid "question %d deleted"
+msgstr "kérdés %d törölve"
+
+#: ../admin/class-football-pool-admin-bonusquestions.php:391
+#, php-format
+msgid "question %d updated"
+msgstr "kérdés %d frissítve"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:11
+msgid "Extra layout options"
+msgstr "További nézet opciók"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:12
+msgid ""
+"Show photo's and/or info about your teams and venues in the listing on the "
+"teams and venues pages."
+msgstr ""
+"Fényképek és/vagy infó mutatása a csapataidról és a helyszínekről a "
+"listázásban a csapatok és helyszínek oldalakon."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:17
+msgid "New shortcodes"
+msgstr "Új shortkódok"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:18
+msgid ""
+"New shortcodes to display the score of a single user, to display the "
+"predictions for a match or question and to display a table of matches. Use "
+"the button in the toolbar to include them:"
+msgstr ""
+"Új shortkódok: megmutathatja az egyes játékosok potszámait, egy mérkőzésre "
+"vagy kérdésre érkezett fogadásokat és mutathat egy mérkőzés-táblázatot. "
+"Használd az eszköztárban lévő gombot, ha szeretnéd őket alkalmazni:"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:25
+msgid "Ranking changes"
+msgstr "Rangsor változások"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:26
+msgid ""
+"The plugin keeps track of changes in the data that might affect the ranking. "
+"The changes are displayed in the log and this log is used for the new smart "
+"recalculation of the score table."
+msgstr ""
+"A plugin figyeli követi azokat a változásokat az adatokban, melyek "
+"befolyásolhatják a rangsort. A változások a naplóban találhatók, és ezt a "
+"naplót veszik alapul a pontszámok újraszámolásánál."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:31
+msgid "Keep data"
+msgstr "Adat megőrzése"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:32
+msgid "Keep your data in the database when deactivating the plugin."
+msgstr "Az adatok megőrzése az adatbázisban, amikor kikapcsolod a plugint."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:37
+msgid "Tournament / competition ranking"
+msgstr "Versenysorozat / verseny rangsor"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:38
+msgid ""
+"Change the points for wins and draws if your sport doesn't use the 3/1 point "
+"rule."
+msgstr ""
+"A győzelmekért és döntetlenekért járó pontszámok megváltoztatása, ha az "
+"általad választott sport nem a 3pont/1pont szabályt használja."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:43
+msgid "Disable jokers"
+msgstr "Jokerek kikapcsolása"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:44
+msgid "You can completely disable jokers if you don't want to use them."
+msgstr ""
+"Teljesen ki tudod kapcsolni a jokereket, ha nem szeretnéd őket használni."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:49
+#: ../admin/class-football-pool-admin-options.php:91
+msgid "Goal difference bonus"
+msgstr "Gólkülönbség bónusz"
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:50
+msgid ""
+"A new scoring option: reward a player with a bonus if the correct difference "
+"in goals is predicted."
+msgstr ""
+"Egy új pontozási opció: jutalmazz bónusszal egy játékost, ha eltalálta a "
+"helyes gólkülönbséget."
+
+#: ../admin/class-football-pool-admin-feature-pointers.php:56
+msgid "You can now link questions directly to a match."
+msgstr "Mostantól kapcsolhatsz kérdéseket közvetlenül egy mérkőzéshez."
+
+#: ../admin/class-football-pool-admin-games.php:10
+msgid ""
+"<p>On this page you can quickly edit match scores and team names for final "
+"rounds (if applicable). If you wish to change all information about a match, "
+"then click the <em>'edit'</em> link.</p><p>After saving the match data the "
+"pool ranking is recalculated. If you have a lot of users this may take a "
+"while. You can (temporarily) disable the automatic recalculation of scores "
+"in the Plugin Options.</p>"
+msgstr ""
+"<p>Ezen az oldalon lehetséges a mérkőzés pontszámok és csapatnevek gyors "
+"szerkesztése a döntő körökre (ha szükséges). Ha szeretnéd az egy mérkőzéshez "
+"kapcsolódó összes információt megváltoztatni, klikkelj a <em>'szerkesztés'</"
+"em> linkre.</p><p>Miután elmented a mérkőzés adatait, a tippjáték "
+"rangsorolását újraszámítjuk. Ha sok felhasználód van, ez hosszabb időt is "
+"igénybe vehet. A Plugin Opciókban lehetséges (átmeneteileg) a pontszámok "
+"automatikus újraszámolásának kikapcsolása.</p>"
+
+#: ../admin/class-football-pool-admin-games.php:14
+msgid "Import & Export"
+msgstr "Import & Export"
+
+#: ../admin/class-football-pool-admin-games.php:15
+msgid ""
+"<p>Matches can be imported into the plugin using the import function "
+"(<em>'Bulk change game schedule'</em>). See the help page for more "
+"information about the required format.</p><p>On the import screen you can "
+"choose one of the already uploaded schedules or upload a new one (if write "
+"is enabled on the upload directory).</p><p>The import can add matches to "
+"your schedule, or completely overwrite the existing schedule. Please beware "
+"that when overwriting the schedule all existing predictions and rankings "
+"will be lost.</p><p>Existing matches can be exported using the <em>'Download "
+"game schedule'</em> button.</p>"
+msgstr ""
+"<p>A mérkőzések inportálása a pluginba az import funkció használatával "
+"lehetséges. (<em>'A játék-menetrend nagyszabású megváltoztatása'</em>). "
+"További információkért az előírt formátumról lásd Súgó oldal.</p><p>Az "
+"import ablakban választhatsz a már feltöltött menetrendek közül vagy "
+"feltölthetsz egy újat (ha az írás engedélyezve van a feltöltés könyvtárban)."
+"</p><p>Az import hozzáadhat mérkőzéseket a menetrendedhez, vagy teljesen "
+"felülírhatja a meglévő menetrendet. Figyelj rá, hogy a menetrend "
+"felülírásakor az összes meglévő fogadás és rangsor elveszik .</p><p>A "
+"meglévő mérkőzések exportálhatók a  <em>'Játék-menetrend letöltése'</em> "
+"gomb használatával.</p>"
+
+#: ../admin/class-football-pool-admin-games.php:19
+msgid "Match details"
+msgstr "Mérkőzés részletek"
+
+#: ../admin/class-football-pool-admin-games.php:20
+msgid "<ul><li><em>match date</em> must be in UTC format.</li></ul>"
+msgstr ""
+"<ul><li><em>A mérkőzés dátuma</em> UTC formátumban kell legyen.</li></ul>"
+
+#: ../admin/class-football-pool-admin-games.php:24
+msgid "Help section about matches and the import"
+msgstr "Mérkőzéses és importálás Súgó"
+
+#: ../admin/class-football-pool-admin-games.php:25
+msgid "Plugin options page"
+msgstr "Plugin opciók oldal"
+
+#: ../admin/class-football-pool-admin-games.php:33
+#: ../admin/class-football-pool-admin-games.php:44
+#: ../admin/class-football-pool-admin.php:105
+#: ../assets/admin/tinymce/tinymce-dialog.php:131
+msgid "Matches"
+msgstr "Mérkőzések"
+
+#: ../admin/class-football-pool-admin-games.php:78
+#, php-format
+msgid "Game %d deleted."
+msgstr "Játék %d törölve."
+
+#: ../admin/class-football-pool-admin-games.php:80
+msgid "Error performing the requested action."
+msgstr "A kért művelet elvégzése közben hiba lépett fel."
+
+#: ../admin/class-football-pool-admin-games.php:101
+msgid "Upload of csv file failed."
+msgstr "A csv fájl felöltése sikertelen."
+
+#: ../admin/class-football-pool-admin-games.php:104
+msgid "Upload of csv file successful."
+msgstr "A csv fájl felöltése megtörtént."
+
+#: ../admin/class-football-pool-admin-games.php:150
+#, php-format
+msgid "Column %d header should be \"%s\" &rArr; not \"%s\""
+msgstr "Oszlop %d header  \"%s\" &rArr kellene legyen; nem \"%s\""
+
+#: ../admin/class-football-pool-admin-games.php:167
+msgid "match import with overwrite"
+msgstr "Mérkőzés importálása felülírással"
+
+#: ../admin/class-football-pool-admin-games.php:201
+#: ../admin/class-football-pool-admin-games.php:225
+#, php-format
+msgid "Team %d added: %s"
+msgstr "Csoport %d hozzáadva: %s"
+
+#: ../admin/class-football-pool-admin-games.php:238
+#, php-format
+msgid "Stadium %d added: %s"
+msgstr "Stadion %d hozzáadva: %s"
+
+#: ../admin/class-football-pool-admin-games.php:247
+#, php-format
+msgid "Match Type %d added: %s"
+msgstr "Mérkőzés-típus %d hozzáadva: %s"
+
+#: ../admin/class-football-pool-admin-games.php:258
+#, php-format
+msgid "Match %d imported: %s - %s for date \"%s\""
+msgstr "Mérkőzés %d importálva: %s - %s a követhező dátumra \"%s\""
+
+#: ../admin/class-football-pool-admin-games.php:266
+#, php-format
+msgid ""
+"Imported csv file should contain %d columns (header contains %d columns). "
+"See help page for the correct format."
+msgstr ""
+"Az importált csv fájlnak tartalmaznia kell %d oszlopot (header %d oszlopot "
+"tartalmaz). A helyes formátumért lásd Súgó."
+
+#: ../admin/class-football-pool-admin-games.php:270
+msgid "No csv file selected."
+msgstr "Nincs csv fájl kiválasztva."
+
+#: ../admin/class-football-pool-admin-games.php:272
+msgid "Please check if the csv file exists and is readable."
+msgstr "Kérlek, ellenőrizd, hogy a csv fájl létezik és olvasható."
+
+#: ../admin/class-football-pool-admin-games.php:303
+msgid ""
+"Please make sure that the directory 'upload' exists in the plugin directory "
+"and that it is readable!"
+msgstr ""
+"Kérlek ellenőrizd, hogy a 'Felföltés' könyvtár létezik a plugin könyvtárban "
+"és hogy olvasható!"
+
+#: ../admin/class-football-pool-admin-games.php:306
+msgid ""
+"Uploading of new csv files is not possible at the moment. Directory 'upload' "
+"is not writable."
+msgstr ""
+"Új csv fájlok feltöltése jelenleg nem lehetséges. A 'Feltöltés' könyvtár nem "
+"írható."
+
+#: ../admin/class-football-pool-admin-games.php:310
+msgid "Choose a new game schedule"
+msgstr "Válassz egy új  játék-menetrendet"
+
+#: ../admin/class-football-pool-admin-games.php:311
+msgid ""
+"Import any of the following files. Overwrite the existing game schedule or "
+"add to the existing schedule."
+msgstr ""
+"A következő fájlok bármelyikének importálása. A létező játek-menetrend "
+"felülírása vagy ahhoz való hozzáadása."
+
+#: ../admin/class-football-pool-admin-games.php:318
+msgid "all files"
+msgstr "összes fájl"
+
+#: ../admin/class-football-pool-admin-games.php:319
+#, php-format
+msgid "only '%s' files"
+msgstr "csak '%s' fájl(ok)"
+
+#: ../admin/class-football-pool-admin-games.php:324
+msgid "change"
+msgstr "megváltoztat"
+
+#: ../admin/class-football-pool-admin-games.php:332
+msgid "File"
+msgstr "Fájl"
+
+#: ../admin/class-football-pool-admin-games.php:333
+msgid "Contributor"
+msgstr "Közreműködő"
+
+#: ../admin/class-football-pool-admin-games.php:334
+msgid "Assets"
+msgstr "assets"
+
+#: ../admin/class-football-pool-admin-games.php:346
+msgid "Upload these files to your assets folder in the plugin directory"
+msgstr "A fájlok feltöltése az assets mappába a plugin könyvtárban. "
+
+#: ../admin/class-football-pool-admin-games.php:346
+msgid "download files"
+msgstr "file-ok letöltése"
+
+#: ../admin/class-football-pool-admin-games.php:359
+msgid "Import CSV"
+msgstr "CSV import "
+
+#: ../admin/class-football-pool-admin-games.php:362
+msgid "Are you sure you want to add these matches to the existing schedule?"
+msgstr ""
+"Biztos vagy benne, hogy hozzáadod ezeket a mérkőzéseket a meglévő "
+"menetrendhez?"
+
+#: ../admin/class-football-pool-admin-games.php:367
+msgid "Import CSV & Overwrite"
+msgstr "CSV import & felülírás"
+
+#: ../admin/class-football-pool-admin-games.php:371
+msgid ""
+"Are you sure you want to overwrite the game schedule with this schedule?\\n"
+"\\nAll predictions and scores will also be overwritten!"
+msgstr ""
+"Biztos vagy benne, hogy felülírod a játék-menetrendet ezzel a menetrenddel?"
+"\\n\\nÍgy felülírod az összes fogadást és pontszámot is!"
+
+#: ../admin/class-football-pool-admin-games.php:372
+msgid "Are you really, really, really sure?"
+msgstr "Tényleg, teljesen, tuti biztos?"
+
+#: ../admin/class-football-pool-admin-games.php:380
+msgid "No csv files found in 'upload' directory."
+msgstr "Nem talál csv fájlokat a 'feltöltés' könyvtárban."
+
+#: ../admin/class-football-pool-admin-games.php:389
+msgid "Upload new game schedule"
+msgstr "Új játék-menetrend feltöltése"
+
+#: ../admin/class-football-pool-admin-games.php:396
+msgid "Upload CSV"
+msgstr "CSV feltöltés"
+
+#: ../admin/class-football-pool-admin-games.php:435
+msgid "Bulk change game schedule"
+msgstr "A játék-menetrend nagyszabású megváltoztatása"
+
+#: ../admin/class-football-pool-admin-games.php:437
+msgid "Download game schedule"
+msgstr "Játék-menetrend letöltése"
+
+#: ../admin/class-football-pool-admin-games.php:466
+msgid "Values updated."
+msgstr "Értékek feltöltve."
+
+#: ../admin/class-football-pool-admin-games.php:487
+#, php-format
+msgid "match %d deleted"
+msgstr "mérkőzés %d törölve"
+
+#: ../admin/class-football-pool-admin-games.php:562
+#, php-format
+msgid ""
+"You have to enter some <a href=\"%s\">teams</a>, <a href=\"%s\">venues</a> "
+"and <a href=\"%s\">match types</a> first."
+msgstr ""
+"Előbb be kell írj néhány <a href=\"%s\">csapatot</a>, <a href=\"%s"
+"\">helyszínt</a> és <a href=\"%s\">mérkőzés-típust</a>."
+
+#: ../admin/class-football-pool-admin-games.php:563
+#: ../admin/class-football-pool-admin-users.php:71
+msgid "Back"
+msgstr "Vissza"
+
+#: ../admin/class-football-pool-admin-games.php:571
+msgid "match date (UTC)"
+msgstr "mérkőzés dátuma (UTC)"
+
+#: ../admin/class-football-pool-admin-games.php:571
+#: ../admin/class-football-pool-admin-games.php:653
+msgid "time of the match in local time (WordPress setting)"
+msgstr "a mérkőzés kezdete helyi idő szerint (Wordpress beállítás)"
+
+#: ../admin/class-football-pool-admin-games.php:571
+#, php-format
+msgid "local time is %s"
+msgstr "A helyi idő %s"
+
+#: ../admin/class-football-pool-admin-games.php:572
+msgid "home team"
+msgstr "Hazai csapat"
+
+#: ../admin/class-football-pool-admin-games.php:573
+msgid "away team"
+msgstr "vendégcsapat"
+
+#: ../admin/class-football-pool-admin-games.php:574
+msgid "home score"
+msgstr "eredmény otthon"
+
+#: ../admin/class-football-pool-admin-games.php:575
+msgid "away score"
+msgstr "eredmény idegenben"
+
+#: ../admin/class-football-pool-admin-games.php:576
+msgid "stadium"
+msgstr "stadion"
+
+#: ../admin/class-football-pool-admin-games.php:577
+#: ../admin/class-football-pool-admin-matchtypes.php:138
+msgid "match type"
+msgstr "mérkőzés-típus"
+
+#: ../admin/class-football-pool-admin-games.php:583
+#: ../classes/class-football-pool-pool.php:1106
+#: ../pages/class-football-pool-pool-page.php:75
+msgid "Save"
+msgstr "Mentés"
+
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../admin/class-football-pool-admin-games.php:648
+#: ../classes/class-football-pool-matches.php:334
+#: ../classes/class-football-pool-matches.php:424
+msgid "M d, Y"
+msgstr "H n, É"
+
+#: ../admin/class-football-pool-admin-games.php:653
+msgid "local time"
+msgstr "helyi idő"
+
+#: ../admin/class-football-pool-admin-games.php:654
+msgid "UTC"
+msgstr "UTC"
+
+#: ../admin/class-football-pool-admin-games.php:663
+#, php-format
+msgid "You are about to delete match %d."
+msgstr "Törlöd: mérkőzés %d."
+
+#: ../admin/class-football-pool-admin-games.php:670
+msgid "change match time"
+msgstr "mérkőzés ideje - megváltoztat"
+
+#: ../admin/class-football-pool-admin-games.php:676
+msgid "edit"
+msgstr "szerkesztés"
+
+#: ../admin/class-football-pool-admin-games.php:677
+msgid "delete"
+msgstr "törlés"
+
+#: ../admin/class-football-pool-admin-games.php:728
+msgid "match with end score added to pool"
+msgstr "a mérkőzés a végeredménnyel hozzáadva a tippjátékhoz"
+
+#: ../admin/class-football-pool-admin-games.php:766
+#, php-format
+msgid "match %d changed"
+msgstr "mérkőzés %d megváltoztatva"
+
+#: ../admin/class-football-pool-admin-groups.php:10
+msgid ""
+"<p>On this page you can add, change or delete groups.</p><p>Groups are used "
+"in a typical tournament setting to group teams for a group phase. After the "
+"group phase some teams advance to the final rounds.</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz "
+"csoportokat.</p><p>Egy tipikus versenysorozatban a csoportokban csapatokat "
+"sorsolnak össze a csoport-mérkőzésekre. A csoport-mérkőzések után néhány "
+"csapat továbbjut a döntő körökbe.</p>"
+
+#: ../admin/class-football-pool-admin-groups.php:14
+msgid "Help section about groups"
+msgstr "Csoportok Súgó"
+
+#: ../admin/class-football-pool-admin-groups.php:21
+#: ../admin/class-football-pool-admin.php:186
+msgid "Groups"
+msgstr "Csoportok"
+
+#: ../admin/class-football-pool-admin-groups.php:35
+msgid "Group saved."
+msgstr "Csoport mentve."
+
+#: ../admin/class-football-pool-admin-groups.php:47
+#, php-format
+msgid "Group id:%d deleted."
+msgstr "Csoport id:%d törölve."
+
+#: ../admin/class-football-pool-admin-groups.php:51
+#, php-format
+msgid "%d groups deleted."
+msgstr "%d csoport(ok) törölve."
+
+#: ../admin/class-football-pool-admin-groups.php:72
+#: ../admin/class-football-pool-admin-matchtypes.php:94
+#: ../admin/class-football-pool-admin-rankings.php:263
+#: ../admin/class-football-pool-admin-shoutbox.php:73
+#: ../admin/class-football-pool-admin-shoutbox.php:97
+#: ../admin/class-football-pool-admin-stadiums.php:70
+#: ../admin/class-football-pool-admin-teams.php:117
+#: ../admin/class-football-pool-admin-users.php:186
+#: ../classes/class-football-pool-statistics.php:182
+msgid "name"
+msgstr "név"
+
+#: ../admin/class-football-pool-admin-groups.php:88
+#: ../admin/class-football-pool-admin-teams.php:122
+msgid "group"
+msgstr "csoport"
+
+#: ../admin/class-football-pool-admin-groups.php:99
+msgid "You are about to delete one or more groups."
+msgstr "Törlöd: egy vagy több csoportot."
+
+#: ../admin/class-football-pool-admin-help.php:12
+#: ../admin/class-football-pool-admin.php:194
+#: ../admin/class-football-pool-admin.php:195
+#: ../admin/class-football-pool-admin.php:246
+msgid "Help"
+msgstr "Súgó"
+
+#: ../admin/class-football-pool-admin-leagues.php:10
+msgid "<p>On this page you can add, change or delete leagues.</p>"
+msgstr ""
+"<p>Ezen az oldalon ligákat adhatsz hozzá, változtathatsz meg vagy törölhetsz."
+"</p>"
+
+#: ../admin/class-football-pool-admin-leagues.php:18
+#: ../admin/class-football-pool-admin-users.php:14
+#: ../admin/class-football-pool-admin.php:159
+msgid "Leagues"
+msgstr "Ligák"
+
+#: ../admin/class-football-pool-admin-leagues.php:32
+msgid "League saved."
+msgstr "Liga mentve."
+
+#: ../admin/class-football-pool-admin-leagues.php:44
+#, php-format
+msgid "League id:%s deleted."
+msgstr "Liga id:%s törölve."
+
+#: ../admin/class-football-pool-admin-leagues.php:48
+#, php-format
+msgid "%s leagues deleted."
+msgstr "%s liga/ligák törölve"
+
+#: ../admin/class-football-pool-admin-leagues.php:68
+#: ../admin/class-football-pool-admin-leagues.php:119
+msgid "league"
+msgstr "liga"
+
+#: ../admin/class-football-pool-admin-leagues.php:69
+#: ../admin/class-football-pool-admin-leagues.php:120
+msgid "image"
+msgstr "kép"
+
+#: ../admin/class-football-pool-admin-leagues.php:69
+msgid "Images must be saved in the \"plugin-folder/assets\" folder."
+msgstr "A képeket a \"plugin-folder/assets\" mappában kell elmenteni."
+
+#: ../admin/class-football-pool-admin-leagues.php:113
+msgid ""
+"<strong>Important:</strong> at this moment you are not using leagues. This "
+"may be caused by the fact that you didn't add any leagues in the admin, or "
+"because you changed this setting in the <a href=\"?page=footballpool-options"
+"\">plugin options</a>."
+msgstr ""
+"<strong>Fontos:</strong> jelenleg nem használsz ligákat. Lehet, hogy nem "
+"adtál hozzá ligákat az adminban, vagy megváltozattad a beállítást a  <a href="
+"\"?page=footballpool-options\">plugin opciók</a> -ban."
+
+#: ../admin/class-football-pool-admin-leagues.php:121
+msgid "league nr"
+msgstr "liga szám"
+
+#: ../admin/class-football-pool-admin-leagues.php:134
+msgid "You are about to delete one or more leagues."
+msgstr "Törlöd: egy vagy több ligát."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:10
+msgid ""
+"<p>On this page you can add, change or delete match types.</p><p>Match types "
+"are used to group matches together on the match schedule screen (e.g. Group "
+"Phase, Quarter Finals).</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz mérkőzés-"
+"típusokat.</p><p>A mérkőzés-típusok mérkőzéseket csoportosítanak a mérkőzés-"
+"menetrend ablakban (pl. Csoprtmeccsek, Negyeddöntők).</p>"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:19
+#: ../admin/class-football-pool-admin.php:177
+msgid "Match Types"
+msgstr "mérkőzés-típusok"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:35
+#, php-format
+msgid "Match type %d is visible."
+msgstr "Mérkőzés-típus %d látható."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:37
+#, php-format
+msgid "Match type %d is invisible."
+msgstr "Mérkőzés-típus %d nem látható."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:44
+#, php-format
+msgid "%d match types made visible."
+msgstr "%d mérkőzés-típusok láthatóvá téve."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:46
+#, php-format
+msgid "%d match types made invisible."
+msgstr "%d mérkőzés-típusok láthatatlanná téve."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:58
+msgid "Match type saved."
+msgstr "Mérkőzés-típus mentve."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:70
+#, php-format
+msgid "Match type id:%s deleted."
+msgstr "Mérkőzés-típus id:%s törölve."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:74
+#, php-format
+msgid "%s match types deleted."
+msgstr " %s mérkőzés-típus(ok) törölve."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:95
+msgid "visible on the website"
+msgstr "látható a weboldalon"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:139
+msgid "visible"
+msgstr "látható"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:151
+msgid "You are about to delete one or more match types."
+msgstr "Törlöd: egy vagy több mérkőzés-típust."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+msgid "Make visible"
+msgstr "Láthatóvá tesz"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+msgid "You are about to make one or more match types visible."
+msgstr "Láthatóvá tesz: egy vagy több mérkőzés-típust."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:152
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "Are you sure? `OK` to proceed, `Cancel` to stop."
+msgstr "Biztos vagy benne? `OK` igen, `Mégse` nem."
+
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "Make invisible"
+msgstr "Láthatóvá tesz"
+
+#: ../admin/class-football-pool-admin-matchtypes.php:153
+msgid "You are about to make one or more match types invisible."
+msgstr "Láthatatlanná teszed: egy vagy több mérkőzés-típust."
+
+#: ../admin/class-football-pool-admin-options.php:10
+msgid ""
+"<p>The fields on this page set different options for the plugin.</p><p>Some "
+"settings have effect on the ranking (e.g. points), when changing such a "
+"setting you can recalculate the ranking on this page with the "
+"<em>'Recalculate scores'</em> button.</p><p>You have to click <em>Save "
+"Changes</em> for the new settings to take effect.</p>"
+msgstr ""
+"<p>Az ezen az oldalon lévő mezők különböző opciókat állítanak be a pluginben."
+"</p><p>Néhány beállítás befolyásolja a rangsort (pl. pontszámok), ha "
+"megváltoztatsz egy ilyen beállítást, újraszámíthatod a rangsort ezen az "
+"oldalon a  <em>'Pontszámok újrszámítása'</em> gombbal.</p><p>Kattints a "
+"<em>Változtatások mentése</em> gombra a beállítások alkalmazásáért.</p>"
+
+#: ../admin/class-football-pool-admin-options.php:14
+#: ../admin/class-football-pool-admin-rankings.php:19
+msgid "Help section about rankings"
+msgstr "Rangsorolás Súgó"
+
+#: ../admin/class-football-pool-admin-options.php:75
+msgid "Keep data on uninstall"
+msgstr "Adatok megőrzése eltávolításkor"
+
+#: ../admin/class-football-pool-admin-options.php:75
+msgid ""
+"If checked the options and pool data (teams, matches, predictions, etc.) are "
+"not removed when deactivating the plugin."
+msgstr ""
+"Ha bepipálod, az opciók és a tippjáték-adatok (csapatok, mérkőzések, "
+"fogadások, stb.) nem lesznek eltávolítva, amikor kikapcsolod a plugint."
+
+#: ../admin/class-football-pool-admin-options.php:77
+#: ../assets/admin/tinymce/tinymce-dialog.php:444
+msgid "Webmaster"
+msgstr "Webmester"
+
+#: ../admin/class-football-pool-admin-options.php:77
+msgid "This value is used for the shortcode [fp-webmaster]."
+msgstr "Ezt az értéket használjuk a shortkódra [fp-webmester]."
+
+#: ../admin/class-football-pool-admin-options.php:79
+#: ../assets/admin/tinymce/tinymce-dialog.php:446
+msgid "Money"
+msgstr "Pénz"
+
+#: ../admin/class-football-pool-admin-options.php:79
+msgid ""
+"If you play for money, then this is the sum users have to pay. The shortcode "
+"[fp-money] adds this value in the content."
+msgstr ""
+"Ha pénzben játszotok, ez az összeg, amit a felhasználóknak fizetni kell. A "
+"shortkód [fp-pénz] hozzáadja ezt az értéket a tartalomban."
+
+#: ../admin/class-football-pool-admin-options.php:81
+#: ../assets/admin/tinymce/tinymce-dialog.php:445
+msgid "Bank"
+msgstr "Bank"
+
+#: ../admin/class-football-pool-admin-options.php:81
+msgid ""
+"If you play for money, then this is the person you have to give the money. "
+"The shortcode [fp-bank] adds this value in the content."
+msgstr ""
+"Ha pénzben játszotok, ennek a személynek kell adnod a pénzt. A shortkód [fp-"
+"bank] hozzáadja ezt az értéket a tartalomban."
+
+#: ../admin/class-football-pool-admin-options.php:83
+#: ../assets/admin/tinymce/tinymce-dialog.php:447
+msgid "Start date"
+msgstr "Start dátum"
+
+#: ../admin/class-football-pool-admin-options.php:83
+msgid ""
+"The start date of the tournament or pool. The shortcode [fp-start] adds this "
+"value in the content."
+msgstr ""
+"A versenysorozat vagy tippjáték  kezdő dátuma. A shortkód [fp-start] "
+"hozzáadja ezt az értéket a tartalomban."
+
+#: ../admin/class-football-pool-admin-options.php:85
+msgid "Full score"
+msgstr "Teljes pontszám"
+
+#: ../admin/class-football-pool-admin-options.php:85
+msgid ""
+"The points a user gets for getting the exact outcome of a match. The "
+"shortcode [fp-fullpoints] adds this value in the content. This value is also "
+"used for the calculations in the pool."
+msgstr ""
+"A pontszám, melyet a felhasználó kap, ha eltalálta egy mérkőzés pontos "
+"kimenetelét. A shortkód [fp-fullpoints] hozzáadja ezt az értéket a "
+"tartalomban. Ezt az értéket a tippjáték  számításainál is felhasználjuk."
+
+#: ../admin/class-football-pool-admin-options.php:87
+msgid "Toto score"
+msgstr "Toto pontszám"
+
+#: ../admin/class-football-pool-admin-options.php:87
+msgid ""
+"The points a user gets for guessing the outcome of a match (win, loss or "
+"draw) without also getting the exact amount of goals. The shortcode [fp-"
+"totopoints] adds this value in the content. This value is also used in the "
+"calculations in the pool."
+msgstr ""
+"A pontszám, melyet a felhasználó kap, ha eltalálta egy mérkőzés eredményét "
+"(győzelem, döntetlen, vereség), de a gólok számát nem. A shortkód [fp-"
+"totopoints] hozzáadja ezt az értéket a tartalomban. Ezt az értéket a "
+"tippjáték  számításainál is felhasználjuk."
+
+#: ../admin/class-football-pool-admin-options.php:89
+#: ../assets/admin/tinymce/tinymce-dialog.php:443
+msgid "Goal bonus"
+msgstr "Gól bónusz"
+
+#: ../admin/class-football-pool-admin-options.php:89
+msgid ""
+"Extra points a user gets for guessing the goals correct for one of the "
+"teams. These points are added to the toto points or full points. The "
+"shortcode [fp-goalpoints] adds this value in the content. This value is also "
+"used in the calculations in the pool."
+msgstr ""
+"Extra pontok, melyeket a felhasználó kap, ha az egyik csapat góljainak "
+"számát eltalálta.  A shortkód [fp-goalpoints] hozzáadja ezt az értéket a "
+"tartalomban. Ezt az értéket a tippjáték  számításainál is felhasználjuk."
+
+#: ../admin/class-football-pool-admin-options.php:91
+msgid ""
+"Extra points a user gets for guessing the goal difference correct for a "
+"match. Only awarded in matches with a winning team and only on top of toto "
+"points. See the help page for more information. The shortcode [fp-"
+"diffpoints] adds this value in the content. This value is also used in the "
+"calculations in the pool."
+msgstr ""
+"Extra pontok, melyeket a felhasználó kap, ha egy mérkőzés gólkülönbségét "
+"eltalálta. Csak azoknál a mérkőzéseknél ját, ahol győzelem a végeredmény, "
+"csak a totó-pontokon felül. További információért lásd Súgó oldal. A "
+"shortkód [fp-diffpoints] hozzáadja ezt az értéket a tartalomban. Ezt az "
+"értéket a tippjáték  számításainál is felhasználjuk."
+
+#: ../admin/class-football-pool-admin-options.php:95
+msgid "Prediction stop method for matches"
+msgstr "Fogadás-leállítás módszerek a mérkőzésekre"
+
+#: ../admin/class-football-pool-admin-options.php:98
+msgid "Dynamic time"
+msgstr "Dinamikus idő"
+
+#: ../admin/class-football-pool-admin-options.php:99
+msgid "One stop date"
+msgstr "Leállítás dátuma"
+
+#: ../admin/class-football-pool-admin-options.php:101
+#: ../admin/class-football-pool-admin-options.php:133
+msgid "Select which method to use for the prediction stop."
+msgstr "Válaszd ki, melyik módszert alkalmazod a fogadás-leállításra."
+
+#: ../admin/class-football-pool-admin-options.php:110
+msgid "Dynamic stop threshold (in seconds) for matches"
+msgstr "Dinamikus leállítás küszöb (másodpercben megadva) a mérkőzésekre"
+
+#: ../admin/class-football-pool-admin-options.php:112
+msgid ""
+"A user may change his/her predictions untill this amount of time before game "
+"kickoff. The time is in seconds, e.g. 15 minutes is 900 seconds."
+msgstr ""
+"A felhasználó megváltoztathatja a fogadásait egészen eddig az ideig a "
+"kezdőrúgás előtt. Az idő másodpercekben van megadva, pl. 15 perc = 900 "
+"másodperc."
+
+#: ../admin/class-football-pool-admin-options.php:118
+msgid "Prediction stop date for matches"
+msgstr "Fogadás-leállítás dátum a mérkőzésekre"
+
+#: ../admin/class-football-pool-admin-options.php:120
+msgid ""
+"If a valid date and time [Y-m-d H:i] is given here, then this date/time will "
+"be used as a single value before all predictions for the matches have to be "
+"entered by users. (your local time is:"
+msgstr ""
+"Ha itt meg van adva egy valós dátum és időpont [É-h-n Ó:p], akkor ezt az "
+"időpontot/dátumot mint egyetlen értéket használjuk, mielőtt a "
+"felhasználóknak be kell írniuk az összes fogadást. (a helyi idő:"
+
+#: ../admin/class-football-pool-admin-options.php:127
+msgid "Use one prediction stop date for questions?"
+msgstr "Egyetlen fogadás-leállítás dátum használata a kérdésekre?"
+
+#: ../admin/class-football-pool-admin-options.php:130
+msgid "No"
+msgstr "Nem"
+
+#: ../admin/class-football-pool-admin-options.php:131
+msgid "Yes"
+msgstr "Igen"
+
+#: ../admin/class-football-pool-admin-options.php:142
+msgid "Prediction stop date for questions"
+msgstr "Fogadás-leállítás dátum a kérdésekre"
+
+#: ../admin/class-football-pool-admin-options.php:144
+msgid ""
+"If a valid date and time [Y-m-d H:i] is given here, then this date/time will "
+"be used as a single value before all predictions for the bonus questions "
+"have to be entered by users. (your local time is:"
+msgstr ""
+"Ha itt meg van adva egy valós dátum és időpont [É-h-n Ó:p], akkor ezt az "
+"időpontot/dátumot mint egyetlen értéket használjuk, mielőtt a "
+"felhasználóknak be kell írniuk az összes fogadást a bónusz kérdésekre. (a "
+"helyi idő:"
+
+#: ../admin/class-football-pool-admin-options.php:149
+msgid "Maximum length for a shoutbox message"
+msgstr "Shoutbox üzenetek maximális hossza"
+
+#: ../admin/class-football-pool-admin-options.php:149
+msgid ""
+"Maximum length (number of characters) a message in the shoutbox may have."
+msgstr "A maximális hossz (karakterszám), amilyen egy shoutbox üzenet lehet."
+
+#: ../admin/class-football-pool-admin-options.php:151
+msgid "Use leagues"
+msgstr "Ligák használata"
+
+#: ../admin/class-football-pool-admin-options.php:151
+msgid ""
+"Set this if you want to use leagues in your pool. You can use this (e.g.) "
+"for paying and non-paying users, or different departments. Important: if you "
+"change this value when there are already points given, then the scoretable "
+"will not be automatically recalculated. Use the recalculate button on this "
+"page for that."
+msgstr ""
+"Állítsd be ezt, ha ligákat akarsz használni a tippjátékban. Ezt "
+"alkalmazhatod (pl.) fizető és nem fizető felhasználókra, vagy különböző "
+"részlegekre. Fontos: ha úgy változtatod meg ezt az értéket, hogy már adtál "
+"pontokat, a pontszámtáblat nem lesz automatikusan újraszámítva. Erre az ezen "
+"az oldalon lévő újraszámítás gombot kell használd."
+
+#: ../admin/class-football-pool-admin-options.php:153
+msgid "Standard league for new users"
+msgstr "Stansard liga az új felhasználókra"
+
+#: ../admin/class-football-pool-admin-options.php:153
+msgid ""
+"The standard league (<a href=\"?page=footballpool-leagues\">fill in the "
+"league ID</a>) a new user will be placed after registration."
+msgstr ""
+"A standard liga (<a href=\"?page=footballpool-leagues\">fill in the league "
+"ID</a>), ahová az új felhasználó kerül a regisztrációt követően."
+
+#: ../admin/class-football-pool-admin-options.php:155
+msgid "Image for Dashboard Widget"
+msgstr "Műszertábla kisalkalmazás képe"
+
+#: ../admin/class-football-pool-admin-options.php:157
+msgid "Hide Admin Bar for subscribers"
+msgstr "Admin léc elrejtése a feliratkozók elől"
+
+#: ../admin/class-football-pool-admin-options.php:157
+msgid ""
+"After logging in a subscriber may see an Admin Bar on top of your blog (a "
+"user option). With this plugin option you can ignore the user configuration "
+"and never show the Admin Bar."
+msgstr ""
+"Bejelentkezés után a feliratkozó láthat egy Admin lécet a blogod tetején "
+"(felhasználói opció). Ezzel a plugin opcióval mellőzheted a felhasználói "
+"konfigurációt és beállíthatod, hogy az Admin léc sose legyen látható."
+
+#: ../admin/class-football-pool-admin-options.php:159
+msgid "Use favicon"
+msgstr "Favikon használata"
+
+#: ../admin/class-football-pool-admin-options.php:159
+#: ../admin/class-football-pool-admin-options.php:161
+msgid "Switch off if you don't want to use the icons in the plugin."
+msgstr "Kapcsold ki, ha nem akarod használni az ikonokat a pluginben."
+
+#: ../admin/class-football-pool-admin-options.php:161
+msgid "Use Apple touch icon"
+msgstr "Apple touch ikon használata"
+
+#: ../admin/class-football-pool-admin-options.php:163
+msgid "Show team names as links"
+msgstr "Csapatnevek mint linkek mutatása"
+
+#: ../admin/class-football-pool-admin-options.php:163
+msgid ""
+"Switch off if you don't want to link the team names to a team info page."
+msgstr ""
+"Kapcsold ki, ha nem szeretnéd hozzákapcsolni a csapatneveket egy csapat-infó "
+"oldalhoz."
+
+#: ../admin/class-football-pool-admin-options.php:165
+msgid "Show venues on team page"
+msgstr "Helyszínek mutatása a csapat oldalon"
+
+#: ../admin/class-football-pool-admin-options.php:165
+msgid ""
+"Switch off if you don't want to show all venues a team plays in during a "
+"season or tournament (in national competitions the venue list is a bit "
+"useless)."
+msgstr ""
+"KApcsold ki, ha nem szeretnéd mutatni az összes helyszínt, ahol az adott "
+"csapat a szezonban vagy a versenysorozatban játszik (nemzeti versenyeknél a "
+"helyszín lista érdektelen)"
+
+#: ../admin/class-football-pool-admin-options.php:169
+msgid "Use charts"
+msgstr "Grafikonok használata"
+
+#: ../admin/class-football-pool-admin-options.php:172
+#, php-format
+msgid ""
+"The Highcharts API is needed for this feature. See the <%s>Help page<%s> for "
+"information on installing this library."
+msgstr ""
+"Ehhez a funkcióhoz Highcharts API szükséges. Információkért e könyvtár "
+"telepítéséről lásd <%s>Súgó oldal<%s>."
+
+#: ../admin/class-football-pool-admin-options.php:179
+msgid "Format for the csv export (match schedule)"
+msgstr "CSV export formátum (mérkőzés menetrend)"
+
+#: ../admin/class-football-pool-admin-options.php:182
+msgid "Full data"
+msgstr "Teljes adat"
+
+#: ../admin/class-football-pool-admin-options.php:183
+msgid "Minimal data"
+msgstr "Minimális adat"
+
+#: ../admin/class-football-pool-admin-options.php:185
+#, php-format
+msgid ""
+"Select the format of the csv export. See the <%s>Help page<%s> for more "
+"information."
+msgstr ""
+"A csv export formátumának kiválasztása. További információért lásd <%s>Súgó "
+"oldal<%s>."
+
+#: ../admin/class-football-pool-admin-options.php:190
+msgid "Match time setting"
+msgstr "Mérkőzés ideje beállítás"
+
+#: ../admin/class-football-pool-admin-options.php:193
+msgid "Use WordPress Timezone setting"
+msgstr "WordPress időzóna beállítások használata"
+
+#: ../admin/class-football-pool-admin-options.php:194
+msgid "Use UTC time"
+msgstr "UTC idő használata"
+
+#: ../admin/class-football-pool-admin-options.php:195
+#: ../admin/class-football-pool-admin-options.php:254
+msgid "Custom setting"
+msgstr "Saját beállítás"
+
+#: ../admin/class-football-pool-admin-options.php:197
+msgid "Select which method to use for the display of match times."
+msgstr "Válaszd ki, melyik módszert használod a mérkőzés idejének mutatására."
+
+#: ../admin/class-football-pool-admin-options.php:207
+msgid "Match time offset"
+msgstr "Mérkőzés ideje eltolás"
+
+#: ../admin/class-football-pool-admin-options.php:210
+msgid ""
+"The offset in hours to add to (or extract from) the UTC start time of a "
+"match. Only used for display of the time."
+msgstr ""
+"Az eltolás órákban, melyeket az UTC időhoz kell hozzáadni (vagy elvenni).  "
+"Csak az idő kijelzésére használható."
+
+#: ../admin/class-football-pool-admin-options.php:215
+msgid "Use shortcode button in visual editor"
+msgstr "Shortkód gomb használata a vizuális szerkesztőben"
+
+#: ../admin/class-football-pool-admin-options.php:215
+msgid ""
+"The plugin can add a button to the visual editor of WordPress. With this "
+"option disabled this button will not be included (uncheck if the button is "
+"causing problems)."
+msgstr ""
+"A plugin hozzá tud adni egy gombot a WordPress vizuális szerkesztőjéhez. Ha "
+"kiveszed ezt az opciót, a gomb nem fog megjelenni (vedd ki a pipát, ha a "
+"gomb problémákat okoz)."
+
+#: ../admin/class-football-pool-admin-options.php:217
+msgid "Always show predictions"
+msgstr "Mindig mutasd a fogadásokat"
+
+#: ../admin/class-football-pool-admin-options.php:217
+msgid ""
+"Normally match predictions are only shown to other players after a "
+"prediction can't be changed anymore. With this option enabled the "
+"predictions are visible to anyone, anytime. Works only for matches, not "
+"bonus questions."
+msgstr ""
+"Normális esetben a fogadásokat csak akkor láthatja a többi játékos, miután a "
+"fogadást már nem változtathatják meg. Ezzel az opcióval a fogadásokat "
+"láthatóvá teheted bárki számára, bármikor. Cska mérkőzésekre használható, "
+"bónusz kérdésekre nem."
+
+#: ../admin/class-football-pool-admin-options.php:219
+msgid "Use HTML5 number inputs"
+msgstr "HTML5 szám-bevitel használata"
+
+#: ../admin/class-football-pool-admin-options.php:219
+msgid ""
+"Make use of HTML5 number inputs for the prediction form. Some browsers "
+"display these as spin controls."
+msgstr ""
+"HTML5 szám-bevitel használata a fogadási íven. Néhány böngésző ezeket spin-"
+"szabályozásként jeleníti meg."
+
+#: ../admin/class-football-pool-admin-options.php:223
+msgid "Groups page matches"
+msgstr "Csoportok oldal mérkőzések"
+
+#: ../admin/class-football-pool-admin-options.php:226
+#, php-format
+msgid ""
+"The Groups page shows standings for the matches in these match types. "
+"Defaults to match type id: %d."
+msgstr ""
+"A Csoportok oldal mutatja ezen mérkőzés-típusok meccseinek állását. "
+"Alapbeállítás a következő mérkőzés-típusnál: id: %d."
+
+#: ../admin/class-football-pool-admin-options.php:226
+#: ../assets/admin/tinymce/tinymce-dialog.php:360
+#: ../assets/admin/tinymce/tinymce-dialog.php:403
+msgid "Use CTRL+click to select multiple values."
+msgstr "CTRL+ klikk használata egyszerre több érték kiválasztására. "
+
+#: ../admin/class-football-pool-admin-options.php:232
+msgid "Match sorting"
+msgstr "Mérkőzés kiválasztás"
+
+#: ../admin/class-football-pool-admin-options.php:235
+msgid "Date ascending"
+msgstr "Dátum növekvő"
+
+#: ../admin/class-football-pool-admin-options.php:236
+msgid "Date descending"
+msgstr "Dátum csökkenő"
+
+#: ../admin/class-football-pool-admin-options.php:237
+msgid "Match types descending, matches date ascending"
+msgstr "Mérkőzés-típusok csökkenő, mérkőzés dátum növekvő"
+
+#: ../admin/class-football-pool-admin-options.php:238
+msgid "Match types ascending, matches date descending"
+msgstr "Mérkőzés-típusok növekvő, mérkőzés dátum csökkenő"
+
+#: ../admin/class-football-pool-admin-options.php:240
+msgid ""
+"Select the order in which matches must be displayed on the matches page and "
+"the prediction page.."
+msgstr ""
+"Válaszd ki, hogy milyen sorrendben jelenjenek meh a mérkőzések a mérkőzés "
+"oldalon és a fogadás oldalon."
+
+#: ../admin/class-football-pool-admin-options.php:243
+msgid "Show (gr)avatars"
+msgstr "(gr)avatárok mutatása"
+
+#: ../admin/class-football-pool-admin-options.php:243
+msgid "Show the user's (gr)avatar in ranking tables (if available)."
+msgstr "(gr)avatárok mutatása a rangsor táblázatokban (ha elérhető)"
+
+#: ../admin/class-football-pool-admin-options.php:245
+msgid "Automatic calculation"
+msgstr "Automatikus számítás"
+
+#: ../admin/class-football-pool-admin-options.php:245
+msgid ""
+"By default the rankings are automatically (re)calculated in the admin. "
+"Change this setting if you want to (temporarily) disable this behaviour."
+msgstr ""
+"Alapbeállításként a rangsorokat automatikusan (újra)számítjuk az adminban. "
+"Változtasd meg ezt a beállítást, ha ezt (átmenetileg) ki szeretnéd kapcsolni."
+
+#: ../admin/class-football-pool-admin-options.php:249
+msgid "Ranking to show"
+msgstr "Mutatandó rangsor "
+
+#: ../admin/class-football-pool-admin-options.php:252
+msgid "Default ranking"
+msgstr "alapértelmezett rengsor"
+
+#: ../admin/class-football-pool-admin-options.php:253
+msgid "Let the user decide"
+msgstr "Felhasználó dönthet"
+
+#: ../admin/class-football-pool-admin-options.php:256
+msgid ""
+"The ranking page and charts page can show different rankings. Use this "
+"setting to decide which ranking to show."
+msgstr ""
+"A rangsor oldal és a grafikonok oldal különböző rangsorokat mutathat. Ezzel "
+"a beállítással kiválaszthatod, melyiket mutatod."
+
+#: ../admin/class-football-pool-admin-options.php:266
+#: ../pages/class-football-pool-ranking-page.php:43
+#: ../pages/class-football-pool-statistics-page.php:73
+msgid "Choose ranking"
+msgstr "rangsor választása"
+
+#: ../admin/class-football-pool-admin-options.php:269
+msgid ""
+"Choose the ranking you want to use on the ranking page and the charts page."
+msgstr ""
+"Válaszd ki melyik rangsort szeretnéd mutatni a rangsor oldalon és a "
+"grafikonok oldalon."
+
+#: ../admin/class-football-pool-admin-options.php:298
+msgid "Points for win"
+msgstr "Győzelemért járó pontszám"
+
+#: ../admin/class-football-pool-admin-options.php:298
+msgid "The points a team gets for a win."
+msgstr "A pontok, amiket egy csapat a győzelemért kap."
+
+#: ../admin/class-football-pool-admin-options.php:300
+msgid "Points for draw"
+msgstr "Döntetlenért járó pontszám"
+
+#: ../admin/class-football-pool-admin-options.php:300
+msgid "The points a team gets for a draw."
+msgstr "A pontok, amiket egy csapat a döntetlenért kap."
+
+#: ../admin/class-football-pool-admin-options.php:302
+msgid "Show photo in team listing"
+msgstr "Fénykép mutatása a csapat-listázásban."
+
+#: ../admin/class-football-pool-admin-options.php:302
+msgid "Show the team's photo on the team listing page (if available)."
+msgstr "A csapat fényképének mutatása a csapat-listázás oldalon (ha elérhető)."
+
+#: ../admin/class-football-pool-admin-options.php:304
+msgid "Show photo in venue listing"
+msgstr "Fénykép mutatása a helyszín-listázásban."
+
+#: ../admin/class-football-pool-admin-options.php:304
+msgid "Show the venue's photo on the team listing page (if available)."
+msgstr ""
+"A helyszín fényképének mutatása a csapat-listázás oldalon (ha elérhető)."
+
+#: ../admin/class-football-pool-admin-options.php:306
+msgid "Show comments in team listing"
+msgstr "Hozzászólások mutatása a csapat-listázásban."
+
+#: ../admin/class-football-pool-admin-options.php:306
+msgid "Show the team's comments on the team listing page (if available)."
+msgstr ""
+"A csapat hozzászólásainak mutatása a csapat-listázás oldalon (ha elérhető)."
+
+#: ../admin/class-football-pool-admin-options.php:308
+msgid "Show comments in venue listing"
+msgstr "Hozzászólások mutatása a helyszín-listázásban."
+
+#: ../admin/class-football-pool-admin-options.php:308
+msgid "Show the venue's comments on the team listing page (if available)."
+msgstr ""
+"A helyszín hozzászólásainak mutatása a csapat-listázás oldalon (ha elérhető)."
+
+#: ../admin/class-football-pool-admin-options.php:312
+msgid "Enable jokers?"
+msgstr "Jokerek bekapcsolása?"
+
+#: ../admin/class-football-pool-admin-options.php:312
+msgid ""
+"When checked the joker is enabled and users can add the joker to one "
+"prediction to multiply the score."
+msgstr ""
+"Ha bepipálod, a joker be van kapcsolva, és a felhasználók hozzáadhatják a "
+"jokert valamelyik fogadásukhoz, hogy megtöbbszörözzék a pontszámot."
+
+#: ../admin/class-football-pool-admin-options.php:314
+#: ../assets/admin/tinymce/tinymce-dialog.php:184
+#: ../widgets/widget-football-pool-ranking.php:16
+msgid "Show number of predictions?"
+msgstr "Fogadások számának mutatása?"
+
+#: ../admin/class-football-pool-admin-options.php:314
+msgid ""
+"When checked the number of predictions (matches and questions) a user saved "
+"is shown on the ranking page. This setting also effects the default value "
+"for the ranking widget and the ranking shortcode (but can be changed with "
+"their parameters)."
+msgstr ""
+"Ha bepipálod, a felhasználó által mentett fogadások száma (mérkőzések és "
+"kérdések) látható a rangsor oldalon. Ez a beállítás befolyásolja a rangsor "
+"kisalkalmazást és a rangsor shortkódot is (de paramétereikkel "
+"megváltoztatható)."
+
+#: ../admin/class-football-pool-admin-options.php:318
+msgid ""
+"If you want to support this plugin, you can buy me an espresso (doppio "
+"please ;))"
+msgstr ""
+"Ha szeretnéd támodatni ezt a plugint, vehetsz nekem egy espresso-t (duplát "
+"légyszi ;))"
+
+#: ../admin/class-football-pool-admin-options.php:321
+#: ../admin/class-football-pool-admin.php:75
+msgid "Plugin Options"
+msgstr "Plugin opciók"
+
+#: ../admin/class-football-pool-admin-options.php:324
+#: ../admin/class-football-pool-admin.php:982
+#: ../admin/class-football-pool-admin.php:990
+msgid "Recalculate Scores"
+msgstr "Pontszámok újrszámítása"
+
+#: ../admin/class-football-pool-admin-options.php:366
+msgid "plugin options changed"
+msgstr "plugin opciók megváltoztatva"
+
+#: ../admin/class-football-pool-admin-options.php:370
+#: ../admin/class-football-pool-admin-teams-position.php:14
+#: ../admin/class-football-pool-admin-users.php:76
+#: ../classes/class-football-pool-pool.php:831
+msgid "Changes saved."
+msgstr "Mentett változások."
+
+#: ../admin/class-football-pool-admin-options.php:375
+#: ../classes/class-football-pool.php:568
+#, php-format
+msgid ""
+"Charts are enabled but Highcharts API was not found! See <a href=\"%s\">Help "
+"page</a> for details."
+msgstr ""
+"Grafikonok bekacsolva, de Highcharts API nem található! Részletekért lásd <a "
+"href=\"%s\">Súgó oldal</a>."
+
+#: ../admin/class-football-pool-admin-options.php:378
+msgid ""
+"If values in the fields marked with an asterisk are left empty, then the "
+"plugin will default to the initial values."
+msgstr ""
+"Ha a csillaggal jelölt mezőkbe nem írsz be értéket, a plugin a kezdeti "
+"értékekhez tér vissza."
+
+#: ../admin/class-football-pool-admin-options.php:380
+msgid "Ranking Options"
+msgstr "Rangsor opciók"
+
+#: ../admin/class-football-pool-admin-options.php:397
+msgid "Prediction Options"
+msgstr "Fogadás opciók"
+
+#: ../admin/class-football-pool-admin-options.php:415
+msgid "League Options"
+msgstr "Liga opciók"
+
+#: ../admin/class-football-pool-admin-options.php:426
+msgid "Pool Layout Options"
+msgstr "tippjáték  nézet opciók"
+
+#: ../admin/class-football-pool-admin-options.php:443
+msgid "Groups Page Options"
+msgstr "Csoportok oldal opciók"
+
+#: ../admin/class-football-pool-admin-options.php:452
+msgid "Other Options"
+msgstr "További opciók"
+
+#: ../admin/class-football-pool-admin-options.php:467
+msgid "Shortcodes"
+msgstr "Shortkódok"
+
+#: ../admin/class-football-pool-admin-rankings.php:10
+msgid ""
+"<p>On this page you can add, change or delete custom rankings.</p><p>A "
+"ranking is calculated for the total points scored for the matches and/or "
+"bonus questions in the ranking. Change the matches and bonus questions for a "
+"ranking via the <em>'Ranking composition'</em> link beneath the ranking name."
+"</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz saját "
+"rangsorokat.</p><p>A rangsort a mérkőzésekért és/vagy a bónusz kérdésekért "
+"kapot pontszámok alapján számítjuk. A rangsor számításához használt "
+"mérkőzéseket és bónusz kérdéseket megváltoztathatod a rangsor neve alatti "
+"<em>'Rangsor összeállítás'</em> link által.</p>"
+
+#: ../admin/class-football-pool-admin-rankings.php:14
+msgid "Log"
+msgstr "Napló"
+
+#: ../admin/class-football-pool-admin-rankings.php:15
+msgid ""
+"<p>The log shows actions in the plugin that may have an affect on a  "
+"particular ranking (e.g. when a score is entered for a match). If a ranking "
+"shows a log you may want to consider doing a recalculation of that ranking.</"
+"p><p>Log is only effective when <em>Automatic Calculation</em> is off</p>"
+msgstr ""
+"<p>A napló olyan műveleteket mutat a pluginban, melyek befolyásal lehetnek "
+"egyes rangsorokra (pl. amikor egy mérkőzés eredményét beírjuk). Ha egy "
+"rangsornál naplót látunk, érdemes megnézni, hogy szükség van-e a rangsor "
+"újraszámítására. </p><p>A napló csak akkor működik, ha az <em>Automatikus "
+"számítás</em> ki van kapcsolva</p>"
+
+#: ../admin/class-football-pool-admin-rankings.php:26
+msgid "User defined rankings"
+msgstr "Felhasználó által meghatározott rangsorok"
+
+#: ../admin/class-football-pool-admin-rankings.php:53
+msgid "Ranking saved."
+msgstr "Rangsor mentve."
+
+#: ../admin/class-football-pool-admin-rankings.php:60
+#: ../admin/class-football-pool-admin-rankings.php:271
+msgid "Save & Define"
+msgstr "Ment & meghatároz"
+
+#: ../admin/class-football-pool-admin-rankings.php:71
+#, php-format
+msgid "Ranking id:%s deleted."
+msgstr "Rangsor id:%s törölve."
+
+#: ../admin/class-football-pool-admin-rankings.php:75
+#, php-format
+msgid "%s rankings deleted."
+msgstr "%s rangsor(ok) törölve."
+
+#: ../admin/class-football-pool-admin-rankings.php:88
+msgid "Definition of"
+msgstr "Meghatározás:"
+
+#: ../admin/class-football-pool-admin-rankings.php:90
+#: ../classes/class-football-pool-groups.php:327
+#: ../classes/class-football-pool.php:3
+#: ../pages/class-football-pool-pool-page.php:42
+#: ../pages/class-football-pool-stadiums-page.php:25
+#: ../pages/class-football-pool-teams-page.php:65
+msgid "matches"
+msgstr "mérkőzések"
+
+#: ../admin/class-football-pool-admin-rankings.php:93
+#: ../pages/class-football-pool-pool-page.php:50
+#: ../pages/class-football-pool-user-page.php:47
+msgid "bonus questions"
+msgstr "bónusz kérdések"
+
+#: ../admin/class-football-pool-admin-rankings.php:105
+msgid "Not a valid ranking."
+msgstr "A angsor nem érvényes."
+
+#: ../admin/class-football-pool-admin-rankings.php:134
+msgid "no questions found"
+msgstr "kérdés nem található"
+
+#: ../admin/class-football-pool-admin-rankings.php:183
+msgid "no matches found"
+msgstr "mérkőzés nem található"
+
+#: ../admin/class-football-pool-admin-rankings.php:209
+msgid "matches added or removed from ranking"
+msgstr "mérkőzések hozzáadása vagy eltávolítása a rangsorolásban"
+
+#: ../admin/class-football-pool-admin-rankings.php:239
+msgid "questions added or removed from ranking"
+msgstr "kérdések hozzáadása vagy eltávolítása a rangsorolásban"
+
+#: ../admin/class-football-pool-admin-rankings.php:313
+msgid "show more"
+msgstr "több mutatása"
+
+#: ../admin/class-football-pool-admin-rankings.php:349
+#: ../classes/class-football-pool.php:9
+msgid "ranking"
+msgstr "rangsor"
+
+#: ../admin/class-football-pool-admin-rankings.php:350
+msgid "log"
+msgstr "napló"
+
+#: ../admin/class-football-pool-admin-rankings.php:351
+msgid "calculate"
+msgstr "számítás"
+
+#: ../admin/class-football-pool-admin-rankings.php:358
+#: ../admin/class-football-pool-admin-rankings.php:365
+msgid "Recalculate this ranking"
+msgstr "Számítsd újra ezt a rangsort"
+
+#: ../admin/class-football-pool-admin-rankings.php:382
+msgid "You are about to delete one or more rankings."
+msgstr "Törlöd: egy vagy több rangsort."
+
+#: ../admin/class-football-pool-admin-rankings.php:383
+msgid "Ranking composition"
+msgstr "Rangsor összeállítás"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:72
+#, php-format
+msgid "(users %d - %d of %d)"
+msgstr "(%d - %d a %d felhasználóból)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:81
+#, php-format
+msgid "(step %d)"
+msgstr "(lépés %d)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:85
+msgid "empty ranking table"
+msgstr "üres rangsor táblázat"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:86
+#, php-format
+msgid "check user predictions with actual results %s"
+msgstr "felhasználó fogadásainak összevetése a valódi eredményekkel %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:88
+#, php-format
+msgid "update score with points %s"
+msgstr "pontszám frissítése ennyi ponttal: %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:90
+#, php-format
+msgid "add bonus question points %s"
+msgstr "bónusz kérdésért járó pontok %s hozzáadása"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:92
+#, php-format
+msgid "ranking %d: update total score incrementally %s"
+msgstr "rangsor %d: összpontszám fokozatos frissítése %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:94
+#, php-format
+msgid "ranking %d: update ranking for users %s"
+msgstr "rangsor %d: rangsor felhasználók szerinti frissítése %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:96
+#, php-format
+msgid "ranking %d: calculate user ranking %s"
+msgstr "rangsor %d: felhasználó rangsor számítása %s"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:98
+msgid "score (re)calculation finished"
+msgstr "pontszám (újra)számítása befejezve"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:101
+msgid "Score (re)calculation"
+msgstr "pontszám (újra)számítása "
+
+#: ../admin/class-football-pool-admin-score-calculation.php:147
+msgid "Please do not interrupt this process."
+msgstr "Kérjük ne szakítsd meg a folyamatot."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:149
+msgid "Sit back and relax, this may take a while :-)"
+msgstr "Dőlj hátra és lazíts, ez eltarthat egy ideig :-)"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:173
+msgid "You are about to recalculate the score table for the plugin."
+msgstr "Újraszámítod: pontszám táblázat a pluginban."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:179
+msgid "Smart calculation"
+msgstr "gyors számítás"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:180
+msgid ""
+"A smart calculation tries to determine which rankings need an update. A "
+"smart calculation will in most cases be faster than a full calculation."
+msgstr ""
+"A gyors számítás megpróbálja meghatározni, mely rangsorokat kell frissíteni. "
+"A legtöbb esetben a gyors számítás gyorsabb mint a teljes számítás. "
+
+#: ../admin/class-football-pool-admin-score-calculation.php:185
+msgid "Full calculation"
+msgstr "Teljes számítás"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:186
+msgid ""
+"A full calculation recalculates all rankings. If you want to be absolutely "
+"sure everything is recalculated, choose this option."
+msgstr ""
+"A teljes számítás az összes rangsort újrszámítja. Akkor válaszd ezt az "
+"opciót, ha teljesen biztos szeretnél lenni abban, hogy minden újraszámítás "
+"megtörtént."
+
+#: ../admin/class-football-pool-admin-score-calculation.php:193
+#: ../admin/class-football-pool-admin-score-calculation.php:197
+msgid "Continue"
+msgstr "Folytatás"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:206
+#: ../admin/class-football-pool-admin.php:1141
+#: ../assets/admin/tinymce/tinymce-dialog.php:568
+msgid "Cancel"
+msgstr "Mégse"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:545
+msgid "Step"
+msgstr "Lépés"
+
+#: ../admin/class-football-pool-admin-score-calculation.php:547
+#: ../classes/class-football-pool.php:367
+msgid ""
+"Something went wrong while (re)calculating the scores. Please check if "
+"TRUNCATE/DROP or DELETE rights are available at the database and try again."
+msgstr ""
+"A pontszámok (újra)számítása közben hiba történt. Ellenőrizd hogy a TRUNCATE/"
+"DROP vagy DELETE"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:10
+msgid ""
+"<p>On this page you can add, change or delete shoutbox messages. Shoutbox "
+"messages are displayed in the plugin's Shoutbox widget.</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz shoutbox "
+"üzeneteket. A shoutbox üzenetej a plugin Shoutbox kisalkalmazásában jelennek "
+"meg.</p>"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:19
+#: ../admin/class-football-pool-admin.php:123
+msgid "Shoutbox"
+msgstr "Shoutbox"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:33
+msgid "Message saved."
+msgstr "Üzenet mentve."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:45
+#, php-format
+msgid "Message id:%s deleted."
+msgstr "Üzenet id:%s törölve."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:49
+#, php-format
+msgid "%s messages deleted."
+msgstr "%s üzenet(ek) törölve."
+
+#: ../admin/class-football-pool-admin-shoutbox.php:64
+#: ../assets/admin/tinymce/tinymce-dialog.php:195
+#: ../assets/admin/tinymce/tinymce-dialog.php:283
+#: ../assets/admin/tinymce/tinymce-dialog.php:336
+msgid "now"
+msgstr "most"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:74
+#: ../admin/class-football-pool-admin-shoutbox.php:98
+msgid "message"
+msgstr "üzenet"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:75
+#: ../admin/class-football-pool-admin-shoutbox.php:99
+msgid "time"
+msgstr "idő"
+
+#: ../admin/class-football-pool-admin-shoutbox.php:112
+msgid "You are about to delete one or more shoutbox messages."
+msgstr "Törlöd: egy vagy több shoutbox üzenetet."
+
+#: ../admin/class-football-pool-admin-stadiums.php:10
+msgid "<p>On this page you can add, change or delete venues.</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz "
+"helyszíneket.</p>"
+
+#: ../admin/class-football-pool-admin-stadiums.php:19
+#: ../admin/class-football-pool-admin.php:150
+msgid "Venues"
+msgstr "Helyszínek"
+
+#: ../admin/class-football-pool-admin-stadiums.php:33
+msgid "Venue saved."
+msgstr "Helyszín mentve."
+
+#: ../admin/class-football-pool-admin-stadiums.php:45
+#, php-format
+msgid "Venue id:%s deleted."
+msgstr "Helyszín  id:%s törölve."
+
+#: ../admin/class-football-pool-admin-stadiums.php:49
+#, php-format
+msgid "%s venues deleted."
+msgstr "%s helyszín(ek) törölve."
+
+#: ../admin/class-football-pool-admin-stadiums.php:71
+#: ../admin/class-football-pool-admin-stadiums.php:120
+#: ../admin/class-football-pool-admin-teams.php:118
+#: ../pages/class-football-pool-teams-page.php:57
+msgid "photo"
+msgstr "fénykép"
+
+#: ../admin/class-football-pool-admin-stadiums.php:72
+#: ../admin/class-football-pool-admin-teams.php:121
+msgid "comments"
+msgstr "hozzászólások"
+
+#: ../admin/class-football-pool-admin-stadiums.php:72
+msgid ""
+"An optional text with extra information about the venue that is displayed on "
+"the venue's page."
+msgstr ""
+"Egy opcionális szöveg, mely extra információkat tartalmaz a helyszínről, és "
+"annak oldalán jelenik meg."
+
+#: ../admin/class-football-pool-admin-stadiums.php:119
+msgid "venue"
+msgstr "helyszín"
+
+#: ../admin/class-football-pool-admin-stadiums.php:121
+msgid "venue nr"
+msgstr "helyszín no."
+
+#: ../admin/class-football-pool-admin-stadiums.php:134
+msgid "You are about to delete one or more venues."
+msgstr "Törlöd: egy vagy több helyszínt."
+
+#: ../admin/class-football-pool-admin-teams-position.php:6
+#: ../admin/class-football-pool-admin-teams.php:24
+#: ../admin/class-football-pool-admin.php:132
+msgid "Teams"
+msgstr "Csapatok"
+
+#: ../admin/class-football-pool-admin-teams-position.php:17
+msgid ""
+"The first column contains a value that can be used for the ranking of teams "
+"in a group (Group Stage). In most cases the plugin will calculate this "
+"position automatically based on the results in the tournament. If two teams "
+"end up on the same position, even after considering all the tournament, then "
+"extra data is needed. Data this plugin doesn't have. You can manually tweak "
+"the last sort parameter here."
+msgstr ""
+"Az első oszlopban lévő értéket a csapatok rangsorolására használhatjuk egy "
+"csoporton belül (csoport-mérkőzések). Az esetek többségében a plugin "
+"automatikusan számítja ki ezt a helyezést, a versenysorozat eredményei "
+"alapján. Ha két csapat ugyanazon a helyen végez, a teljes versenysorozat "
+"lejátszása után is, extra adatok szükségesek, olyan adatok, melyeket ez a "
+"plugin nem tartalmaz. Itt manuálisan bevihető az utolsó osztályozó paraméter."
+
+#: ../admin/class-football-pool-admin-teams-position.php:18
+msgid "The start value is the position at the start of the tournament."
+msgstr "A kezdő érték a versenysorozat kezdetekori helyezés."
+
+#: ../admin/class-football-pool-admin-teams.php:10
+msgid ""
+"<p>On this page you can add, change or delete teams.</p><p>Only "
+"<em>'Active'</em> teams are shown on the teams page in the blog. The "
+"<em>'real'</em> column indicates if the team is a real team in the "
+"tournament or a temporary placeholder for a match that is not yet set (e.g. "
+"Winner Group A).</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz, megváltoztathatsz vagy törölhetsz "
+"csapatokat. </p><p>A blogban csak az <em>'Aktív'</em> csapatok jelennek meg "
+"a csapat oldalon. A <em>'valós'</em> oszlop azt jelzi, hogy a csapat egy "
+"valós csapat a versenysorozatban vagy egy ideiglenes \"helyőrző\" egy "
+"mérkőzésre, ahol a résztvevő felek kiléte még nem dőlt el. (pl. A-"
+"Csoportgyőztes).</p>"
+
+#: ../admin/class-football-pool-admin-teams.php:14
+msgid "Team details"
+msgstr "Csapat részletek"
+
+#: ../admin/class-football-pool-admin-teams.php:15
+msgid ""
+"<ul><li><em>photo</em> is used on the team page.</li><li><em>flag</em> is "
+"used in the standing table and the match overview.</li><li>If <em>link</em> "
+"is filled the team name on the team's page will link to this address.</"
+"li><li>The <em>comments</em> field can be used to add some extra info about "
+"the team. The info is shown on the team's page.</li></ul>"
+msgstr ""
+"<ul><li><em>fénykép</em>: a csapat oldalon használva.</li><li><em>zászló</"
+"em>: az állás táblázatban és a mérkőzés összefoglalóban használva.</"
+"li><li>Ha a <em>link</em> ki van töltve, a csapatnév a csapot oldalán erre a "
+"címre fog vezetni. </li><li>A <em>hozzászólások</em> mező által extra "
+"információt adhatunk hozzá a csapatról. Az információ a csapat oldalán "
+"jelenik meg.</li></ul>"
+
+#: ../admin/class-football-pool-admin-teams.php:25
+msgid "Add, change or delete teams."
+msgstr "Csapatok hozzáadása, megváltoztatása vagy törlése."
+
+#: ../admin/class-football-pool-admin-teams.php:26
+msgid ""
+"If you delete a team all matches for the team and predictions for those "
+"matches are also deleted. After a delete action the scores in the pool are "
+"recalculated."
+msgstr ""
+"Ha törölsz egy csapatot, a csapat összes mérkőzése és az azokra érkezett "
+"fogadások is törlődnek. Törlési művelet után a tippjáték  pontjait "
+"újraszámítjuk."
+
+#: ../admin/class-football-pool-admin-teams.php:42
+#, php-format
+msgid "Team %d activated."
+msgstr "Csapat %d aktiválva."
+
+#: ../admin/class-football-pool-admin-teams.php:44
+#, php-format
+msgid "Team %d deactivated."
+msgstr "Csapat %d deaktiválva."
+
+#: ../admin/class-football-pool-admin-teams.php:51
+#, php-format
+msgid "%d teams activated."
+msgstr "%d csapat aktiválva."
+
+#: ../admin/class-football-pool-admin-teams.php:53
+#, php-format
+msgid "%d teams deactivated."
+msgstr "%d csapat deaktiválva."
+
+#: ../admin/class-football-pool-admin-teams.php:65
+msgid "Team saved."
+msgstr "Csapat mentve."
+
+#: ../admin/class-football-pool-admin-teams.php:77
+#, php-format
+msgid "Team id:%s deleted."
+msgstr "Csapat id:%s törölve."
+
+#: ../admin/class-football-pool-admin-teams.php:81
+#, php-format
+msgid "%s teams deleted."
+msgstr "%s csapat(ok) törölve."
+
+#: ../admin/class-football-pool-admin-teams.php:118
+#: ../admin/class-football-pool-admin-teams.php:119
+#, php-format
+msgid ""
+"Image path must be a full URL to the image. Or a path relative to %s in the "
+"plugin directory"
+msgstr ""
+"A kép elérési útja  egy teljes URL kell legyen a képhez. Vagy egy, a %s-hoz "
+"kapcsolódó elérési út a plugin könyvtárban"
+
+#: ../admin/class-football-pool-admin-teams.php:119
+msgid "flag"
+msgstr "zászló"
+
+#: ../admin/class-football-pool-admin-teams.php:120
+msgid "link"
+msgstr "link"
+
+#: ../admin/class-football-pool-admin-teams.php:120
+msgid ""
+"A link to a website with information about the team. Used on the team page "
+"in de plugin."
+msgstr ""
+"A csapartól szóló információkkat tartalmazó weboldalra vezető link. A "
+"pluginban lévő csapat oldalon alkalmazható."
+
+#: ../admin/class-football-pool-admin-teams.php:121
+msgid ""
+"An optional text with extra information about the team that is displayed on "
+"the team's page."
+msgstr ""
+"Egy opcionális szöveg, mely extra információkat tartalmaz a csapartól, és "
+"annak oldalán jelenik meg."
+
+#: ../admin/class-football-pool-admin-teams.php:123
+msgid "group order"
+msgstr "csoport sorrend"
+
+#: ../admin/class-football-pool-admin-teams.php:123
+msgid ""
+"If teams are placed in a group and the default ordering does not work (when "
+"teams have the same points) you can fix the ordering with this number."
+msgstr ""
+"Ha a csapatok egy csoportban szerepelnek, és az alapértelmezett sorrendbe "
+"rendezés nem működik (amikor a csapatok ugyanannyi pontszámmal "
+"rendelkeznek), ezzel a számmal kijavíthatod a sorrendet."
+
+#: ../admin/class-football-pool-admin-teams.php:124
+msgid "team is not a temporary team name"
+msgstr "A csapat nem egy átmeneti csapatnév"
+
+#: ../admin/class-football-pool-admin-teams.php:124
+msgid ""
+"Uncheck this box if the team is not a real team, e.g. \"Winner match 30\"."
+msgstr ""
+"Vedd ki a pipát, ha csapat nem egy valós csapat, pl. \"Meccs 30 győztese\"."
+
+#: ../admin/class-football-pool-admin-teams.php:125
+msgid "team is active"
+msgstr "a csapat aktív"
+
+#: ../admin/class-football-pool-admin-teams.php:141
+msgid "team"
+msgstr "csapat"
+
+#: ../admin/class-football-pool-admin-teams.php:142
+msgid "active"
+msgstr "aktív"
+
+#: ../admin/class-football-pool-admin-teams.php:143
+msgid "real team"
+msgstr "valós csapat"
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "Activate team(s)"
+msgstr "csapat(ok) aktiválása"
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "You are about to activate one or more teams."
+msgstr "Aktiválod: egy vagy több csapatot."
+
+#: ../admin/class-football-pool-admin-teams.php:156
+msgid "Are you sure? `OK` to activate, `Cancel` to stop."
+msgstr "Biztos vagy benne? `OK` igen, `Mégse` nem."
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "Deactivate team(s)"
+msgstr "csapat(ok) deaktiválása"
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "You are about to deactivate one or more teams."
+msgstr "Deaktiválod: egy vagy több csapatot."
+
+#: ../admin/class-football-pool-admin-teams.php:157
+msgid "Are you sure? `OK` to deactivate, `Cancel` to stop."
+msgstr "Biztos vagy benne? `OK` igen, `Mégse` nem."
+
+#: ../admin/class-football-pool-admin-teams.php:158
+msgid "You are about to delete one or more teams."
+msgstr "Trölöd: egy vagy több csapatot."
+
+#: ../admin/class-football-pool-admin-users.php:10
+msgid ""
+"<p>On this page you can add or remove users from the pool.</p><p>Use the "
+"bulk actions to add or remove more players at once.</p>"
+msgstr ""
+"<p>Ezen az oldalon hozzáadhatsz vagy eltávolíthatsz felhasználókat a "
+"tippjátékból.</p><p>Használd a csoportos műveleteket, ha egyszerre több "
+"felhasználót szeretnél hozzáadni vagy eltávolítani.</p>"
+
+#: ../admin/class-football-pool-admin-users.php:15
+msgid ""
+"<p>The plugin can use leagues (a league is a group of players in your pool) "
+"to group players together. If you are using leagues in the pool an admin has "
+"to acknowledge the league for which a player subscribed.</p><p>The "
+"<em>'plays in league'</em> column shows the league where the user is "
+"currently added to; you may change that value. The column <em>'registered "
+"for league'</em> shows the league the user wants to play in (the user chose "
+"this value upon subscribing for the pool).</p>"
+msgstr ""
+"<p>A plugin ligákat használhat arra (a liga a tippjátékodban résztvevő "
+"játékosok egy csoportja), hogy játékosokat tegyen össze egy csoportba. Ha "
+"ligákat használsz a tippjátékban, egy adminnak  el kell fogadnia, amikor egy "
+"játékos feliratkozik egy ligára.</p><p>Az <em>'ebben a ligában játszik'</em> "
+"oszlop megmutatja, hogy a felhasználó jelenleg melyik ligához van hozzáadva; "
+"ezt az értéket akár meg is változtathatod. A <em>'regisztrált erre a "
+"ligára'</em> oszlop megmutatja, melyik ligában akar játszani a felhasználó "
+"(a felhasználó a tippjátékra való feliratkozáskor választotta ezt az "
+"értéket).</p>"
+
+#: ../admin/class-football-pool-admin-users.php:19
+msgid "Other options"
+msgstr "További opciók"
+
+#: ../admin/class-football-pool-admin-users.php:20
+msgid ""
+"<p>The <em>'payed?'</em> option has no function in the pool, but can be a "
+"help for the admin to remember which of the players have payed if you are "
+"using a fee for competing in the pool.</p>"
+msgstr ""
+"<p>A <em>fizetett?'</em> opciónak nincs szerepe a tippjátékban, de segíthet "
+"az adminnak észben tartani, melyik  játékos fizetett, ha díjat szabtál meg a "
+"tippjátékban való részvételért.</p>"
+
+#: ../admin/class-football-pool-admin-users.php:25
+msgid "Change league settings"
+msgstr "Liga beállítások megváltoztatása"
+
+#: ../admin/class-football-pool-admin-users.php:26
+msgid "Help section about players"
+msgstr "Játékosok súgó"
+
+#: ../admin/class-football-pool-admin-users.php:27
+msgid "Help section about leagues"
+msgstr "Ligák súgó"
+
+#: ../admin/class-football-pool-admin-users.php:35
+#: ../admin/class-football-pool-admin-users.php:45
+#: ../admin/class-football-pool-admin-users.php:477
+#: ../admin/class-football-pool-admin.php:96
+msgid "Users"
+msgstr "Felhasználók"
+
+#: ../admin/class-football-pool-admin-users.php:44
+#: ../admin/class-football-pool-admin.php:63
+#: ../admin/class-football-pool-admin.php:64
+#: ../classes/class-football-pool.php:567
+msgid "Football Pool"
+msgstr "Foci tippjáték "
+
+#: ../admin/class-football-pool-admin-users.php:51
+msgid ""
+"You are using leagues. To exclude users from the pool you have to take them "
+"out of any league."
+msgstr ""
+"Ligákat használsz. A felhasználók tippjátékból való kizárásához ki kell "
+"vegyed őket valamennyi ligából."
+
+#: ../admin/class-football-pool-admin-users.php:53
+msgid "To exclude users tick the appropiate column"
+msgstr "A felhasználók kizárásához pipáld be a megfelelő oszlopot"
+
+#: ../admin/class-football-pool-admin-users.php:63
+msgid "Save Changes"
+msgstr "Változtatások mentése."
+
+#: ../admin/class-football-pool-admin-users.php:83
+#, php-format
+msgid "%s deleted as a user."
+msgstr "%s törölve mint felhasználó."
+
+#: ../admin/class-football-pool-admin-users.php:87
+#, php-format
+msgid "%d users removed as user."
+msgstr "%d felhasználó eltávolítva mint felhasználó."
+
+#: ../admin/class-football-pool-admin-users.php:98
+#, php-format
+msgid "%s added as a user."
+msgstr "%s felhasználó hozzáadva."
+
+#: ../admin/class-football-pool-admin-users.php:102
+#, php-format
+msgid "%d users added as user."
+msgstr "%d felhasználó hozzáadva mint felhasználó."
+
+#: ../admin/class-football-pool-admin-users.php:146
+#: ../admin/class-football-pool-admin-users.php:485
+msgid "unknown"
+msgstr "ismeretlen"
+
+#: ../admin/class-football-pool-admin-users.php:188
+msgid "plays in league"
+msgstr "ebben a ligában játszik"
+
+#: ../admin/class-football-pool-admin-users.php:189
+msgid "registered for league"
+msgstr "regisztrált erre a ligára"
+
+#: ../admin/class-football-pool-admin-users.php:191
+msgid "not a user in the pool"
+msgstr "a tippjátékban nem felhasználó"
+
+#: ../admin/class-football-pool-admin-users.php:193
+msgid "payed?"
+msgstr "fizetett?"
+
+#: ../admin/class-football-pool-admin-users.php:213
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: ../admin/class-football-pool-admin-users.php:214
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: ../admin/class-football-pool-admin-users.php:215
+msgid "Add to football pool"
+msgstr "Hozzáadás a foci tippjátékhoz"
+
+#: ../admin/class-football-pool-admin-users.php:215
+msgid "You are about to add one or more users to the pool."
+msgstr "Hozzáadod: egy vagy több felhasználót a tippjátékhoz"
+
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "Remove from football pool"
+msgstr "Eltávolítás a foci tippjátékhoz"
+
+#: ../admin/class-football-pool-admin-users.php:216
+msgid "You are about to remove one or more users from the pool."
+msgstr "Eltávolítod: egy vagy több felhasználót a tippjátékból."
+
+#: ../admin/class-football-pool-admin-users.php:224
+msgid "List player email addresses"
+msgstr "játékosok email-címeinek listázása"
+
+#: ../admin/class-football-pool-admin-users.php:238
+msgid "Email addresses"
+msgstr "email-címek"
+
+#: ../admin/class-football-pool-admin-users.php:243
+msgid "Player"
+msgstr "Játékos"
+
+#: ../admin/class-football-pool-admin-users.php:250
+msgid "Not a player"
+msgstr "nem játékos"
+
+#: ../admin/class-football-pool-admin-users.php:301
+#, php-format
+msgid "user %d removed from pool"
+msgstr "felhasználó%d eltávolítva a tippjátékból"
+
+#: ../admin/class-football-pool-admin-users.php:399
+#: ../admin/class-football-pool-admin.php:832
+msgid "no data"
+msgstr "nincs adat"
+
+#: ../admin/class-football-pool-admin-users.php:474
+#: ../classes/class-football-pool.php:465
+msgid "Play in league"
+msgstr "ligában játszik "
+
+#: ../admin/class-football-pool-admin-users.php:477
+msgid ""
+"<strong>Important:</strong> An administrator can change users in the "
+"plugin's admin page for"
+msgstr ""
+"<strong>Fontos:</strong> Egy adminisztrátor megváltoztathatja a "
+"felhasználókat a plugin admin oldalán"
+
+#: ../admin/class-football-pool-admin-users.php:488
+msgid "The webmaster put you in this league"
+msgstr "A webmester ebbe a ligába tett"
+
+#: ../admin/class-football-pool-admin-users.php:491
+msgid ""
+"if this value is different from the one you entered on registration, then "
+"the webmaster did not approve it yet."
+msgstr ""
+"ha ez az érték eltér attól, amit a regisztrációkor megadtál, akkor a "
+"webmester még nem fogadta el."
+
+#: ../admin/class-football-pool-admin-users.php:496
+msgid "Status for user"
+msgstr "Felhasználó státusza"
+
+#: ../admin/class-football-pool-admin-users.php:499
+msgid ""
+"Extra meta information for the user. If filled this will be shown behind the "
+"user's name on the ranking page and ranking shortcode."
+msgstr ""
+"Extra meta-információ a felhasználó számára. He kitöltöd, ez meg fog jelenni "
+"a felhasználó neve után a rangsor oldalon és rangsor shortkódon."
+
+#: ../admin/class-football-pool-admin-users.php:527
+#, php-format
+msgid "user %d deleted from blog"
+msgstr "felhasználó %d törölve a blogból"
+
+#: ../admin/class-football-pool-admin.php:74
+msgid "Football Pool Options"
+msgstr "Foci tippjáték  opciók"
+
+#: ../admin/class-football-pool-admin.php:95
+msgid "Edit users"
+msgstr "Felhasználók szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:104
+msgid "Edit matches"
+msgstr "Mérkőzések szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:113
+msgid "Edit bonus questions"
+msgstr "Bónusz kérdések szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:114
+msgid "Questions"
+msgstr "Kérdések"
+
+#: ../admin/class-football-pool-admin.php:122
+msgid "Edit shoutbox"
+msgstr "Shoutbox szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:131
+msgid "Edit teams"
+msgstr "Csapatok szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:149
+msgid "Edit venues"
+msgstr "Helyszínek szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:158
+msgid "Edit leagues"
+msgstr "Ligák szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:167
+msgid "Edit rankings"
+msgstr "Rangsorok szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:168
+msgid "Rankings"
+msgstr "Rangsorok"
+
+#: ../admin/class-football-pool-admin.php:176
+msgid "Edit match types"
+msgstr "Mérkőzés-típusok szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:185
+msgid "Edit groups"
+msgstr "Csoportok szerkesztése"
+
+#: ../admin/class-football-pool-admin.php:245
+msgid "Settings"
+msgstr "Beállítások"
+
+#: ../admin/class-football-pool-admin.php:269
+#: ../admin/class-football-pool-admin.php:350
+msgid "Choose Image"
+msgstr "Kép választása"
+
+#: ../admin/class-football-pool-admin.php:721
+msgid "For more information:"
+msgstr "További informácikért:"
+
+#: ../admin/class-football-pool-admin.php:757
+msgid "Add New"
+msgstr "Új hozzáadása"
+
+#: ../admin/class-football-pool-admin.php:850
+msgid "yes"
+msgstr "igen"
+
+#: ../admin/class-football-pool-admin.php:851
+msgid "no"
+msgstr "nem"
+
+#: ../admin/class-football-pool-admin.php:1173
+msgid "Use Image"
+msgstr "Kép használata"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:45
+#: ../assets/admin/tinymce/tinymce-dialog.php:122
+#: ../assets/admin/tinymce/tinymce-dialog.php:438
+#: ../assets/admin/tinymce/tinymce-dialog.php:458
+#: ../assets/admin/tinymce/tinymce-dialog.php:496
+msgid "Select a shortcode"
+msgstr "Shortkód választása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:110
+msgid "Pool"
+msgstr "tippjáték "
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:111
+msgid "Options"
+msgstr "Opciók"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:112
+msgid "Links"
+msgstr "Linkek"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:113
+msgid "Other"
+msgstr "További"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:125
+#: ../widgets/widget-football-pool-ranking.php:13
+msgid "Ranking"
+msgstr "Rangsor"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:126
+msgid "Predictions for match or question"
+msgstr "Fogadások mérkőzésre vagy kérdésre"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:127
+msgid "Score for a user"
+msgstr "Felhasználó pontszáma"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:128
+msgid "Ranking for a user"
+msgstr "Felhasználó helyezése"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:129
+msgid "Group"
+msgstr "Csoport"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:130
+msgid "Prediction form"
+msgstr "Fogadási ív"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:137
+#: ../assets/admin/tinymce/tinymce-dialog.php:257
+#: ../assets/admin/tinymce/tinymce-dialog.php:310
+msgid "Select a ranking"
+msgstr "Rangsor választása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:141
+#: ../assets/admin/tinymce/tinymce-dialog.php:158
+#: ../assets/admin/tinymce/tinymce-dialog.php:241
+#: ../assets/admin/tinymce/tinymce-dialog.php:261
+#: ../assets/admin/tinymce/tinymce-dialog.php:294
+#: ../assets/admin/tinymce/tinymce-dialog.php:314
+#: ../assets/admin/tinymce/tinymce-dialog.php:526
+msgid "default"
+msgstr "alapértelmezett"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:142
+#: ../assets/admin/tinymce/tinymce-dialog.php:262
+#: ../assets/admin/tinymce/tinymce-dialog.php:315
+msgid "all scores"
+msgstr "összes pontszám"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:144
+#: ../assets/admin/tinymce/tinymce-dialog.php:264
+#: ../assets/admin/tinymce/tinymce-dialog.php:317
+msgid "or choose a user defined ranking"
+msgstr "vagy válassz egy felhasználó által meghatározott rangsort"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:154
+msgid "Select a league"
+msgstr "Liga kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:159
+msgid "all players"
+msgstr "összes játékos"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:161
+msgid "or choose a league"
+msgstr "vagy válassz egy ligát"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:176
+msgid "Number of players"
+msgstr "Játékosok száma"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:192
+#: ../assets/admin/tinymce/tinymce-dialog.php:280
+#: ../assets/admin/tinymce/tinymce-dialog.php:333
+#: ../assets/admin/tinymce/tinymce-dialog.php:514
+msgid "information about PHP's date format"
+msgstr "információ a PHP dátum formátumról"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:192
+#: ../assets/admin/tinymce/tinymce-dialog.php:280
+#: ../assets/admin/tinymce/tinymce-dialog.php:333
+#: ../assets/admin/tinymce/tinymce-dialog.php:509
+#: ../assets/admin/tinymce/tinymce-dialog.php:514
+msgid "Date"
+msgstr "Dátum"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:196
+#: ../assets/admin/tinymce/tinymce-dialog.php:284
+#: ../assets/admin/tinymce/tinymce-dialog.php:337
+msgid "postdate"
+msgstr "későbbre keltez"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:197
+#: ../assets/admin/tinymce/tinymce-dialog.php:285
+#: ../assets/admin/tinymce/tinymce-dialog.php:338
+msgid "custom date"
+msgstr "saját dátum"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:202
+#: ../assets/admin/tinymce/tinymce-dialog.php:508
+#: ../assets/admin/tinymce/tinymce-dialog.php:522
+msgid "Match"
+msgstr "Mérkőzés"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:206
+msgid "Select a match"
+msgstr "Mérkőzés kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:212
+msgid "and/or"
+msgstr "és/vagy"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:216
+msgid "Question"
+msgstr "Kérdés"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:220
+msgid "Select a question"
+msgstr "Kérdés kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:229
+#: ../assets/admin/tinymce/tinymce-dialog.php:272
+#: ../assets/admin/tinymce/tinymce-dialog.php:325
+msgid "Text"
+msgstr "Szöveg"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:232
+msgid "Text to display if there is nothing to show"
+msgstr "Szöveg mutatása, ha nincs mit megjeleníteni"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:237
+#: ../assets/admin/tinymce/tinymce-dialog.php:290
+msgid "Select a user"
+msgstr "Felhasználó választása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:242
+#: ../assets/admin/tinymce/tinymce-dialog.php:295
+msgid "logged in user"
+msgstr "bejelentkezett felhasználó"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:244
+#: ../assets/admin/tinymce/tinymce-dialog.php:297
+msgid "or choose another user"
+msgstr "vagy válassz egy másik felhasználót"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:343
+msgid "Select a group"
+msgstr "Válassz egy csoportot"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:358
+#: ../assets/admin/tinymce/tinymce-dialog.php:401
+msgid "Click a label to show the options."
+msgstr "Kattints egy címkére az opciók megjelenítéséhez."
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:365
+#: ../assets/admin/tinymce/tinymce-dialog.php:408
+msgid "Select one or more matches"
+msgstr "Egy vagy több mérkőzés kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:375
+#: ../assets/admin/tinymce/tinymce-dialog.php:418
+msgid "Select one or more match types"
+msgstr "Egy vagy több mérkőzés-típus kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:390
+msgid "Select one or more questions"
+msgstr "Egy vagy több kérdés kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:441
+msgid "Full points"
+msgstr "Teljes pontos"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:442
+msgid "Toto points"
+msgstr "Totó pontok"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:461
+msgid "Link to page"
+msgstr "Link az oldalra"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:462
+msgid "Link to registration"
+msgstr "Link a regisztrációhoz"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:467
+msgid "Select a page"
+msgstr "Oldal kiválasztása"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:481
+msgid "Link title"
+msgstr "Link cím"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:482
+msgid "New window?"
+msgstr "Új ablak?"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:499
+msgid "Countdown"
+msgstr "Visszaszámlálás"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:505
+msgid "Countdown to"
+msgstr "Visszaszámlálás ehhez:"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:527
+msgid "first match"
+msgstr "első mérkőzés"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:529
+msgid "or choose a match"
+msgstr "vagy válassz egy mérkőzést"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:537
+msgid "More information about this on the Help page."
+msgstr "További információ erről a Súgó oldalon."
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:537
+msgid "Texts for counter"
+msgstr "Szövegek a számlálóra"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:541
+msgid "no texts"
+msgstr "nincs szöveg"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:544
+msgid "before - time not passed"
+msgstr "előtte - el nem telt idő"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:544
+#: ../assets/admin/tinymce/tinymce-dialog.php:545
+#: ../assets/admin/tinymce/tinymce-dialog.php:548
+#: ../assets/admin/tinymce/tinymce-dialog.php:549
+msgid ""
+"Leave empty for the default texts. Don't forget spaces between a text and "
+"the timer."
+msgstr ""
+"Hagyd üresen, ha az alapértelmezett szövegeket szeretnéd használni. Ne "
+"felejts el szóközöket hagyni egy szöveg és az időzítő között."
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:545
+msgid "after - time not passed"
+msgstr "utána - el nem telt idő"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:548
+msgid "before - time passed"
+msgstr "előtte - eltelt idő"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:549
+msgid "after - time passed"
+msgstr "utána - eltelt idő"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:555
+msgid "Display inline"
+msgstr "Sorok közti megjelenítés"
+
+#: ../assets/admin/tinymce/tinymce-dialog.php:571
+msgid "Insert"
+msgstr "Beszúrás"
+
+#: ../classes/class-football-pool-chart-data.php:236
+#: ../classes/class-football-pool-chart-data.php:260
+#: ../pages/class-football-pool-statistics-page.php:206
+msgid "full score"
+msgstr "teljes pontszám"
+
+#: ../classes/class-football-pool-chart-data.php:237
+#: ../classes/class-football-pool-chart-data.php:261
+#: ../pages/class-football-pool-statistics-page.php:207
+msgid "toto score"
+msgstr "totó pontszám"
+
+#: ../classes/class-football-pool-chart-data.php:238
+#: ../classes/class-football-pool-chart-data.php:262
+#: ../pages/class-football-pool-statistics-page.php:208
+msgid "no score"
+msgstr "nincs pontszám"
+
+#: ../classes/class-football-pool-chart-data.php:244
+#: ../classes/class-football-pool-chart-data.php:268
+#: ../pages/class-football-pool-statistics-page.php:210
+msgid "just the goal bonus"
+msgstr "csak a gólbónusz"
+
+#: ../classes/class-football-pool-chart-data.php:247
+msgid "goal difference bonus"
+msgstr "gólkülönbség bónusz"
+
+#: ../classes/class-football-pool-chart-data.php:271
+#: ../pages/class-football-pool-statistics-page.php:213
+msgid "toto score with goal difference bonus"
+msgstr "totó pontszám gólkülönbség bónusszal"
+
+#: ../classes/class-football-pool-chart-data.php:280
+#: ../pages/class-football-pool-statistics-page.php:258
+msgid "points scored"
+msgstr "megszerzett pontok"
+
+#: ../classes/class-football-pool-chart-data.php:281
+msgid "points missed"
+msgstr "elvesztett pontok"
+
+#: ../classes/class-football-pool-chart-data.php:291
+#: ../classes/class-football-pool-chart-data.php:305
+msgid "wrong"
+msgstr "hibás"
+
+#: ../classes/class-football-pool-chart-data.php:295
+msgid "still open"
+msgstr "még nyitva"
+
+#: ../classes/class-football-pool-chart-data.php:306
+msgid "no answer"
+msgstr "nincs válasz"
+
+#: ../classes/class-football-pool-chart-data.php:337
+#: ../classes/class-football-pool-matches.php:364
+msgid "match"
+msgstr "mérkőzés"
+
+#: ../classes/class-football-pool-chart-data.php:343
+#: ../pages/class-football-pool-statistics-page.php:233
+msgid "bonus question"
+msgstr "bónusz kérdés"
+
+#: ../classes/class-football-pool-chart.php:30
+msgid "Charts are not enabled"
+msgstr "Grafikonok nincsenek bekapcsolva"
+
+#: ../classes/class-football-pool-chart.php:197
+msgid "matches and questions"
+msgstr "mérkőzések és kérdések"
+
+#: ../classes/class-football-pool-chart.php:203
+msgid "Click and drag in the plot area to zoom in"
+msgstr "Kattints és húzd a nagyításhoz"
+
+#: ../classes/class-football-pool-chart.php:204
+msgid "Drag your finger over the plot to zoom in"
+msgstr "Húzd fölé a kurzort a nagyításhoz"
+
+#: ../classes/class-football-pool-groups.php:303
+msgid "wins"
+msgstr "győzelem"
+
+#. Translators: this is a short notation for 'wins'
+#: ../classes/class-football-pool-groups.php:305
+msgctxt "short for 'wins'"
+msgid "w"
+msgstr "GY "
+
+#: ../classes/class-football-pool-groups.php:306
+msgid "draws"
+msgstr "döntetlen"
+
+#. Translators: this is a short notation for 'draws'
+#: ../classes/class-football-pool-groups.php:308
+msgctxt "short for 'draws'"
+msgid "d"
+msgstr "D"
+
+#: ../classes/class-football-pool-groups.php:309
+msgid "losses"
+msgstr "vereség"
+
+#. Translators: this is a short notation for 'losses'
+#: ../classes/class-football-pool-groups.php:311
+msgctxt "short for 'losses'"
+msgid "l"
+msgstr "V"
+
+#. Translators: this is a short notation for 'matches'
+#: ../classes/class-football-pool-groups.php:329
+msgctxt "short for 'matches'"
+msgid "m"
+msgstr "M"
+
+#. Translators: this is a short notation for 'points'
+#: ../classes/class-football-pool-groups.php:334
+msgctxt "short for 'points'"
+msgid "p"
+msgstr "P"
+
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../classes/class-football-pool-matches.php:340
+msgctxt "a date format string (see http://php.net/date)"
+msgid "l"
+msgstr ""
+
+#: ../classes/class-football-pool-matches.php:470
+#: ../classes/class-football-pool-statistics.php:184
+msgid "score"
+msgstr "pontszám"
+
+#: ../classes/class-football-pool-matches.php:580
+msgid "view other users predictions"
+msgstr "többi felhasználó fogadásainak megtekintése"
+
+#: ../classes/class-football-pool-matches.php:637
+msgid "use your joker?"
+msgstr "felhasználod a jokered?"
+
+#: ../classes/class-football-pool-pagination.php:43
+#, php-format
+msgid "1 item"
+msgid_plural "%s items"
+msgstr[0] "1 tétel"
+msgstr[1] "%s tétel"
+
+#: ../classes/class-football-pool-pool.php:328
+msgid "No results yet. Below is a list of all users."
+msgstr ""
+"Még nincs eredmény. Alább megtalálható az összes játékost tartalmazó lista."
+
+#: ../classes/class-football-pool-pool.php:334
+msgid "No users have registered for this pool (yet)."
+msgstr "Erre a tippjátékra nem regisztrált (még) felhasználó."
+
+#: ../classes/class-football-pool-pool.php:361
+#: ../classes/class-football-pool-shortcodes.php:316
+#: ../classes/class-football-pool.php:11
+#: ../widgets/widget-football-pool-ranking.php:108 ../_dev/hooks.php:25
+msgid "predictions"
+msgstr "fogadások"
+
+#: ../classes/class-football-pool-pool.php:780
+msgid "Important:"
+msgstr "Fontos:"
+
+#: ../classes/class-football-pool-pool.php:783
+msgid "answer this question before this date"
+msgstr "válaszolj a kérdésre ezelőtt:"
+
+#: ../classes/class-football-pool-pool.php:795
+msgid ""
+"it's is no longer possible to answer this question, or change your answer"
+msgstr "Válaszadás vagy a válasz megváltoztatása már nem lehetséges."
+
+#: ../classes/class-football-pool-pool.php:796
+msgid "closed on"
+msgstr "zárva ekkor:"
+
+#: ../classes/class-football-pool-pool.php:835
+msgid ""
+"Something went wrong during the save. Check if you are still logged in. If "
+"the problems persist, then contact your webmaster."
+msgstr ""
+"A mentés során hiba történt. Ellenőrizd, hogy meg be vagy-e jelentkezve. HA "
+"a probléma továbbra is fennáll, lépj kapcsolatba a webmesterrel."
+
+#: ../classes/class-football-pool-pool.php:1048
+#: ../classes/class-football-pool-pool.php:1057
+msgid "view other users answers"
+msgstr "más felhasználók válaszainak megtekintése"
+
+#: ../classes/class-football-pool-shortcodes.php:350
+#: ../widgets/widget-football-pool-lastgames.php:90
+#: ../widgets/widget-football-pool-ranking.php:146
+msgid "No match data available."
+msgstr "Mérkőzés adatai nem elérhetők."
+
+#: ../classes/class-football-pool-shortcodes.php:442
+msgid "register"
+msgstr "feliratkozás"
+
+#: ../classes/class-football-pool-statistics.php:48
+msgid "User unknown."
+msgstr "Ismeretlen felhasználó"
+
+#: ../classes/class-football-pool-statistics.php:71
+#: ../classes/class-football-pool-statistics.php:74
+#: ../classes/class-football-pool-statistics.php:98
+#: ../classes/class-football-pool-statistics.php:102
+msgid "This data is not (yet) available."
+msgstr "Ez az adat (még) nem elérhető."
+
+#: ../classes/class-football-pool-statistics.php:86
+msgid "Bonus question"
+msgstr "bónusz kérdés"
+
+#: ../classes/class-football-pool-statistics.php:117
+msgid "correct?"
+msgstr "helyes?"
+
+#: ../classes/class-football-pool-statistics.php:122
+msgid "answer correct"
+msgstr "add meg a helyes választ"
+
+#: ../classes/class-football-pool-statistics.php:130
+#: ../pages/class-football-pool-statistics-page.php:235
+msgid "correct answer"
+msgstr "helyes válasz"
+
+#: ../classes/class-football-pool-statistics.php:133
+#: ../pages/class-football-pool-statistics-page.php:236
+msgid "wrong answer"
+msgstr "rossz válasz"
+
+#: ../classes/class-football-pool-statistics.php:183
+#: ../classes/class-football-pool.php:8
+msgid "prediction"
+msgstr "fogadás"
+
+#: ../classes/class-football-pool-team.php:61
+#: ../classes/class-football-pool-team.php:71
+#: ../classes/class-football-pool-team.php:85
+msgid "team photo for"
+msgstr "csapatfotó:"
+
+#: ../classes/class-football-pool-team.php:69
+msgid "Click to enlarge:"
+msgstr "nagyításhoz kattints"
+
+#: ../classes/class-football-pool-team.php:84
+#: ../classes/class-football-pool.php:365
+msgid "close"
+msgstr "lezár"
+
+#: ../classes/class-football-pool-widget.php:109
+msgid "Football pool plugin"
+msgstr "Foci tippjáték  plugin"
+
+#: ../classes/class-football-pool.php:4
+msgid "teams"
+msgstr "csapatok"
+
+#: ../classes/class-football-pool.php:5
+msgid "groups"
+msgstr "csoportok"
+
+#: ../classes/class-football-pool.php:6
+#: ../pages/class-football-pool-teams-page.php:42
+msgid "venues"
+msgstr "helyszínek"
+
+#: ../classes/class-football-pool.php:7
+msgid "rules"
+msgstr "szabályok"
+
+#: ../classes/class-football-pool.php:10
+msgid "charts"
+msgstr "grafikonok"
+
+#. Translators: this is a date format string (see http://php.net/date)
+#: ../classes/class-football-pool.php:63
+msgid "j F"
+msgstr ""
+
+#: ../classes/class-football-pool.php:128
+msgid "all users"
+msgstr "összes felhasználó"
+
+#: ../classes/class-football-pool.php:129
+msgid "for money"
+msgstr "pénzért"
+
+#: ../classes/class-football-pool.php:130
+msgid "for free"
+msgstr "ingyen"
+
+#: ../classes/class-football-pool.php:135
+msgid "default ranking"
+msgstr "alapértelmezett rangsor"
+
+#: ../classes/class-football-pool.php:328
+msgid "second"
+msgstr "másodperc"
+
+#: ../classes/class-football-pool.php:329
+msgid "seconds"
+msgstr "másodperc"
+
+#: ../classes/class-football-pool.php:330
+#: ../classes/class-football-pool.php:331
+msgid "day"
+msgstr "nap"
+
+#: ../classes/class-football-pool.php:332
+msgid "hour"
+msgstr "óra"
+
+#: ../classes/class-football-pool.php:333
+msgid "hours"
+msgstr "óra"
+
+#: ../classes/class-football-pool.php:334
+msgid "minute"
+msgstr "perc"
+
+#: ../classes/class-football-pool.php:335
+msgid "minutes"
+msgstr "perc"
+
+#: ../classes/class-football-pool.php:336
+msgid "Wait "
+msgstr "Várj"
+
+#: ../classes/class-football-pool.php:337
+msgid " before the tournament starts"
+msgstr "amíg a versenysorozat elkezdődik"
+
+#: ../classes/class-football-pool.php:340
+msgid " ago the tournament started."
+msgstr "amióta a versenysorozat elkezdődött"
+
+#: ../classes/class-football-pool.php:368
+msgid "Error message"
+msgstr "Hiba üzenet"
+
+#: ../classes/class-football-pool.php:479
+msgid "<strong>ERROR:</strong> You must choose a league to play in!"
+msgstr "<strong>HIBA:</strong> Válaszd ki, melyik ligában szeretnél játszani!"
+
+#: ../classes/class-football-pool.php:489
+msgid ""
+"Click below to go to the football pool and predict your scores. Good luck!"
+msgstr "A foci tippjátékhoz és fogadásaidhoz kattints ide. Sok szerencsét!"
+
+#: ../classes/class-football-pool.php:490
+msgid "Fill in your predictions."
+msgstr "Add meg a fogadásaidat."
+
+#: ../classes/class-football-pool.php:496
+msgid "Start immediately with your predictions"
+msgstr "Kezdd el azonnal a fogadások megtételét"
+
+#: ../pages/class-football-pool-groups-page.php:12
+msgid "matches in the group stage"
+msgstr "mérkőzések a csoportmeccsek időszakban"
+
+#: ../pages/class-football-pool-groups-page.php:23
+msgid "view all groups"
+msgstr "összes csoport megtekintése"
+
+#: ../pages/class-football-pool-pool-page.php:34
+msgid "Predictions"
+msgstr "Fogadások"
+
+#: ../pages/class-football-pool-pool-page.php:62
+#, php-format
+msgid ""
+"You have to be a registered user and <a href=\"%s\">logged in</a> to play in "
+"this pool."
+msgstr ""
+"Ha ebben a tippjátékban szeretnél játszani, regisztrált felhasználónak és <a "
+"href=\"%s\">bejelentkezve</a> kell legyél."
+
+#: ../pages/class-football-pool-ranking-page.php:31
+msgid "Choose league"
+msgstr "liga választása"
+
+#: ../pages/class-football-pool-ranking-page.php:49
+#: ../pages/class-football-pool-statistics-page.php:79
+msgid "go"
+msgstr "mehet"
+
+#: ../pages/class-football-pool-stadiums-page.php:30
+msgid "view all venues"
+msgstr "összes helyszín megtekintése"
+
+#: ../pages/class-football-pool-statistics-page.php:25
+msgid "Statistics not yet available"
+msgstr "A statisztikák még nem elérhetőek."
+
+#: ../pages/class-football-pool-statistics-page.php:26
+msgid ""
+"After the first match you can view your scores and those of other users here."
+msgstr ""
+"Az első mérkőzés után itt megtekintheted a saját és más felhasználók "
+"pontszámait"
+
+#: ../pages/class-football-pool-statistics-page.php:94
+msgid "what dit other users score?"
+msgstr "mennyi pontot szerzett a többi felhasználó?"
+
+#: ../pages/class-football-pool-statistics-page.php:112
+msgid "other users scores"
+msgstr "Többi felhasználó pontszáma"
+
+#: ../pages/class-football-pool-statistics-page.php:132
+#, php-format
+msgid "Compare the scores of %s with other users."
+msgstr "%s pontszámainak összehasonlítása további felhasználókéval."
+
+#: ../pages/class-football-pool-statistics-page.php:149
+msgid "scores in matches"
+msgstr "mérkőzésekért kapott pontszámok"
+
+#: ../pages/class-football-pool-statistics-page.php:163
+msgid "scores in bonus questions"
+msgstr "bónusz kérdésekért kapott pontszámok"
+
+#: ../pages/class-football-pool-statistics-page.php:175
+#, no-php-format
+msgid "% of the max points"
+msgstr "% az összpontszámból"
+
+#: ../pages/class-football-pool-statistics-page.php:177
+msgid "with the joker used"
+msgstr "joker felhasználásával"
+
+#: ../pages/class-football-pool-statistics-page.php:189
+msgid "No users selected :'("
+msgstr "nincs felhasználó kiválasztva :'("
+
+#: ../pages/class-football-pool-statistics-page.php:190
+#: ../pages/class-football-pool-statistics-page.php:192
+msgid "You can select other users on the left side."
+msgstr "Kiválaszthatsz további felhasználókat a baloldalon."
+
+#: ../pages/class-football-pool-statistics-page.php:204
+msgid "scores"
+msgstr "pontszámok"
+
+#: ../pages/class-football-pool-statistics-page.php:283
+#: ../pages/class-football-pool-statistics-page.php:286
+#: ../pages/class-football-pool-statistics-page.php:301
+msgid "position in the pool"
+msgstr "helyezés a tippjátékban"
+
+#. Translators: The ordinal suffixes th, st, nd, rd, th are used in the sentence 'Xth position in the pool'.
+#: ../pages/class-football-pool-statistics-page.php:285
+msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
+msgstr "[\"ik\", \"ik\", \"ik\", \"ik\", \"ik\"]"
+
+#: ../pages/class-football-pool-teams-page.php:14
+msgid "go to the team site"
+msgstr "menj a csapat oldalára"
+
+#: ../pages/class-football-pool-teams-page.php:27
+msgid "plays in"
+msgstr "itt játszik:"
+
+#: ../pages/class-football-pool-teams-page.php:71
+msgid "view all teams"
+msgstr "az összes csapat megtekintése"
+
+#: ../pages/class-football-pool-user-page.php:12
+msgid "view all statistics for this user"
+msgstr "felhasználó összes statisztikájának megtekintése"
+
+#: ../pages/class-football-pool-user-page.php:13
+#: ../pages/class-football-pool-user-page.php:21
+msgid "Statistics"
+msgstr "statisztikák"
+
+#: ../pages/class-football-pool-user-page.php:30
+msgid "Below are all the predictions for"
+msgstr "Alább megtalálható az összes fogadás erre:"
+
+#: ../pages/class-football-pool-user-page.php:35
+msgid "Only matches and bonus questions that can't be changed are shown here."
+msgstr ""
+"Csak azok a mérkőzések és bónusz kérdések jelennek meg itt, melyek nem "
+"változtathatók meg."
+
+#: ../pages/class-football-pool-user-page.php:51
+msgid "No user selected."
+msgstr "Nincs felhasználó kiválasztva."
+
+#: ../widgets/widget-football-pool-group.php:10
+msgid "Group Widget"
+msgstr "Csoport kisalkalmazás"
+
+#: ../widgets/widget-football-pool-group.php:11
+msgid "this widget displays the tournament standing for a group."
+msgstr "ez a kisalkalmazás megmutatja egy csoport versenysorozatbeli állását"
+
+#: ../widgets/widget-football-pool-group.php:12
+#: ../widgets/widget-football-pool-ranking.php:12
+msgid "standing"
+msgstr "álló"
+
+#: ../widgets/widget-football-pool-group.php:13
+msgid "Show this group"
+msgstr "Mutasd ezt a csoportot"
+
+#: ../widgets/widget-football-pool-group.php:14
+msgid "Layout of the widget"
+msgstr "a kisalkalmazás nézete"
+
+#: ../widgets/widget-football-pool-group.php:78
+msgid "wide"
+msgstr "széles"
+
+#: ../widgets/widget-football-pool-group.php:79
+msgid "small"
+msgstr "kicsi"
+
+#: ../widgets/widget-football-pool-lastgames.php:10
+msgid "Last Games Widget"
+msgstr "Utolsó meccsek kisalkalmazás"
+
+#: ../widgets/widget-football-pool-lastgames.php:11
+msgid "this widget displays the last X played games of the tournament."
+msgstr ""
+"ez a kisalkalmazás megmutatja a versenysorozat utolsó X lejátszott meccsét"
+
+#: ../widgets/widget-football-pool-lastgames.php:12
+msgid "last matches"
+msgstr "utolsó mérkőzések"
+
+#: ../widgets/widget-football-pool-lastgames.php:13
+msgid "Number of games to show"
+msgstr "Ennyi játékot mutat"
+
+#: ../widgets/widget-football-pool-lastgames.php:83
+msgid "view predictions"
+msgstr "fogadások megtekintése"
+
+#: ../widgets/widget-football-pool-logout.php:10
+msgid "Log out Widget"
+msgstr "Kijelentkezés kisalkalmazás"
+
+#: ../widgets/widget-football-pool-logout.php:11
+msgid "add a log out/log in button."
+msgstr "bejelentkezés/kijelentkezés gomb hozzáadása"
+
+#: ../widgets/widget-football-pool-logout.php:42
+#: ../widgets/widget-football-pool-logout.php:43
+msgid "Log out"
+msgstr "Kijelentkezés"
+
+#: ../widgets/widget-football-pool-logout.php:48
+#: ../widgets/widget-football-pool-logout.php:49
+msgid "Log in"
+msgstr "Bejelentkezés"
+
+#: ../widgets/widget-football-pool-next-prediction.php:10
+msgid "Countdown Next Prediction Widget"
+msgstr "Következő Fogadás Visszaszámlálás kisalkalmazás"
+
+#: ../widgets/widget-football-pool-next-prediction.php:11
+msgid ""
+"this widget displays the time that is left to predict the next match "
+"(optionally only for a given team)."
+msgstr ""
+"ez a kisalkalmazás azt mutatja, mennyi ideig lehet még fogadni a következő "
+"mérkőzésre (akár csak egy adott csapatra is)"
+
+#: ../widgets/widget-football-pool-next-prediction.php:12
+msgid "countdown"
+msgstr "visszaszámolás"
+
+#: ../widgets/widget-football-pool-next-prediction.php:13
+msgid "Team"
+msgstr "csapat"
+
+#: ../widgets/widget-football-pool-next-prediction.php:14
+msgid "Also show when not logged in?"
+msgstr "Akkor is látni, ha nincs bejelentkezve?"
+
+#: ../widgets/widget-football-pool-next-prediction.php:74
+msgid "Just "
+msgstr "Csak"
+
+#: ../widgets/widget-football-pool-next-prediction.php:75
+msgid " until"
+msgstr "amíg"
+
+#: ../widgets/widget-football-pool-next-prediction.php:76
+msgid "started "
+msgstr "elkezdődött"
+
+#: ../widgets/widget-football-pool-next-prediction.php:77
+msgid " ago:"
+msgstr "ezelőtt:"
+
+#: ../widgets/widget-football-pool-next-prediction.php:82
+msgid "click to enter prediction"
+msgstr "kattints ide, hogy belépj a fogadásba"
+
+#: ../widgets/widget-football-pool-ranking.php:10
+msgid "Ranking Widget"
+msgstr "Rangsor Kisalkalmazás"
+
+#: ../widgets/widget-football-pool-ranking.php:11
+msgid "this widget displays the top X players in the pool."
+msgstr "ez a kisalkalmazás megmutatja a legjobb X résztvevőt a tippjátékban"
+
+#: ../widgets/widget-football-pool-ranking.php:14
+msgid "Number of users to show"
+msgstr "Ennyi felhasználót mutat"
+
+#: ../widgets/widget-football-pool-ranking.php:15
+msgid "Show players from this league"
+msgstr "A liga játékosainak mutatása"
+
+#: ../widgets/widget-football-pool-shoutbox.php:10
+msgid "Shoutbox Widget"
+msgstr "Shoutbox kisalkalmazás"
+
+#: ../widgets/widget-football-pool-shoutbox.php:11
+msgid "a shoutbox for your players. Leave short messages."
+msgstr "shoutbox a játékosaidnak. Itt hagyhatsz rövid üzeneteket."
+
+#: ../widgets/widget-football-pool-shoutbox.php:12
+msgid "shoutbox"
+msgstr "shoutbox"
+
+#: ../widgets/widget-football-pool-shoutbox.php:13
+msgid "Number of messages to display"
+msgstr "Ennyi üzenetet jelenít meg"
+
+#: ../widgets/widget-football-pool-shoutbox.php:89
+#, php-format
+msgid "(<span>%s</span> characters remaining)"
+msgstr "(<span>%s</span> karakter maradt)"
+
+#: ../widgets/widget-football-pool-shoutbox.php:96
+#, php-format
+msgid "all text longer than %s characters will be removed!"
+msgstr "Minden %s karaktert meghaladó szöveget eltávolítunk!"
+
+#: ../widgets/widget-football-pool-shoutbox.php:100
+msgid "save"
+msgstr "mentés"
+
+#: ../widgets/widget-football-pool-userselector.php:10
+msgid "User Selector Widget"
+msgstr "Felhasználók Kiválasztása kisalkalmazás"
+
+#: ../widgets/widget-football-pool-userselector.php:11
+msgid ""
+"this widget displays a list of users that can be selected. Only for use on "
+"the Statistics page; it won't even show on all other pages."
+msgstr ""
+"ez a kisalkalmazás megmutatja a választható játékosok listáját. Csak a "
+"Statisztikák oldalon használandó; nem is fog megjelenni az összes többi "
+"oldalon."
+
+#: ../widgets/widget-football-pool-userselector.php:12
+msgid "players"
+msgstr "játékosok"
+
+#: ../widgets/widget-football-pool-userselector.php:13
+msgid "height (px)"
+msgstr "magasság (px)"
+
+#: ../widgets/widget-football-pool-userselector.php:79
+msgid "Change charts"
+msgstr "Grafikonok megváltoztatása"
+
+#: ../widgets/widget-football-pool-userselector.php:83
+msgid "No users in the pool."
+msgstr "Nincs felhasználó a tippjátékban."
+
+msgid "Add, change or delete bonus questions"
+msgstr "Búnusz kérdések hozzáadása, változtatása vagy törlése"
+
+msgid ""
+"After saving bonus question data the pool ranking is recalculated. If you "
+"have a lot of users this may take a while."
+msgstr ""
+"Miután elmented a bónusz kérdés adatait, a tippjáték rangsorolását "
+"újraszámítjuk.Ha sok felhasználód van, ez hosszabb időt is igénybe vehet."
+
+msgid ""
+"On this page you can edit if a user answered the question correctly. If you "
+"entered the correct answer with the question, it is displayed on this page "
+"as a reference."
+msgstr ""
+"Ezen az oldalon szerkeszthető, ha egy felhasználó helyesen válaszolta meg a "
+"kérdést. Ha beírtad a helyes választ a kérdéssel együtt, az hivatkozásként "
+"megjelenik ezek az oldalon"
+
+msgid ""
+"<strong>Important:</strong> The points for getting a correct answer are only "
+"awarded once you saved this admin page."
+msgstr ""
+"<strong>Fontos:</strong> Csak akkor könyveljük el a helyes válaszért járó "
+"pontokat, mikor elmented ezt az admin oldalt."
+
+msgid ""
+"You can give a user more points (or less) for a question. Use the field "
+"'points' for this; leave the field empty for standard points."
+msgstr ""
+"Egy felhasználó kaphat több pontot is (vagy kevesebbet) egy kérdésért. "
+"Használd a 'pontszámok' mezőt; ha meg akarod hagyni a standard pontszámokat, "
+"hagyd ezt a mezőt üresen."
+
+msgid ""
+"Use the \"User Answers\" link to check if users answered the questions "
+"correctly."
+msgstr ""
+"Használd a \"Felhasználói Válaszok\" linket, hogy megnézd, hogy a "
+"felhasználók helyesen válaszolták-e meg a kérdést."
+
+msgid ""
+"After saving the match data the pool ranking is recalculated. If you have a "
+"lot of users this may take a while."
+msgstr ""
+"Miután elmented a mérkőzés adatait, a tippjáték  rangsorolását "
+"újraszámítjuk. Ha sok felhasználód van, ez hosszabb időt is igénybe vehet."
+
+msgid ""
+"You can (temporarily) disable the automatic recalculation of scores in the "
+"Plugin Options."
+msgstr ""
+"A Plugin Opciókban lehetséges (átmeneteileg) a pontszámok automatikus "
+"újraszámolásának kikapcsolása."
+
+msgid ""
+"More information about the csv file import can be found in the <a href=\"%s"
+"\">help file</a>."
+msgstr ""
+"További információ a csvfájl-importról megtalálható a <a href=\"%s\">súgó "
+"fájl</a> -ban."
+
+msgid "d M Y, H:i"
+msgstr "n h é, ó:p"
+
+msgid "Add, change or delete groups."
+msgstr "Csoportok hozzáadása, megváltoztatása és törlése."
+
+msgid "Add, change or delete match types."
+msgstr "Mérkőzés-típusok hozzáadása, megváltoztatása és törlése."
+
+msgid "Goal bonus *"
+msgstr "Gól bónusz"
+
+msgid "Default"
+msgstr "Alapértelmezett"
+
+msgid "Add, change or delete user defined rankings."
+msgstr "Meghatározott rangsorok hozzáadása, megváltoztatása és törlése."
+
+msgid ""
+"On this page you can select the matches and/or questions you want to include "
+"in your custom ranking."
+msgstr ""
+"Ezen az oldalon kiválaszthatod azokat a mérkőzéseket és/vagy kérdéseket, "
+"melyeket alkalmazni szeretnél a saját rangsorolásodnál."
+
+msgid "Add, change or delete messages in the shoutbox."
+msgstr "Shoutbox-üzenetek hozzáadása, megváltoztatása és törlése."
+
+msgid "Scores recalculated."
+msgstr "Pontszámok újraszámítva."
+
+msgid "Change users in the football pool."
+msgstr "Felhasználók megváltoztatása a foci-tippjátékban."
+
+msgid "Close (re)calculation"
+msgstr "(Újra)számítás lezárása"
+
+msgid "days"
+msgstr "napok"
+
+msgid "false answer"
+msgstr "rossz válasz"
+
+msgid "http://wordpressfootballpool.wordpress.com/"
+msgstr "http://wordpressfootballpool.wordpress.com/"
+
+msgid ""
+"This plugin adds a fantasy football pool to your blog. Standard installation "
+"contains data for the UEFA 2012 European championship. But you can change "
+"the teams and matches to a national competition. Logged in users of your "
+"blog can predict outcomes of matches and earn extra points with bonus "
+"questions. Every player can view scores and charts of the other pool players."
+msgstr ""
+"Ez a plugin egy fantázia foci-tippjátékot ad hozzá a blogodhoz. A standard "
+"telepítés tartalmazza a 2012-es UEFA Európa Bajnokság adatait. De a "
+"csapatokat és mérkőzéseket átváltoztathatod egy nemzeti bajnokságra/kupára  "
+"is. A blogod bejelentkezett felhasználói fogadhatnak meccsekre és a bónusz "
+"kérdésekkel extra-pontokat is kaphatnak. Minden játékos láthatja a többi "
+"tippjátékban résztvevő pontszámait és grafikonjait."
+
+msgid "Antoine Hurkmans"
+msgstr "Antoine Hurkmans"
+
+msgid "mailto:wordpressfootballpool@gmail.com"
+msgstr "mailto:wordpressfootballpool@gmail.com"
+
+msgid ""
+"football, pool, poule, voetbal, game, prediction, competition, euro2012, "
+"uefa2012, fifa worldcup, uefa championship"
+msgstr ""
+"labdarúgás, tippjáték , játék, fogadás, verseny, euro2012, uefa2012, fifa "
+"világbajnokság, uefa bajnokság"
+
+msgid "group A"
+msgstr "A-csoport"
+
+msgid "group B"
+msgstr "B-csoport"
+
+msgid "group C"
+msgstr "C-csoport"
+
+msgid "group D"
+msgstr "D-csoport"
+
+msgid "group E"
+msgstr "E-csoport"
+
+msgid "group F"
+msgstr "F-csoport"
+
+msgid "group G"
+msgstr "G-csoport"
+
+msgid "group H"
+msgstr "H-csoport"
+
+msgid "Round of 16"
+msgstr "A legjobb 16"
+
+msgid "Quarter finals"
+msgstr "Negyeddöntők"
+
+msgid "Semi finals"
+msgstr "Elődöntők"
+
+msgid "For third position"
+msgstr "A harmadik helyért"
+
+msgid "Final"
+msgstr "Döntő"
+
+msgid "Team Position"
+msgstr "Csapat-pozíció"
+
+msgid "One prediction lock *"
+msgstr "Egy fogadás zárolva *"
+
+msgid "Edit team position"
+msgstr "Csapat-pozíció szerkesztése"
+
+msgid "national flag for"
+msgstr "nemzeti zászló: "
+
+msgid "http://wordpress.org/extend/plugins/football-pool/"
+msgstr "http://wordpress.org/extend/plugins/football-pool/"
+
+msgid ""
+"This plugin adds a football pool for the 2012 European Champioship to your "
+"blog. Logged in users of your blog can predict outcomes of matches and earn "
+"extra points with bonus questions. View scores and charts of the pool "
+"contenders. Use your own theme (or use the skin for Simply Works Core that "
+"is included in the assets folder) and add the widgets that come with this "
+"plugin. The plugin installs some custom tables in the database with match "
+"information for the 2012 UEFA championship, but can be easily manipulated "
+"with the match info for other championships (change the data/data.txt file "
+"for this). <strong>Please note that deactivating this plugin also destroys "
+"all your pool data</strong> (predictions, scores and comments on pages that "
+"this plugin created). So if you want to keep those, make sure you have a "
+"back-up of the database."
+msgstr ""
+"Ez a plugin egy 2012-es Európa Bajnokság foci-tippjátékot ad hozzá a "
+"blogodhoz. A blogod bejelentkezett felhasználói fogadhatnak meccsekre és a "
+"bónusz kérdésekkel extra-pontokat is kaphatnak.  A játékban résztvevők "
+"pontszámainak és grafikonjainak megtekintése. Használd a saját témádat (vagy "
+"használd az assets mappában lévő  Simply Works Core skint) és add hozzá a "
+"pluginhoz tartozó kisalkalmazásokat. A plugin telepít néhány saját "
+"táblázatot az adatbázisba, melyek a 2012-es Európa Bajnokság mérkőzés-"
+"információit tartalmazzák, de ezek könnyen átírhatók egy másik bajnokság "
+"mérkőzés-információira (ehhez változtasd meg a data/data.txt fájlt). "
+"<strong>Vedd figyelembe, hogy ha kikapcsolod ezt a plugint, az összes játék-"
+"adat törlődik</strong> (fogadások, pontszámook és hozzászólások azokon az "
+"oldalakon, melyeket ez a plugin hozott létre). Így ha ezeket szeretnéd "
+"megőrizni, készíts biztonsági másolatot az adatbázisról."
+
+msgid "Poland"
+msgstr "Lengyelország"
+
+msgid "Greece"
+msgstr "Görögország"
+
+msgid "Russia"
+msgstr "Oroszország"
+
+msgid "Czech Republic"
+msgstr "Csehország"
+
+msgid "Netherlands"
+msgstr "Hollandia"
+
+msgid "Denmark"
+msgstr "Dánia"
+
+msgid "Germany"
+msgstr "Németország"
+
+msgid "Portugal"
+msgstr "Portugália"
+
+msgid "Spain"
+msgstr "Spanyolország"
+
+msgid "Italy"
+msgstr "Olaszország"
+
+msgid "Republic of Ireland"
+msgstr "Írország"
+
+msgid "Croatia"
+msgstr "Horvátország"
+
+msgid "Ukrain"
+msgstr "Ukrajna"
+
+msgid "Sweden"
+msgstr "Svédország"
+
+msgid "England"
+msgstr "Anglia"
+
+msgid "Winner group A"
+msgstr "A-Csoportgyőztes"
+
+msgid "Winner group B"
+msgstr "B-Csoportgyőztes"
+
+msgid "Winner group C"
+msgstr "C-Csoportgyőztes"
+
+msgid "Winner group D"
+msgstr "D-Csoportgyőztes"
+
+msgid "Runner-up group A"
+msgstr "A-Csoport második"
+
+msgid "Runner-up group B"
+msgstr "B-Csoport második"
+
+msgid "Runner-up group C"
+msgstr "C-Csoport második"
+
+msgid "Runner-up group D"
+msgstr "D-Csoport második"
+
+msgid "Winner match 25"
+msgstr "Meccs 25 győztese"
+
+msgid "Winner match 26"
+msgstr "Meccs 26 győztese"
+
+msgid "Winner match 27"
+msgstr "Meccs 27 győztese"
+
+msgid "Winner match 28"
+msgstr "Meccs 28 győztese"
+
+msgid "Winner match 29"
+msgstr "Meccs 29 győztese"
+
+msgid "Winner match 30"
+msgstr "Meccs 30 győztese"
+
+msgid "geen speler in de pool"
+msgstr "nincs játékos a tippjátékban"
+
+msgid " place in the pool"
+msgstr "helyezés a tippjátékban"
+
+msgid "inschrijven"
+msgstr "feliratkozás"

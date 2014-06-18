@@ -59,7 +59,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$teams = new Football_Pool_Teams;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
-		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['id'];
+		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['id'] . '-1';
 		
 		$output = '';
 		if ( $title != '' ) {

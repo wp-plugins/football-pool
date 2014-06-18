@@ -48,15 +48,13 @@ class Football_Pool_Matches {
 		$this->matches_are_editable = true;
 	}
 	
-	public function get_next_match( $ts = -1, $team_id = null ) {
-		global $wpdb;
-		$prefix = FOOTBALLPOOL_DB_PREFIX;
-		
-		if ( $ts == -1 ) $ts = time();
+	public function get_next_match( $ts = null, $team_id = null ) {
+		if ( $ts == null ) $ts = time();
 		
 		$next_match = null;
 		foreach ( $this->matches as $match ) {
-			if ( $match['match_timestamp'] > $ts && ( $team_id == null || $team_id == $match['home_team_id'] || $team_id == $match['away_team_id'] ) ) {
+			if ( $match['match_timestamp'] > $ts 
+					&& ( $team_id == null || $team_id == $match['home_team_id'] || $team_id == $match['away_team_id'] ) ) {
 				$next_match = $match;
 				break;
 			}
@@ -606,7 +604,7 @@ class Football_Pool_Matches {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$sql = "SELECT id, name, visibility FROM {$prefix}matchtypes ORDER BY id ASC";
+		$sql = "SELECT id, name, visibility FROM {$prefix}matchtypes ORDER BY name ASC";
 		return $wpdb->get_results( $sql );
 	}
 	

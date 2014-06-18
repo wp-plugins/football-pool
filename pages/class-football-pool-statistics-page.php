@@ -119,7 +119,8 @@ class Football_Pool_Statistics_Page {
 					$output .= $stats->show_bonus_question_info( $question );
 					if ( $stats->stats_visible ) {
 						$output .= $stats->show_answers_for_bonus_question( $question );
-						if ( $stats->stats_enabled ) {
+						$info = $pool->get_bonus_question_info( $question );
+						if ( $stats->stats_enabled && $info['score_date'] != null ) {
 							// chart 1: pie, what did the players score on this bonus question?
 							$raw_data = $chart_data->bonus_question_pie_chart_data( $question );
 							$chart = new Football_Pool_Chart( 'chart1', 'pie' );
@@ -192,7 +193,8 @@ class Football_Pool_Statistics_Page {
 							if ( count( $raw_data ) > 0 ) {
 								$chart = new Football_Pool_Chart( 'chart4', 'pie' );
 								// only one user
-								$chart->data = array_shift( $chart_data->bonus_question_pie_series( $raw_data ) );
+								$data = $chart_data->bonus_question_pie_series( $raw_data );
+								$chart->data = array_shift( $data );
 								$chart->title = __( 'scores in bonus questions', FOOTBALLPOOL_TEXT_DOMAIN );
 								$chart->custom_css = 'stats-page stats-pie';
 								$output .= $chart->draw();

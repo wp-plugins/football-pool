@@ -111,6 +111,7 @@ The Football Pool plugin is available in the following languages:
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
 * Swedish (`sv_SE`) by Paul Söderholm.
+* Hungarian (`hu_HU`) by Leona Tolnai.
 * Albanian (`sq`) by Migen Nepravishta.
 * Spanish (`es_ES`) by Cristian Carlucci.
 * French (`fr_FR`) by Julien Blancher and Bruce Feuillette.
@@ -196,7 +197,10 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Added weighted average points as an option for the [fp-league-info] shortcode.
 * Updated Dutch translation.
 * Added Swedish translation.
+* Added Hungarian translation.
 * Bug fix: when all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
+* Bug fix: stats page showed pie chart for bonus questions where score_date was not set.
+* Bug fix: countdown to next match widget displayed wrong match when a team is specified (thanks to Pierre Suter for reporting the bug).
 
 = 2.4.2 =
 * Some themes don't show the cog icon for the chart settings in the title of the page. Added shortcode [fp-chart-settings] that can be used to display the cog icon somewhere in the text. The shortcode only works for the statistics page.

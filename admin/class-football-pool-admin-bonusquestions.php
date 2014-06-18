@@ -388,14 +388,21 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
-										( question, points, answer_before_date, score_date, answer, match_id )
+										( question, points, answer_before_date, answer, match_id )
 									VALUES ( %s, %d, %s, %s, %s, %d )",
-							$question, $points, $date, $scoredate, $answer, $match_id
+							$question, $points, $date, $answer, $match_id
 						);
 			$wpdb->query( $sql );
 			$id = $wpdb->insert_id;
 			
 			if ( $id ) {
+				// set the score date if the date is valid
+				if ( $scoredate != '' && Football_Pool_Utils::is_valid_mysql_date( $scoredate ) ) {
+					$sql = $wpdb->prepare( "UPDATE {$prefix}bonusquestions SET score_date = %s 
+											WHERE id = %d", $scoredate, $id );
+					$wpdb->query( $sql );
+				}
+				// set the type
 				$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions_type 
 											( question_id, type, options, image, max_answers )
 										VALUES ( %d, %d, %s, %s, %d )"

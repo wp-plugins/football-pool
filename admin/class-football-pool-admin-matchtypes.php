@@ -138,6 +138,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		
 		$cols = array(
 					array( 'text', __( 'match type', FOOTBALLPOOL_TEXT_DOMAIN ), 'name', '' ),
+					array( 'integer', __( 'id', FOOTBALLPOOL_TEXT_DOMAIN ), 'id', '' ),
 					array( 'boolean', __( 'visible', FOOTBALLPOOL_TEXT_DOMAIN ), 'visible', '' ),
 				);
 		
@@ -145,6 +146,7 @@ class Football_Pool_Admin_Match_Types extends Football_Pool_Admin {
 		foreach( $items as $item ) {
 			$rows[] = array(
 						$item['name'], 
+						$item['id'],
 						$item['visible'], 
 						$item['id'],
 					);

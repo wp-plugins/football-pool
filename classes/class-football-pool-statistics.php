@@ -81,10 +81,11 @@ class Football_Pool_Statistics {
 		$pool = new Football_Pool_Pool;
 		$info = $pool->get_bonus_question_info( $question );
 		if ( $info ) {
+			$points = $info['points'] == 0 ? __( 'variable', FOOTBALLPOOL_TEXT_DOMAIN ) : $info['points'];
 			$output .= sprintf( '<h2>%s</h2>', $info['question'] );
 			$output .= sprintf( '<p class="question-info"><span class="question-points">%s: %s</span>'
 								, __( 'points', FOOTBALLPOOL_TEXT_DOMAIN )
-								, $info['points']
+								, $points
 							);
 			if ( $pool->always_show_predictions || ! $info['question_is_editable'] ) {
 				$this->stats_visible = true;
@@ -196,6 +197,7 @@ class Football_Pool_Statistics {
 			foreach ( $rows as $row ) {
 				$output .= sprintf( '<tr><td><a href="%s">%s</a></td>',
 									esc_url( add_query_arg( array( 'user' => $row['user_id'] ), $userpage ) ),
+									// $pool->get_avatar( $row['user_id'], 'small' ) . 
 									$pool->user_name( $row['user_id'] )
 							);
 				$output .= sprintf( '<td class="home">%s</td><td style="text-align: center;">-</td><td class="away">%s</td>',

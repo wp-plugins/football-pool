@@ -149,6 +149,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 										, __( 'Sit back and relax, this may take a while :-)', FOOTBALLPOOL_TEXT_DOMAIN ) );
 					$output .= '<div id="progressbar"></div>';
 					$output .= '<p id="calculation-message">&nbsp;</p>';
+					// $output .= '<p id="calculation-timer">&nbsp;</p>';
 					$output .= '</div>';
 				}
 				
