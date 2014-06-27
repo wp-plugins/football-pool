@@ -198,9 +198,11 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Updated Dutch translation.
 * Added Swedish translation.
 * Added Hungarian translation.
-* Bug fix: when all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
-* Bug fix: stats page showed pie chart for bonus questions where score_date was not set.
-* Bug fix: countdown to next match widget displayed wrong match when a team is specified (thanks to Pierre Suter for reporting the bug).
+* Bug fix: Shoutbox date and time were not localized (thanks to wendihihihi for reporting this).
+* Bug fix: When all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
+* Bug fix: Answers to linked bonus questions were shown in the prediction overview for users even when the question is still editable. This is unwanted behaviour. (thanks to maybor for reporting the bug).
+* Bug fix: Countdown to next match widget displayed wrong match when a team is specified (thanks to Pierre Suter for reporting the bug).
+* Bug fix: Stats page showed pie chart for bonus questions where score_date was not set.
 
 = 2.4.2 =
 * Some themes don't show the cog icon for the chart settings in the title of the page. Added shortcode [fp-chart-settings] that can be used to display the cog icon somewhere in the text. The shortcode only works for the statistics page.

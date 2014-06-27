@@ -73,7 +73,7 @@ class Football_Pool_Shoutbox_Widget extends Football_Pool_Widget {
 				$output = sprintf( '<p><a class="name" href="%s">%s</a>&nbsp;<span class="date">(%s)</span></p><p class="text">%s</p><hr />'
 								, $url
 								, $pool->user_name( $message['user_id'] )
-								, $shout_date->format( "{$date_format}, {$time_format}" )
+								, date_i18n( "{$date_format}, {$time_format}", $shout_date->format( 'U' ) )
 								, htmlspecialchars( $message['shout_text'], null, 'UTF-8' )
 							);
 				echo apply_filters( 'footballpool_shoutbox_widget_html', $output );

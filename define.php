@@ -71,7 +71,7 @@ if ( ! defined( 'FOOTBALLPOOL_LARGE_AVATAR' ) ) define( 'FOOTBALLPOOL_LARGE_AVAT
 if ( ! defined( 'FOOTBALLPOOL_TIME_FORMAT' ) ) define( 'FOOTBALLPOOL_TIME_FORMAT', 'H:i' ); // http://php.net/manual/en/function.date.php
 if ( ! defined( 'FOOTBALLPOOL_DATE_FORMAT' ) ) define( 'FOOTBALLPOOL_DATE_FORMAT', 'Y-m-d' ); // http://php.net/manual/en/function.date.php
 if ( ! defined( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER' ) ) define( 'FOOTBALLPOOL_TEMPLATE_PARAM_DELIMITER', '%' );
-if ( ! defined( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY' ) ) define( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY', 10 );
+if ( ! defined( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY' ) ) define( 'FOOTBALL_POOL_CONTENT_FILTER_PRIORITY', 30 );
 
 // cache
 define( 'FOOTBALLPOOL_CACHE_MATCHES', 'fp_match_info' );

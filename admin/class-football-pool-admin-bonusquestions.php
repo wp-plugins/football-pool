@@ -265,7 +265,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );
 		submit_button( null, 'secondary', 'save', false );
 		self::cancel_button();
-		self::secondary_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'user-answers', false );
+		if ( $id > 0 ) self::secondary_button( __( 'Edit User Answers', FOOTBALLPOOL_TEXT_DOMAIN ), 'user-answers', false );
 		echo '</p>';
 	}
 	
@@ -389,7 +389,7 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		if ( $id == 0 ) {
 			$sql = $wpdb->prepare( "INSERT INTO {$prefix}bonusquestions 
 										( question, points, answer_before_date, answer, match_id )
-									VALUES ( %s, %d, %s, %s, %s, %d )",
+									VALUES ( %s, %d, %s, %s, %d )",
 							$question, $points, $date, $answer, $match_id
 						);
 			$wpdb->query( $sql );

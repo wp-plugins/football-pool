@@ -203,6 +203,8 @@ var FootballPoolAdmin = (function ( $ ) {
 	// end tinymce extension
 	
 	// score calculation handling
+	var cbox;
+	
 	function calculate_score_history() {
 		var post_data;
 		var data = arguments[0] || 0;
@@ -219,7 +221,7 @@ var FootballPoolAdmin = (function ( $ ) {
 			
 			try {
 				var jqhxr = $.post( ajaxurl, post_data, function( response ) {
-								$.colorbox( { 
+								cbox = $.colorbox( { 
 													html: response.colorbox_html,
 													overlayClose: false, 
 													escKey: false, 

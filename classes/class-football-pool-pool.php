@@ -806,7 +806,7 @@ class Football_Pool_Pool {
 		return $output;
 	}
 	
-	public function print_bonus_question( $question, $nr ) {
+	public function print_bonus_question( $question, $nr, $is_user_page = false ) {
 		// the question with optional image
 		if ( is_int( $nr ) ) {
 			$nr = sprintf( '<span class="nr">%d.</span> ', $nr );
@@ -827,19 +827,21 @@ class Football_Pool_Pool {
 		$lock_time = Football_Pool_Utils::date_from_gmt( $lock_time );
 		
 		if ( $this->question_is_editable( $question['question_timestamp'] ) ) {
-			$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
-			
-			$output .= '<p>';
-			
-			// remind a player if there is only 1 day left to answer the question.
-			$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['question_timestamp'] );
-			if ( ( $timestamp - current_time( 'timestamp' ) ) <= ( 24 * 60 * 60 ) ) {
-				$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
+			if ( ! $is_user_page ) {
+				$output .= sprintf( '<p>%s</p>', $this->bonus_question_form_input( $question ) );
+				
+				$output .= '<p>';
+				
+				// remind a player if there is only 1 day left to answer the question.
+				$timestamp = ( $this->force_lock_time ? $this->lock_timestamp : $question['question_timestamp'] );
+				if ( ( $timestamp - current_time( 'timestamp' ) ) <= ( 24 * 60 * 60 ) ) {
+					$output .= sprintf( '<span class="bonus reminder">%s </span>', __( 'Important:', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				}
+				$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $lock_time . '</span>',
+								__( 'answer this question before this date', FOOTBALLPOOL_TEXT_DOMAIN ),
+								__( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN )
+						);
 			}
-			$output .= sprintf( '<span class="bonus eindtijd" title="%s">%s ' . $lock_time . '</span>',
-							__( 'answer this question before this date', FOOTBALLPOOL_TEXT_DOMAIN ),
-							__( 'answer before', FOOTBALLPOOL_TEXT_DOMAIN )
-					);
 		} else {
 			$output .= sprintf( '<p class="bonus" id="bonus-%d">%s: ',
 							$question['id'],

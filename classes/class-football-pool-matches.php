@@ -436,7 +436,9 @@ class Football_Pool_Matches {
 		return $output;
 	}
 	
-	public function print_matches_for_input( $matches, $form_id, $user_id ) {
+	public function print_matches_for_input( $matches, $form_id, $user_id, $is_user_page = false ) {
+		if ( $is_user_page ) $this->disable_edits();
+		
 		$teams = new Football_Pool_Teams;
 		$pool = new Football_Pool_Pool;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
@@ -567,7 +569,7 @@ class Football_Pool_Matches {
 						'form_id' => $form_id,
 						'match_id' => $info['id'],
 						'question_id' => $question['id'],
-						'question' => $pool->print_bonus_question( $question, '' ),
+						'question' => $pool->print_bonus_question( $question, '', $is_user_page ),
 					);
 					// allow extra fields to be added to the template
 					$linked_question_template_params = 
