@@ -451,7 +451,8 @@ class Football_Pool_Matches {
 		$template_end = '</table>';
 		$template_end = apply_filters( 'footballpool_predictionform_template_end', $template_end );
 		
-		$match_template = '<tr id="match-%match_id%-%form_id%" class="%css_class%">
+		$match_template = '<tr id="match-%match_id%-%form_id%" class="%css_class%"
+							title="' . __( 'match', FOOTBALLPOOL_TEXT_DOMAIN ) . ' %match_id%">
 								<td class="time">%match_time%</td>
 								<td class="home">%home_team%</td>
 								<td class="flag">%home_team_flag%</td>

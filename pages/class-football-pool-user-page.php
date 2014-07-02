@@ -46,10 +46,13 @@ class Football_Pool_User_Page {
 			$output .= $matches->print_matches_for_input( $result, 1, $user_id, true );
 			
 			$pool = new Football_Pool_Pool;
-			$questions = $pool->get_bonus_questions_for_user( $user_id );
+			$questions = $pool->get_bonus_questions_for_user( $user_id, null, true );
 			if ( $pool->has_bonus_questions ) {
-				$output .= sprintf( '<h2>%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
-				$output .= $pool->print_bonus_question_for_user( $questions );
+				$questions_output = $pool->print_bonus_question_for_user( $questions );
+				if ( $questions_output != '' ) {
+					$output .= sprintf( '<h2>%s</h2>', __( 'bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ) );
+					$output .= $questions_output;
+				}
 			}
 			
 			$output = apply_filters( 'footballpool_user_page_html', $output, $match_rows );

@@ -558,15 +558,18 @@ class Football_Pool_Pool {
 		$wpdb->query( $sql );
 	}
 	
-	public function get_bonus_questions_for_user( $user_id = 0, $question_ids = array() ) {
+	public function get_bonus_questions_for_user( $user_id = 0, $question_ids = array(), $only_non_linked = false ) {
 		if ( $user_id == 0 ) return array();
 		
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		
-		$ids = '';
+		$ids = $non_linked = '';
 		if ( is_array( $question_ids ) && count( $question_ids ) > 0 ) {
 			$ids = ' AND q.id IN ( ' . implode( ',', $question_ids ) . ' ) ';
+		}
+		if ( $only_non_linked ) {
+			$non_linked = 'WHERE q.match_id = 0';
 		}
 		// also include user answers
 		$sql = $wpdb->prepare( "SELECT 
@@ -582,6 +585,7 @@ class Football_Pool_Pool {
 									ON ( q.id = qt.question_id {$ids})
 								LEFT OUTER JOIN {$prefix}bonusquestions_useranswers a
 									ON ( a.question_id = q.id AND a.user_id = %d )
+								{$non_linked}
 								ORDER BY q.answer_before_date ASC",
 							$user_id
 						);
