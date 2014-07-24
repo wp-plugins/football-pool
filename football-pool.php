@@ -6,7 +6,7 @@
  Version: 2.4.3
  Author: Antoine Hurkmans
  Author URI: mailto:wordpressfootballpool@gmail.com
- Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
+ Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
  License: MIT
  */
 

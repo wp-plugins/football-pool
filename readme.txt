@@ -1,6 +1,6 @@
 === Football Pool ===
 Contributors: AntoineH
-Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, euro2012, uefa2012, fifa2014, fifa worldcup, uefa championship, fantasy football, champions league, sports, hockey, american football, basketball
+Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, fifa, worldcup, uefa, european championship, champions league, fantasy football, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 3.9
 Stable tag: 2.4.2
@@ -110,6 +110,7 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
+* Brazilian Portuguese (`pt_BR`) by Márcia.
 * Swedish (`sv_SE`) by Paul Söderholm.
 * Hungarian (`hu_HU`) by Leona Tolnai.
 * Albanian (`sq`) by Migen Nepravishta.
@@ -193,11 +194,12 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 = 2.4.3 =
 * Added 'auto set' function to bonus questions. This makes it easier for admins when rewarding points for multiple choice questions with a fixed set of answers a user can choose from.
-* Added a filter that adds the team name, stadium name or group name to the corresponding page's title tag.
+* Added a WordPress filter that adds the team name, stadium name or group name to the corresponding page's title tag.
 * Added weighted average points as an option for the [fp-league-info] shortcode.
 * Updated Dutch translation.
 * Added Swedish translation.
 * Added Hungarian translation.
+* Added Brazilian Portuguese translation.
 * Bug fix: Shoutbox date and time were not localized (thanks to wendihihihi for reporting this).
 * Bug fix: When all bonus questions are linked to a match, the pool page still showed the title for a question form beneath the matches form.
 * Bug fix: Answers to linked bonus questions were shown in the prediction overview for users even when the question is still editable. This is unwanted behaviour. (thanks to maybor for reporting the bug).

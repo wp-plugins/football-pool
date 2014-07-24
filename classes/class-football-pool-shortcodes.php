@@ -2,12 +2,14 @@
 // shortcodes
 add_shortcode( 'fp-predictions', array( 'Football_Pool_Shortcodes', 'shortcode_predictions' ) );
 add_shortcode( 'fp-predictionform', array( 'Football_Pool_Shortcodes', 'shortcode_predictionform' ) );
+// not yet finished
+// add_shortcode( 'fp-last-predictions', array( 'Football_Pool_Shortcodes', 'shortcode_last_predictions' ) );
+add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-matches', array( 'Football_Pool_Shortcodes', 'shortcode_matches' ) );
+add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-user-score', array( 'Football_Pool_Shortcodes', 'shortcode_user_score' ) );
 add_shortcode( 'fp-user-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_user_ranking' ) );
-add_shortcode( 'fp-ranking', array( 'Football_Pool_Shortcodes', 'shortcode_ranking' ) );
 add_shortcode( 'fp-countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
-add_shortcode( 'fp-group', array( 'Football_Pool_Shortcodes', 'shortcode_group' ) );
 add_shortcode( 'fp-register', array( 'Football_Pool_Shortcodes', 'shortcode_register_link' ) );
 add_shortcode( 'fp-link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
 add_shortcode( 'fp-totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totopoints' ) );
@@ -23,17 +25,6 @@ add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_web
 add_shortcode( 'fp-bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
 add_shortcode( 'fp-money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
 add_shortcode( 'fp-start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
-
-// removed shortcodes
-// add_shortcode( 'link', array( 'Football_Pool_Shortcodes', 'shortcode_link' ) );
-// add_shortcode( 'webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
-// add_shortcode( 'bank', array( 'Football_Pool_Shortcodes', 'shortcode_bank' ) );
-// add_shortcode( 'money', array( 'Football_Pool_Shortcodes', 'shortcode_money' ) );
-// add_shortcode( 'start', array( 'Football_Pool_Shortcodes', 'shortcode_start' ) );
-// add_shortcode( 'totopoints', array( 'Football_Pool_Shortcodes', 'shortcode_totopoints' ) );
-// add_shortcode( 'fullpoints', array( 'Football_Pool_Shortcodes', 'shortcode_fullpoints' ) );
-// add_shortcode( 'goalpoints', array( 'Football_Pool_Shortcodes', 'shortcode_goalpoints' ) );
-// add_shortcode( 'countdown', array( 'Football_Pool_Shortcodes', 'shortcode_countdown' ) );
 
 class Football_Pool_Shortcodes {
 	private static function date_helper( $date ) {
@@ -56,6 +47,59 @@ class Football_Pool_Shortcodes {
 		return $input;
 	}
 	
+	//[fp-last-predictions] 
+	//  Displays the last X predictions for matches for a set of users.
+	//
+	//    users   : collection of user Ids, defaults to (only) the logged in user
+	//    top     : if set, the "users" setting is ignored and the predictions for the top X users are shown
+	//    league  : the league to get the top users from, defaults to the overall league
+	//    ranking : the ranking to get the top users from, defaults to the default ranking
+	//    num     : number of matches to show, defaults to 5
+	public static function shortcode_last_predictions( $atts ) {
+		extract( shortcode_atts( array(
+					'users' => '',
+					'top' => '',
+					'league' => FOOTBALLPOOL_LEAGUE_ALL,
+					'ranking' => FOOTBALLPOOL_RANKING_DEFAULT,
+					'num' => 5,
+				), $atts ) );
+		
+		$output = '';
+		$userset = array();
+		$pool = new Football_Pool_Pool;
+		
+		if ( $users == '' && $top == '' ) {
+			$userset[] = get_current_user_id();
+		} elseif ( $top != '' && is_numeric( $top ) && (int) $top > 0 ) {
+			$ranking_users = $pool->get_pool_ranking_limited( $league, $num, $ranking, 'now' );
+			foreach ( $ranking_users as $user ) {
+				$userset[] = $user['user_id'];
+			}
+		} else {
+			$users = explode( ',', $users );
+			foreach ( $users as $user ) {
+				if ( is_numeric( $user ) ) $userset[] = (int) $user;
+			}
+		}
+		
+		if ( count( $userset ) > 0 ) {
+			$userset = implode( ',', $userset );
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			$sql = "SELECT u.ID, m.id AS match_id, t1.name AS home_team, t2.name AS away_team
+					FROM {$prefix}predictions p
+					INNER JOIN {$wpdb->users} u ON ( u.ID = p.user_id )
+					INNER JOIN {$prefix}matches m ON ( m.id = p.match_id )
+					INNER JOIN {$prefix}teams t1 ON ( t1.id = m.home_team_id )
+					INNER JOIN {$prefix}teams t2 ON ( t2.id = m.away_team_id )
+					WHERE u.ID IN ( {$userset} )";
+			$wpdb->get_results( $sql, ARRAY_A );
+			//@todo: finish this shortcode
+		}
+		
+		return apply_filters( 'footballpool_shortcode_html_fp-last-predictions', $output );
+	}
+	
 	//[fp-stats-settings] 
 	//    Displays a link to the stats settings (only works on the statistics page when needed, otherwise it 
 	//    returns an empty string).
@@ -64,7 +108,8 @@ class Football_Pool_Shortcodes {
 	}
 	
 	//[fp-league-info] 
-	//    Displays info about a league. E.g the total points or the average points (points divided by the number of players) of a league.
+	//    Displays info about a league. 
+	//    E.g the total points or the average points (points divided by the number of players) of a league.
 	//
 	//    league  : league ID
 	//    info    : what info to show:

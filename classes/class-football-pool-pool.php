@@ -41,46 +41,6 @@ class Football_Pool_Pool {
 		$this->pool_users = $this->get_pool_user_info( $this->pool_id );
 	}
 	
-	public function get_jokers() {
-		$num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
-		return apply_filters( 'footballpool_get_jokers', $num_jokers );
-	}
-	
-	public function user_name( $user_id ) {
-		return $this->user_info( $user_id, 'display_name' );
-	}
-	
-	public function user_email( $user_id ) {
-		return $this->user_info( $user_id, 'email' );
-	}
-	
-	private function user_info( $user_id, $info ) {
-		if ( array_key_exists( $user_id, $this->pool_users ) ) {
-			return apply_filters( "footballpool_user_info_{$info}", $this->pool_users[$user_id][$info], $user_id );
-		} else {
-			return __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
-		}
-	}
-	
-	private function get_pool_user_info( $pool_id ) {
-		$cache_key = "fp_user_info_pool_{$pool_id}";
-		$user_info = wp_cache_get( $cache_key );
-		if ( $user_info === false ) {
-			$rows = $this->get_users( 0 );
-			$user_info = array();
-			foreach ( $rows as $row ) {
-				$user_info[$row['user_id']] = array(
-												'user_id' => $row['user_id'],
-												'display_name' => $row['user_name'],
-												'user_email' => $row['email'],
-												);
-			}
-			wp_cache_set( $cache_key, $user_info );
-		}
-		
-		return $user_info;
-	}
-	
 	private function is_toto_result($home, $away, $user_home, $user_away ) {
 		return $this->toto( $home, $away ) == $this->toto( $user_home, $user_away );
 	}
@@ -122,6 +82,63 @@ class Football_Pool_Pool {
 		if ( $joker == 1 && $this->has_jokers ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 		
 		return $score;
+	}
+	
+	public function user_name( $user_id ) {
+		return $this->user_info( $user_id, 'display_name' );
+	}
+	
+	public function user_email( $user_id ) {
+		return $this->user_info( $user_id, 'email' );
+	}
+	
+	private function user_info( $user_id, $info ) {
+		if ( array_key_exists( $user_id, $this->pool_users ) ) {
+			return apply_filters( "footballpool_user_info_{$info}", $this->pool_users[$user_id][$info], $user_id );
+		} else {
+			return __( 'unknown', FOOTBALLPOOL_TEXT_DOMAIN );
+		}
+	}
+	
+	private function get_pool_user_info( $pool_id ) {
+		$cache_key = "fp_user_info_pool_{$pool_id}";
+		$user_info = wp_cache_get( $cache_key );
+		if ( $user_info === false ) {
+			$rows = $this->get_users( 0 );
+			$user_info = array();
+			foreach ( $rows as $row ) {
+				$user_info[$row['user_id']] = array(
+												'user_id' => $row['user_id'],
+												'display_name' => $row['user_name'],
+												'user_email' => $row['email'],
+												);
+			}
+			wp_cache_set( $cache_key, $user_info );
+		}
+		
+		return $user_info;
+	}
+	
+	public function get_avatar( $user_id, $size = 'small', $wrap = true ) {
+		if ( ! is_int( $size ) ) {
+			switch ( $size ) {
+				case 'large':
+					$size = FOOTBALLPOOL_LARGE_AVATAR;
+					break;
+				case 'medium':
+					$size = FOOTBALLPOOL_MEDIUM_AVATAR;
+					break;
+				case 'small':
+				default:
+					$size = FOOTBALLPOOL_SMALL_AVATAR;
+			}
+		}
+		
+		$avatar = get_avatar( $user_id, $size );
+		if ( $wrap )
+			return sprintf( '<span class="fp-avatar">%s</span>', $avatar );
+		else
+			return $avatar;
 	}
 	
 	public function get_users( $league ) {
@@ -415,44 +432,6 @@ class Football_Pool_Pool {
 		return $output;
 	}
 	
-	private function league_image( $id ) {
-		if ( $this->has_leagues && ! empty( $this->leagues[$id]['image'] ) ) {
-			$img = sprintf( '<img src="%sassets/images/site/%s" alt="%s" title="%s" />'
-							, FOOTBALLPOOL_PLUGIN_URL
-							, $this->leagues[$id]['image']
-							, $this->leagues[$id]['league_name']
-							, $this->leagues[$id]['league_name']
-						);
-		} else {
-			$img = '';
-		}
-		return $img;
-	}
-	
-	public function get_leagues( $only_user_defined = false ) {
-		$cache_key = 'fp_get_leagues_' . ( $only_user_defined ? 'user_defined' : 'all' );
-		$leagues = wp_cache_get( $cache_key );
-		
-		if ( $leagues === false ) {
-			global $wpdb;
-			$prefix = FOOTBALLPOOL_DB_PREFIX;
-			
-			$filter = $only_user_defined ? 'WHERE user_defined = 1' : '';
-			
-			$sql = "SELECT id AS league_id, name AS league_name, user_defined, image 
-					FROM {$prefix}leagues {$filter} ORDER BY user_defined ASC, name ASC";
-			$rows = $wpdb->get_results( $sql, ARRAY_A );
-			
-			$leagues = array();
-			foreach ( $rows as $row ) {
-				$leagues[$row['league_id']] = $row;
-			}
-			wp_cache_set( $cache_key, $leagues );
-		}
-		
-		return $leagues;
-	}
-	
 	public function get_rankings( $which = 'all' ) {
 		$only_user_defined = ( $which == 'user defined' || $which == 'user_defined' );
 		$cache_key = 'fp_get_rankings_' . ( $only_user_defined ? 'user_defined' : 'all' );
@@ -502,6 +481,44 @@ class Football_Pool_Pool {
 		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions 
 								WHERE ranking_id = %d", $id );
 		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
+	}
+	
+	private function league_image( $id ) {
+		if ( $this->has_leagues && ! empty( $this->leagues[$id]['image'] ) ) {
+			$img = sprintf( '<img src="%sassets/images/site/%s" alt="%s" title="%s" />'
+							, FOOTBALLPOOL_PLUGIN_URL
+							, $this->leagues[$id]['image']
+							, $this->leagues[$id]['league_name']
+							, $this->leagues[$id]['league_name']
+						);
+		} else {
+			$img = '';
+		}
+		return $img;
+	}
+	
+	public function get_leagues( $only_user_defined = false ) {
+		$cache_key = 'fp_get_leagues_' . ( $only_user_defined ? 'user_defined' : 'all' );
+		$leagues = wp_cache_get( $cache_key );
+		
+		if ( $leagues === false ) {
+			global $wpdb;
+			$prefix = FOOTBALLPOOL_DB_PREFIX;
+			
+			$filter = $only_user_defined ? 'WHERE user_defined = 1' : '';
+			
+			$sql = "SELECT id AS league_id, name AS league_name, user_defined, image 
+					FROM {$prefix}leagues {$filter} ORDER BY user_defined ASC, name ASC";
+			$rows = $wpdb->get_results( $sql, ARRAY_A );
+			
+			$leagues = array();
+			foreach ( $rows as $row ) {
+				$leagues[$row['league_id']] = $row;
+			}
+			wp_cache_set( $cache_key, $leagues );
+		}
+		
+		return $leagues;
 	}
 	
 	public function league_filter( $league = 0, $select = 'league' ) {
@@ -1111,6 +1128,11 @@ class Football_Pool_Pool {
 		return true;
 	}
 	
+	public function get_jokers() {
+		$num_jokers = Football_Pool_Utils::get_fp_option( 'number_of_jokers', FOOTBALLPOOL_DEFAULT_JOKERS, 'int' );
+		return apply_filters( 'footballpool_get_jokers', $num_jokers );
+	}
+	
 	private function get_joker() {
 		return Football_Pool_Utils::post_integer( '_joker' );
 	}
@@ -1269,27 +1291,5 @@ class Football_Pool_Pool {
 						, $id
 						, __( 'Save', FOOTBALLPOOL_TEXT_DOMAIN )
 				);
-	}
-	
-	public function get_avatar( $user_id, $size = 'small', $wrap = true ) {
-		if ( ! is_int( $size ) ) {
-			switch ( $size ) {
-				case 'large':
-					$size = FOOTBALLPOOL_LARGE_AVATAR;
-					break;
-				case 'medium':
-					$size = FOOTBALLPOOL_MEDIUM_AVATAR;
-					break;
-				case 'small':
-				default:
-					$size = FOOTBALLPOOL_SMALL_AVATAR;
-			}
-		}
-		
-		$avatar = get_avatar( $user_id, $size );
-		if ( $wrap )
-			return sprintf( '<span class="fp-avatar">%s</span>', $avatar );
-		else
-			return $avatar;
 	}
 }
