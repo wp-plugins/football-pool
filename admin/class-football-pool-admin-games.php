@@ -593,6 +593,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 	private static function update() {
 		$matches = new Football_Pool_Matches;
 		$rows = $matches->matches;
+		$match_saved = false;
 		
 		// update scores for all matches
 		foreach( $rows as $row ) {
@@ -605,14 +606,14 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 			$match_date = Football_Pool_Utils::post_string( '_match_date_' . $match_id, '1900-01-01 00:00' );
 			
 			if ( $match_on_form ) {
-				$success = self::update_match( $match_id, $home_team, $away_team, 
-												$home_score, $away_score, $match_date );
+				$match_saved = self::update_match( $match_id, $home_team, $away_team, 
+													$home_score, $away_score, $match_date );
 			}
 		}
 		
-		if ( $success ) $success &= self::update_score_history();
+		if ( $match_saved ) $match_saved = $match_saved && self::update_score_history();
 		
-		return $success;
+		return $match_saved;
 	}
 	
 	private static function print_matches( $rows ) {	

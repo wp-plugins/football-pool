@@ -51,16 +51,18 @@ class Football_Pool_Matches {
 	public function get_next_match( $ts = null, $team_id = null ) {
 		if ( $ts == null ) $ts = time();
 		
-		$next_match = null;
+		$next_match = false;
+		$prev_ts = null;
 		foreach ( $this->matches as $match ) {
 			if ( $match['match_timestamp'] > $ts 
 					&& ( $team_id == null || $team_id == $match['home_team_id'] || $team_id == $match['away_team_id'] ) ) {
-				$next_match = $match;
-				break;
+				if ( $prev_ts != null && $prev_ts != $match['match_timestamp'] ) break;
+				$next_match[] = $match;
+				$prev_ts = $match['match_timestamp'];
 			}
 		}
 		
-		return $next_match; // null if no match is found
+		return $next_match; // false if no match is found
 	}
 	
 	public function get_last_games( $num_games = 4 ) {

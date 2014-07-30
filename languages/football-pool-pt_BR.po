@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: Football pool 2.4.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/football-pool\n"
 "POT-Creation-Date: 2014-06-11 15:08+0100\n"
-"PO-Revision-Date: 2014-07-24 23:25+0100\n"
+"PO-Revision-Date: 2014-07-30 16:35+0100\n"
 "Last-Translator: Antoine Hurkmans <wordpressfootballpool@gmail.com>\n"
-"Language-Team: Antoine Hurkmans; Márcia <wordpressfootballpool@gmail.com>\n"
+"Language-Team: Felipe & Márcia <wordpressfootballpool@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -623,7 +623,7 @@ msgid ""
 "\\nAll predictions and scores will also be overwritten!"
 msgstr ""
 "Você tem certeza de que quer substituir o calendário de jogos por esse "
-"calendário?\\n\\nTodos os palpites e placares também serão substituídos!"
+"calendário?\\n\\nTodos os palpites e pontos também serão substituídos!"
 
 #: ../admin/class-football-pool-admin-games.php:377
 msgid "Are you really, really, really sure?"
@@ -696,7 +696,7 @@ msgstr "Time visitante"
 
 #: ../admin/class-football-pool-admin-games.php:564
 msgid "home score"
-msgstr "Time da casa"
+msgstr "placar do time da casa"
 
 #: ../admin/class-football-pool-admin-games.php:565
 msgid "away score"
@@ -725,7 +725,7 @@ msgstr "importar um nova calendário aqui"
 #: ../classes/class-football-pool-matches.php:360
 #: ../classes/class-football-pool-matches.php:497
 msgid "M d, Y"
-msgstr "mm dd AAAA"
+msgstr "M d, Y"
 
 #: ../admin/class-football-pool-admin-games.php:646
 msgid "UTC"
@@ -1113,13 +1113,13 @@ msgid ""
 "jokermultiplier] adds this value in the content. This value is also used for "
 "the calculations in the pool."
 msgstr ""
-"Multiplicador usado para palpites com um joker ativo. O shortcode [fp-"
+"Multiplicador usado para palpites com um coringa ativo. O shortcode [fp-"
 "jokermultiplier] adiciona este valor ao conteúdo. Este valor também é "
 "utilizado para os cálculos no bolão."
 
 #: ../admin/class-football-pool-admin-options.php:229
 msgid "Full score"
-msgstr "Pontuação completa"
+msgstr "Pontuação placar exato"
 
 #: ../admin/class-football-pool-admin-options.php:229
 msgid ""
@@ -1133,7 +1133,7 @@ msgstr ""
 
 #: ../admin/class-football-pool-admin-options.php:231
 msgid "Toto score"
-msgstr "Pontuação placar exato"
+msgstr "Pontuação resultado"
 
 #: ../admin/class-football-pool-admin-options.php:231
 msgid ""
@@ -1160,9 +1160,9 @@ msgid ""
 "used in the calculations in the pool."
 msgstr ""
 "Pontos extras que um usuário recebe por ter acertado o número de gols de um "
-"dos times. Esses pontos são adicionados aos pontos de placar correto ou "
-"pontos total. O shortcode [fp-goalpoints] adiciona esse valor ao conteúdo. "
-"Esse valor também é usado no cálculo do bolão."
+"dos times. Esses pontos são adicionados à pontuação de resultado da partida "
+"ou pontuação placar exato. O shortcode [fp-goalpoints] adiciona esse valor "
+"ao conteúdo. Esse valor também é usado no cálculo do bolão."
 
 #: ../admin/class-football-pool-admin-options.php:235
 msgid "Goal difference bonus"
@@ -1177,10 +1177,10 @@ msgid ""
 "calculations in the pool."
 msgstr ""
 "Pontos extras que um usuário recebe por ter acertado a diferença de gols de "
-"uma partida. Concedido apenas para partidas que tenham um vencedor e no topo "
-"dos pontos de placar correto. Consulte a página de ajuda para mais "
-"informações. O shortcode [fp-diffpoints] adiciona esse valor ao conteúdo. "
-"Esse valor também é usado no cálculo do bolão."
+"uma partida. Concedido apenas para jogos que tenham um vencedor e "
+"adicionados aos pontos de resultado da partida. Consulte a página de ajuda "
+"para mais informações. O shortcode [fp-diffpoints] adiciona esse valor ao "
+"conteúdo. Esse valor também é usado no cálculo do bolão."
 
 #: ../admin/class-football-pool-admin-options.php:239
 msgid "Prediction stop method for matches"
@@ -1276,7 +1276,7 @@ msgid ""
 "page for that."
 msgstr ""
 "Escolha esta opção se você deseja utilizar campeonatos no seu bolão. Você "
-"pode usa isto para separar, por exemplo, usuários pagantes de não pagantes, "
+"pode usar isto para separar, por exemplo, usuários pagantes de não pagantes, "
 "ou pessoas de diferentes departamentos. Importante: se você alterar este "
 "valor quando pontos já tiverem sido distribuídos, a tabela de pontuação não "
 "será recalculada automaticamente. Use o botão recalcular nesta página para "
@@ -1458,7 +1458,7 @@ msgstr ""
 
 #: ../admin/class-football-pool-admin-options.php:378
 msgid "Groups page matches"
-msgstr "Página "
+msgstr "Página de grupos"
 
 #: ../admin/class-football-pool-admin-options.php:381
 #, php-format
@@ -1644,7 +1644,7 @@ msgstr "Opções do plugin alteradas"
 #: ../admin/class-football-pool-admin-users.php:76
 #: ../classes/class-football-pool-pool.php:905
 msgid "Changes saved."
-msgstr "Mudanças salvas."
+msgstr "Alterações salvas."
 
 #: ../admin/class-football-pool-admin-options.php:541
 #: ../classes/class-football-pool.php:595
@@ -1729,7 +1729,7 @@ msgstr ""
 "<p>O registro mostra ações no plugin que podem afetar um determinado ranking "
 "(ex. quando um placar é inserido para uma partida). Se um ranking mostrar um "
 "registro, é importante recalcular esse ranking. </p><p>Um registro só será "
-"efeitvo quando o <em>Cálculo automático</em> estiver desativado.</p>"
+"efetivo quando o <em>Cálculo automático</em> estiver desativado.</p>"
 
 #: ../admin/class-football-pool-admin-rankings.php:19
 msgid "Exclude from recalculation"
@@ -2564,7 +2564,7 @@ msgstr "Para mais informações:"
 
 #: ../admin/class-football-pool-admin.php:806
 msgid "Add New"
-msgstr "Adicionar novo"
+msgstr "Adicionar"
 
 #: ../admin/class-football-pool-admin.php:900
 msgid "yes"
@@ -2650,7 +2650,7 @@ msgstr "padrão"
 #: ../assets/admin/tinymce/tinymce-dialog.php:322
 #: ../assets/admin/tinymce/tinymce-dialog.php:484
 msgid "all scores"
-msgstr "todos os placares"
+msgstr "todos as pontuações"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:155
 #: ../assets/admin/tinymce/tinymce-dialog.php:270
@@ -2806,11 +2806,11 @@ msgstr "Formato"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:511
 msgid "Full points"
-msgstr "Pontos completos"
+msgstr "Pontos placar exato"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:512
 msgid "Toto points"
-msgstr "Pontos placar correto"
+msgstr "Pontos resultado da partida"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:531
 msgid "Link to page"
@@ -2834,7 +2834,7 @@ msgstr "Nova janela?"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:569
 msgid "Countdown"
-msgstr "contagem regressiva"
+msgstr "Contagem regressiva"
 
 #: ../assets/admin/tinymce/tinymce-dialog.php:575
 msgid "Countdown to"
@@ -2919,13 +2919,13 @@ msgstr "Inserir"
 #: ../classes/class-football-pool-chart-data.php:256
 #: ../pages/class-football-pool-statistics-page.php:244
 msgid "full score"
-msgstr "pontuação completa"
+msgstr "pontuação placar exato"
 
 #: ../classes/class-football-pool-chart-data.php:233
 #: ../classes/class-football-pool-chart-data.php:257
 #: ../pages/class-football-pool-statistics-page.php:245
 msgid "toto score"
-msgstr "pontuação placar correto"
+msgstr "pontuação resultado da partida"
 
 #: ../classes/class-football-pool-chart-data.php:234
 #: ../classes/class-football-pool-chart-data.php:258
@@ -2946,7 +2946,7 @@ msgstr "bônus diferença de gols"
 #: ../classes/class-football-pool-chart-data.php:267
 #: ../pages/class-football-pool-statistics-page.php:251
 msgid "toto score with goal difference bonus"
-msgstr "pontuação placar correto com bônus por diferença de gols"
+msgstr "pontuação resultado da partida com bônus por diferença de gols"
 
 #: ../classes/class-football-pool-chart-data.php:276
 #: ../pages/class-football-pool-statistics-page.php:297
@@ -3301,7 +3301,7 @@ msgstr "Escolha o campeonato"
 
 #: ../pages/class-football-pool-ranking-page.php:50
 msgid "go"
-msgstr "seguir"
+msgstr "ir"
 
 #: ../pages/class-football-pool-ranking-page.php:68
 msgid "No results yet. Below is a list of all users."
@@ -3369,7 +3369,7 @@ msgstr "com o coringa utilizado"
 
 #: ../pages/class-football-pool-statistics-page.php:223
 msgid "No users selected"
-msgstr "Nenhum usuário selecionado."
+msgstr "Nenhum usuário selecionado"
 
 #: ../pages/class-football-pool-statistics-page.php:224
 msgid "The top 5 players are shown below."
@@ -3392,7 +3392,7 @@ msgstr "posição no bolão"
 
 #: ../pages/class-football-pool-statistics-page.php:326
 msgid "[\"th\", \"st\", \"nd\", \"rd\", \"th\"]"
-msgstr "[\"º\", \"º\", \"º\", \"º\", \"º\"]"
+msgstr "[\"º\"]"
 
 #: ../pages/class-football-pool-teams-page.php:14
 msgid "go to the team site"
@@ -3577,7 +3577,7 @@ msgstr "Número de mensagens a serem mostradas"
 #: ../widgets/widget-football-pool-shoutbox.php:90
 #, php-format
 msgid "(<span>%s</span> characters remaining)"
-msgstr "(<span>%s</span>caracteres restantes)"
+msgstr "(<span>%s</span> caracteres restantes)"
 
 #: ../widgets/widget-football-pool-shoutbox.php:97
 #, php-format

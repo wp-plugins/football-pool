@@ -394,10 +394,11 @@ class Football_Pool {
 		$default_league = Football_Pool_Utils::get_fp_option( 'default_league_new_user', FOOTBALLPOOL_LEAGUE_DEFAULT, 'ínt' );
 		$league = Football_Pool_Utils::post_int( 'league', $default_league );
 		
+		do_action( 'footballpool_pre_new_user', $user_id, $league );
 		update_user_meta( $user_id, 'footballpool_league', $default_league );
 		update_user_meta( $user_id, 'footballpool_registeredforleague', $league );
 		
-		$payed = Football_Pool_Utils::post_int( 'payed', 0 );
+		$payed = apply_filters( 'footballpool_payed', Football_Pool_Utils::post_int( 'payed', 0 ) );
 		update_user_meta( $user_id, 'footballpool_payed', $payed );
 		
 		self::update_user_custom_tables( $user_id, $default_league );

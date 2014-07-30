@@ -59,14 +59,15 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$teams = new Football_Pool_Teams;
 		$statisticspage = Football_Pool::get_page_link( 'statistics' );
-		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->match['id'] . '-1';
+		$predictionpage = Football_Pool::get_page_link( 'pool' ) . '#match-' . $this->matches[0]['id'] . '-1';
+		$teampage = Football_Pool::get_page_link( 'teams' );
 		
 		$output = '';
 		if ( $title != '' ) {
 			$output .= $before_title . $title . $after_title;
 		}
 		
-		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->match['play_date'] ) );
+		$countdown_date = new DateTime( Football_Pool_Utils::date_from_gmt( $this->matches[0]['play_date'] ) );
 		$year  = $countdown_date->format( 'Y' );
 		$month = $countdown_date->format( 'm' );
 		$day   = $countdown_date->format( 'd' );
@@ -96,23 +97,29 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				FootballPool.countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$instance['format']} );
 				window.setInterval( function() { FootballPool.countdown( '#next-prediction-countdown-{$id}', {$extra_texts}, {$year}, {$month}, {$day}, {$hour}, {$min}, {$sec}, {$instance['format']} ); }, 1000 );
 				</script>";
-		if ( $teams->show_team_links ) {
-			$teampage = Football_Pool::get_page_link( 'teams' );
-			$url_home = esc_url( add_query_arg( array( 'team' => $this->match['home_team_id'] ), $teampage ) );
-			$url_away = esc_url( add_query_arg( array( 'team' => $this->match['away_team_id'] ), $teampage ) );
-			$team_str = '<a href="%s">%s</a>';
-		} else {
-			$url_home = $url_away = '';
-			$team_str = '%s%s';
+		
+		foreach ( $this->matches as $match ) {
+			if ( $teams->show_team_links ) {
+				$url_home = esc_url( add_query_arg( array( 'team' => $match['home_team_id'] ), $teampage ) );
+				$url_away = esc_url( add_query_arg( array( 'team' => $match['away_team_id'] ), $teampage ) );
+				$team_str = '<a href="%s">%s</a>';
+			} else {
+				$url_home = $url_away = '';
+				$team_str = '%s%s';
+			}
+			
+			$output .= sprintf( '<p><span class="home-team">' . $team_str
+									. '</span><span> - </span><span class="away-team">' . $team_str . '</span></p>'
+								, $url_home
+								, ( isset( $teams->team_names[(int) $match['home_team_id']] ) ?
+											$teams->team_names[(int) $match['home_team_id']] : '' )
+								, $url_away
+								, ( isset( $teams->team_names[(int) $match['away_team_id']] ) ?
+											$teams->team_names[(int) $match['away_team_id']] : '' )
+							);
 		}
-		$output .= sprintf( '<p>' . $team_str . ' - ' . $team_str . '</p></div>'
-							, $url_home
-							, ( isset( $teams->team_names[(int) $this->match['home_team_id']] ) ?
-										$teams->team_names[(int) $this->match['home_team_id']] : '' )
-							, $url_away
-							, ( isset( $teams->team_names[(int) $this->match['away_team_id']] ) ?
-										$teams->team_names[(int) $this->match['away_team_id']] : '' )
-						);
+		
+		$output .= '</div>';
 		
 		echo apply_filters( 'footballpool_widget_html_next-prediction', $output );
 	}
@@ -151,13 +158,13 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		
 		$matches = new Football_Pool_Matches;
 		if ( isset( $instance['team_id'] ) && $instance['team_id'] > 0 ) {
-			$match = $matches->get_next_match( null, $instance['team_id'] );
+			$next_matches = $matches->get_next_match( null, $instance['team_id'] );
 		} else {
-			$match = $matches->get_next_match();
+			$next_matches = $matches->get_next_match();
 		}
 		// do not output a widget if there is no next match
-		if ( $match != null ) {
-			$this->match = $match;
+		if ( $next_matches !== false ) {
+			$this->matches = $next_matches;
 			
 			//initializing variables
 			$this->widget['number'] = $this->number;
