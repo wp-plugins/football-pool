@@ -34,6 +34,7 @@ class Football_Pool_Pool_Page {
 			// }
 			// $result = $matches->get_match_info_for_user( $current_user->ID, $ids );
 			$result = $matches->get_match_info_for_user( $current_user->ID );
+			$result = apply_filters( 'footballpool_page_pool_matches_filter', $result, $current_user->ID );
 			
 			$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
 			

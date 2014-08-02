@@ -110,7 +110,7 @@ The Football Pool plugin is available in the following languages:
 
 * English (default) by me.
 * Dutch (`nl_NL`) by me.
-* Brazilian Portuguese (`pt_BR`) by Márcia.
+* Brazilian Portuguese (`pt_BR`) by Márcia and Felipe.
 * Swedish (`sv_SE`) by Paul Söderholm.
 * Hungarian (`hu_HU`) by Leona Tolnai.
 * Albanian (`sq`) by Migen Nepravishta.
@@ -141,7 +141,7 @@ The plugin has the following shortcodes (also see help page in the admin):
 * fp-league-info
 * fp-chart-settings
 
-These shortcodes are deprecated and will be removed in a future version:
+The following shortcodes are deprecated and will be removed in a future version:
 
 * fp-webmaster
 * fp-bank

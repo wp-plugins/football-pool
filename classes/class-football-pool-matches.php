@@ -353,6 +353,7 @@ class Football_Pool_Matches {
 		
 		// start output
 		$output = Football_Pool_Utils::placeholder_replace( $template_start, $template_params );
+		$matches = apply_filters( 'footballpool_print_matches_matches_filter', $matches );
 		foreach ( $matches as $row ) {
 			$matchdate = new DateTime( $row['play_date'] );
 			$localdate = new DateTime( $this->format_match_time( $matchdate, 'Y-m-d H:i' ) );
@@ -489,6 +490,7 @@ class Football_Pool_Matches {
 		
 		// start output
 		$output = Football_Pool_Utils::placeholder_replace( $template_start, $template_params );
+		$matches = apply_filters( 'footballpool_predictionform_matches_filter', $matches, $user_id, $is_user_page );
 		foreach ( $matches as $row ) {
 			$info = $this->get_match_info( (int) $row['id'] );
 			
