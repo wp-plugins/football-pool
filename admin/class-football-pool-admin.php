@@ -56,6 +56,8 @@ class Football_Pool_Admin {
 			add_action( "load-{$hook}", array( $screen_options_class, 'screen_options' ) );
 			// add_action( 'admin_init', array( $screen_options_class, 'screen_options' ) );
 		}
+		
+		do_action( "footballpool_admin_post_menu_{$menu_slug}", $parent_slug, $capability );
 	}
 	
 	public static function admin_menu_init() {
@@ -71,6 +73,8 @@ class Football_Pool_Admin {
 			array( 'Football_Pool_Admin_Options', 'admin' ),
 			'div'
 		);
+		
+		do_action( 'footballpool_admin_pre_menu_init', $slug, $capability );
 		
 		// submenu pages
 		self::add_submenu_page(

@@ -205,6 +205,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 * Bug fix: Answers to linked bonus questions were shown in the prediction overview for users even when the question is still editable. This is unwanted behaviour. (thanks to maybor for reporting the bug).
 * Bug fix: Countdown to next match widget displayed wrong match when a team is specified (thanks to Pierre Suter for reporting the bug).
 * Bug fix: Stats page showed pie chart for bonus questions where score_date was not set.
+* Bug fix: Countdown widget didn't show the next match when "Date descending" was chosen as the match sorting option (thanks to korry for reporting the bug).
 
 = 2.4.2 =
 * Some themes don't show the cog icon for the chart settings in the title of the page. Added shortcode [fp-chart-settings] that can be used to display the cog icon somewhere in the text. The shortcode only works for the statistics page.

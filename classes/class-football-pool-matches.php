@@ -48,12 +48,22 @@ class Football_Pool_Matches {
 		$this->matches_are_editable = true;
 	}
 	
+	public function sort_matches_array_by_date( $a, $b ) {
+		return (int) $a['match_timestamp'] - (int) $b['match_timestamp'];
+	}
+	
 	public function get_next_match( $ts = null, $team_id = null ) {
 		if ( $ts == null ) $ts = time();
 		
 		$next_match = false;
 		$prev_ts = null;
-		foreach ( $this->matches as $match ) {
+		
+		// sort the matches array by date asc
+		// (for situations where a date desc sorting method is chosen in the plugin options)
+		$matches = $this->matches;
+		usort( $matches, array( $this, 'sort_matches_array_by_date' ) );
+		
+		foreach ( $matches as $match ) {
 			if ( $match['match_timestamp'] > $ts 
 					&& ( $team_id == null || $team_id == $match['home_team_id'] || $team_id == $match['away_team_id'] ) ) {
 				if ( $prev_ts != null && $prev_ts != $match['match_timestamp'] ) break;
