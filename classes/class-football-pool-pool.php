@@ -280,6 +280,7 @@ class Football_Pool_Pool {
 				$row['ranking'] = $i++;
 				$ranking[] = $row;
 			}
+			$ranking = apply_filters( 'footballpool_get_ranking_limited', $ranking );
 		}
 		
 		return $ranking;

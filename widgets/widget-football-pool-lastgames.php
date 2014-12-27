@@ -70,12 +70,20 @@ class Football_Pool_Last_Games_Widget extends Football_Pool_Widget {
 												$statisticspage 
 											) 
 									);
+				$home_team = $teams->team_names[(int) $row['home_team_id']];
+				$home_team = apply_filters( 'footballpool_widget_html_last-games_home_team'
+											, $home_team
+											, $match['home_team_id'] );
+				$away_team = $teams->team_names[(int) $row['away_team_id']];
+				$away_team = apply_filters( 'footballpool_widget_html_last-games_away_team'
+											, $away_team
+											, $match['away_team_id'] );
 				
 				$output .= sprintf( '<tr><td>' . $team_str . '</td><td>-</td><td>' . $team_str . '</td>'
 									, $url_home
-									, $teams->team_names[(int) $row['home_team_id']]
+									, $home_team
 									, $url_away
-									, $teams->team_names[(int) $row['away_team_id']]
+									, $away_team
 								);
 				
 				$output .= sprintf( '<td class="score"><a href="%s" title="%s">%s - %s</a></td></tr>'

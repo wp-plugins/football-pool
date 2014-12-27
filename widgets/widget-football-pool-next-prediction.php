@@ -75,12 +75,7 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 		$min   = $countdown_date->format( 'i' );
 		$sec = 0;
 		
-		$cache_key = 'fp_countdown_id';
-		$id = wp_cache_get( $cache_key );
-		if ( $id === false ) {
-			$id = 1;
-		}
-		wp_cache_set( $cache_key, $id + 1 );
+		$id = Football_Pool_Utils::get_counter_value( 'fp_countdown_id' );
 		
 		$extra_texts = sprintf( "{'pre_before':'%1\$s','post_before':'%2\$s','pre_after':'%3\$s','post_after':'%4\$s'}"
 								, __( 'Just ', FOOTBALLPOOL_TEXT_DOMAIN )
@@ -108,15 +103,29 @@ class Football_Pool_Next_Prediction_Widget extends Football_Pool_Widget {
 				$team_str = '%s%s';
 			}
 			
-			$output .= sprintf( '<p><span class="home-team">' . $team_str
-									. '</span><span> - </span><span class="away-team">' . $team_str . '</span></p>'
-								, $url_home
-								, ( isset( $teams->team_names[(int) $match['home_team_id']] ) ?
-											$teams->team_names[(int) $match['home_team_id']] : '' )
-								, $url_away
-								, ( isset( $teams->team_names[(int) $match['away_team_id']] ) ?
-											$teams->team_names[(int) $match['away_team_id']] : '' )
-							);
+			$home_team = $away_team = '';
+			if ( isset( $teams->team_names[(int) $match['home_team_id']] ) ) {
+				$home_team = $teams->team_names[(int) $match['home_team_id']];
+				$home_team = apply_filters( 'footballpool_widget_html_next-prediction_home_team'
+											, $home_team
+											, $match['home_team_id'] );
+			}
+			if ( isset( $teams->team_names[(int) $match['away_team_id']] ) ) {
+				$away_team = $teams->team_names[(int) $match['away_team_id']];
+				$away_team = apply_filters( 'footballpool_widget_html_next-prediction_away_team'
+											, $away_team
+											, $match['away_team_id'] );
+			}
+			
+			$match_line = sprintf( "<p><span class='home-team'>{$team_str}</span>
+										<span> - </span><span class='away-team'>{$team_str}</span></p>"
+									, $url_home
+									, $home_team
+									, $url_away
+									, $away_team
+								);
+			// $output .= apply_filters( 'footballpool_widget_html_next-prediction_matchline', $match_line );
+			$output .= $match_line;
 		}
 		
 		$output .= '</div>';
