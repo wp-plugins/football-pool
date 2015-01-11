@@ -2,7 +2,7 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, fifa, worldcup, uefa, european championship, champions league, fantasy football, sports, hockey, american football, basketball
 Requires at least: 3.3
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 2.4.2
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
@@ -76,8 +76,8 @@ Some themes or WordPress configurations automatically put all top level pages in
 
 = I want to use the plugin for a national competition. Is that possible? =
 Yes. There are two ways to do this: 
-1. Upload a game schedule in the admin. Make sure you understand the required format; you can find an example in the upload folder.
-2. Use the admin screens to edit the teams, groups, match types, matches, etc.
+1. Upload a game schedule in the admin. Make sure you understand the required format; you can find an example in the plugin's  upload folder.
+2. Use the admin screens to add all the teams, groups, match types, matches, etc.
 
 And, of course, choose a theme or make one yourself that fits your competition or blog.
 
@@ -89,7 +89,7 @@ If you have any information that may help me solve your problem (e.g. the error 
 I had to remove the required library because of WordPress plugin license policies. If you want to enable the charts then see the Help page in the WordPress admin for details on how to install the required library.
 
 = I don't see my blog users as players of the pool. =
-Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that allready existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
+Go to the WordPress Admin &raquo; Football Pool &raquo; Users screen and check if these users are added in a league (if you are using leagues). Newly registered users are automatically added, but users that already existed in your blog have to be updated in the admin screen. In order to make them a player in the pool add them to a league and save. If you delete a league, then the users in that league must be placed in another league.
 If you're not using leagues, then make sure the users are not removed from the pool via the Users screen.
 
 = Is there a translation available? =
@@ -195,6 +195,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 = 2.4.3 =
 * Added 'auto set' function to bonus questions. This makes it easier for admins when rewarding points for multiple choice questions with a fixed set of answers a user can choose from.
 * Added a WordPress filter that adds the team name, stadium name or group name to the corresponding page's title tag.
+* Added some more filters in the code.
 * Added weighted average points as an option for the [fp-league-info] shortcode.
 * Updated Dutch translation.
 * Added Swedish translation.

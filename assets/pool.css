@@ -352,3 +352,6 @@ span.charts-settings-text:before { content: "settings"; font-size: 75%; }
 @media ( min-width: 980px ) {
 
 }
+@media ( min-width: 768px ) {
+	.pie-chart.stats-page { max-width: 50%; }
+}

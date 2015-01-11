@@ -19,6 +19,7 @@ add_shortcode( 'fp-diffpoints', array( 'Football_Pool_Shortcodes', 'shortcode_di
 add_shortcode( 'fp-jokermultiplier', array( 'Football_Pool_Shortcodes', 'shortcode_jokermultiplier' ) );
 add_shortcode( 'fp-league-info', array( 'Football_Pool_Shortcodes', 'shortcode_league_info' ) );
 add_shortcode( 'fp-stats-settings', array( 'Football_Pool_Shortcodes', 'shortcode_stats_settings' ) );
+add_shortcode( 'fp-plugin-option', array( 'Football_Pool_Shortcodes', 'shortcode_plugin_option' ) );
 
 // deprecated since v2.4.0, these will be removed in a future version
 add_shortcode( 'fp-webmaster', array( 'Football_Pool_Shortcodes', 'shortcode_webmaster' ) );
@@ -105,6 +106,17 @@ class Football_Pool_Shortcodes {
 	//    returns an empty string).
 	public static function shortcode_stats_settings() {
 		return Football_Pool_Statistics_Page::the_title( '' );
+	}
+	
+	//[fp-plugin-option] 
+	//    Displays the value of a plugin setting
+	public static function shortcode_plugin_option( $atts ) {
+		extract( shortcode_atts( array(
+					'option' => '',
+					'default' => '',
+					'type' => 'text',
+				), $atts ) );
+		return Football_Pool_Utils::get_fp_option( $option, $default, $type );
 	}
 	
 	//[fp-league-info] 
