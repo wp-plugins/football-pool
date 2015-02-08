@@ -3,7 +3,7 @@ Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, fifa, worldcup, uefa, european championship, champions league, fantasy football, sports, hockey, american football, basketball
 Requires at least: 3.3
 Tested up to: 4.1
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 
 This plugin adds a fantasy sports pool to your blog. Play against other users, predict outcomes of matches and earn points.
@@ -156,6 +156,7 @@ The following plugins have been reported as not compatible with the Football Poo
 * Cimy User Extra Fields (v2.6.1) when using the email confirmation option
 * Easy Timer (for football pool version 2.3.8 and below)
 * W3 total cache
+* Theme Gadgetry (ThemeFuse framework)
 
 Some themes prevent the plugin from displaying its content. See <a href="http://wordpress.org/support/topic/no-content-team-pages?replies=8#post-4981300">this post on the forum</a> for a tip on how to resolve this.
 
@@ -191,6 +192,9 @@ Default language is now English. Change de `WPLANG` constant if you want to use 
 Highcharts API was removed from the plugin. See the <a href="http://wordpress.org/extend/plugins/football-pool/faq/">FAQ</a> for details.
 
 == Changelog ==
+
+= 2.4.4 =
+* Bug fix: Undefined variable match in last games widget.
 
 = 2.4.3 =
 * Added 'auto set' function to bonus questions. This makes it easier for admins when rewarding points for multiple choice questions with a fixed set of answers a user can choose from.

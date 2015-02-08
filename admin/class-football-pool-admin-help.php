@@ -12,6 +12,14 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 		self::admin_header( __( 'Help', FOOTBALLPOOL_TEXT_DOMAIN ), '' );
 		?>
 		<div class="help-page">
+		<h2 id="introduction">Introduction</h2>
+		<p>
+		The Football Pool plugin install a pool in your WordPress blog. In the default configuration this plugin enables you to define matches between (football) teams and lets your blog visitors predict the outcomes of the matches. Players earn points for correct predictions and the best player wins the pool.
+		</p>
+		<p>
+		There are several ways you can customize the plugin: different scores for correct answers, add bonus questions, add your own rankings, etc. See the contents of this help file for details. If you have any questions, you may leave them at the <a target="_blank" href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.
+		</p>
+		
 		<h2>Index</h2>
 		<p>
 			<ol>
@@ -32,16 +40,6 @@ class Football_Pool_Admin_Help extends Football_Pool_Admin {
 			</ol>
 		</p>
 
-		<h2 id="introduction">Introduction</h2>
-		<p>
-		The Football Pool plugin install a pool in your WordPress blog. In the default configuration this plugin enables you to define matches between (football) teams and lets your blog visitors predict the outcomes of the matches. Players earn points for correct predictions and the best player wins the pool.
-		</p>
-		<p>
-		There are several ways you can customize the plugin: different scores for correct answers, add bonus questions, add your own rankings, etc. See the contents of this help file for details. If you have any questions, you may leave them at the <a target="_blank" href="http://wordpress.org/support/plugin/football-pool">WordPress forum</a>.
-		</p>
-		
-		<p class="help back-to-top"><a href="#">back to top</a></p>
-		
 		<h2 id="admin">Admin pages</h2>
 		<p>
 		The admin pages of the plugin let you define all necessary parts of the plugin. Every admin page contains contextual help: use the help tab at the top right of every screen if you need information about the admin page.<br />

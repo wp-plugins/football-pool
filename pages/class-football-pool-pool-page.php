@@ -34,7 +34,7 @@ class Football_Pool_Pool_Page {
 			// }
 			// $result = $matches->get_match_info_for_user( $current_user->ID, $ids );
 			$result = $matches->get_match_info_for_user( $current_user->ID );
-			$result = apply_filters( 'footballpool_page_pool_matches_filter', $result, $current_user->ID );
+			$filtered_result = apply_filters( 'footballpool_page_pool_matches_filter', $result, $current_user->ID );
 			
 			$id = Football_Pool_Utils::get_counter_value( 'fp_predictionform_counter' );
 			
@@ -53,7 +53,7 @@ class Football_Pool_Pool_Page {
 			if ( $pool->has_matches ) {
 				$output .= sprintf( '<h2>%s</h2>', __( 'matches', FOOTBALLPOOL_TEXT_DOMAIN ) );
 				// the matches
-				$output .= $pool->prediction_form_matches( $result, false, $id, 'matches pool-page' );
+				$output .= $pool->prediction_form_matches( $filtered_result, false, $id, 'matches pool-page' );
 			}
 			
 			// the questions
@@ -69,6 +69,7 @@ class Football_Pool_Pool_Page {
 			}
 			
 			$output .= $pool->prediction_form_end();
+			$output = apply_filters( 'footballpool_pool_page_html', $output, $result );
 		} else {
 			$output .= '<p>';
 			$output .= sprintf( __( 'You have to be a registered user and <a href="%s">logged in</a> to play in this pool.', FOOTBALLPOOL_TEXT_DOMAIN ), 
