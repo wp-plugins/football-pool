@@ -193,6 +193,9 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 
 == Changelog ==
 
+= 2.4.5 =
+* Bug fix: Removed obsolete closing div from statistics page (thanks WilRC for reporting this bug).
+
 = 2.4.4 =
 * Bug fix: Undefined variable match in last games widget.
 

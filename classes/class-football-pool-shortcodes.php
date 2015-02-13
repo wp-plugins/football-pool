@@ -19,6 +19,7 @@ add_shortcode( 'fp-diffpoints', array( 'Football_Pool_Shortcodes', 'shortcode_di
 add_shortcode( 'fp-jokermultiplier', array( 'Football_Pool_Shortcodes', 'shortcode_jokermultiplier' ) );
 add_shortcode( 'fp-league-info', array( 'Football_Pool_Shortcodes', 'shortcode_league_info' ) );
 add_shortcode( 'fp-stats-settings', array( 'Football_Pool_Shortcodes', 'shortcode_stats_settings' ) );
+add_shortcode( 'fp-chart-settings', array( 'Football_Pool_Shortcodes', 'shortcode_stats_settings' ) );
 add_shortcode( 'fp-plugin-option', array( 'Football_Pool_Shortcodes', 'shortcode_plugin_option' ) );
 
 // deprecated since v2.4.0, these will be removed in a future version
@@ -101,7 +102,8 @@ class Football_Pool_Shortcodes {
 		return apply_filters( 'footballpool_shortcode_html_fp-last-predictions', $output );
 	}
 	
-	//[fp-stats-settings] 
+	//[fp-stats-settings]
+	//[fp-chart-settings]
 	//    Displays a link to the stats settings (only works on the statistics page when needed, otherwise it 
 	//    returns an empty string).
 	public static function shortcode_stats_settings() {

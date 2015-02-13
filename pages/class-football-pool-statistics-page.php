@@ -217,7 +217,6 @@ class Football_Pool_Statistics_Page {
 							$chart->custom_css = 'stats-page stats-pie';
 							$output .= $chart->draw();
 						}
-						$output .= "</div>";
 					}
 				case 'stats':
 					if ( $view != 'user' ) {
