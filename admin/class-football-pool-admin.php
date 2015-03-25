@@ -820,6 +820,7 @@ class Football_Pool_Admin {
 		
 		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		$current_url = remove_query_arg( array( 'action', 'item_id' ), $current_url );
+		// $current_url = remove_query_arg( array( 'item_id' ), $current_url );
 		printf( '<form action="%s" method="post">', $current_url );
 		echo '<input type="hidden" name="action" id="action" value="update" />';
 		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );

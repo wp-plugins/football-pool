@@ -5,6 +5,8 @@ class Football_Pool_Pagination {
 	public $current_page = 1;
 	public $wrap = false;
 	
+	private $url = "";
+	private $query_arg = array();
 	private $total_pages = 0;
 	private $total_items = 0;
 	private $page_size = FOOTBALLPOOL_DEFAULT_PAGINATION_PAGE_SIZE;
@@ -14,6 +16,22 @@ class Football_Pool_Pagination {
 		$this->total_pages = $this->calc_total_pages( $num_items, $this->page_size );
 		$this->current_page = $this->get_page_num();
 		$this->wrap = $wrap;
+	}
+	
+	public function add_query_arg( $key, $value ) {
+		$this->query_arg[$key] = $value;
+	}
+	
+	public function remove_query_arg( $key ) {
+		unset( $this->query_arg[$key] );
+	}
+	
+	public function set_url( $url ) {
+			$this->url = $url;
+	}
+	
+	public function get_url() {
+			return $this->url;
 	}
 	
 	public function get_page_size() {
@@ -26,8 +44,9 @@ class Football_Pool_Pagination {
 	}
 	
 	public function show( $return = 'echo' ) {
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		
+		if ( $this->url == "" ) $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		if ( count( $this->query_arg ) > 0 ) $current_url = add_query_arg( $this->query_arg, $current_url );
+			
 		if ( $this->total_pages ) {
 			$page_class = $this->total_pages < 2 ? ' one-page' : '';
 		} else {

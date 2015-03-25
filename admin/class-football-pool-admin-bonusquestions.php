@@ -29,6 +29,15 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		self::add_help_tabs( $help_tabs, $help_sidebar );
 	}
 	
+	public static function screen_options() {
+		$args = array(
+			'label' => __( 'User Answers', FOOTBALLPOOL_TEXT_DOMAIN ),
+			'default' => FOOTBALLPOOL_ADMIN_USER_ANWERS_PER_PAGE,
+			'option' => 'footballpool_user_anwers_per_page'
+		);
+		add_screen_option( 'per_page', $args );
+	}
+	
 	public static function admin() {
 		self::admin_header( __( 'Bonus questions', FOOTBALLPOOL_TEXT_DOMAIN ), '', 'add new' );
 		
@@ -97,14 +106,30 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 	}
 	
 	private static function edit_user_answers() {
+		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
+		
 		$id = Football_Pool_Utils::request_integer( 'item_id' );
 		
 		if ( $id > 0 ) {
+			$num_answers = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}bonusquestions_useranswers 
+															WHERE question_id = %d", $id ) );
+			$pagination = new Football_Pool_Pagination( $num_answers );
+			$pagination->wrap = true;
+			$pagination->add_query_arg( 'action', 'user-answers' );
+			$pagination->add_query_arg( 'item_id', $id );
+			$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
+			
 			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
 			$questiondate = new DateTime( $question['answer_before_date'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
 			
+			$answers = array_slice( $answers,
+									( $pagination->current_page - 1 ) * $pagination->get_page_size(),
+									$pagination->get_page_size() 
+								);
+
 			// echo '<h3>', __( 'question', FOOTBALLPOOL_TEXT_DOMAIN ), ': ', $question['question'], '</h3>';
 			echo '<h3>', $question['question'], '</h3>';
 			echo '<p>', __( 'answer', FOOTBALLPOOL_TEXT_DOMAIN ), ':<br>', nl2br( $question['answer'] ), '<br />';
@@ -120,6 +145,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 				self::cancel_button();
 				echo '</p>';
 			}
+			
+			$pagination->show();
 			
 			echo '<table class="widefat bonus user-answers">';
 			echo '<thead><tr>
@@ -155,6 +182,8 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 			
 			echo '</tbody>';
 			echo '</table>';
+			
+			// self::hidden_input( "paged", $current_page );
 			
 			echo '<p class="submit">';
 			submit_button( __( 'Save & Close', FOOTBALLPOOL_TEXT_DOMAIN ), 'primary', 'submit', false );

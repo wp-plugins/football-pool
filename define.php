@@ -4,6 +4,7 @@ global $wpdb;
 // admin screen options (defaults per page)
 if ( ! defined( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE' ) ) define( 'FOOTBALLPOOL_ADMIN_USERS_PER_PAGE', 20 );
 if ( ! defined( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE' ) ) define( 'FOOTBALLPOOL_ADMIN_MATCHES_PER_PAGE', 50 );
+if ( ! defined( 'FOOTBALLPOOL_ADMIN_USER_ANWERS_PER_PAGE' ) ) define( 'FOOTBALLPOOL_ADMIN_USER_ANWERS_PER_PAGE', 50 );
 
 // database and path constants
 if ( ! defined( 'FOOTBALLPOOL_DB_PREFIX' ) ) define( 'FOOTBALLPOOL_DB_PREFIX', 'pool_' . $wpdb->prefix );
