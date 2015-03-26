@@ -112,18 +112,16 @@ class Football_Pool_Admin_Bonus_Questions extends Football_Pool_Admin {
 		$id = Football_Pool_Utils::request_integer( 'item_id' );
 		
 		if ( $id > 0 ) {
-			$num_answers = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( * ) FROM {$prefix}bonusquestions_useranswers 
-															WHERE question_id = %d", $id ) );
-			$pagination = new Football_Pool_Pagination( $num_answers );
-			$pagination->wrap = true;
-			$pagination->add_query_arg( 'action', 'user-answers' );
-			$pagination->add_query_arg( 'item_id', $id );
-			$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
-			
 			$pool = new Football_Pool_Pool;
 			$question = $pool->get_bonus_question( $id );
 			$questiondate = new DateTime( $question['answer_before_date'] );
 			$answers = $pool->get_bonus_question_answers_for_users( $id );
+
+			$pagination = new Football_Pool_Pagination( count( $answers ) );
+			$pagination->wrap = true;
+			$pagination->add_query_arg( 'action', 'user-answers' );
+			$pagination->add_query_arg( 'item_id', $id );
+			$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
 			
 			$answers = array_slice( $answers,
 									( $pagination->current_page - 1 ) * $pagination->get_page_size(),
