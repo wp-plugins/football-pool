@@ -64,15 +64,18 @@ class Football_Pool_Statistics {
 					$output .= sprintf( ' (%d - %d)', $info['home_score'], $info['away_score'] );
 				}
 				$output .= '</h2>';
+				$output .= sprintf( '<h3 class="stadium-name">%s</h3>', $info['stadium_name'] );
 				$this->stats_visible = true;
 			} else {
-				$output .= sprintf('<h2>%s - %s</h2>', $info['home_team'], $info['away_team']);
+				$output .= sprintf( '<h2>%s - %s</h2>', $info['home_team'], $info['away_team'] );
+				$output .= sprintf( '<h3 class="stadium-name">%s</h3>', $info['stadium_name'] );
 				$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 			}
 		} else {
 			$output .= sprintf( '<p>%s</p>', __( 'This data is not (yet) available.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		}
 		
+		$output = apply_filters( 'footballpool_statistics_show_match_info', $output, $info );
 		return $output;
 	}
 	
