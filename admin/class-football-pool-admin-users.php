@@ -1,5 +1,8 @@
 <?php
 class Football_Pool_Admin_Users extends Football_Pool_Admin {
+	public static $default_order_by = 'display_name';
+	public static $default_order = 'ASC';
+	
 	public function __construct() {}
 
 	public static function help() {
@@ -143,7 +146,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$excluded_players[] = $user['user_id'];
 		}
 		
-		$args = array( 'orderby' => 'ID', 'order' => 'ASC' );
+		$args = array( 'orderby' => self::$default_order_by, 'order' => self::$default_order );
 		if ( $number > 0 ) {
 			$args['offset'] = $offset;
 			$args['number'] = $number;
@@ -195,7 +198,7 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$league_id = Football_Pool_Utils::request_int( 'league_search' );
 		
 		if ( $search != '' ) {
-			$args = array( 'fields' => 'ID', 'orderby' => 'ID', 'order' => 'ASC', 'search' => "*{$search}*" );
+			$args = array( 'fields' => 'ID', 'orderby' => self::$default_order_by, 'order' => self::$default_order, 'search' => "*{$search}*" );
 			if ( $league_id > 0 ) {
 				$sql = $wpdb->prepare( "SELECT user_id FROM {$prefix}league_users WHERE league_id = %d", $league_id );
 				$user_ids = $wpdb->get_col( $sql );
