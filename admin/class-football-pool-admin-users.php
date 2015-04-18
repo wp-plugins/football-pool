@@ -64,7 +64,16 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			$action = 'save';
 		}
 		
+		$league_id = Football_Pool_Utils::post_int( 'new_league' );
+		if ( $league_id > 0 && count( $bulk_ids ) > 0 
+				&& Football_Pool_Utils::request_string( 'changeit' ) == __( 'Change' ) ) {
+			$action = 'bulk_extra';
+		}
 		switch ( $action ) {
+			case 'bulk_extra':
+				self::bulk_extra( $bulk_ids, $league_id );
+				self::notice( __( 'Changes saved.', FOOTBALLPOOL_TEXT_DOMAIN ) );
+				break;
 			case 'list_email':
 				$users = self::get_users();
 				self::list_email_addresses( $users );
@@ -112,11 +121,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 			self::update_score_history();
 		}
 		
-		if ( $action != 'list_email' ) self::view();		
+		if ( $action != 'list_email' ) self::view();
 		self::admin_footer();
 	}
 	
-	private static function get_users( $offset = 0, $number = 0 ) {
+	private static function get_users( $offset = 0, $number = 0, $search = '', $league_id = 0 ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$pool = new Football_Pool_Pool;
@@ -125,7 +134,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$excluded_players = array();
 		$league_users = array();
 		
-		$sql = "SELECT * FROM {$prefix}league_users";
+		$sql = "SELECT user_id, league_id FROM {$prefix}league_users";
+		if ( $league_id > 0 ) $sql .= " WHERE league_id = {$league_id}";
 		$users = $wpdb->get_results( $sql, ARRAY_A );
 		foreach ( $users as $user ) {
 			$league_users[$user['user_id']] = $user['league_id'];
@@ -133,10 +143,18 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 				$excluded_players[] = $user['user_id'];
 		}
 		
-		$search_string = "orderby=ID&order=ASC";
-		if ( $number > 0 ) $search_string .= "&offset={$offset}&number={$number}";
-		
-		$users = get_users( $search_string );
+		$args = array( 'orderby' => 'ID', 'order' => 'ASC' );
+		if ( $number > 0 ) {
+			$args['offset'] = $offset;
+			$args['number'] = $number;
+		}
+		if ( $search != '' ) $args['search'] = "*{$search}*";
+		if ( $league_id > 0 ) {
+			$user_ids = $wpdb->get_col( $sql );
+			$args['include'] = count( $user_ids ) ? $user_ids : array( 0 );
+		}
+
+		$users = get_users( $args );
 		
 		foreach ( $users as $user ) {
 			$league_id = get_the_author_meta( 'footballpool_registeredforleague', $user->ID );
@@ -169,17 +187,38 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 
 	private static function view() {
 		global $wpdb;
+		$prefix = FOOTBALLPOOL_DB_PREFIX;
 		$pool = new Football_Pool_Pool;
 		$has_leagues = $pool->has_leagues;
 		
-		$num_users = $wpdb->get_var( "SELECT COUNT( * ) FROM {$wpdb->users}" );
+		$search = Football_Pool_Utils::request_string( 's' );
+		$league_id = Football_Pool_Utils::request_int( 'league_search' );
+		
+		if ( $search != '' ) {
+			$args = array( 'fields' => 'ID', 'orderby' => 'ID', 'order' => 'ASC', 'search' => "*{$search}*" );
+			if ( $league_id > 0 ) {
+				$sql = $wpdb->prepare( "SELECT user_id FROM {$prefix}league_users WHERE league_id = %d", $league_id );
+				$user_ids = $wpdb->get_col( $sql );
+				$args['include'] = count( $user_ids ) ? $user_ids : array( 0 );
+			}
+			$users = get_users( $args );
+			$num_users = count( $users );
+		} else {
+			$sql = "SELECT COUNT( * ) FROM {$wpdb->users} u ";
+			if ( $league_id > 0 ) {
+				$sql .= "JOIN {$prefix}league_users lu ON ( u.ID = lu.user_id AND lu.league_id = %d )";
+				$sql = $wpdb->prepare( $sql, $league_id );
+			}
+			$num_users = $wpdb->get_var( $sql );
+		}
+		
 		$pagination = new Football_Pool_Pagination( $num_users );
 		$pagination->set_page_size( self::get_screen_option( 'per_page' ) );
 		
-		// @TODO: add user search
 		$users = self::get_users( 
 									( $pagination->current_page - 1 ) * $pagination->get_page_size(),
-									$pagination->get_page_size() 
+									$pagination->get_page_size(),
+									$search, $league_id
 								);
 		
 		$cols = array();
@@ -215,7 +254,33 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		$bulkactions[] = array( 'add', __( 'Add to football pool', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to add one or more users to the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		$bulkactions[] = array( 'remove', __( 'Remove from football pool', FOOTBALLPOOL_TEXT_DOMAIN ), __( 'You are about to remove one or more users from the pool.', FOOTBALLPOOL_TEXT_DOMAIN ) . ' ' . __( 'Are you sure? `OK` to continue, `Cancel` to stop.', FOOTBALLPOOL_TEXT_DOMAIN ) );
 		
-		self::list_table( $cols, $rows, $bulkactions, $rowactions, $pagination );
+		$pool = new Football_Pool_Pool;
+		$leagues = $pool->get_leagues( true );
+		$temp = array();
+		foreach ( $leagues as $league ) {
+			$temp[$league['league_id']] = $league['league_name'];
+		}
+		$leagues = $temp;
+		$extra = array(
+						'id' => 'new_league',
+						'text' => __( 'Change league to…', FOOTBALLPOOL_TEXT_DOMAIN ),
+						'options' => $leagues,
+					);
+		
+		$temp = array();
+		$temp[''] = '';
+		foreach ( $leagues as $key => $val ) {
+			$temp[$key] = $val;
+		}
+		$leagues = $temp;
+		$search = array(
+						'text' => __( 'Search Users' ), 
+						'value' => $search, 
+						'extra_search' => Football_Pool_Utils::select( 'league_search', $leagues, $league_id ),
+						'extra_search_text' => __( 'League', FOOTBALLPOOL_TEXT_DOMAIN ),
+					);
+		
+		self::list_table( $cols, $rows, $bulkactions, $rowactions, $pagination, $search, $extra );
 		
 		self::hidden_input( 'user_list', implode( ',', $user_list ) );
 		submit_button();
@@ -321,6 +386,11 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 		}
 	}
 
+	private static function bulk_extra( $bulk_ids, $league_id ) {
+		$pool = new Football_Pool_Pool;
+		foreach( $bulk_ids as $id ) $pool->update_league_for_user( $id, $league_id, 'update league');
+	}
+	
 	private static function add_user( $id ) {
 		global $wpdb;
 		$prefix = FOOTBALLPOOL_DB_PREFIX;
@@ -354,8 +424,8 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	}
 
 	protected static function list_table( $cols, $rows, $bulkactions = array(), $rowactions = array()
-										, $pagination = false ) {
-		parent::bulk_actions( $bulkactions, 'action', $pagination );
+										, $pagination = false, $search = false, $extra = false ) {
+		parent::bulk_actions( $bulkactions, 'action', $pagination, $search, $extra );
 		echo "<table cellspacing='0' class='wp-list-table widefat fixed user-list'>";
 		parent::list_table_def( $cols, 'head' );
 		parent::list_table_def( $cols, 'foot' );
@@ -456,6 +526,9 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	}
 	
 	public static function add_extra_profile_fields( $user ) {
+		// only for admins
+		if ( ! current_user_can( 'edit_users' ) ) return;
+		
 		// add extra profile fields to user edit page
 		$pool = new Football_Pool_Pool();
 				

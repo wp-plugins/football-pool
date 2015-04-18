@@ -830,7 +830,21 @@ class Football_Pool_Admin {
 		echo '</form></div>';
 	}
 	
-	public static function bulk_actions( $actions, $name = 'action', $pagination = false ) {
+	public static function bulk_actions( $actions, $name = 'action'
+										, $pagination = false, $search = false, $extra = false ) {
+		if ( $search !== false ) {
+			echo '<p class="search-box">';
+			printf( '<label class="screen-reader-text" for="search-input">%s:</label>', $search['text'] );
+			printf( '<input type="search" id="search-input" name="s" value="%s">', esc_attr( $search['value'] ) );
+			printf( '<input type="submit" name="" id="search-submit" class="button" value="%s"></p>'
+					, esc_attr( $search['text'] ) );
+			if ( isset( $search['extra_search'] ) ) {
+				echo '<p class="search-box extra-search"><label>';
+				if ( isset( $search['extra_search_text'] ) ) printf( '%s: ', $search['extra_search_text'] );
+				printf( '%s</label></p>', $search['extra_search'] );
+			}
+		}
+		
 		echo '<div class="tablenav top">';
 		if ( count($actions) > 0 ) {
 			echo '<div class="alignleft actions"><select id="', $name, '" name="', $name, '">';
@@ -843,6 +857,20 @@ class Football_Pool_Admin {
 				);
 			}
 			echo "</select><input onclick=\"return FootballPoolAdmin.bulk_action_warning( '{$name}' )\" type='submit' value='Apply' class='button-secondary action' id='do{$name}' name='' />";
+			echo '</div>';
+		}
+		if ( $extra !== false ) {
+			if ( ! isset( $extra['name'] ) ) $extra['name'] = $extra['id'];
+			echo '<div class="alignleft actions">';
+			printf( '<label class="screen-reader-text" for="%s">%s</label>'
+					, esc_attr( $extra['id'] )
+					, $extra['text']
+			);
+			$options = array( '' => $extra['text'] );
+			foreach( $extra['options'] as $val => $option ) $options[$val] = $option;
+			echo Football_Pool_Utils::select( $extra['id'], $options, '', $extra['name'] );
+			printf( '<input type="submit" name="changeit" id="changeit" class="button" value="%s">'
+					, __( 'Change' ) );
 			echo '</div>';
 		}
 		
