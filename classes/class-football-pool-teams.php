@@ -129,7 +129,7 @@ class Football_Pool_Teams {
 				$photo = ( $thumbs_in_listing && $team->photo != '' ) ? $team->HTML_thumb( 'thumb' ) : '';
 				$comments = ( $comments_in_listing ) ? $team->comments : '';
 				$line = sprintf( '<li><a href="%s">%s%s</a><br />%s</li>'
-									, add_query_arg( array( 'team' => $team->id ) )
+									, esc_url( add_query_arg( array( 'team' => $team->id ) ) )
 									, $photo
 									, htmlentities( $team->name, null, 'UTF-8' )
 									, $comments

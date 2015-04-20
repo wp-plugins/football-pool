@@ -25,12 +25,7 @@ class Football_Pool_Teams_Page {
 										<td><a href="%s">%s</a></td>
 									</tr>'
 								, __( 'plays in', FOOTBALLPOOL_TEXT_DOMAIN )
-								, esc_url( 
-									add_query_arg( 
-										array( 'group' => $team->group_id ),
-										Football_Pool::get_page_link('groups')
-									)
-								)
+								, esc_url( add_query_arg( array( 'group' => $team->group_id ), Football_Pool::get_page_link('groups') ) )
 								, $team->group_name
 						);
 						
@@ -44,9 +39,7 @@ class Football_Pool_Teams_Page {
 					$stadium_page = Football_Pool::get_page_link( 'stadiums' );
 					while ( $stadium = array_shift( $stadiums ) ) {
 						$output .= sprintf( '<li><a href="%s">%s</a></li>'
-											, esc_url( 
-												add_query_arg( array( 'stadium' => $stadium->id ), $stadium_page )
-											)
+											, esc_url( add_query_arg( array( 'stadium' => $stadium->id ), $stadium_page ) )
 											, $stadium->name 
 									);
 					}

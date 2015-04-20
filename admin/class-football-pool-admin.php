@@ -13,9 +13,8 @@ class Football_Pool_Admin {
 	}
 	
 	public static function set_screen_options( $status, $option, $value ) {
-		if ( strpos( $option, 'footballpool_' ) !== false ) return $value;
-		
-		return $status;
+		// Football_Pool_Utils::debugf( "status: {$status}; option: {$option}; value: {$value}" );
+		return ( strpos( $option, 'footballpool_' ) !== false ) ? $value : $status;
 	}
 	
 	public static function get_screen_option( $option, $type = 'int' ) {
@@ -30,6 +29,11 @@ class Football_Pool_Admin {
 		if ( $default_value ) $option_value = $screen->get_option( $option, 'default' );
 		
 		return $option_value;
+	}
+	
+	public static function init_admin() {
+		add_action( 'admin_menu', array( __CLASS__, 'admin_menu_init' ) );
+		add_filter( 'set-screen-option', array( __CLASS__, 'set_screen_options', null, 3 ) );
 	}
 	
 	private static function add_submenu_page( $parent_slug, $page_title, $menu_title
@@ -819,8 +823,8 @@ class Football_Pool_Admin {
 		echo $extra;
 		
 		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$current_url = remove_query_arg( array( 'action', 'item_id' ), $current_url );
-		// $current_url = remove_query_arg( array( 'item_id' ), $current_url );
+		$current_url = esc_url( remove_query_arg( array( 'action', 'item_id' ), $current_url ) );
+		// $current_url = esc_url( remove_query_arg( array( 'item_id' ), $current_url ) );
 		printf( '<form action="%s" method="post">', $current_url );
 		echo '<input type="hidden" name="action" id="action" value="update" />';
 		wp_nonce_field( FOOTBALLPOOL_NONCE_ADMIN );
@@ -1155,7 +1159,7 @@ class Football_Pool_Admin {
 			$attributes = $other_attributes;
 		}
 		
-		if ( $action_val != '' ) $action_val = "location.href='{$action_val}';";
+		if ( $action_val != '' ) $action_val = "location.href = '{$action_val}';";
 		$button = sprintf( '<input type="button" onclick="%s%s" 
 									class="button button-%s" value="%s" %s/>'
 							, $action_val
@@ -1178,7 +1182,7 @@ class Football_Pool_Admin {
 		$onclick_val = $actions[1];
 				
 		if ( $type == 'button' ) {
-			$onclick_val = "jQuery('#action, #form_action').val('{$action_val}');" . $onclick_val;
+			$onclick_val = "jQuery( '#action, #form_action' ).val( '{$action_val}' );" . $onclick_val;
 			$atts = array( "onclick" => $onclick_val );
 			
 			if ( is_array( $other_attributes ) ) {

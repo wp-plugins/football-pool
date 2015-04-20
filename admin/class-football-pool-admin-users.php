@@ -34,12 +34,13 @@ class Football_Pool_Admin_Users extends Football_Pool_Admin {
 	}
 	
 	public static function screen_options() {
+		$screen = get_current_screen();
 		$args = array(
 			'label' => __( 'Users', FOOTBALLPOOL_TEXT_DOMAIN ),
 			'default' => FOOTBALLPOOL_ADMIN_USERS_PER_PAGE,
 			'option' => 'footballpool_users_per_page'
 		);
-		add_screen_option( 'per_page', $args );
+		$screen->add_option( 'per_page', $args );
 	}
 	
 	public static function admin() {

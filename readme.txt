@@ -196,6 +196,7 @@ Highcharts API was removed from the plugin. See the <a href="http://wordpress.or
 = 2.4.5 =
 * Added pagination to bonusquestion user answers admin page because this was causing trouble on installs with a lot of users.
 * Added user search in the user admin page.
+* Changed some add_query_arg/remove_query_arg calls (<a href="https://make.wordpress.org/plugins/2015/04/20/fixing-add_query_arg-and-remove_query_arg-usage/">more info</a>).
 * Bug fix: Removed obsolete closing div from statistics page (thanks WilRC for reporting this bug).
 
 = 2.4.4 =

@@ -581,7 +581,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				echo $output;
 			}
 			unset( $params['colorbox_html'] );
-			$url = add_query_arg( $params, "{$_SERVER['PHP_SELF']}?page=footballpool-score-calculation" );
+			$url = esc_url( add_query_arg( $params, "{$_SERVER['PHP_SELF']}?page=footballpool-score-calculation" ) );
 			if ( $params['step'] > 0 && $params['step'] <= 8 ) {
 				printf( '<script>location.href = "%s";</script>', $url );
 			}

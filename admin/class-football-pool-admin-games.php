@@ -424,7 +424,7 @@ class Football_Pool_Admin_Games extends Football_Pool_Admin {
 		$full_data = ( Football_Pool_Utils::get_fp_option( 'export_format', 0, 'int' ) == 0 );
 		$download_url = wp_nonce_url( FOOTBALLPOOL_PLUGIN_URL . 'admin/csv-export-matches.php'
 									, FOOTBALLPOOL_NONCE_CSV );
-		if ( ! $full_data ) $download_url = add_query_arg( array( 'format' => 'minimal' ), $download_url );
+		if ( ! $full_data ) $download_url = esc_url( add_query_arg( array( 'format' => 'minimal' ), $download_url ) );
 		
 		echo '<p class="submit">';
 		submit_button( null, 'primary', 'submit', false );

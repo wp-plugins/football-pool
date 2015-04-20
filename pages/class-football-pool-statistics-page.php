@@ -156,13 +156,13 @@ class Football_Pool_Statistics_Page {
 						$pool = new Football_Pool_Pool;
 						
 						// can't use esc_url() here because it also strips the square brackets from users[]
-						$url = add_query_arg( 
+						$url = esc_url( add_query_arg( 
 												array( 
 													'user' => false,
 													'view' => false,
 													'users[]' => $user_info->ID
 												) 
-								);
+										) );
 						$txt = __( 'Compare the scores of %s with other users.', FOOTBALLPOOL_TEXT_DOMAIN );
 						$output .= sprintf( "<p><a href='%s'>{$txt}</a></p>"
 											, $url
