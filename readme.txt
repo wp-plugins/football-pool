@@ -2,7 +2,7 @@
 Contributors: AntoineH
 Tags: football, soccer, voetbal, pool, poule, game, prediction, competition, fifa, worldcup, uefa, european championship, champions league, fantasy football, sports, hockey, american football, basketball
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.2.2
 Stable tag: 2.4.4
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S83YHERL39GHA
 

@@ -8,7 +8,7 @@ jQuery( document ).ready( function() {
 	} );
 } );
 
-var FootballPool = (function ( $ ) {
+var FootballPool = ( function ( $ ) {
 	
 	var i18n = FootballPool_i18n;
 	

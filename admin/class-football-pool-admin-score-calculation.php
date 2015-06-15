@@ -314,6 +314,16 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					$toto = Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
 					$goal = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
 					$diff = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+					$scoring_options = array(
+						'full' => $full,
+						'toto' => $toto,
+						'goal' => $goal,
+						'diff' => $diff,
+						'type' => FOOTBALLPOOL_TYPE_MATCH,
+						'ranking_id' => $calculate_this_ranking,
+						'user_ids' => $user_ids,
+						'prefix' => $prefix,
+					);
 					
 					$sql = $wpdb->prepare( "UPDATE {$prefix}scorehistory 
 											SET score = score * ( ( full * {$full} ) 
@@ -323,6 +333,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 											WHERE type = %d AND ranking_id = %d 
 											AND user_id IN ( {$user_ids} )"
 											, FOOTBALLPOOL_TYPE_MATCH, $calculate_this_ranking );
+					$sql = apply_filters( 'footballpool_score_calc_update_score_sql', $sql, $scoring_options );
 					$result = $wpdb->query( $sql );
 					$check = ( $result !== false );
 					

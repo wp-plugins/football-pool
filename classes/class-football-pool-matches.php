@@ -458,7 +458,8 @@ class Football_Pool_Matches {
 		$date_title = $matchtype = $joker = '';
 		
 		// define templates
-		$template_start = '<table id="matchinfo-%form_id%" class="matchinfo input">';
+		$table_class = $is_user_page ? '' : ' input';
+		$template_start = "<table id='matchinfo-%form_id%' class='matchinfo{$table_class}'>";
 		$template_start = apply_filters( 'footballpool_predictionform_template_start', $template_start );
 		
 		$template_end = '</table>';

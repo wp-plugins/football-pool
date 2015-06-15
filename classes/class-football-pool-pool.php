@@ -52,34 +52,55 @@ class Football_Pool_Pool {
 	}
 	
 	public function calc_score( $home, $away, $user_home, $user_away, $joker ) {
+		$score = -1;
 		if ( ! is_int( $home ) || ! is_int( $away ) )
-			return '';
+			$score = '';
 		if ( $user_home == '' || $user_away == '' )
-			return 0;
+			$score = 0;
 		
-		$full = false;
-		$score = 0;
-		// check for toto result
-		if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
-			// check for exact match
-			if ( $home == $user_home && $away == $user_away ) {
-				$score = (int) Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
-				$full = true;
-			} else {
-				$score = (int) Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		$full = (int) Football_Pool_Utils::get_fp_option( 'fullpoints', FOOTBALLPOOL_FULLPOINTS, 'int' );
+		$toto = (int) Football_Pool_Utils::get_fp_option( 'totopoints', FOOTBALLPOOL_TOTOPOINTS, 'int' );
+		$goal = (int) Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
+		$diff = (int) Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
+		$scoring_options = array(
+			'home' => $home,
+			'away' => $away,
+			'user_home' => $user_home,
+			'user_away' => $user_away,
+			'joker' => $joker,
+			'full' => $full,
+			'toto' => $toto,
+			'goal' => $goal,
+			'diff' => $diff,
+		);
+		
+		$score = apply_filters( 'footballpool_score_calc_function_pre', $score, $scoring_options );
+		
+		if ( $score === -1 ) {
+			$score = 0;
+			$full_score = false;
+			// check for toto result
+			if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
+				// check for exact match
+				if ( $home == $user_home && $away == $user_away ) {
+					$score = $full;
+					$full_score = true;
+				} else {
+					$score = $toto;
+				}
 			}
-		}
-		// check for goal bonus
-		$goal_bonus = Football_Pool_Utils::get_fp_option( 'goalpoints', FOOTBALLPOOL_GOALPOINTS, 'int' );
-		if ( $home == $user_home ) $score += $goal_bonus;
-		if ( $away == $user_away ) $score += $goal_bonus;
-		// check for goal diff bonus
-		$goal_diff_bonus = Football_Pool_Utils::get_fp_option( 'diffpoints', FOOTBALLPOOL_DIFFPOINTS, 'int' );
-		if ( ! $full && $home != $away && ( $home - $user_home ) == ( $away - $user_away ) ) {
-			$score += $goal_diff_bonus;
+			// check for goal bonus
+			if ( $home == $user_home ) $score += $goal;
+			if ( $away == $user_away ) $score += $goal;
+			// check for goal diff bonus
+			if ( ! $full_score && $home != $away && ( $home - $user_home ) == ( $away - $user_away ) ) {
+				$score += $diff;
+			}
+			
+			if ( $joker == 1 && $this->has_jokers ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 		}
 		
-		if ( $joker == 1 && $this->has_jokers ) $score *= Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
+		$score = apply_filters( 'footballpool_score_calc_function_post', $score, $scoring_options );
 		
 		return $score;
 	}
