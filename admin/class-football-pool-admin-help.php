@@ -561,6 +561,7 @@ define( \'WP_DEBUG_LOG\', true );');
 					num_predictions<br />
 					points<br />
 					league_image<br />
+					league_name<br />
 					css_class<br />
 				</td>
 			</tr>

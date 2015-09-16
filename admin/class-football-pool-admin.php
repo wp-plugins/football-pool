@@ -1096,6 +1096,7 @@ class Football_Pool_Admin {
 		} else {
 			self::recalculate_button( $ranking_id );
 		}
+		
 		return true;
 	}
 	

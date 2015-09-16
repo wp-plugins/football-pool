@@ -217,6 +217,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 			function step1_empty_table() {}
 				empty table
 			*/
+				do_action( 'football_pool_score_calculation_step_1_before', $sub_step );
+				
 				if ( $is_single_ranking ) {
 					$check = self::empty_scorehistory( $ranking_id );
 				} elseif ( $calculation_type == FOOTBALLPOOL_RANKING_CALCULATION_SMART ) {
@@ -226,12 +228,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				}
 				
 				$params['step'] = 2;
+				do_action( 'football_pool_score_calculation_step_1_after', $sub_step );
 				break;
 			case 2:
 			/*
 			function step2_matches() {}
 				check predictions with actual match result (score type = 0)
 			*/
+				do_action( 'football_pool_score_calculation_step_2_before', $sub_step );
+				
 				if ( $pool->has_jokers ) {
 					$joker_multiplier = Football_Pool_Utils::get_fp_option( 'joker_multiplier', FOOTBALLPOOL_JOKERMULTIPLIER, 'int' );
 				} else {
@@ -295,12 +300,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					$sub_step = 1;
 					$params['step'] = 3;
 				}
+				do_action( 'football_pool_score_calculation_step_2_after', $sub_step );
 				break;
 			case 3:
 			/*
 			function step3_update_scores_for_matches() {}
 				actual points are given for each correct prediction and multiplied if joker is set
 			*/
+				do_action( 'football_pool_score_calculation_step_3_before', $sub_step );
+				
 				$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
 				$offset = FOOTBALLPOOL_RECALC_STEP3_DIV * ( $sub_step - 1 );
 				
@@ -343,6 +351,7 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					$sub_step = 1;
 					$params['step'] = 4;
 				}
+				do_action( 'football_pool_score_calculation_step_3_after', $sub_step );
 				break;
 			case 4:
 			/*
@@ -351,6 +360,8 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				make sure to take the userpoints into account (we can set an alternate score for an 
 				individual user in the admin)
 			*/
+				do_action( 'football_pool_score_calculation_step_4_before', $sub_step );
+				
 				if ( $pool->has_bonus_questions ) {
 					$offset = FOOTBALLPOOL_RECALC_STEP4_DIV * ( $sub_step - 1 );
 					$calculate_this_ranking = ( $is_single_ranking ? $ranking_id : FOOTBALLPOOL_RANKING_DEFAULT );
@@ -393,12 +404,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 					$params['step'] = 5;
 				}
 				
+				do_action( 'football_pool_score_calculation_step_4_after', $sub_step );
 				break;
 			case 5:
 			/*
 			function step5_total_score_update() {}
 				update score incrementally once for every ranking, start with the default one
 			*/
+				do_action( 'football_pool_score_calculation_step_5_before', $sub_step );
+				
 				if ( $ranking_id == FOOTBALLPOOL_RANKING_DEFAULT ) {
 					$sql_user_scores = sprintf( "SELECT * FROM {$prefix}scorehistory 
 												WHERE user_id = %%d AND ranking_id = %d
@@ -467,12 +481,15 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				
 				$params['ranking'] = $ranking_id;
 				$params['user_set'] = ++$user_set;
+				do_action( 'football_pool_score_calculation_step_5_after', $sub_step );
 				break;
 			case 6:
 			/*
 			function step6_ranking_update() {}
 				update ranking order for users
 			*/
+				do_action( 'football_pool_score_calculation_step_6_before', $sub_step );
+				
 				$offset = FOOTBALLPOOL_RECALC_STEP6_DIV * ( $sub_step - 1 );
 				$sql = $wpdb->prepare( "SELECT score_order FROM {$prefix}scorehistory 
 										WHERE ranking_id = %d GROUP BY score_order
@@ -522,11 +539,14 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				}
 				
 				$params['ranking'] = $ranking_id;
+				do_action( 'football_pool_score_calculation_step_6_after', $sub_step );
 				break;
 			case 7:
 			/*
 			function step7_custom_rankings() {}
 			*/
+				do_action( 'football_pool_score_calculation_step_7_before', $sub_step );
+				
 				if ( $is_single_ranking ) {
 					$ranking_id = null;
 				} else {
@@ -553,14 +573,17 @@ class Football_Pool_Admin_Score_Calculation extends Football_Pool_Admin {
 				// otherwise (re)calculation is finished.
 				$params['step'] = ( $ranking_id != null ) ? 5 : 8;
 				$params['ranking'] = $ranking_id;
+				do_action( 'football_pool_score_calculation_step_7_after', $sub_step );
 				break;
 			case 8:
 			/*
 			function step8_the_end() {}
 			*/
 				// calculation complete
+				do_action( 'football_pool_score_calculation_step_8_before', $sub_step );
 				Football_Pool_Utils::set_fp_option( 'calculation_type_preference', $calculation_type );
 				$params['step'] = 9;
+				do_action( 'football_pool_score_calculation_step_8_after', $sub_step );
 		}
 		
 		$params['colorbox_html'] = $output;

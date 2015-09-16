@@ -83,8 +83,8 @@ class Football_Pool_Pool {
 			if ( $this->is_toto_result( $home, $away, $user_home, $user_away ) == true ) {
 				// check for exact match
 				if ( $home == $user_home && $away == $user_away ) {
-					$score = $full;
 					$full_score = true;
+					$score = $full;
 				} else {
 					$score = $toto;
 				}
@@ -92,7 +92,7 @@ class Football_Pool_Pool {
 			// check for goal bonus
 			if ( $home == $user_home ) $score += $goal;
 			if ( $away == $user_away ) $score += $goal;
-			// check for goal diff bonus
+			// check for goal diff bonus (only awarded when not a full score and not a draw)
 			if ( ! $full_score && $home != $away && ( $home - $user_home ) == ( $away - $user_away ) ) {
 				$score += $diff;
 			}
@@ -442,6 +442,7 @@ class Football_Pool_Pool {
 				'num_predictions' => array_key_exists( $row['user_id'], $predictions ) ? $predictions[$row['user_id']] : 0,
 				'points' => $row['points'],
 				'league_image' => ( isset( $row['league_id'] ) ? $this->league_image( $row['league_id'] ) : '' ),
+				'league_name' => ( isset( $row['league_id'] ) ? $this->league_name( $row['league_id'] ) : '' ),
 				'css_class' => $class,
 			);
 			$ranking_template_params = apply_filters( 'footballpool_ranking_ranking_row_params'
@@ -503,6 +504,14 @@ class Football_Pool_Pool {
 		$sql = $wpdb->prepare( "SELECT question_id FROM {$prefix}rankings_bonusquestions 
 								WHERE ranking_id = %d", $id );
 		return $wpdb->get_results( $sql, ARRAY_A ); // returns null if no ranking found
+	}
+	
+	public function league_name( $id ) {
+		if ( $this->has_leagues && ! empty( $this->leagues[$id]['league_name'] ) ) {
+			return $this->leagues[$id]['league_name'];
+		} else {
+			return '';
+		}
 	}
 	
 	private function league_image( $id ) {

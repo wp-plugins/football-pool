@@ -65,7 +65,7 @@ class Football_Pool_Pool_Page {
 						$output .= $pool->print_bonus_question( $question, $nr++ );
 					}
 				}
-				$output .= $pool->save_button( 'questions pool-page' );
+				$output .= $pool->save_button( 'questions pool-page', $id );
 			}
 			
 			$output .= $pool->prediction_form_end();
